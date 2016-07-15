@@ -1,0 +1,97 @@
+<pages>
+	<page class="com.glodon.page.SystemSelectPage"
+		dataSource="com.glodon.data.ExcelData"
+		url="http://192.168.8.120:18081/G2/">
+		<field name="sysButton"
+			byXpath="/html/body/div/div/ul/li[1]/a" type="button" action="click" />
+	</page>
+	<page class="com.glodon.page.LoginPage"
+		dataSource="com.glodon.data.ExcelData">
+		<field name="loginNameText"
+			byId="username" byCss="testCss" byXpath="testXpath" type="input"
+			data="政府采购sss" />
+		<field name="passwdText"
+			byId="password" byCss="testCss" byXpath="testXpath" type="input"
+			data="1" />
+		<field name="loginButton"
+			byId="login1" type="button" action="click" />
+	</page>
+	<page class="com.glodon.page.HomePage"
+		dataSource="com.glodon.data.ExcelData">
+		<field name="gfmButton"
+			byLinkText="企业信息维护系统" type="button" action="click" />
+	</page>
+	<!--企业名称-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--注册地址-省-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--注册地址-市-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--注册地址-区-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--注册地址-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--注册地址邮编-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+		<field name="EnterpriseName"
+			byId="frBaseInfo__M_enterpriseName" type="input" data="建设工程s" />
+		<field name="RegisterAddrP"
+			byId="multiSelector0" type="select" action="click" />
+		<field name="RegisterAddrC"
+			byId="multiSelector1" type="select" action="click" />
+		<field name="RegisterAddrQ"
+			byId="multiSelector2" type="select" action="click" />
+		<field name="RegisterAddr"
+			byId="frBaseInfo__M_address" type="input" data="注册地址啦啦啦啦啦啦啦啦啦" />
+		<field name="RegisterCode"
+			byId="zipCodeId" type="input" data="6876565" />
+		<field name="RegisterDate"
+			byXpath="/html/body/div[2]/div[2]/div[2]/div/form/div[2]/div[2]/div[5]/div/span[1]/span"
+			 type="button" action="click" />
+		<field name="RegisterDate"
+			byId="frBaseInfo__M_bank" type="input" data="中国银行09283928" />
+		<field name="RegisterDate"
+			byId="frBaseInfo__M_account" type="input" data="7686787687609283928" />
+		<field name="RegisterDate"
+			byId="frBaseInfo__M_threeInOne2" type="button" action="click" />
+		<field name="BusinessDirec"
+			byId="frBaseInfo__M_mainBusiness-1" type="button" action="click" />
+		<field name="BusinessDirec"
+			byId="newEntType1" type="button" action="click" />
+	</page>	
+	<!--企业注册时间-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>	
+	<!--开户银行-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--基本账户号-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>	
+	<!--是否为三证合一的营业执照号-是-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>	
+	<!--业务方向-建设工程-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+	<!--企业类型-施工单位-->
+	<page class="com.glodon.page.BasicInformaPage"
+		dataSource="com.glodon.data.ExcelData">
+	</page>
+</pages>

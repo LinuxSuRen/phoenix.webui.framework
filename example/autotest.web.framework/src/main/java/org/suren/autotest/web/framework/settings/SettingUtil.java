@@ -5,17 +5,22 @@ package org.suren.autotest.web.framework.settings;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
@@ -25,6 +30,7 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataFactory;
 import org.suren.autotest.web.framework.data.ExcelData;
 import org.suren.autotest.web.framework.page.Page;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
 
 /**
@@ -38,50 +44,99 @@ import org.suren.autotest.web.framework.util.BeanUtil;
  * 2016年6月24日
  *  
  */
-
 public class SettingUtil {
 	private Map<String, Page> pageMap = new HashMap<String, Page>();
 	private ApplicationContext context;
 	
 	public SettingUtil() {
-		context = new AnnotationConfigApplicationContext("com.glodon");
+		context = new AnnotationConfigApplicationContext("org.suren");
 	}
 	
+	/**
+	 * 从本地文件中读取
+	 * @param filePath
+	 * @throws Exception
+	 */
 	public void read(String filePath) throws Exception {
 		File file = new File(filePath);
+		FileInputStream fis = null;
 		
-		FileInputStream fis = new FileInputStream(file);
+		try {
+			fis = new FileInputStream(file);
+			
+			read(fis);
+		} finally {
+			if(fis != null) {
+				fis.close();
+			}
+		}
+	}
+	
+	/**
+	 * 从类路径下读取配置文件
+	 * @param fileName
+	 * @throws IOException
+	 * @throws DocumentException 
+	 */
+	public void readFromClassPath(String fileName) throws IOException, DocumentException {
+		InputStream inputStream = null;
 		
-		Document document = new SAXReader().read(fis);
+		try {
+			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
+			
+			read(inputStream);
+		} finally {
+			IOUtils.closeQuietly(inputStream);
+		}
+	}
+	
+	/**
+	 * 从流中读取配置文件
+	 * @param inputStream
+	 * @throws DocumentException
+	 */
+	public void read(InputStream inputStream) throws DocumentException {
+		Document document = new SAXReader().read(inputStream);
 		
 		parse(document);
-		
-		fis.close();
 	}
 
 	/**
 	 * @param document
 	 */
 	private void parse(Document doc) {
-		List<Element> pageNodes = doc.selectNodes("/pages/page");
-		if(pageNodes == null || pageNodes.size() == 0) {
-			return;
+		//engine parse progress
+		Element engineEle = (Element) doc.selectSingleNode("/autotest/engine");
+		if(engineEle == null) {
+			throw new RuntimeException("can not found engine config.");
 		}
 		
-		for(Element ele : pageNodes) {
-			String pageClsStr = ele.attributeValue("class");
-			if(pageClsStr == null) {
-				System.err.println("can not found class attribute.");
-				continue;
-			}
-			
-			String dataSrcClsStr = ele.attributeValue("dataSource");
-			
-			try {
-				parse(pageClsStr, dataSrcClsStr, ele);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		String driverStr = engineEle.attributeValue("driver");
+		try {
+			SeleniumEngine seleniumEngine = context.getBean(SeleniumEngine.class);
+			seleniumEngine.setDriverStr(driverStr);
+		} catch (NoSuchBeanDefinitionException e) {
+			e.printStackTrace();
+		}
+		
+		//pages parse progress
+		List<Element> pageNodes = doc.selectNodes("/autotest/pages/page");
+		if(pageNodes != null) {
+			for(Element ele : pageNodes) {
+				String pageClsStr = ele.attributeValue("class");
+				if(pageClsStr == null) {
+					System.err.println("can not found class attribute.");
+					continue;
+				}
+				
+				String dataSrcClsStr = ele.attributeValue("dataSource");
+				
+				try {
+					parse(pageClsStr, dataSrcClsStr, ele);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -186,7 +241,14 @@ public class SettingUtil {
 		return pageMap.get(name);
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Deprecated
 	public <T> T getPage(T type) {
 		return (T) getPage(type.getClass().getName());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getPage(Class<T> type) {
+		return (T) getPage(type.getName());
 	}
 }

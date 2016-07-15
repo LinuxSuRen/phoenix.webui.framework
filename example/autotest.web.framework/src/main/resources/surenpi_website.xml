@@ -1,0 +1,10 @@
+<autotest>
+	<engine driver="chrome">
+	</engine>
+	<pages>
+		<page class="org.suren.autotest.web.framework.surenpi.HomePage"
+			url="http://surenpi.com">
+			<field name="homeBut" byLinkText="素人派" type="button" />
+		</page>
+	</pages>
+</autotest>

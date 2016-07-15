@@ -1,0 +1,14 @@
+<pages>
+	<page class="com.glodon.page.LoginPage"
+		dataSource="com.glodon.data.ExcelData"
+		url="http://localhost:8080/G2">
+		<field name="loginNameText"
+			byId="username" byCss="testCss" byXpath="testXpath" type="input"
+			data="super" />
+		<field name="passwdText"
+			byId="password" byCss="testCss" byXpath="testXpath" type="input"
+			data="super" />
+		<field name="loginButton"
+			byId="btnSumbit" type="button" action="click" />
+	</page>
+</pages>

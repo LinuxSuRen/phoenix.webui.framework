@@ -6,6 +6,7 @@ package org.suren.autotest.web.framework.page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.page.Page;
 
 /**
  * 企业基本信息-安全生产许可证

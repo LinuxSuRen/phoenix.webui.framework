@@ -3,11 +3,8 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
-import java.io.File;
-
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,16 +14,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SeleniumEngine {
+	private String driverStr;
 	private WebDriver driver;
 	
 	public SeleniumEngine() {
-		DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
-	        capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-	        
-        File file = new File("d:/IEDriverServer.exe");  
-        System.setProperty("webdriver.ie.driver", file.getAbsolutePath());
-        
-		driver = new InternetExplorerDriver(capability); 
+//		DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
+//	        capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+//	        
+//        File file = new File("d:/IEDriverServer.exe");  
+//        System.setProperty("webdriver.ie.driver", file.getAbsolutePath());
+//        
+//		driver = new InternetExplorerDriver(capability);
+//		driver = new FirefoxDriver();
+		
+		System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
+		driver = new ChromeDriver();
 	}
 	
 	public void openUrl(String url) {
@@ -39,5 +41,13 @@ public class SeleniumEngine {
 
 	public WebDriver getDriver() {
 		return driver;
+	}
+
+	public String getDriverStr() {
+		return driverStr;
+	}
+
+	public void setDriverStr(String driverStr) {
+		this.driverStr = driverStr;
 	}
 }

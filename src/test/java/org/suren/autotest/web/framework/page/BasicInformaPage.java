@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.page.Page;
 
 /**企业基本信息-基本信息
  * @author zhaoxj

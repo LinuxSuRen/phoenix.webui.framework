@@ -172,9 +172,12 @@ public class SettingUtil {
 				String fieldName = node.attributeValue("name");
 				String type = node.attributeValue("type");
 				String byId = node.attributeValue("byId");
+				String byName = node.attributeValue("byName");
+				String byTagName = node.attributeValue("byTagName");
 				String byXpath = node.attributeValue("byXpath");
 				String byCss = node.attributeValue("byCss");
 				String byLinkText = node.attributeValue("byLinkText");
+				String byPartialLinkText = node.attributeValue("byPartialLinkText");
 				String data = node.attributeValue("data");
 				if(fieldName == null || "".equals(fieldName)) {
 					return;
@@ -207,9 +210,12 @@ public class SettingUtil {
 						
 						if(ele != null) {
 							ele.setId(byId);
+							ele.setName(byName);
+							ele.setTagName(byTagName);
 							ele.setXPath(byXpath);
 							ele.setCSS(byCss);
 							ele.setLinkText(byLinkText);
+							ele.setPartialLinkText(byPartialLinkText);
 						}
 					} else {
 						System.err.println(String.format("page cls [%s], field [%s]", pageClsStr, fieldName));

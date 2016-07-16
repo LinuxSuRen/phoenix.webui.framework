@@ -11,31 +11,48 @@ import org.suren.autotest.web.framework.core.action.SelectAble;
 
 /**
  * 下拉列表
- * @author zhaoxj
+ * 
+ * @author suren
  * @since jdk1.6
- * @since 3.1.1-SNAPSHOT
- * 2016年7月1日
+ * @since 3.1.1-SNAPSHOT 2016年7月1日
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Selector extends AbstractElement {
+public class Selector extends AbstractElement
+{
 	@Autowired
 	private SelectAble selectAble;
-	
+
 	/**
 	 * 根据下拉列表的文本值来选择
+	 * 
 	 * @param text
 	 * @return
 	 */
-	public boolean selectByText(String text) {
+	public boolean selectByText(String text)
+	{
 		return selectAble.selectByText(this, text);
 	}
 
-	public SelectAble getSelectAble() {
+	public SelectAble getSelectAble()
+	{
 		return selectAble;
 	}
 
-	public void setSelectAble(SelectAble selectAble) {
+	public void setSelectAble(SelectAble selectAble)
+	{
 		this.selectAble = selectAble;
+	}
+
+	@Override
+	public boolean isEnabled()
+	{
+		return selectAble.isEnabled(this);
+	}
+
+	@Override
+	public boolean isHidden()
+	{
+		return selectAble.isHidden(this);
 	}
 }

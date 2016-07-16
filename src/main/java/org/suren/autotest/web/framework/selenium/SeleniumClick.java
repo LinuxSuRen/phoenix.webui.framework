@@ -3,44 +3,53 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.ui.Element;
+import org.suren.autotest.web.framework.selenium.strategy.CyleSearchStrategy;
+import org.suren.autotest.web.framework.selenium.strategy.PrioritySearchStrategy;
+import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
 /**
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月29日
+ * 通过Selenium实现点击（单击、双击）
+ * 
+ * @author suren
+ * @since jdk1.6 2016年6月29日
  */
 @Component
-public class SeleniumClick implements ClickAble {
+public class SeleniumClick implements ClickAble
+{
 
 	@Autowired
-	private SeleniumEngine engine;
-	
-	public void click(Element ele) {
-		WebElement webEle = null;
-		WebDriver driver = engine.getDriver();
-		
-		if(ele.getId() != null && !"".equals(ele.getId())) {
-			webEle = driver.findElement(By.id(ele.getId()));
-		} else if(ele.getXPath() != null && !"".equals(ele.getXPath())) {
-			webEle = driver.findElement(By.xpath(ele.getXPath()));
-		} else if(ele.getLinkText() != null && !"".equals(ele.getLinkText())) {
-			webEle = driver.findElement(By.linkText(ele.getLinkText()));
-		}
-		
-		if(webEle != null) {
-			webEle.click();
-		}
+	private SeleniumEngine			engine;
+	@Autowired
+	private PrioritySearchStrategy	prioritySearchStrategy;
+	@Autowired
+	private CyleSearchStrategy		cyleSearchStrategy;
+	@Autowired
+	private ZoneSearchStrategy		zoneSearchStrategy;
+
+	public void click(Element ele)
+	{
+		prioritySearchStrategy.search(ele).click();
 	}
 
-	public void dbClick(Element ele) {
-		engine.getDriver().findElement(By.id(ele.getId())).click();
+	public void dbClick(Element ele)
+	{
+		Actions actions = new Actions(engine.getDriver());
+		actions.doubleClick(prioritySearchStrategy.search(ele));
+	}
+
+	public boolean isEnabled(Element element)
+	{
+		return prioritySearchStrategy.search(element).isEnabled();
+	}
+
+	public boolean isHidden(Element element)
+	{
+		return !prioritySearchStrategy.search(element).isDisplayed();
 	}
 
 }

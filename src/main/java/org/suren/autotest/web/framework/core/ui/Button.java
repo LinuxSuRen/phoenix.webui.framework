@@ -11,28 +11,44 @@ import org.suren.autotest.web.framework.core.action.ClickAble;
 
 /**
  * 代表HTML页面中的按钮，即在xml配置文件中type值为button的元素
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月29日
+ * 
+ * @author suren
+ * @since jdk1.6 2016年6月29日
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Button extends AbstractElement {
+public class Button extends AbstractElement
+{
 	@Autowired
 	private ClickAble clickAble;
-	
+
 	/**
 	 * 触发单击事件
 	 */
-	public void click() {
+	public void click()
+	{
 		clickAble.click(this);
 	}
 
-	public ClickAble getClickAble() {
+	public ClickAble getClickAble()
+	{
 		return clickAble;
 	}
 
-	public void setClickAble(ClickAble clickAble) {
+	public void setClickAble(ClickAble clickAble)
+	{
 		this.clickAble = clickAble;
+	}
+
+	@Override
+	public boolean isEnabled()
+	{
+		return clickAble.isEnabled(this);
+	}
+
+	@Override
+	public boolean isHidden()
+	{
+		return clickAble.isHidden(this);
 	}
 }

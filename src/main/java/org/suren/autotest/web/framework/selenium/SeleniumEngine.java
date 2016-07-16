@@ -8,46 +8,55 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
 
 /**
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月29日
+ * @author suren
+ * @since jdk1.6 2016年6月29日
  */
 @Component
-public class SeleniumEngine {
-	private String driverStr;
-	private WebDriver driver;
-	
-	public SeleniumEngine() {
-//		DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
-//	        capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-//	        
-//        File file = new File("d:/IEDriverServer.exe");  
-//        System.setProperty("webdriver.ie.driver", file.getAbsolutePath());
-//        
-//		driver = new InternetExplorerDriver(capability);
-//		driver = new FirefoxDriver();
-		
-		System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
+public class SeleniumEngine
+{
+	private String		driverStr;
+	private WebDriver	driver;
+
+	public SeleniumEngine()
+	{
+		// DesiredCapabilities capability =
+		// DesiredCapabilities.internetExplorer();
+		// capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,
+		// true);
+		//
+		// File file = new File("d:/IEDriverServer.exe");
+		// System.setProperty("webdriver.ie.driver", file.getAbsolutePath());
+		//
+		// driver = new InternetExplorerDriver(capability);
+		// driver = new FirefoxDriver();
+
+		System.setProperty("webdriver.chrome.driver",
+				"/usr/lib/chromium-browser/chromedriver");
 		driver = new ChromeDriver();
 	}
-	
-	public void openUrl(String url) {
+
+	public void openUrl(String url)
+	{
 		driver.get(url);
 	}
-	
-	public void close() {
+
+	public void close()
+	{
 		driver.close();
 	}
 
-	public WebDriver getDriver() {
+	public WebDriver getDriver()
+	{
 		return driver;
 	}
 
-	public String getDriverStr() {
+	public String getDriverStr()
+	{
 		return driverStr;
 	}
 
-	public void setDriverStr(String driverStr) {
+	public void setDriverStr(String driverStr)
+	{
 		this.driverStr = driverStr;
 	}
 }

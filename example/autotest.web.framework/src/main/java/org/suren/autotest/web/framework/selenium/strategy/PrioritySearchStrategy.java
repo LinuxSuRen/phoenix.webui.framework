@@ -1,5 +1,7 @@
 package org.suren.autotest.web.framework.selenium.strategy;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,38 +21,70 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * <li>通过超链接部分文本查找</li>
  * <li>根据标签名称来查找</li>
  * </ul>
+ * 
  * @see CyleSearchStrategy
  * @see ZoneSearchStrategy
  * @author suren
  * @date Jul 16, 2016 6:45:44 PM
  */
 @Component
-public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement> {
+public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
+{
 
 	@Autowired
 	private SeleniumEngine engine;
-	
-	public WebElement search(Element element) {
+
+	public WebElement search(Element element)
+	{
 		By by = null;
-		
-		if(StringUtils.isNotBlank(element.getId())) {
+
+		if (StringUtils.isNotBlank(element.getId()))
+		{
 			by = By.id(element.getId());
-		} else if(StringUtils.isNoneBlank(element.getCSS())) {
-			by = By.className(element.getCSS());
-		} else if(StringUtils.isNotBlank(element.getXPath())) {
+		}
+		else if (StringUtils.isNoneBlank(element.getCSS()))
+		{
+			String css = element.getCSS();
+			String[] cssArray = css.split(" ");
+			by = By.className(cssArray[0]);
+			List<WebElement> elementList = findElements(by);
+			for(WebElement ele : elementList)
+			{
+				if(css.equals(ele.getAttribute("class")))
+				{
+					return ele;
+				}
+			}
+			
+			return null;
+		}
+		else if (StringUtils.isNotBlank(element.getXPath()))
+		{
 			by = By.xpath(element.getXPath());
-		} else if(StringUtils.isNotBlank(element.getLinkText())) {
+		}
+		else if (StringUtils.isNotBlank(element.getLinkText()))
+		{
 			by = By.linkText(element.getLinkText());
-		} else if(StringUtils.isNoneBlank(element.getPartialLinkText())) {
+		}
+		else if (StringUtils.isNoneBlank(element.getPartialLinkText()))
+		{
 			by = By.partialLinkText(element.getPartialLinkText());
-		} else if(StringUtils.isNotBlank(element.getTagName())) {
+		}
+		else if (StringUtils.isNotBlank(element.getTagName()))
+		{
 			by = By.tagName(element.getTagName());
 		}
-		
+
 		return findElement(by);
 	}
 
-	private WebElement findElement(By by) {
+	private WebElement findElement(By by)
+	{
 		return engine.getDriver().findElement(by);
+	}
+
+	private List<WebElement> findElements(By by)
+	{
+		return engine.getDriver().findElements(by);
 	}
 }

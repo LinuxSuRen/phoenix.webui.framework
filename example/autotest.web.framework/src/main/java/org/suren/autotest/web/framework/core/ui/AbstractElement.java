@@ -4,7 +4,8 @@
 package org.suren.autotest.web.framework.core.ui;
 
 /**
- * 所有HTML页面元素的抽象，包含了元素的id、name、css、xpath、linktext等属性
+ * 所有HTML页面元素的抽象，
+ * 包含了元素的id、name、tagName、css、xpath、linktext、partialLinkText等属性
  * @author zhaoxj
  * @since jdk1.6
  * 2016年6月30日
@@ -12,9 +13,11 @@ package org.suren.autotest.web.framework.core.ui;
 public class AbstractElement implements Element{
 	private String id;
 	private String name;
+	private String tagName;
 	private String CSS;
 	private String XPath;
 	private String linkText;
+	private String partialLinkText;
 	public String getId() {
 		return id;
 	}
@@ -26,6 +29,12 @@ public class AbstractElement implements Element{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getTagName() {
+		return tagName;
+	}
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
 	public String getCSS() {
 		return CSS;
@@ -44,5 +53,11 @@ public class AbstractElement implements Element{
 	}
 	public void setLinkText(String linkText) {
 		this.linkText = linkText;
+	}
+	public String getPartialLinkText() {
+		return partialLinkText;
+	}
+	public void setPartialLinkText(String partialLinkText) {
+		this.partialLinkText = partialLinkText;
 	}
 }

@@ -11,7 +11,15 @@ package org.suren.autotest.web.framework.core.ui;
 public interface Element {
 	String getId();
 	String getName();
+	String getTagName();
 	String getCSS();
 	String getXPath();
+	/**
+	 * @return 超链接文本
+	 */
 	String getLinkText();
+	/**
+	 * @return 超链接部分文本
+	 */
+	String getPartialLinkText();
 }

@@ -4,9 +4,9 @@
 package org.suren.autotest.web.framework.core.ui;
 
 /**
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月30日
+ * @author suren
+ * @date Jul 16, 2016 7:47:19 PM
  */
-public interface FindElement {
+public interface FindElement
+{
 }

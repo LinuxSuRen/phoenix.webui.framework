@@ -4,22 +4,36 @@
 package org.suren.autotest.web.framework.core.ui;
 
 /**
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月30日
+ * @author suren
+ * @since jdk1.6 2016年6月30日
  */
-public interface Element {
+public interface Element
+{
 	String getId();
+
 	String getName();
+
 	String getTagName();
+
+	/**
+	 * @return 元素的class值
+	 */
 	String getCSS();
+
 	String getXPath();
+
 	/**
 	 * @return 超链接文本
 	 */
 	String getLinkText();
+
 	/**
 	 * @return 超链接部分文本
 	 */
 	String getPartialLinkText();
+
+	/**
+	 * @return 元素查找策略
+	 */
+	String getStrategy();
 }

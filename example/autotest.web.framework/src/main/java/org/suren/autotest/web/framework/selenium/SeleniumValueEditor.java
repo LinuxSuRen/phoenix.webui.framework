@@ -3,33 +3,52 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
-import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.core.ui.Element;
+import org.suren.autotest.web.framework.selenium.strategy.CyleSearchStrategy;
+import org.suren.autotest.web.framework.selenium.strategy.PrioritySearchStrategy;
+import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
 /**
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月29日
+ * @author suren
+ * @since jdk1.6 2016年6月29日
  */
 @Component
-public class SeleniumValueEditor implements ValueEditor {
-
+public class SeleniumValueEditor implements ValueEditor
+{
+	
 	@Autowired
-	private SeleniumEngine engine;
+	private PrioritySearchStrategy	prioritySearchStrategy;
+	@Autowired
+	private CyleSearchStrategy		cyleSearchStrategy;
+	@Autowired
+	private ZoneSearchStrategy		zoneSearchStrategy;
 
-	public Object getValue(Element ele) {
-		return engine.getDriver().findElement(By.id(ele.getId())).getText();
+	public Object getValue(Element ele)
+	{
+		return prioritySearchStrategy.search(ele).getText();
 	}
 
-	public void setValue(Element ele, Object value) {
-		if(value == null) {
-			throw new IllegalArgumentException("value can not be null.");
+	public void setValue(Element ele, Object value)
+	{
+		if (value == null)
+		{
+			value = "";
 		}
-		
-		engine.getDriver().findElement(By.id(ele.getId())).sendKeys(value.toString());
+
+		prioritySearchStrategy.search(ele).sendKeys(value.toString());
+	}
+
+	public boolean isEnabled(Element element)
+	{
+		return prioritySearchStrategy.search(element).isEnabled();
+	}
+
+	public boolean isHidden(Element element)
+	{
+		return !prioritySearchStrategy.search(element).isDisplayed();
 	}
 
 }

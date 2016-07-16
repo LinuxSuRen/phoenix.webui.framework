@@ -12,49 +12,77 @@ import org.suren.autotest.web.framework.core.action.ValueEditor;
 
 /**
  * 文本框封装
- * @author zhaoxj
- * @since jdk1.6
- * 2016年6月29日
+ * 
+ * @author suren
+ * @since jdk1.6 2016年6月29日
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Text extends AbstractElement {
-	private String value;
-	
+public class Text extends AbstractElement
+{
+	private String		value;
+
 	@Autowired
-	private ValueEditor valueEditor;
+	private ValueEditor	valueEditor;
 	@Autowired
-	private ClickAble clickAble;
-	
-	public Text(){}
-	
-	public Text(String value) {
+	private ClickAble	clickAble;
+
+	public Text()
+	{
+	}
+
+	public Text(String value)
+	{
 		this.value = value;
 	}
-	
+
 	/**
 	 * 自动填充数据，不用关系数据来源
 	 */
-	public void fillValue() {
+	public void fillValue()
+	{
 		valueEditor.setValue(this, value);
 	}
-	
-	public String getValue() {
+
+	public String getValue()
+	{
 		return value;
 	}
-	public void setValue(String value) {
+
+	public void setValue(String value)
+	{
 		this.value = value;
 	}
-	public ValueEditor getValueEditor() {
+
+	public ValueEditor getValueEditor()
+	{
 		return valueEditor;
 	}
-	public void setValueEditor(ValueEditor valueEditor) {
+
+	public void setValueEditor(ValueEditor valueEditor)
+	{
 		this.valueEditor = valueEditor;
 	}
-	public ClickAble getClickAble() {
+
+	public ClickAble getClickAble()
+	{
 		return clickAble;
 	}
-	public void setClickAble(ClickAble clickAble) {
+
+	public void setClickAble(ClickAble clickAble)
+	{
 		this.clickAble = clickAble;
+	}
+
+	@Override
+	public boolean isEnabled()
+	{
+		return valueEditor.isEnabled(this);
+	}
+
+	@Override
+	public boolean isHidden()
+	{
+		return valueEditor.isHidden(this);
 	}
 }

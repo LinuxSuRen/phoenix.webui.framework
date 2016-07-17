@@ -1,0 +1,13 @@
+<autotest>
+	<engine driver="chrome">
+	</engine>
+	<pages>
+		<page class="org.suren.autotest.web.framework.baidu.BaiduHomePage"
+			url="https://www.baidu.com/s?wd=surenpi">
+			<field name="toLoginBut" byName="tj_login" type="button" />
+			<field name="loginBut" byId="TANGRAM__PSP_8__submit" type="button" />
+			<field name="userNameText" byId="TANGRAM__PSP_8__userName" byName="username" type="text" strategy="priority" />
+			<field name="passwdText" byName="password" type="text" />
+		</page>
+	</pages>
+</autotest>

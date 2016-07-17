@@ -15,7 +15,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * @author suren
  * @date Jul 16, 2016 7:27:09 PM
  */
-@Component
+@Component("zoneSearchStrategy")
 public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 {
 

@@ -3,13 +3,12 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.selenium.strategy.CyleSearchStrategy;
-import org.suren.autotest.web.framework.selenium.strategy.PrioritySearchStrategy;
-import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
+import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**
  * @author suren
@@ -18,17 +17,13 @@ import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 @Component
 public class SeleniumValueEditor implements ValueEditor
 {
-	
+
 	@Autowired
-	private PrioritySearchStrategy	prioritySearchStrategy;
-	@Autowired
-	private CyleSearchStrategy		cyleSearchStrategy;
-	@Autowired
-	private ZoneSearchStrategy		zoneSearchStrategy;
+	private SearchStrategyUtils		searchStrategyUtils;
 
 	public Object getValue(Element ele)
 	{
-		return prioritySearchStrategy.search(ele).getText();
+		return searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).getText();
 	}
 
 	public void setValue(Element ele, Object value)
@@ -38,17 +33,17 @@ public class SeleniumValueEditor implements ValueEditor
 			value = "";
 		}
 
-		prioritySearchStrategy.search(ele).sendKeys(value.toString());
+		searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).sendKeys(value.toString());
 	}
 
 	public boolean isEnabled(Element element)
 	{
-		return prioritySearchStrategy.search(element).isEnabled();
+		return searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isEnabled();
 	}
 
 	public boolean isHidden(Element element)
 	{
-		return !prioritySearchStrategy.search(element).isDisplayed();
+		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();
 	}
 
 }

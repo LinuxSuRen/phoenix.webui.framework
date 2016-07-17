@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.SelectAble;
 import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.selenium.strategy.CyleSearchStrategy;
-import org.suren.autotest.web.framework.selenium.strategy.PrioritySearchStrategy;
-import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
+import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**
  * @author suren
@@ -25,11 +23,7 @@ public class SeleniumSelect implements SelectAble
 {
 
 	@Autowired
-	private PrioritySearchStrategy	prioritySearchStrategy;
-	@Autowired
-	private CyleSearchStrategy		cyleSearchStrategy;
-	@Autowired
-	private ZoneSearchStrategy		zoneSearchStrategy;
+	private SearchStrategyUtils		searchStrategyUtils;
 
 	public boolean selectByText(Element element, String text)
 	{
@@ -157,17 +151,17 @@ public class SeleniumSelect implements SelectAble
 
 	public boolean isEnabled(Element element)
 	{
-		return prioritySearchStrategy.search(element).isEnabled();
+		return searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isEnabled();
 	}
 
 	public boolean isHidden(Element element)
 	{
-		return !prioritySearchStrategy.search(element).isDisplayed();
+		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();
 	}
 	
 	private Select createSelect(Element element)
 	{
-		WebElement webEle = prioritySearchStrategy.search(element);
+		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
 		if (webEle != null)
 		{
 			return new Select(webEle);

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +30,7 @@ import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataFactory;
+import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.data.ExcelData;
 import org.suren.autotest.web.framework.page.Page;
@@ -42,8 +44,9 @@ import org.suren.autotest.web.framework.util.BeanUtil;
  */
 public class SettingUtil
 {
-	private Map<String, Page>	pageMap	= new HashMap<String, Page>();
-	private ApplicationContext	context;
+	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
+	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
+	private ApplicationContext			context;
 
 	public SettingUtil()
 	{
@@ -123,7 +126,22 @@ public class SettingUtil
 			Page page = pageMap.get(pageKey);
 			
 			String dataSourceStr = page.getDataSource();
-			DataSource dataSource = context.getBean(dataSourceStr, DataSource.class);
+			final DataSourceInfo dataSourceInfo = dataSourceMap.get(dataSourceStr);
+			if(dataSourceInfo == null)
+			{
+				continue;
+			}
+			
+			DataSource dataSource = context.getBean(dataSourceInfo.getType(), DataSource.class);
+			
+			dataSource.loadData(new DataResource()
+			{
+
+				public URL getUrl()
+				{
+					return SettingUtil.class.getClassLoader().getResource(dataSourceInfo.getResource());
+				}
+			}, page);
 		}
 	}
 
@@ -202,6 +220,20 @@ public class SettingUtil
 				}
 			}
 		}
+		
+		//parse datasources
+		List<Element> dataSourceNodes = doc.selectNodes("/autotest/dataSources/dataSource");
+		if(dataSourceNodes != null)
+		{
+			for(Element ele : dataSourceNodes)
+			{
+				String name = ele.attributeValue("name");
+				String type = ele.attributeValue("type");
+				String resource = ele.attributeValue("resource");
+				
+				dataSourceMap.put(name, new DataSourceInfo(type, resource));
+			}
+		}
 	}
 
 	/**
@@ -216,14 +248,14 @@ public class SettingUtil
 	{
 		final Class<?> pageCls = Class.forName(pageClsStr);
 		final Object pageInstance = context.getBean(pageCls);
-		final ExcelData excelData = (ExcelData) DataFactory
-				.getData(dataSrcClsStr);
 
 		String url = ele.attributeValue("url");
 		if (url != null)
 		{
 			BeanUtil.set(pageInstance, "url", url);
 		}
+		
+		BeanUtil.set(pageInstance, "dataSource", dataSrcClsStr);
 
 		ele.accept(new VisitorSupport()
 		{
@@ -359,5 +391,32 @@ public class SettingUtil
 	public <T> T getPage(Class<T> type)
 	{
 		return (T) getPage(type.getName());
+	}
+	
+	class DataSourceInfo
+	{
+		private String type;
+		private String resource;
+		public DataSourceInfo(String type, String resource)
+		{
+			this.type = type;
+			this.resource = resource;
+		}
+		public String getType()
+		{
+			return type;
+		}
+		public void setType(String type)
+		{
+			this.type = type;
+		}
+		public String getResource()
+		{
+			return resource;
+		}
+		public void setResource(String resource)
+		{
+			this.resource = resource;
+		}
 	}
 }

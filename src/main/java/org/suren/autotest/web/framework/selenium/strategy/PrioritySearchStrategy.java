@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
@@ -27,7 +29,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * @author suren
  * @date Jul 16, 2016 6:45:44 PM
  */
-@Component
+@Component("prioritySearchStrategy")
 public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 {
 
@@ -58,6 +60,10 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			
 			return null;
 		}
+		else if(StringUtils.isNotBlank(element.getName()))
+		{
+			by = By.name(element.getName());
+		}
 		else if (StringUtils.isNotBlank(element.getXPath()))
 		{
 			by = By.xpath(element.getXPath());
@@ -80,6 +86,8 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 
 	private WebElement findElement(By by)
 	{
+		WebDriverWait wait = new WebDriverWait(engine.getDriver(), 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		return engine.getDriver().findElement(by);
 	}
 

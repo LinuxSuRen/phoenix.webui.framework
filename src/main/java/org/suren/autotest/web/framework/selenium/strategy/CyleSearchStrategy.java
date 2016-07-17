@@ -21,7 +21,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * @author suren
  * @date Jul 16, 2016 7:20:54 PM
  */
-@Component
+@Component("cyleSearchStrategy")
 public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 {
 

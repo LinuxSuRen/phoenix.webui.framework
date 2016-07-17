@@ -18,13 +18,13 @@ public class SuRenPiTest {
 			homePage.open();
 			homePage.getHomeBut().click();
 			
-			homePage.getArchivesSelector().selectByText(" 2015年五月  (15)");
-			
-			for(int i = 0; i < 8; i++) {
+			for(int i = 0; i < 18; i++) {
 				homePage.getNextBut().click();
 				
 				Thread.sleep(1000);
 			}
+			
+			homePage.getArchivesSelector().selectByText(" 2015年五月  (15)");
 			
 			Thread.sleep(3000);
 			

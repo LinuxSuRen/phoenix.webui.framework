@@ -6,7 +6,7 @@
 			url="http://surenpi.com">
 			<field name="homeBut" byLinkText="素人派" type="button" />
 			<field name="archivesSelector" byId="archives-dropdown-2" type="select" />
-			<field name="nextBut" byLinkText="下一个 →" type="button" />
+			<field name="nextBut" byLinkText="下一个 →" byCss="next page-numbers" type="button" />
 		</page>
 	</pages>
 </autotest>

@@ -4,6 +4,7 @@
 package org.suren.autotest.web.framework.data;
 
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.page.Page;
 
 /**
  * @author suren
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Component;
 public class ExcelDataSource implements DataSource
 {
 
-	/* (non-Javadoc)
-	 * @see org.suren.autotest.web.framework.data.DataSource#loadData(org.suren.autotest.web.framework.data.DataResource)
-	 */
-	public boolean loadData(DataResource resource)
+	public boolean loadData(DataResource resource, Page page)
 	{
 		// TODO Auto-generated method stub
 		return false;

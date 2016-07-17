@@ -10,6 +10,7 @@ public class BaiduTest {
 		
 		try {
 			util.readFromClassPath("baidu_website.xml");
+			util.initData();
 			
 			BaiduHomePage homePage = util.getPage(BaiduHomePage.class);
 			
@@ -17,9 +18,7 @@ public class BaiduTest {
 			
 			homePage.getToLoginBut().click();
 			
-			homePage.getUserNameText().setValue("zxjlwt");
 			homePage.getUserNameText().fillValue();
-			homePage.getPasswdText().setValue("zhaoxiaojie");
 			homePage.getPasswdText().fillValue();
 			homePage.getLoginBut().click();
 			

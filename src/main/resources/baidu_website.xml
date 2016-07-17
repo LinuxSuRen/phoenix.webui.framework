@@ -12,6 +12,7 @@
 		</page>
 	</pages>
 	<dataSources>
-		<dataSource name="xmlDataSource" type="xml_data_source"></dataSource>
+		<dataSource name="xmlDataSource" type="xml_data_source"
+			resource="dataSource/baidu_website_datasource.xml"></dataSource>
 	</dataSources>
 </autotest>

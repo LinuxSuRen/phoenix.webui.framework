@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,112 +29,162 @@ import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataFactory;
+import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.data.ExcelData;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
 
 /**
- * 
- * 此处填写类简介
- * <p>
- * 此处填写类说明
- * </p>
- * @author sunyp
- * @since jdk1.6
- * 2016年6月24日
- *  
+ * 页面（page）以及数据配置加载
+ * @author suren
+ * @date Jul 17, 2016 9:01:51 AM
  */
-public class SettingUtil {
-	private Map<String, Page> pageMap = new HashMap<String, Page>();
-	private ApplicationContext context;
-	
-	public SettingUtil() {
+public class SettingUtil
+{
+	private Map<String, Page>	pageMap	= new HashMap<String, Page>();
+	private ApplicationContext	context;
+
+	public SettingUtil()
+	{
 		context = new AnnotationConfigApplicationContext("org.suren");
 	}
-	
+
 	/**
 	 * 从本地文件中读取
+	 * 
 	 * @param filePath
 	 * @throws Exception
 	 */
-	public void read(String filePath) throws Exception {
+	public void read(String filePath) throws Exception
+	{
 		File file = new File(filePath);
 		FileInputStream fis = null;
-		
-		try {
+
+		try
+		{
 			fis = new FileInputStream(file);
-			
+
 			read(fis);
-		} finally {
-			if(fis != null) {
+		}
+		finally
+		{
+			if (fis != null)
+			{
 				fis.close();
 			}
 		}
 	}
-	
+
 	/**
 	 * 从类路径下读取配置文件
+	 * 
 	 * @param fileName
 	 * @throws IOException
-	 * @throws DocumentException 
+	 * @throws DocumentException
 	 */
-	public void readFromClassPath(String fileName) throws IOException, DocumentException {
+	public void readFromClassPath(String fileName)
+			throws IOException, DocumentException
+	{
 		InputStream inputStream = null;
-		
-		try {
-			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
-			
+
+		try
+		{
+			inputStream = this.getClass().getClassLoader()
+					.getResourceAsStream(fileName);
+
 			read(inputStream);
-		} finally {
+		}
+		finally
+		{
 			IOUtils.closeQuietly(inputStream);
 		}
 	}
-	
+
 	/**
 	 * 从流中读取配置文件
+	 * 
 	 * @param inputStream
 	 * @throws DocumentException
 	 */
-	public void read(InputStream inputStream) throws DocumentException {
+	public void read(InputStream inputStream) throws DocumentException
+	{
 		Document document = new SAXReader().read(inputStream);
-		
+
 		parse(document);
+	}
+
+	public void initData()
+	{
+		Iterator<String> pageIterator = pageMap.keySet().iterator();
+		while(pageIterator.hasNext())
+		{
+			String pageKey = pageIterator.next();
+			Page page = pageMap.get(pageKey);
+			
+			String dataSourceStr = page.getDataSource();
+			DataSource dataSource = context.getBean(dataSourceStr, DataSource.class);
+		}
 	}
 
 	/**
 	 * @param document
 	 */
-	private void parse(Document doc) {
-		//engine parse progress
+	private void parse(Document doc)
+	{
+		// engine parse progress
 		Element engineEle = (Element) doc.selectSingleNode("/autotest/engine");
-		if(engineEle == null) {
+		if (engineEle == null)
+		{
 			throw new RuntimeException("can not found engine config.");
 		}
-		
+
 		String driverStr = engineEle.attributeValue("driver");
-		try {
-			SeleniumEngine seleniumEngine = context.getBean(SeleniumEngine.class);
+		String timeOutStr = engineEle.attributeValue("timeout");
+		try
+		{
+			SeleniumEngine seleniumEngine = context
+					.getBean(SeleniumEngine.class);
 			seleniumEngine.setDriverStr(driverStr);
-		} catch (NoSuchBeanDefinitionException e) {
+			
+			try
+			{
+				seleniumEngine.setTimeout(Long.parseLong(timeOutStr));
+			}
+			catch(NumberFormatException e)
+			{
+				seleniumEngine.setTimeout(5);
+			}
+			
+			seleniumEngine.init();
+		}
+		catch (NoSuchBeanDefinitionException e)
+		{
 			e.printStackTrace();
 		}
-		
-		//pages parse progress
+
+		// pages parse progress
+		@SuppressWarnings("unchecked")
 		List<Element> pageNodes = doc.selectNodes("/autotest/pages/page");
-		if(pageNodes != null) {
-			for(Element ele : pageNodes) {
+		if (pageNodes != null)
+		{
+			for (Element ele : pageNodes)
+			{
 				String pageClsStr = ele.attributeValue("class");
-				if(pageClsStr == null) {
+				if (pageClsStr == null)
+				{
 					System.err.println("can not found class attribute.");
 					continue;
 				}
-				
+
 				String dataSrcClsStr = ele.attributeValue("dataSource");
-				
-				try {
+
+				try
+				{
 					parse(pageClsStr, dataSrcClsStr, ele);
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -143,32 +194,41 @@ public class SettingUtil {
 
 	/**
 	 * TODO
+	 * 
 	 * @param pageClsStr
 	 * @param dataSrcClsStr
 	 * @param ele
 	 */
-	private void parse(final String pageClsStr, String dataSrcClsStr, Element ele) throws Exception {
+	private void parse(final String pageClsStr, String dataSrcClsStr,
+			Element ele) throws Exception
+	{
 		final Class<?> pageCls = Class.forName(pageClsStr);
 		final Object pageInstance = context.getBean(pageCls);
-		final ExcelData excelData = (ExcelData) DataFactory.getData(dataSrcClsStr);
-		
+		final ExcelData excelData = (ExcelData) DataFactory
+				.getData(dataSrcClsStr);
+
 		String url = ele.attributeValue("url");
-		if(url != null) {
+		if (url != null)
+		{
 			BeanUtil.set(pageInstance, "url", url);
 		}
-		
-		ele.accept(new VisitorSupport() {
 
-			/** 
-			  * {@inheritDoc}   
-			  * @see org.dom4j.VisitorSupport#visit(org.dom4j.Element) 
-			  */
+		ele.accept(new VisitorSupport()
+		{
+
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.dom4j.VisitorSupport#visit(org.dom4j.Element)
+			 */
 			@Override
-			public void visit(Element node) {
-				if(!"field".equals(node.getName())) {
+			public void visit(Element node)
+			{
+				if (!"field".equals(node.getName()))
+				{
 					return;
 				}
-				
+
 				String fieldName = node.attributeValue("name");
 				String type = node.attributeValue("type");
 				String byId = node.attributeValue("byId");
@@ -177,38 +237,53 @@ public class SettingUtil {
 				String byXpath = node.attributeValue("byXpath");
 				String byCss = node.attributeValue("byCss");
 				String byLinkText = node.attributeValue("byLinkText");
-				String byPartialLinkText = node.attributeValue("byPartialLinkText");
+				String byPartialLinkText = node
+						.attributeValue("byPartialLinkText");
 				String data = node.attributeValue("data");
-				if(fieldName == null || "".equals(fieldName)) {
+				if (fieldName == null || "".equals(fieldName))
+				{
 					return;
 				}
-				
+
 				AbstractElement ele = null;
-				try {
+				try
+				{
 					Method getterMethod = BeanUtils.findMethod(pageCls,
-							"get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
-					if(getterMethod != null) {
-						ele = (AbstractElement) getterMethod.invoke(pageInstance);
-						
-						if(ele == null) {
-							System.err.println(String.format("element [%s] is null, maybe you not set autowired.", fieldName));
+							"get" + fieldName.substring(0, 1).toUpperCase()
+									+ fieldName.substring(1));
+					if (getterMethod != null)
+					{
+						ele = (AbstractElement) getterMethod
+								.invoke(pageInstance);
+
+						if (ele == null)
+						{
+							System.err.println(String.format(
+									"element [%s] is null, maybe you not set autowired.",
+									fieldName));
 							return;
 						}
-						
-						if("button".equals(type)) {
+
+						if ("button".equals(type))
+						{
 							Button button = (Button) ele;
-							
+
 							ele = button;
-						} else if("input".equals(type)) {
+						}
+						else if ("input".equals(type))
+						{
 							Text text = (Text) ele;
 							text.setValue(data);
-							
+
 							ele = text;
-						} else if("select".equals(type)) {
+						}
+						else if ("select".equals(type))
+						{
 							Selector selector = (Selector) ele;
 						}
-						
-						if(ele != null) {
+
+						if (ele != null)
+						{
 							ele.setId(byId);
 							ele.setName(byName);
 							ele.setTagName(byTagName);
@@ -217,44 +292,60 @@ public class SettingUtil {
 							ele.setLinkText(byLinkText);
 							ele.setPartialLinkText(byPartialLinkText);
 						}
-					} else {
-						System.err.println(String.format("page cls [%s], field [%s]", pageClsStr, fieldName));
 					}
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ClassCastException e) {
-					e.printStackTrace();
-					System.err.println(String.format("fieldName [%s]", fieldName));
+					else
+					{
+						System.err.println(
+								String.format("page cls [%s], field [%s]",
+										pageClsStr, fieldName));
+					}
 				}
-				
-//				Object fieldValue = excelData.getValue(fieldName);
-//				
-//				BeanUtil.set(pageInstance, fieldName, fieldValue);
+				catch (IllegalAccessException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IllegalArgumentException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (InvocationTargetException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (ClassCastException e)
+				{
+					e.printStackTrace();
+					System.err.println(
+							String.format("fieldName [%s]", fieldName));
+				}
+
+				// Object fieldValue = excelData.getValue(fieldName);
+				//
+				// BeanUtil.set(pageInstance, fieldName, fieldValue);
 			}
 		});
-		
+
 		pageMap.put(pageClsStr, (Page) pageInstance);
 	}
-	
-	public Object getPage(String name) {
+
+	public Object getPage(String name)
+	{
 		return pageMap.get(name);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Deprecated
-	public <T> T getPage(T type) {
+	public <T> T getPage(T type)
+	{
 		return (T) getPage(type.getClass().getName());
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public <T> T getPage(Class<T> type) {
+	public <T> T getPage(Class<T> type)
+	{
 		return (T) getPage(type.getName());
 	}
 }

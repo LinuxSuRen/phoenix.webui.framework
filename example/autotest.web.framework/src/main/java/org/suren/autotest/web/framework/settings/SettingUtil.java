@@ -141,6 +141,9 @@ public class SettingUtil
 
 		String driverStr = engineEle.attributeValue("driver");
 		String timeOutStr = engineEle.attributeValue("timeout");
+		String fullScreenStr = engineEle.attributeValue("fullScreen");
+		String widthStr = engineEle.attributeValue("width");
+		String heightStr = engineEle.attributeValue("height");
 		try
 		{
 			SeleniumEngine seleniumEngine = context
@@ -155,6 +158,15 @@ public class SettingUtil
 			{
 				seleniumEngine.setTimeout(5);
 			}
+			
+			try
+			{
+				seleniumEngine.setWidth(Integer.parseInt(widthStr));
+				seleniumEngine.setHeight(Integer.parseInt(heightStr));
+			}
+			catch(NumberFormatException e){}
+			
+			seleniumEngine.setFullScreen(Boolean.parseBoolean(fullScreenStr));
 			
 			seleniumEngine.init();
 		}

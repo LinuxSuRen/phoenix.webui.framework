@@ -1,5 +1,5 @@
 <autotest>
-	<engine driver="chrome">
+	<engine driver="chrome" timeout="30" fullScreen="true" width="1286" height="768">
 	</engine>
 	<pages>
 		<page class="org.suren.autotest.web.framework.surenpi.HomePage"

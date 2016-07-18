@@ -1,8 +1,0 @@
-<dataSources>
-	<dataSource pageClass="org.suren.autotest.web.framework.baidu.BaiduHomePage">
-		<page>
-			<field name="userNameText" data="zxjlwt" />
-			<field name="passwdText" data="suren" />
-		</page>
-	</dataSource>
-</dataSources>

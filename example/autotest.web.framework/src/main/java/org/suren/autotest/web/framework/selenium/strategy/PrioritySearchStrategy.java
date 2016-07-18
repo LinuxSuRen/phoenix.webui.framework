@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			List<WebElement> elementList = findElements(by);
 			for(WebElement ele : elementList)
 			{
+				new Actions(engine.getDriver()).moveToElement(ele);
 				if(css.equals(ele.getAttribute("class")))
 				{
 					return ele;

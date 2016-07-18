@@ -3,8 +3,11 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -49,13 +52,16 @@ public class SeleniumEngine
 		{
 			ClassLoader classLoader = this.getClass().getClassLoader();
 			inputStream = classLoader.getResourceAsStream("engine.properties");
-			Properties enginePro = new Properties();
-			
-			loadDefaultEnginePath(classLoader, enginePro);
-			
-			enginePro.load(inputStream);
-			
-			System.getProperties().putAll(enginePro);
+			if(inputStream != null)
+			{
+				Properties enginePro = new Properties();
+				
+				loadDefaultEnginePath(classLoader, enginePro);
+				
+				enginePro.load(inputStream);
+				
+				System.getProperties().putAll(enginePro);
+			}
 		}
 		catch (IOException e)
 		{
@@ -118,23 +124,58 @@ public class SeleniumEngine
 	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro) {
 		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
 		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
+
+		enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
+		enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
+	}
+	
+	private String getLocalFilePath(URL url)
+	{
+		if(url == null)
+		{
+			return "";
+		}
 		
-		if(ieDriverURL != null)
+		File driverFile = null;
+		if("jar".equals(url.getProtocol()))
+		{
+			InputStream inputStream = null;
+			OutputStream output = null;
+			try
+			{
+				inputStream = url.openStream();
+				
+				driverFile = File.createTempFile("org", "suren");
+				
+				output = new FileOutputStream(driverFile);
+				IOUtils.copy(inputStream, output);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				IOUtils.closeQuietly(inputStream);
+				IOUtils.closeQuietly(output);
+			}
+		}
+		else
 		{
 			try {
-				enginePro.put("webdriver.ie.driver", URLDecoder.decode(ieDriverURL.getFile(), "utf-8"));
+				driverFile = new File(URLDecoder.decode(url.getFile(), "utf-8"));
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 		}
 		
-		if(chromeDrvierURL != null)
+		if(driverFile != null)
 		{
-			try {
-				enginePro.put("webdriver.chrome.driver", URLDecoder.decode(chromeDrvierURL.getFile(), "utf-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			return driverFile.getAbsolutePath();
+		}
+		else
+		{
+			return "";
 		}
 	}
 

@@ -5,7 +5,9 @@ package org.suren.autotest.web.framework.selenium;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -119,12 +121,20 @@ public class SeleniumEngine
 		
 		if(ieDriverURL != null)
 		{
-			enginePro.put("webdriver.ie.driver", ieDriverURL.getFile());
+			try {
+				enginePro.put("webdriver.ie.driver", URLDecoder.decode(ieDriverURL.getFile(), "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(chromeDrvierURL != null)
 		{
-			enginePro.put("webdriver.chrome.driver", chromeDrvierURL.getFile());
+			try {
+				enginePro.put("webdriver.chrome.driver", URLDecoder.decode(chromeDrvierURL.getFile(), "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

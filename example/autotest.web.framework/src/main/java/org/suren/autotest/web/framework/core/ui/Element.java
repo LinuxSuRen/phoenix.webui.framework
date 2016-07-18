@@ -3,6 +3,8 @@
 */
 package org.suren.autotest.web.framework.core.ui;
 
+import java.util.LinkedHashMap;
+
 /**
  * @author suren
  * @since jdk1.6 2016年6月30日
@@ -31,6 +33,10 @@ public interface Element
 	 * @return 超链接部分文本
 	 */
 	String getPartialLinkText();
+	/**
+	 * @return 定位信息map
+	 */
+	LinkedHashMap<String, String> getLocatorsMap();
 
 	/**
 	 * @return 元素查找策略

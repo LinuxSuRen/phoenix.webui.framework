@@ -6,7 +6,12 @@
 			url="https://www.baidu.com/s?wd=surenpi"
 			dataSource="xmlDataSource">
 			<field name="toLoginBut" byName="tj_login" type="button" />
-			<field name="loginBut" byId="TANGRAM__PSP_8__submit" type="button" />
+			<field name="loginBut" byId="TANGRAM__PSP_8__submit" type="button" strategy="zone">
+				<locators>
+					<locator type="byId" value="head" />
+					<locator type="byId" value="TANGRAM__PSP_8__submit" />
+				</locators>
+			</field>
 			<field name="userNameText" byId="TANGRAM__PSP_8__userName" byName="username" type="text" strategy="priority" />
 			<field name="passwdText" byName="password" type="text" />
 		</page>

@@ -3,6 +3,8 @@
 */
 package org.suren.autotest.web.framework.core.ui;
 
+import java.util.LinkedHashMap;
+
 /**
  * 所有HTML页面元素的抽象， 包含了元素的id、name、tagName、css、xpath、linktext、partialLinkText等属性
  * 
@@ -11,14 +13,15 @@ package org.suren.autotest.web.framework.core.ui;
  */
 public abstract class AbstractElement implements Element
 {
-	private String	id;
-	private String	name;
-	private String	tagName;
-	private String	CSS;
-	private String	XPath;
-	private String	linkText;
-	private String	partialLinkText;
-	private String	strategy;
+	private String							id;
+	private String							name;
+	private String							tagName;
+	private String							CSS;
+	private String							XPath;
+	private String							linkText;
+	private String							partialLinkText;
+	private LinkedHashMap<String, String>	locatorsMap;
+	private String							strategy;
 
 	public String getId()
 	{
@@ -90,6 +93,16 @@ public abstract class AbstractElement implements Element
 		this.partialLinkText = partialLinkText;
 	}
 
+	public LinkedHashMap<String, String> getLocatorsMap()
+	{
+		return locatorsMap;
+	}
+
+	public void setLocatorsMap(LinkedHashMap<String, String> locatorsMap)
+	{
+		this.locatorsMap = locatorsMap;
+	}
+
 	public String getStrategy()
 	{
 		return strategy;
@@ -99,12 +112,12 @@ public abstract class AbstractElement implements Element
 	{
 		this.strategy = strategy;
 	}
-	
+
 	/**
 	 * @return 可用返回true，否则返回false
 	 */
 	public abstract boolean isEnabled();
-	
+
 	/**
 	 * @return 隐藏返回true，否则返回false
 	 */

@@ -17,14 +17,40 @@ public class CheckBoxGroup extends AbstractElement
 	@Autowired
 	private ClickAble clickAble;
 	
+	/**
+	 * 根据文本选择
+	 * @param text
+	 * @return
+	 */
 	public boolean selectByText(String text)
 	{
 		return true;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.suren.autotest.web.framework.core.ui.AbstractElement#isEnabled()
+	
+	/**
+	 * @see #selectByText(String)
+	 * @param texts
+	 * @return
 	 */
+	public int selectByTextArray(String ...texts)
+	{
+		int count = 0;
+		if(texts == null)
+		{
+			return count;
+		}
+		
+		for(String text : texts)
+		{
+			if(selectByText(text))
+			{
+				count++;
+			}
+		}
+		
+		return count;
+	}
+
 	@Override
 	public boolean isEnabled()
 	{
@@ -32,9 +58,6 @@ public class CheckBoxGroup extends AbstractElement
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.suren.autotest.web.framework.core.ui.AbstractElement#isHidden()
-	 */
 	@Override
 	public boolean isHidden()
 	{

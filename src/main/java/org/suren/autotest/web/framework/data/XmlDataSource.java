@@ -18,7 +18,6 @@ import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.baidu.BaiduHomePage;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 
@@ -133,23 +132,6 @@ public class XmlDataSource implements DataSource
 				}
 			});
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		Page page = new BaiduHomePage();
-		XmlDataSource data = new XmlDataSource();
-		data.loadData(new DataResource()
-		{
-			
-			public URL getUrl()
-			{
-				return DataResource.class.getClassLoader().
-						getResource("dataSource/baidu_website_datasource.xml");
-			}
-		}, page);
-		
-		System.out.println(page);
 	}
 
 }

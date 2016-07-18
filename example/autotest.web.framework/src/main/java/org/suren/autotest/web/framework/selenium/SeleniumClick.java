@@ -3,6 +3,7 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,37 @@ public class SeleniumClick implements ClickAble
 	@Autowired
 	private SearchStrategyUtils		searchStrategyUtils;
 
+	@Override
 	public void click(Element ele)
 	{
-		searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).click();
+		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
+		try
+		{
+			webEle.click();
+		}
+		catch(WebDriverException e)
+		{
+			if(e.getMessage().contains("Element is not clickable at point"))
+			{
+				new Actions(engine.getDriver()).click(webEle);
+			}
+		}
 	}
 
+	@Override
 	public void dbClick(Element ele)
 	{
 		Actions actions = new Actions(engine.getDriver());
 		actions.doubleClick(searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele));
 	}
 
+	@Override
 	public boolean isEnabled(Element element)
 	{
 		return searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isEnabled();
 	}
 
+	@Override
 	public boolean isHidden(Element element)
 	{
 		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();

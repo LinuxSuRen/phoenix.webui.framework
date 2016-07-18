@@ -1,5 +1,5 @@
 <autotest>
-	<engine driver="chrome" timeout="10">
+	<engine driver="chrome" timeout="10" fullScreen="false" width="1024" height="768">
 	</engine>
 	<pages>
 		<page class="org.suren.autotest.web.framework.baidu.BaiduHomePage"

@@ -5,6 +5,7 @@ package org.suren.autotest.web.framework.selenium;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.stereotype.Component;
@@ -43,8 +45,12 @@ public class SeleniumEngine
 		InputStream  inputStream = null;
 		try
 		{
-			inputStream = this.getClass().getClassLoader().getResourceAsStream("engine.properties");
+			ClassLoader classLoader = this.getClass().getClassLoader();
+			inputStream = classLoader.getResourceAsStream("engine.properties");
 			Properties enginePro = new Properties();
+			
+			loadDefaultEnginePath(classLoader, enginePro);
+			
 			enginePro.load(inputStream);
 			
 			System.getProperties().putAll(enginePro);
@@ -70,10 +76,14 @@ public class SeleniumEngine
 		}
 		else if(DriverConstants.DRIVER_FIREFOX.equals(getDriverStr()))
 		{
-			driver = new FirefoxDriver();
+			FirefoxProfile profile = new FirefoxProfile();
+			driver = new FirefoxDriver(profile);
 		}
 		
-		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+		if(timeout > 0)
+		{
+			driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+		}
 		
 		Window window = driver.manage().window();
 		if(fullScreen)
@@ -96,6 +106,25 @@ public class SeleniumEngine
 		if(getHeight() > 0)
 		{
 			window.setSize(new Dimension(window.getSize().getWidth(), getHeight()));
+		}
+	}
+
+	/**
+	 * 加载默认的engine
+	 * @param enginePro
+	 */
+	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro) {
+		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
+		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
+		
+		if(ieDriverURL != null)
+		{
+			enginePro.put("webdriver.ie.driver", ieDriverURL.getFile());
+		}
+		
+		if(chromeDrvierURL != null)
+		{
+			enginePro.put("webdriver.chrome.driver", chromeDrvierURL.getFile());
 		}
 	}
 

@@ -24,6 +24,11 @@ import org.suren.autotest.web.framework.core.ui.Text;
 
 public class BeanUtil {
 	public static void set(Object instance, String name, Object value) {
+		if(value == null)
+		{
+			return;
+		}
+		
 		Class<? extends Object> cls = instance.getClass();
 		
 		try {

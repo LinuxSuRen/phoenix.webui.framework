@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Button;
+import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
@@ -46,9 +48,20 @@ public class SettingUtil
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
 	private ApplicationContext			context;
 
-	public SettingUtil()
+	public SettingUtil(String ...packages)
 	{
-		context = new AnnotationConfigApplicationContext("org.suren");
+		if(packages == null)
+		{
+			packages = new String[]{"org.suren"};
+		}
+		else
+		{
+			String[] tmpArray = Arrays.copyOf(packages, packages.length + 1);
+			tmpArray[packages.length] = "org.suren";
+			packages = tmpArray;
+		}
+		
+		context = new AnnotationConfigApplicationContext(packages);
 	}
 
 	/**
@@ -115,6 +128,9 @@ public class SettingUtil
 		parse(document);
 	}
 
+	/**
+	 * 从数据源中加载数据，设置到page类中
+	 */
 	public void initData()
 	{
 		Iterator<String> pageIterator = pageMap.keySet().iterator();
@@ -322,6 +338,10 @@ public class SettingUtil
 						else if ("select".equals(type))
 						{
 							Selector selector = (Selector) ele;
+						}
+						else if("file_upload".equals(type))
+						{
+							FileUpload fileUpload = (FileUpload) ele;
 						}
 
 						if (ele != null)

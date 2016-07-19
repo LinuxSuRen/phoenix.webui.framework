@@ -3,6 +3,7 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -39,7 +40,13 @@ public class SeleniumClick implements ClickAble
 		{
 			if(e.getMessage().contains("Element is not clickable at point"))
 			{
-				new Actions(engine.getDriver()).click(webEle);
+				new Actions(engine.getDriver()).moveToElement(webEle, -50, -50).perform();
+				
+//				WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
+				
+				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle, -50, -50);
+				
+				webEle.click();
 			}
 		}
 	}

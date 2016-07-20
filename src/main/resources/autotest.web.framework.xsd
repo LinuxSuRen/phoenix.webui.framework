@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://surenpi.com"
+	xmlns:suren="http://surenpi.com"
+	elementFormDefault="qualified">
+	<xs:element name="autotest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="engine" type="suren:engineType" />
+				<xs:element name="pages">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dataSources">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="dataSource" type="suren:dataSourceType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="engineType">
+		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome" />
+		<xs:attribute name="timeout" type="xs:positiveInteger" />
+		<xs:attribute name="fullScreen" type="xs:string" />
+		<xs:attribute name="width" type="xs:positiveInteger" />
+		<xs:attribute name="height" type="xs:positiveInteger" />
+	</xs:complexType>
+	
+	<xs:simpleType name="engineTypeDriverEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="chrome" />
+			<xs:enumeration value="firefox" />
+			<xs:enumeration value="ie" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="pageType">
+		<xs:sequence>
+			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="class" type="xs:string" use="required" />
+		<xs:attribute name="url" type="xs:string" />
+		<xs:attribute name="dataSource" type="xs:string" />
+	</xs:complexType>
+	
+	<xs:complexType name="pageFieldType">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="byId" type="xs:string" />
+		<xs:attribute name="byCss" type="xs:string" />
+		<xs:attribute name="byName" type="xs:string" />
+		<xs:attribute name="byXpath" type="xs:string" />
+		<xs:attribute name="byLinkText" type="xs:string" />
+		<xs:attribute name="byPartialLinkText" type="xs:string" />
+		<xs:attribute name="byTagName" type="xs:string" />
+		<xs:attribute name="data" type="xs:string" />
+		<xs:attribute name="type" type="suren:fieldTypeEnum" default="input" />
+		<xs:attribute name="action" type="xs:string" />
+	</xs:complexType>
+	
+	<xs:simpleType name="fieldTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="input" />
+			<xs:enumeration value="button" />
+			<xs:enumeration value="select" />
+			<xs:enumeration value="file_upload" />
+			<xs:enumeration value="check_box_group" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="dataSourceType">
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="type" type="xs:string" />
+		<xs:attribute name="resource" type="xs:string" />
+	</xs:complexType>
+</xs:schema>

@@ -20,8 +20,12 @@ import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.VisitorSupport;
+import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.dom4j.xpath.DefaultXPath;
+import org.jaxen.SimpleNamespaceContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +40,7 @@ import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
+import org.suren.autotest.web.framework.validation.Validation;
 
 /**
  * 页面（page）以及数据配置加载
@@ -104,10 +109,17 @@ public class SettingUtil
 
 		try
 		{
-			inputStream = this.getClass().getClassLoader()
-					.getResourceAsStream(fileName);
+			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
+			
+			Validation.validationFramework(inputStream); //这里会把流关闭了
+			
+			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
 
 			read(inputStream);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -164,8 +176,13 @@ public class SettingUtil
 	 */
 	private void parse(Document doc)
 	{
+		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
+		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
+		
+		XPath xpath = new DefaultXPath("/ns:autotest/ns:engine");
+		xpath.setNamespaceContext(simpleNamespaceContext);
 		// engine parse progress
-		Element engineEle = (Element) doc.selectSingleNode("/autotest/engine");
+		Element engineEle = (Element) xpath.selectSingleNode(doc);
 		if (engineEle == null)
 		{
 			throw new RuntimeException("can not found engine config.");
@@ -208,8 +225,10 @@ public class SettingUtil
 		}
 
 		// pages parse progress
+		xpath = new DefaultXPath("/ns:autotest/ns:pages/ns:page");
+		xpath.setNamespaceContext(simpleNamespaceContext);
 		@SuppressWarnings("unchecked")
-		List<Element> pageNodes = doc.selectNodes("/autotest/pages/page");
+		List<Element> pageNodes = xpath.selectNodes(doc);
 		if (pageNodes != null)
 		{
 			for (Element ele : pageNodes)
@@ -236,7 +255,9 @@ public class SettingUtil
 		}
 		
 		//parse datasources
-		List<Element> dataSourceNodes = doc.selectNodes("/autotest/dataSources/dataSource");
+		xpath = new DefaultXPath("/ns:autotest/ns:dataSources/ns:dataSource");
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		List<Element> dataSourceNodes = xpath.selectNodes(doc);
 		if(dataSourceNodes != null)
 		{
 			for(Element ele : dataSourceNodes)
@@ -290,13 +311,12 @@ public class SettingUtil
 				String fieldName = node.attributeValue("name");
 				String type = node.attributeValue("type");
 				String byId = node.attributeValue("byId");
-				String byName = node.attributeValue("byName");
-				String byTagName = node.attributeValue("byTagName");
-				String byXpath = node.attributeValue("byXpath");
 				String byCss = node.attributeValue("byCss");
+				String byName = node.attributeValue("byName");
+				String byXpath = node.attributeValue("byXpath");
 				String byLinkText = node.attributeValue("byLinkText");
-				String byPartialLinkText = node
-						.attributeValue("byPartialLinkText");
+				String byPartialLinkText = node.attributeValue("byPartialLinkText");
+				String byTagName = node.attributeValue("byTagName");
 				String data = node.attributeValue("data");
 				if (fieldName == null || "".equals(fieldName))
 				{

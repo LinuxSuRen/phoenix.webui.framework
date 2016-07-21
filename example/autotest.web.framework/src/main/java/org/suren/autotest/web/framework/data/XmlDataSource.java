@@ -15,7 +15,10 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.VisitorSupport;
+import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.dom4j.xpath.DefaultXPath;
+import org.jaxen.SimpleNamespaceContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.Text;
@@ -76,8 +79,12 @@ public class XmlDataSource implements DataSource
 	private void parse(Document doc)
 	{
 		String pageClass = page.getClass().getName();
-		List<Element> dataSourceList = doc.selectNodes(
-				String.format("/dataSources/dataSource[@pageClass='%s']/page", pageClass));
+		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
+		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
+		
+		XPath xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page", pageClass));
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		List<Element> dataSourceList = xpath.selectNodes(doc);
 		if (dataSourceList == null)
 		{
 			throw new RuntimeException("can not found datasource config.");

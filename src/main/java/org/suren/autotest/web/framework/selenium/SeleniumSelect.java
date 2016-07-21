@@ -25,6 +25,7 @@ public class SeleniumSelect implements SelectAble
 	@Autowired
 	private SearchStrategyUtils		searchStrategyUtils;
 
+	@Override
 	public boolean selectByText(Element element, String text)
 	{
 		Select select = createSelect(element);
@@ -37,6 +38,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean selectByValue(Element element, String value)
 	{
 		Select select = createSelect(element);
@@ -49,6 +51,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean selectByIndex(Element element, int index)
 	{
 		Select select = createSelect(element);
@@ -61,6 +64,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean selectAll(Element element)
 	{
 		if(!isMultiple(element)) {
@@ -79,6 +83,7 @@ public class SeleniumSelect implements SelectAble
 		return true;
 	}
 
+	@Override
 	public boolean deselectByText(Element element, String text)
 	{
 		Select select = createSelect(element);
@@ -91,6 +96,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean deselectByValue(Element element, String value)
 	{
 		Select select = createSelect(element);
@@ -103,6 +109,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean deselectByIndex(Element element, int index)
 	{
 		Select select = createSelect(element);
@@ -115,6 +122,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean deselectAll(Element element)
 	{
 		Select select = createSelect(element);
@@ -127,6 +135,7 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public boolean isMultiple(Element element)
 	{
 		Select select = createSelect(element);
@@ -138,22 +147,26 @@ public class SeleniumSelect implements SelectAble
 		return false;
 	}
 
+	@Override
 	public List<Element> getOptions(Element element)
 	{
 		return null;
 	}
 
+	@Override
 	public List<Element> getSelectedOptions(Element element)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public boolean isEnabled(Element element)
 	{
 		return searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isEnabled();
 	}
 
+	@Override
 	public boolean isHidden(Element element)
 	{
 		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();

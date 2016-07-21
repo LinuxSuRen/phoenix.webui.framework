@@ -20,7 +20,6 @@ import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
@@ -32,8 +31,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.FileUpload;
-import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
@@ -163,6 +160,7 @@ public class SettingUtil
 			dataSource.loadData(new DataResource()
 			{
 
+				@Override
 				public URL getUrl()
 				{
 					return SettingUtil.class.getClassLoader().getResource(dataSourceInfo.getResource());
@@ -357,23 +355,20 @@ public class SettingUtil
 						}
 						else if ("select".equals(type))
 						{
-							Selector selector = (Selector) ele;
+//							Selector selector = (Selector) ele;
 						}
 						else if("file_upload".equals(type))
 						{
-							FileUpload fileUpload = (FileUpload) ele;
+//							FileUpload fileUpload = (FileUpload) ele;
 						}
 
-						if (ele != null)
-						{
-							ele.setId(byId);
-							ele.setName(byName);
-							ele.setTagName(byTagName);
-							ele.setXPath(byXpath);
-							ele.setCSS(byCss);
-							ele.setLinkText(byLinkText);
-							ele.setPartialLinkText(byPartialLinkText);
-						}
+						ele.setId(byId);
+						ele.setName(byName);
+						ele.setTagName(byTagName);
+						ele.setXPath(byXpath);
+						ele.setCSS(byCss);
+						ele.setLinkText(byLinkText);
+						ele.setPartialLinkText(byPartialLinkText);
 					}
 					else
 					{

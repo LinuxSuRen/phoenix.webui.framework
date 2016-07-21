@@ -33,6 +33,7 @@ public class XmlDataSource implements DataSource
 {
 	private Page page;
 
+	@Override
 	public boolean loadData(DataResource resource, Page page)
 	{
 		this.page = page;

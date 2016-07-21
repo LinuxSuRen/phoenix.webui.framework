@@ -22,6 +22,7 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 	@Autowired
 	private SeleniumEngine engine;
 
+	@Override
 	public WebElement search(Element element)
 	{
 		// TODO Auto-generated method stub

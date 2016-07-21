@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.FileUploadAble;
 
 /**
- * 文件上传
+ * 文件上传按钮
  * 
  * @author zhaoxj
  * @since jdk1.6

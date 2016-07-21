@@ -7,14 +7,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.rmi.registry.LocateRegistry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
@@ -34,6 +39,8 @@ import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
+import org.suren.autotest.web.framework.jmx.IDataSourceInfoMXBean;
+import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -64,6 +71,24 @@ public class SettingUtil
 		}
 		
 		context = new AnnotationConfigApplicationContext(packages);
+		
+		try
+		{
+			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
+			pageMXBean.setPageMap(pageMap);
+			
+			IDataSourceInfoMXBean dataSourceInfoMXBean = context.getBean(IDataSourceInfoMXBean.class);
+			
+			LocateRegistry.createRegistry(5006);
+			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+			
+			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+//			server.registerMBean(dataSourceInfoMXBean, new ObjectName("org.suren.autotest.web.framework:type=IDataSourceInfoMXBean"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**

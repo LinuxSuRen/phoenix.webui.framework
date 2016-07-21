@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 
 /**
+ * 复选框组，代表一组HTML中的复选框
  * @author suren
  * @date Jul 16, 2016 9:11:49 PM
  */

@@ -42,6 +42,7 @@ public class SearchStrategyUtils implements ApplicationContextAware
 		return (ElementSearchStrategy<T>) context.getBean(strategy, ElementSearchStrategy.class);
 	}
 
+	@Override
 	public void setApplicationContext(ApplicationContext context)
 			throws BeansException
 	{

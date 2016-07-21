@@ -37,6 +37,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 	@Autowired
 	private SeleniumEngine engine;
 
+	@Override
 	public WebElement search(Element element)
 	{
 		By by = null;

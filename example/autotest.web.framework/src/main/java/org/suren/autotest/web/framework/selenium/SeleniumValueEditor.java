@@ -21,11 +21,13 @@ public class SeleniumValueEditor implements ValueEditor
 	@Autowired
 	private SearchStrategyUtils		searchStrategyUtils;
 
+	@Override
 	public Object getValue(Element ele)
 	{
 		return searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).getText();
 	}
 
+	@Override
 	public void setValue(Element ele, Object value)
 	{
 		if (value == null)
@@ -36,11 +38,13 @@ public class SeleniumValueEditor implements ValueEditor
 		searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).sendKeys(value.toString());
 	}
 
+	@Override
 	public boolean isEnabled(Element element)
 	{
 		return searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isEnabled();
 	}
 
+	@Override
 	public boolean isHidden(Element element)
 	{
 		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();

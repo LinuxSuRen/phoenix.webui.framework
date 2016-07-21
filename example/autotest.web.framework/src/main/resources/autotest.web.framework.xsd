@@ -6,8 +6,17 @@
 	<xs:element name="autotest">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="engine" type="suren:engineType" />
+				<xs:element name="engine" type="suren:engineType">
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[浏览器引擎配置]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 				<xs:element name="pages">
+					<xs:annotation>
+						<xs:documentation><![CDATA[页面列表配置]]></xs:documentation>
+					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded" />
@@ -15,9 +24,16 @@
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="dataSources">
+					<xs:annotation>
+						<xs:documentation><![CDATA[数据源列表配置]]></xs:documentation>
+					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="dataSource" type="suren:dataSourceType" maxOccurs="unbounded" />
+							<xs:element name="dataSource" type="suren:dataSourceType" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation><![CDATA[数据源配置]]></xs:documentation>
+								</xs:annotation>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -26,11 +42,27 @@
 	</xs:element>
 	
 	<xs:complexType name="engineType">
-		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome" />
-		<xs:attribute name="timeout" type="xs:positiveInteger" />
-		<xs:attribute name="fullScreen" type="xs:string" />
-		<xs:attribute name="width" type="xs:positiveInteger" />
-		<xs:attribute name="height" type="xs:positiveInteger" />
+		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome">
+			<xs:annotation>
+				<xs:documentation><![CDATA[浏览器类型配置，默认值为chrome，必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="timeout" type="xs:positiveInteger">
+			<xs:annotation>
+				<xs:documentation><![CDATA[显示地设置元素查找超时事件，单位为秒，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="fullScreen" type="xs:boolean" />
+		<xs:attribute name="width" type="xs:positiveInteger">
+			<xs:annotation>
+				<xs:documentation><![CDATA[浏览器宽度，必须为正整数，单位为像素，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="height" type="xs:positiveInteger">
+			<xs:annotation>
+				<xs:documentation><![CDATA[浏览器高度，必须为正整数，单位为像素，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:simpleType name="engineTypeDriverEnum">
@@ -43,24 +75,80 @@
 	
 	<xs:complexType name="pageType">
 		<xs:sequence>
-			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" />
+			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation><![CDATA[当前Page配置所对应的属性，必填。]]></xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="class" type="xs:string" use="required" />
-		<xs:attribute name="url" type="xs:string" />
-		<xs:attribute name="dataSource" type="xs:string" />
+		<xs:attribute name="class" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Page配置所对应的class（全路径），必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="url" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Page配置所对应的url地址，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="dataSource" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Page配置所对应的数据源名称，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:complexType name="pageFieldType">
-		<xs:attribute name="name" type="xs:string" use="required" />
-		<xs:attribute name="byId" type="xs:string" />
-		<xs:attribute name="byCss" type="xs:string" />
-		<xs:attribute name="byName" type="xs:string" />
-		<xs:attribute name="byXpath" type="xs:string" />
-		<xs:attribute name="byLinkText" type="xs:string" />
-		<xs:attribute name="byPartialLinkText" type="xs:string" />
-		<xs:attribute name="byTagName" type="xs:string" />
-		<xs:attribute name="data" type="xs:string" />
-		<xs:attribute name="type" type="suren:fieldTypeEnum" default="input" />
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field配置所对应的名称，必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byId" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的元素的ID，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byCss" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的元素的css样式（class值），可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byName" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的元素的名称，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byXpath" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的元素的xpath，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byLinkText" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的a标签的文本，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byPartialLinkText" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的a标签的部分文本，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="byTagName" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的标签名，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="data" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的简单数据源值，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" type="suren:fieldTypeEnum" default="input">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的类型，默认值为input。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="action" type="xs:string" />
 	</xs:complexType>
 	
@@ -75,8 +163,31 @@
 	</xs:simpleType>
 	
 	<xs:complexType name="dataSourceType">
-		<xs:attribute name="name" type="xs:string" />
-		<xs:attribute name="type" type="xs:string" />
-		<xs:attribute name="resource" type="xs:string" />
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation><![CDATA[数据源名称，必须是在数据源列表中唯一，必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" type="suren:dataSourceTypeEnum" use="required">
+			<xs:annotation>
+				<xs:documentation><![CDATA[数据源类型，必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="resource" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation><![CDATA[资源位置，必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
+	
+	<xs:simpleType name="dataSourceTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="xml_data_source">
+				<xs:annotation>
+					<xs:documentation><![CDATA[XML格式的数据源]]></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="excel_data_source" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

@@ -4,7 +4,6 @@
 package org.suren.autotest.web.framework.jmx;
 
 import java.util.List;
-import java.util.Map;
 
 import org.suren.autotest.web.framework.data.DataSource;
 
@@ -17,6 +16,4 @@ public interface IDataSourceInfoMXBean
 	int getTotalCount();
 	
 	List<DataSource> getDataSourceList();
-	
-	void setDataSourceMap(Map<String, DataSource> dataSourceMap);
 }

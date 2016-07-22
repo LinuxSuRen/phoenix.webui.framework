@@ -32,10 +32,4 @@ public class DataSourceInfoManager implements IDataSourceInfoMXBean
 		return new ArrayList<DataSource>(dataSourceMap.values());
 	}
 
-	@Override
-	public void setDataSourceMap(Map<String, DataSource> dataSourceMap)
-	{
-		this.dataSourceMap = dataSourceMap;
-	}
-
 }

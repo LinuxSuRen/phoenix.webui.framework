@@ -34,12 +34,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.suren.autotest.web.framework.core.PageContext;
+import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
-import org.suren.autotest.web.framework.jmx.IDataSourceInfoMXBean;
 import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -74,16 +75,20 @@ public class SettingUtil
 		
 		try
 		{
-			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
-			pageMXBean.setPageMap(pageMap);
+			Map<String, PageContextAware> pageContextAwareList = context.getBeansOfType(PageContextAware.class);
+			if(pageContextAwareList != null)
+			{
+				for(PageContextAware ware : pageContextAwareList.values())
+				{
+					ware.setPageContext(new PageContext(pageMap));
+				}
+			}
 			
-			IDataSourceInfoMXBean dataSourceInfoMXBean = context.getBean(IDataSourceInfoMXBean.class);
+			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
 			
 			LocateRegistry.createRegistry(5006);
 			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-			
 			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
-//			server.registerMBean(dataSourceInfoMXBean, new ObjectName("org.suren.autotest.web.framework:type=IDataSourceInfoMXBean"));
 		}
 		catch(Exception e)
 		{

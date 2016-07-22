@@ -18,6 +18,4 @@ public interface IPageMXBean
 	int getTotalCount();
 	
 	List<Page> getPageList();
-	
-	void setPageMap(Map<String, Page> pageMap);
 }

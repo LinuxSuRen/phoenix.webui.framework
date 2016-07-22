@@ -4,11 +4,11 @@
 package org.suren.autotest.web.framework.jmx;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.PageContext;
+import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.page.Page;
 
 /**
@@ -16,27 +16,27 @@ import org.suren.autotest.web.framework.page.Page;
  * @date 2016年7月21日 下午6:50:35
  */
 @Component
-public class PageManager implements IPageMXBean
+public class PageManager implements IPageMXBean, PageContextAware
 {
 
-	private Map<String, Page> pageMap;
+	private PageContext pageContext;
 	
 	@Override
 	public int getTotalCount()
 	{
-		return pageMap.size();
+		return pageContext.getPageMap().size();
 	}
 
 	@Override
 	public List<Page> getPageList()
 	{
-		return new ArrayList<Page>(pageMap.values());
+		return new ArrayList<Page>(pageContext.getPageMap().values());
 	}
 	
 	@Override
-	public void setPageMap(Map<String, Page> pageMap)
+	public void setPageContext(PageContext pageContext)
 	{
-		this.pageMap = Collections.unmodifiableMap(pageMap);
+		this.pageContext = pageContext;
 	}
 
 }

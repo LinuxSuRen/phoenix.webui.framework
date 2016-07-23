@@ -26,4 +26,11 @@ public interface ValueEditor extends Status
 	 * @param value
 	 */
 	void setValue(Element ele, Object value);
+	
+	/**
+	 * 表单提交
+	 * 
+	 * @param ele
+	 */
+	void submit(Element ele);
 }

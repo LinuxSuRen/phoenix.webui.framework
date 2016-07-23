@@ -35,7 +35,15 @@ public class SeleniumValueEditor implements ValueEditor
 			value = "";
 		}
 
-		searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).sendKeys(value.toString());
+		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
+		webEle.sendKeys(value.toString());
+	}
+
+	@Override
+	public void submit(Element ele)
+	{
+		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
+		webEle.submit();
 	}
 
 	@Override

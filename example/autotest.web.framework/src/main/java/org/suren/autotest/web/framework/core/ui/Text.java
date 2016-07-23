@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
+import org.suren.autotest.web.framework.core.action.KeyBoardAble;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 
 /**
@@ -26,6 +27,8 @@ public class Text extends AbstractElement
 	private ValueEditor	valueEditor;
 	@Autowired
 	private ClickAble	clickAble;
+	@Autowired
+	private KeyBoardAble keyBoardAble;
 
 	public Text()
 	{
@@ -39,9 +42,11 @@ public class Text extends AbstractElement
 	/**
 	 * 自动填充数据，不用关系数据来源
 	 */
-	public void fillValue()
+	public Text fillValue()
 	{
 		valueEditor.setValue(this, value);
+		
+		return this;
 	}
 
 	public String getValue()
@@ -72,6 +77,13 @@ public class Text extends AbstractElement
 	public void setClickAble(ClickAble clickAble)
 	{
 		this.clickAble = clickAble;
+	}
+	
+	public Text performEnter()
+	{
+		valueEditor.submit(this);
+		
+		return this;
 	}
 
 	@Override

@@ -23,7 +23,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="dataSources">
+				<xs:element name="dataSources" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation><![CDATA[数据源列表配置]]></xs:documentation>
 					</xs:annotation>

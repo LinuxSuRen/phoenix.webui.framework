@@ -50,16 +50,15 @@ public class SeleniumEngine
 		InputStream  inputStream = null;
 		try
 		{
+			Properties enginePro = new Properties();
 			ClassLoader classLoader = this.getClass().getClassLoader();
+			
+			loadDefaultEnginePath(classLoader, enginePro); //加载默认配置
+			
 			inputStream = classLoader.getResourceAsStream("engine.properties");
 			if(inputStream != null)
 			{
-				Properties enginePro = new Properties();
-				
-				loadDefaultEnginePath(classLoader, enginePro);
-				
 				enginePro.load(inputStream);
-				
 				System.getProperties().putAll(enginePro);
 			}
 		}
@@ -123,11 +122,16 @@ public class SeleniumEngine
 	 * @param enginePro
 	 */
 	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro) {
-		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
-		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
-
-		enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
-		enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
+		String os = System.getProperty("os.name");
+		if(!"Linux".equals(os))
+		{
+			URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
+			URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
+			
+			enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
+			enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
+		}
+		
 	}
 	
 	private String getLocalFilePath(URL url)

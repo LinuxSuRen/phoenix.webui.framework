@@ -41,7 +41,7 @@ import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
-import org.suren.autotest.web.framework.jmx.IPageMXBean;
+//import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -84,11 +84,11 @@ public class SettingUtil
 				}
 			}
 			
-			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
-			
-			LocateRegistry.createRegistry(5006);
-			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+//			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
+//			
+//			LocateRegistry.createRegistry(5006);
+//			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+//			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
 		}
 		catch(Exception e)
 		{
@@ -134,11 +134,19 @@ public class SettingUtil
 	{
 		InputStream inputStream = null;
 
+		inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
+		
 		try
 		{
-			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
-			
 			Validation.validationFramework(inputStream); //这里会把流关闭了
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		try
+		{
 			
 			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
 

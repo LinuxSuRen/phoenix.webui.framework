@@ -72,17 +72,18 @@ public class SeleniumEngine
 			IOUtils.closeQuietly(inputStream);
 		}
 		
-		if(DriverConstants.DRIVER_CHROME.equals(getDriverStr()))
+		String driverStr = getDriverStr();
+		if(DriverConstants.DRIVER_CHROME.equals(driverStr))
 		{
 			driver = new ChromeDriver();
 		}
-		else if(DriverConstants.DRIVER_IE.equals(getDriverStr()))
+		else if(DriverConstants.DRIVER_IE.equals(driverStr))
 		{
 			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
 			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			driver = new InternetExplorerDriver(capability);
 		}
-		else if(DriverConstants.DRIVER_FIREFOX.equals(getDriverStr()))
+		else if(DriverConstants.DRIVER_FIREFOX.equals(driverStr))
 		{
 			FirefoxProfile profile = new FirefoxProfile();
 			driver = new FirefoxDriver(profile);

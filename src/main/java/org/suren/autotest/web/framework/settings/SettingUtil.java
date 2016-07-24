@@ -7,19 +7,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.rmi.registry.LocateRegistry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
@@ -37,7 +32,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.suren.autotest.web.framework.core.PageContext;
 import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
-import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
@@ -308,7 +302,7 @@ public class SettingUtil
 	}
 
 	/**
-	 * TODO
+	 * 解析页面Page对象
 	 * 
 	 * @param pageClsStr
 	 * @param dataSrcClsStr
@@ -331,11 +325,6 @@ public class SettingUtil
 		ele.accept(new VisitorSupport()
 		{
 
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.dom4j.VisitorSupport#visit(org.dom4j.Element)
-			 */
 			@Override
 			public void visit(Element node)
 			{
@@ -345,7 +334,6 @@ public class SettingUtil
 				}
 
 				String fieldName = node.attributeValue("name");
-				String type = node.attributeValue("type");
 				String byId = node.attributeValue("byId");
 				String byCss = node.attributeValue("byCss");
 				String byName = node.attributeValue("byName");
@@ -354,6 +342,8 @@ public class SettingUtil
 				String byPartialLinkText = node.attributeValue("byPartialLinkText");
 				String byTagName = node.attributeValue("byTagName");
 				String data = node.attributeValue("data");
+				String type = node.attributeValue("type");
+				String strategy = node.attributeValue("strategy");
 				if (fieldName == null || "".equals(fieldName))
 				{
 					return;
@@ -378,26 +368,12 @@ public class SettingUtil
 							return;
 						}
 
-						if ("button".equals(type))
-						{
-							Button button = (Button) ele;
-
-							ele = button;
-						}
-						else if ("input".equals(type))
+						if ("input".equals(type))
 						{
 							Text text = (Text) ele;
 							text.setValue(data);
 
 							ele = text;
-						}
-						else if ("select".equals(type))
-						{
-//							Selector selector = (Selector) ele;
-						}
-						else if("file_upload".equals(type))
-						{
-//							FileUpload fileUpload = (FileUpload) ele;
 						}
 
 						ele.setId(byId);
@@ -407,6 +383,7 @@ public class SettingUtil
 						ele.setCSS(byCss);
 						ele.setLinkText(byLinkText);
 						ele.setPartialLinkText(byPartialLinkText);
+						ele.setStrategy(strategy);
 					}
 					else
 					{

@@ -25,6 +25,8 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +37,6 @@ import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
-//import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -48,6 +49,8 @@ import org.suren.autotest.web.framework.validation.Validation;
  */
 public class SettingUtil
 {
+	private static final Logger logger = LoggerFactory.getLogger(SettingUtil.class);
+	
 	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
 	private ApplicationContext			context;
@@ -86,7 +89,7 @@ public class SettingUtil
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error("jmx register process error.", e);
 		}
 	}
 
@@ -109,10 +112,7 @@ public class SettingUtil
 		}
 		finally
 		{
-			if (fis != null)
-			{
-				fis.close();
-			}
+			IOUtils.closeQuietly(fis);
 		}
 	}
 
@@ -136,7 +136,7 @@ public class SettingUtil
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			logger.error("framework validation process error.", e);
 		}
 		
 		try
@@ -148,7 +148,7 @@ public class SettingUtil
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			logger.error("main config parse process error.", e);
 		}
 		finally
 		{
@@ -266,7 +266,7 @@ public class SettingUtil
 				String pageClsStr = ele.attributeValue("class");
 				if (pageClsStr == null)
 				{
-					System.err.println("can not found class attribute.");
+					logger.warn("can not found class attribute.");
 					continue;
 				}
 
@@ -278,8 +278,7 @@ public class SettingUtil
 				}
 				catch (Exception e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("page element parse error.", e);
 				}
 			}
 		}
@@ -362,7 +361,7 @@ public class SettingUtil
 
 						if (ele == null)
 						{
-							System.err.println(String.format(
+							logger.error(String.format(
 									"element [%s] is null, maybe you not set autowired.",
 									fieldName));
 							return;
@@ -387,31 +386,25 @@ public class SettingUtil
 					}
 					else
 					{
-						System.err.println(
-								String.format("page cls [%s], field [%s]",
+						logger.error(String.format("page cls [%s], field [%s]",
 										pageClsStr, fieldName));
 					}
 				}
 				catch (IllegalAccessException e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 				catch (IllegalArgumentException e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 				catch (InvocationTargetException e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 				catch (ClassCastException e)
 				{
-					e.printStackTrace();
-					System.err.println(
-							String.format("fieldName [%s]", fieldName));
+					logger.error(String.format("fieldName [%s]", fieldName), e);
 				}
 
 				// Object fieldValue = excelData.getValue(fieldName);

@@ -67,7 +67,11 @@
 	
 	<xs:simpleType name="engineTypeDriverEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="chrome" />
+			<xs:enumeration value="chrome">
+				<xs:annotation>
+					<xs:documentation><![CDATA[Chrome浏览器。]]><</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="firefox" />
 			<xs:enumeration value="ie" />
 		</xs:restriction>
@@ -81,6 +85,11 @@
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
+		<xs:attribute name="id" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Page配置的唯一标示，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation><![CDATA[当前Page配置所对应的class（全路径），必填。]]></xs:documentation>
@@ -99,11 +108,38 @@
 	</xs:complexType>
 	
 	<xs:complexType name="pageFieldType">
+		<xs:sequence>
+			<xs:element name="locators" type="suren:pageFieldLocators" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation><![CDATA[用于区域定位策略时配置定位方法。]]></xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation><![CDATA[当前Field配置所对应的名称，必填。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attributeGroup ref="suren:pageFieldLocatorAttrGroup"></xs:attributeGroup>
+		<xs:attribute name="data" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的简单数据源值，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" type="suren:fieldTypeEnum" default="input">
+			<xs:annotation>
+				<xs:documentation><![CDATA[当前Field对应的类型，默认值为input。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="action" type="xs:string" />
+		<xs:attribute name="strategy" type="suren:strategyEnum" default="priority">
+			<xs:annotation>
+				<xs:documentation><![CDATA[配置用于查找当前Field对应的元素的策略，默认值为priority。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:attributeGroup name="pageFieldLocatorAttrGroup">
 		<xs:attribute name="byId" type="xs:string">
 			<xs:annotation>
 				<xs:documentation><![CDATA[当前Field对应的元素的ID，可选。]]></xs:documentation>
@@ -139,23 +175,43 @@
 				<xs:documentation><![CDATA[当前Field对应的标签名，可选。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="data" type="xs:string">
+	</xs:attributeGroup>
+	
+	<xs:complexType name="pageFieldLocators">
+		<xs:sequence>
+			<xs:element name="locator" type="suren:pageFieldLocator" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation><![CDATA[区域定位策略定位方法。]]></xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="pageFieldLocator">
+		<xs:attribute name="name" type="suren:pageFieldLocatorTypeEnum">
 			<xs:annotation>
-				<xs:documentation><![CDATA[当前Field对应的简单数据源值，可选。]]></xs:documentation>
+				<xs:documentation><![CDATA[定位方法。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="type" type="suren:fieldTypeEnum" default="input">
+		<xs:attribute name="value" type="xs:string">
 			<xs:annotation>
-				<xs:documentation><![CDATA[当前Field对应的类型，默认值为input。]]></xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="action" type="xs:string" />
-		<xs:attribute name="strategy" type="suren:strategyEnum" default="priority">
-			<xs:annotation>
-				<xs:documentation><![CDATA[配置用于查找当前Field对应的元素的策略，默认值为priority。]]></xs:documentation>
+				<xs:documentation><![CDATA[定位方法对应的值。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	
+	<xs:simpleType name="pageFieldLocatorTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="byId"></xs:enumeration>
+			<xs:enumeration value="byCss"></xs:enumeration>
+			<xs:enumeration value="byName"></xs:enumeration>
+			<xs:enumeration value="byXpath"></xs:enumeration>
+			<xs:enumeration value="byLinkText"></xs:enumeration>
+			<xs:enumeration value="byPartialLinkText"></xs:enumeration>
+			<xs:enumeration value="byTagName"></xs:enumeration>
+			<xs:enumeration value="byIFrame"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	
 	<xs:simpleType name="strategyEnum">
 		<xs:restriction base="xs:string">

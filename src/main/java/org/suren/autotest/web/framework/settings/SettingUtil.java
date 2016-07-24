@@ -91,6 +91,8 @@ public class SettingUtil
 		{
 			logger.error("jmx register process error.", e);
 		}
+		
+		logger.info("init process done.");
 	}
 
 	/**

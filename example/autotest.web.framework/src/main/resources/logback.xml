@@ -9,7 +9,7 @@
   
   <logger name="org.suren.autotest.web.framework" level="DEBUG"/>
   
-  <root level="debug">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

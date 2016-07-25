@@ -1,9 +1,13 @@
 package org.suren.autotest.web.framework.selenium.strategy;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
+import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
@@ -25,8 +29,38 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 	@Override
 	public WebElement search(Element element)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		WebElement webEle = null;
+		List<Locator> locators = element.getLocatorList();
+		if(locators == null)
+		{
+			return webEle;
+		}
+		
+		for(Locator locator : locators)
+		{
+			By by = null;
+			String type = locator.getType();
+			if("byId".equals(type))
+			{
+				by = By.id(locator.getValue());
+			}
+			
+			if(by == null)
+			{
+				continue;
+			}
+			
+			if(webEle == null)
+			{
+				webEle = engine.getDriver().findElement(by);
+			}
+			else
+			{
+				webEle = webEle.findElement(by);
+			}
+		}
+		
+		return webEle;
 	}
 
 }

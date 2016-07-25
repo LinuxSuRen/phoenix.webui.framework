@@ -7,16 +7,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.rmi.registry.LocateRegistry;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -31,12 +38,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.suren.autotest.web.framework.core.Locator;
+import org.suren.autotest.web.framework.core.LocatorAware;
 import org.suren.autotest.web.framework.core.PageContext;
 import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
+import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -81,11 +91,11 @@ public class SettingUtil
 				}
 			}
 			
-//			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
-//			
-//			LocateRegistry.createRegistry(5006);
-//			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-//			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
+			
+			LocateRegistry.createRegistry(5006);
+			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
 		}
 		catch(Exception e)
 		{
@@ -412,10 +422,57 @@ public class SettingUtil
 				// Object fieldValue = excelData.getValue(fieldName);
 				//
 				// BeanUtil.set(pageInstance, fieldName, fieldValue);
+				
+				node.accept(new FieldLocatorsVisitor(ele));
 			}
 		});
 
 		pageMap.put(pageClsStr, (Page) pageInstance);
+	}
+	
+	class FieldLocatorsVisitor extends VisitorSupport
+	{
+
+		private AbstractElement absEle;
+		
+		public FieldLocatorsVisitor(AbstractElement element)
+		{
+			this.absEle = element;
+		}
+		
+		@Override
+		public void visit(Element node)
+		{
+			if (!"locator".equals(node.getName()))
+			{
+				return;
+			}
+			
+			String name = node.attributeValue("name");
+			String value = node.attributeValue("value");
+			
+			if(StringUtils.isBlank(name) || StringUtils.isBlank(value))
+			{
+				logger.warn("locator has empty name or value.");
+			}
+			
+			Map<String, Locator> beans = context.getBeansOfType(Locator.class);
+			Collection<Locator> locatorList = beans.values();
+			for(Locator locator : locatorList)
+			{
+				if(!name.equals(locator.getType()))
+				{
+					continue;
+				}
+				
+				if(locator instanceof LocatorAware)
+				{
+					((LocatorAware) locator).setValue(value);
+					absEle.getLocatorList().add(locator);
+					break;
+				}
+			}
+		}
 	}
 
 	public Object getPage(String name)

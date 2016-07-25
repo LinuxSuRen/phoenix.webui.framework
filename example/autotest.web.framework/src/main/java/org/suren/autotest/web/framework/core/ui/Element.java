@@ -3,7 +3,9 @@
 */
 package org.suren.autotest.web.framework.core.ui;
 
-import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.suren.autotest.web.framework.core.Locator;
 
 /**
  * @author suren
@@ -36,7 +38,7 @@ public interface Element
 	/**
 	 * @return 定位信息map
 	 */
-	LinkedHashMap<String, String> getLocatorsMap();
+	List<Locator> getLocatorList();
 
 	/**
 	 * @return 元素查找策略

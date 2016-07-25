@@ -3,7 +3,10 @@
 */
 package org.suren.autotest.web.framework.core.ui;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.suren.autotest.web.framework.core.Locator;
 
 /**
  * 所有HTML页面元素的抽象， 包含了元素的id、name、tagName、css、xpath、linktext、partialLinkText等属性
@@ -20,9 +23,10 @@ public abstract class AbstractElement implements Element
 	private String							XPath;
 	private String							linkText;
 	private String							partialLinkText;
-	private LinkedHashMap<String, String>	locatorsMap;
+	private List<Locator>					locatorList = new ArrayList<Locator>();
 	private String							strategy;
 
+	@Override
 	public String getId()
 	{
 		return id;
@@ -33,6 +37,7 @@ public abstract class AbstractElement implements Element
 		this.id = id;
 	}
 
+	@Override
 	public String getName()
 	{
 		return name;
@@ -43,6 +48,7 @@ public abstract class AbstractElement implements Element
 		this.name = name;
 	}
 
+	@Override
 	public String getTagName()
 	{
 		return tagName;
@@ -53,6 +59,7 @@ public abstract class AbstractElement implements Element
 		this.tagName = tagName;
 	}
 
+	@Override
 	public String getCSS()
 	{
 		return CSS;
@@ -63,6 +70,7 @@ public abstract class AbstractElement implements Element
 		CSS = cSS;
 	}
 
+	@Override
 	public String getXPath()
 	{
 		return XPath;
@@ -73,6 +81,7 @@ public abstract class AbstractElement implements Element
 		XPath = xPath;
 	}
 
+	@Override
 	public String getLinkText()
 	{
 		return linkText;
@@ -83,6 +92,7 @@ public abstract class AbstractElement implements Element
 		this.linkText = linkText;
 	}
 
+	@Override
 	public String getPartialLinkText()
 	{
 		return partialLinkText;
@@ -93,16 +103,24 @@ public abstract class AbstractElement implements Element
 		this.partialLinkText = partialLinkText;
 	}
 
-	public LinkedHashMap<String, String> getLocatorsMap()
+	/**
+	 * @return the locatorList
+	 */
+	@Override
+	public List<Locator> getLocatorList()
 	{
-		return locatorsMap;
+		return locatorList;
 	}
 
-	public void setLocatorsMap(LinkedHashMap<String, String> locatorsMap)
+	/**
+	 * @param locatorList the locatorList to set
+	 */
+	public void setLocatorList(List<Locator> locatorList)
 	{
-		this.locatorsMap = locatorsMap;
+		this.locatorList = locatorList;
 	}
 
+	@Override
 	public String getStrategy()
 	{
 		return strategy;

@@ -55,16 +55,7 @@ public class SeleniumEngine
 			
 			loadDefaultEnginePath(classLoader, enginePro); //加载默认配置
 			
-			inputStream = classLoader.getResourceAsStream("engine.properties");
-			if(inputStream != null)
-			{
-				enginePro.load(inputStream);
-				System.getProperties().putAll(enginePro);
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
+			System.getProperties().putAll(enginePro);
 		}
 		finally
 		{
@@ -131,7 +122,25 @@ public class SeleniumEngine
 			enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
 			enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
 		}
-		
+		else
+		{
+			InputStream inputStream = classLoader.getResourceAsStream("engine.properties");
+			if(inputStream != null)
+			{
+				try
+				{
+					enginePro.load(inputStream);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					IOUtils.closeQuietly(inputStream);
+				}
+			}
+		}
 	}
 	
 	private String getLocalFilePath(URL url)

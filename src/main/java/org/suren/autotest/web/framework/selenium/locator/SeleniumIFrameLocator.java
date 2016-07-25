@@ -9,15 +9,17 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author suren
- * @date 2016年7月25日 上午8:11:27
+ * @date 2016年7月25日 下午12:44:34
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SeleniumIDLocator extends AbstractLocator
+public class SeleniumIFrameLocator extends AbstractLocator
 {
+
 	@Override
 	public String getType()
 	{
-		return "byId";
+		return "byIFrame";
 	}
+
 }

@@ -37,7 +37,7 @@ public class SearchStrategyUtils implements ApplicationContextAware
 	public <T> ElementSearchStrategy<T> findStrategy(Class<T> type, Element element)
 	{
 		String strategy = element.getStrategy();
-		strategy = StringUtils.isBlank(strategy) ? "prioritySearchStrategy" : strategy;
+		strategy = StringUtils.isBlank(strategy) ? "prioritySearchStrategy" : strategyMap.get(strategy);
 		
 		return (ElementSearchStrategy<T>) context.getBean(strategy, ElementSearchStrategy.class);
 	}

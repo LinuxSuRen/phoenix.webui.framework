@@ -7,11 +7,14 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+import org.suren.autotest.web.framework.settings.SettingUtil;
 
 /**
  * 通过Selenium实现点击（单击、双击）
@@ -22,7 +25,8 @@ import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 @Component
 public class SeleniumClick implements ClickAble
 {
-
+	private static final Logger logger = LoggerFactory.getLogger(SeleniumClick.class);
+	
 	@Autowired
 	private SeleniumEngine			engine;
 	@Autowired
@@ -32,6 +36,12 @@ public class SeleniumClick implements ClickAble
 	public void click(Element ele)
 	{
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
+		if(webEle == null)
+		{
+			logger.warn("can not found element.");
+			return;
+		}
+		
 		try
 		{
 			webEle.click();

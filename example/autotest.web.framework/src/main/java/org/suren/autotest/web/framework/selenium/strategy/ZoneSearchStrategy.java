@@ -59,13 +59,49 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 				
 				logger.debug(String.format("iframe[%s] siwtch success.", value));
 			}
+			else if("byIFrameIndex".equals(type))
+			{
+				int index = -1;
+				
+				try
+				{
+					index = Integer.parseInt(value);
+				} catch(NumberFormatException e) {}
+				
+				if(index != -1)
+				{
+					driver = engine.turnToRootDriver(driver);
+					driver = driver.switchTo().frame(index);
+					
+					logger.debug(String.format("iframe[%s] siwtch success.", value));
+				}
+				else
+				{
+					logger.error(String.format("invalid iframe index [%s].", value));
+				}
+			}
 			else if("byLinkText".equals(type))
 			{
 				by = By.linkText(value);
 			}
 			else if("byText".equals(type))
 			{
-				webEle.findElements(By.tagName(""));
+				driver.findElements(By.tagName(""));
+			}
+			else if("byValue".equals(type))
+			{
+				List<WebElement> eles = driver.findElements(By.tagName("input"));
+				for(WebElement item : eles)
+				{
+					if(item.getAttribute("value").equals(locator.getValue()))
+					{
+						return item;
+					}
+				}
+			}
+			else if("byXpath".equals(type))
+			{
+				by = By.xpath(value);
 			}
 			
 			if(by == null)

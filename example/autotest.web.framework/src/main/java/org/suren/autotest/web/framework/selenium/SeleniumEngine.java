@@ -24,6 +24,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 
@@ -35,6 +37,8 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
 @Component
 public class SeleniumEngine
 {
+	private static final Logger logger = LoggerFactory.getLogger(SeleniumEngine.class);
+	
 	private String		driverStr;
 	private WebDriver	driver;
 	private long		timeout;
@@ -195,6 +199,11 @@ public class SeleniumEngine
 		{
 			return "";
 		}
+	}
+	
+	public WebDriver turnToRootDriver(WebDriver driver)
+	{
+		return driver.switchTo().defaultContent();
 	}
 
 	public void openUrl(String url)

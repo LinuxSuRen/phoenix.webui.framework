@@ -3,6 +3,7 @@
  */
 package org.suren.autotest.web.framework.selenium.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.action.CheckAble;
 import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.selenium.locator.SeleniumTextLocator;
+import org.suren.autotest.web.framework.selenium.locator.SeleniumValueLocator;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
@@ -30,7 +31,7 @@ public class SeleniumCheck implements CheckAble
 	private SearchStrategyUtils		searchStrategyUtils;
 	
 	@Autowired
-	private SeleniumTextLocator textLocator;
+	private SeleniumValueLocator valueLocator;
 	@Autowired
 	private ZoneSearchStrategy zoneSearchStrategy;
 
@@ -45,7 +46,11 @@ public class SeleniumCheck implements CheckAble
 		}
 		
 		List<Locator> locatorList = element.getLocatorList();
-		locatorList.add(textLocator);
+		List<Locator> tmpList = new ArrayList<Locator>(locatorList);
+		
+		locatorList.clear();
+		locatorList.add(valueLocator);
+		valueLocator.setValue(text);
 		
 		try
 		{
@@ -57,7 +62,8 @@ public class SeleniumCheck implements CheckAble
 		}
 		finally
 		{
-			locatorList.remove(textLocator);
+			locatorList.clear();
+			locatorList.addAll(tmpList);
 		}
 	}
 

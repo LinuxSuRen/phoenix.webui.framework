@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 
 /**
+ * 浏览器引擎封装类
  * @author suren
  * @since jdk1.6 2016年6月29日
  */
@@ -45,6 +46,9 @@ public class SeleniumEngine
 	{
 	}
 	
+	/**
+	 * 浏览器引擎初始化
+	 */
 	public void init()
 	{
 		InputStream  inputStream = null;
@@ -198,9 +202,15 @@ public class SeleniumEngine
 		driver.get(url);
 	}
 
+	/**
+	 * 关闭浏览器引擎
+	 */
 	public void close()
 	{
-		driver.close();
+		if(driver != null)
+		{
+			driver.quit();
+		}
 	}
 
 	public WebDriver getDriver()

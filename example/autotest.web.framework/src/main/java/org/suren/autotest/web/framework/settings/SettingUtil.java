@@ -3,6 +3,7 @@
 */
 package org.suren.autotest.web.framework.settings;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,6 +47,7 @@ import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
+import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -57,13 +59,15 @@ import org.suren.autotest.web.framework.validation.Validation;
  * @author suren
  * @date Jul 17, 2016 9:01:51 AM
  */
-public class SettingUtil
+public class SettingUtil implements Closeable
 {
 	private static final Logger logger = LoggerFactory.getLogger(SettingUtil.class);
 	
 	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
 	private ApplicationContext			context;
+	
+	private boolean closed = false;
 
 	public SettingUtil(String ...packages)
 	{
@@ -101,6 +105,8 @@ public class SettingUtil
 		{
 			logger.error("jmx register process error.", e);
 		}
+		
+		Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
 		
 		logger.info("init process done.");
 	}
@@ -518,5 +524,33 @@ public class SettingUtil
 		{
 			this.resource = resource;
 		}
+	}
+
+	@Override
+	public void close() throws IOException
+	{
+		if(closed)
+		{
+			return;
+		}
+		
+		SeleniumEngine engine = context.getBean(SeleniumEngine.class);
+		if(engine != null)
+		{
+			engine.close();
+			closed = true;
+		}
+		else
+		{
+			logger.error("Can not fond seleniumEngine, resource close failed.");
+		}
+	}
+
+	/**
+	 * @return the closed
+	 */
+	public boolean isClosed()
+	{
+		return closed;
 	}
 }

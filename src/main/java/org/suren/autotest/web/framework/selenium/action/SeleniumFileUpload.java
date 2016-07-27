@@ -1,7 +1,7 @@
 /**
  * http://surenpi.com
  */
-package org.suren.autotest.web.framework.selenium;
+package org.suren.autotest.web.framework.selenium.action;
 
 import java.io.File;
 import java.net.URL;
@@ -13,6 +13,7 @@ import org.suren.autotest.web.framework.autoit3.AutoItCmd;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.FileUploadAble;
 import org.suren.autotest.web.framework.core.ui.Element;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**

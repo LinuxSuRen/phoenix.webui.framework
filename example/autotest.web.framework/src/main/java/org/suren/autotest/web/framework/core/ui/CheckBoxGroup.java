@@ -5,7 +5,7 @@ package org.suren.autotest.web.framework.core.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.action.ClickAble;
+import org.suren.autotest.web.framework.core.action.CheckAble;
 
 /**
  * 复选框组，代表一组HTML中的复选框
@@ -16,7 +16,7 @@ import org.suren.autotest.web.framework.core.action.ClickAble;
 public class CheckBoxGroup extends AbstractElement
 {
 	@Autowired
-	private ClickAble clickAble;
+	private CheckAble checkAble;
 	
 	/**
 	 * 根据文本选择
@@ -25,6 +25,8 @@ public class CheckBoxGroup extends AbstractElement
 	 */
 	public boolean selectByText(String text)
 	{
+		checkAble.checkByText(this, text);
+		
 		return true;
 	}
 	

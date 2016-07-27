@@ -1,7 +1,7 @@
 /**
 * Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
 */
-package org.suren.autotest.web.framework.selenium;
+package org.suren.autotest.web.framework.selenium.action;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.ui.Element;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
-import org.suren.autotest.web.framework.settings.SettingUtil;
 
 /**
  * 通过Selenium实现点击（单击、双击）

@@ -1,7 +1,7 @@
 /**
 * Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
 */
-package org.suren.autotest.web.framework.selenium;
+package org.suren.autotest.web.framework.selenium.action;
 
 import java.util.List;
 

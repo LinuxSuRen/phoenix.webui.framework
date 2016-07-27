@@ -63,6 +63,10 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 			{
 				by = By.linkText(value);
 			}
+			else if("byText".equals(type))
+			{
+				webEle.findElements(By.tagName(""));
+			}
 			
 			if(by == null)
 			{

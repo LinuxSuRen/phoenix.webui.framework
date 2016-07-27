@@ -206,6 +206,7 @@
 			<xs:enumeration value="byPartialLinkText"></xs:enumeration>
 			<xs:enumeration value="byTagName"></xs:enumeration>
 			<xs:enumeration value="byIFrame"></xs:enumeration>
+			<xs:enumeration value="byText"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

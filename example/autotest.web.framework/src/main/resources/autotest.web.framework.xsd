@@ -81,7 +81,7 @@
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:string">
+		<xs:attribute name="id" type="xs:ID">
 			<xs:annotation>
 				<xs:documentation><![CDATA[当前Page配置的唯一标示，可选。]]></xs:documentation>
 			</xs:annotation>

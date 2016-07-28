@@ -13,6 +13,7 @@ import org.suren.autotest.web.framework.core.LocatorAware;
 public abstract class AbstractLocator implements Locator, LocatorAware
 {
 	private String value;
+	private long timeout;
 
 	@Override
 	public String getValue()
@@ -24,5 +25,17 @@ public abstract class AbstractLocator implements Locator, LocatorAware
 	public void setValue(String value)
 	{
 		this.value = value;
+	}
+
+	@Override
+	public long getTimeout()
+	{
+		return timeout;
+	}
+
+	@Override
+	public void setTimeout(long timeout)
+	{
+		this.timeout = timeout;
 	}
 }

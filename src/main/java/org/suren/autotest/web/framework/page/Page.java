@@ -14,7 +14,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 public class Page
 {
 	/** 页面唯一标示 */
-	private String id;
+	private String			id;
 	/** 当前页面的url地址 */
 	private String			url;
 	/** 当前页面所关联的数据源 */
@@ -50,9 +50,7 @@ public class Page
 	}
 
 	/**
-	 * 获取当前页面的url地址
-	 * 
-	 * @return
+	 * @return 给当前对象设置的url地址
 	 */
 	public String getUrl()
 	{
@@ -62,6 +60,30 @@ public class Page
 	public void setUrl(String url)
 	{
 		this.url = url;
+	}
+	
+	/**
+	 * @return 获取当前页面的url地址
+	 */
+	public String getCurrentUrl()
+	{
+		return engine.getDriver().getCurrentUrl();
+	}
+	
+	/**
+	 * @return 当前页面源码
+	 */
+	public String getPageSource()
+	{
+		return engine.getDriver().getPageSource();
+	}
+
+	/**
+	 * @return 当前页面的title
+	 */
+	public String getTitle()
+	{
+		return engine.getDriver().getTitle();
 	}
 
 	public String getDataSource()

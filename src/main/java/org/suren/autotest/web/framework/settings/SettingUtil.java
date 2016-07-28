@@ -436,6 +436,11 @@ public class SettingUtil implements Closeable
 		pageMap.put(pageClsStr, (Page) pageInstance);
 	}
 	
+	/**
+	 * 元素定位器信息解析
+	 * @author suren
+	 * @date 2016年7月28日 上午8:18:01
+	 */
 	class FieldLocatorsVisitor extends VisitorSupport
 	{
 
@@ -456,10 +461,21 @@ public class SettingUtil implements Closeable
 			
 			String name = node.attributeValue("name");
 			String value = node.attributeValue("value");
+			String timeoutStr = node.attributeValue("timeout");
 			
 			if(StringUtils.isBlank(name) || StringUtils.isBlank(value))
 			{
-				logger.warn("locator has empty name or value.");
+				logger.error("locator has empty name or value.");
+			}
+			
+			long timeout = 0;
+			if(StringUtils.isNotBlank(timeoutStr))
+			{
+				try
+				{
+					timeout = Long.parseLong(timeoutStr);
+				}
+				catch(NumberFormatException e){}
 			}
 			
 			Map<String, Locator> beans = context.getBeansOfType(Locator.class);
@@ -473,8 +489,12 @@ public class SettingUtil implements Closeable
 				
 				if(locator instanceof LocatorAware)
 				{
-					((LocatorAware) locator).setValue(value);
+					LocatorAware locatorAware = (LocatorAware) locator;
+					locatorAware.setValue(value);
+					locatorAware.setTimeout(timeout);
+					
 					absEle.getLocatorList().add(locator);
+					
 					break;
 				}
 			}

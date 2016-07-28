@@ -9,5 +9,15 @@ package org.suren.autotest.web.framework.core;
  */
 public interface LocatorAware
 {
+	/**
+	 * 设置元素定位器的值
+	 * @param value
+	 */
 	void setValue(String value);
+	
+	/**
+	 * 设置超时时间
+	 * @param timeout
+	 */
+	void setTimeout(long timeout);
 }

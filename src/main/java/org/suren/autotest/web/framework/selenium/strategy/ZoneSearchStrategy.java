@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +113,8 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 			
 			try
 			{
+				elementWait(locator.getTimeout(), by);
+				
 				if(webEle == null)
 				{
 					webEle = driver.findElement(by);
@@ -130,6 +134,20 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 		}
 		
 		return webEle;
+	}
+
+	/**
+	 * 根据超时时间来等待元素
+	 * @param locator
+	 * @param by
+	 */
+	private void elementWait(long timeout, By by)
+	{
+		if(timeout > 0)
+		{
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), timeout);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+		}
 	}
 
 }

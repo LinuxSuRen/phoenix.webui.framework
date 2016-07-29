@@ -12,29 +12,22 @@ import org.openqa.selenium.interactions.Actions;
 
 /**
  * @author suren
- * @date 2016年7月27日 下午12:11:23
+ * @date 2016年7月29日 下午2:54:39
  */
-public abstract class SeleniumTextLocator extends AbstractLocator<WebElement>
+public abstract class SeleniumAttrLocator extends AbstractLocator<WebElement>
 {
-
-	@Override
-	public String getType()
-	{
-		return "byText";
-	}
-
 	@Override
 	public WebElement findElement(WebDriver driver)
 	{
-		String text = getValue();
-		
+		String attrName = getAttrName();
+		String attrVal = getValue();
 		By by = getBy();
 
 		List<WebElement> elementList = driver.findElements(by);
 		for(WebElement ele : elementList)
 		{
 			new Actions(driver).moveToElement(ele);
-			if(text.equals(ele.getText()))
+			if(attrVal.equals(ele.getAttribute(attrName)))
 			{
 				return ele;
 			}
@@ -42,5 +35,6 @@ public abstract class SeleniumTextLocator extends AbstractLocator<WebElement>
 		
 		return null;
 	}
-
+	
+	public abstract String getAttrName();
 }

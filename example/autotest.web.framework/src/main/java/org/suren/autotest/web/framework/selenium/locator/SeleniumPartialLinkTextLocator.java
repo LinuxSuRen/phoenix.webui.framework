@@ -11,22 +11,23 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author suren
- * @date 2016年7月25日 下午12:45:15
+ * @date 2016年7月29日 下午2:34:13
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SeleniumXPathLocator extends AbstractLocator<WebElement>
+public class SeleniumPartialLinkTextLocator extends AbstractLocator<WebElement>
 {
 
 	@Override
 	public String getType()
 	{
-		return "byXpath";
+		return "byPartialLinkText";
 	}
 
 	@Override
 	protected By getBy()
 	{
-		return By.xpath(getValue());
+		return By.partialLinkText(getValue());
 	}
+
 }

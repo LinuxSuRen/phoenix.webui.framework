@@ -7,9 +7,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Properties;
 
 import org.openqa.selenium.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * @author suren
@@ -17,6 +21,9 @@ import org.openqa.selenium.io.IOUtils;
  */
 public class AutoItCmd
 {
+
+	private static final Logger logger = LoggerFactory.getLogger(AutoItCmd.class);
+	
 	public static String autoitExe = null;
 	
 	static
@@ -52,8 +59,13 @@ public class AutoItCmd
 		
 		try
 		{
-			Runtime.getRuntime().exec(String.format("%s %s \"%s\" \"%s\"",
-					autoitExe, au3ExePath, title, filePath));
+			String cmd = String.format("%s \"%s\" \"%s\" \"%s\"",
+					autoitExe, au3ExePath, title, filePath);
+			cmd = URLDecoder.decode(cmd, "utf-8");
+			
+			logger.debug(String.format("prepare to exec autoit cmd [%s]", cmd));
+			
+			Runtime.getRuntime().exec(cmd);
 		}
 		catch (IOException e)
 		{
@@ -75,10 +87,5 @@ public class AutoItCmd
 		{
 			return null;
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		execFileChoose("文件上传", new File("d:/a.jpg"));
 	}
 }

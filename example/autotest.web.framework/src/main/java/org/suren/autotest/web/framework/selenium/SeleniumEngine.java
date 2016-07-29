@@ -141,7 +141,7 @@ public class SeleniumEngine
 				}
 				catch (IOException e)
 				{
-					e.printStackTrace();
+					logger.error("loading engine error.", e);
 				}
 				finally
 				{

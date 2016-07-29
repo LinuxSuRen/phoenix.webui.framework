@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -57,9 +59,13 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 			}
 			else if("byIFrame".equals(type))
 			{
-				driver = driver.switchTo().frame(value);
+				driver = engine.turnToRootDriver(driver);
 				
-				logger.debug(String.format("iframe[%s] siwtch success.", value));
+				iframeWait(driver, locator.getTimeout(), value);
+				
+//				driver = driver.switchTo().frame(value);
+				
+				logger.debug(String.format("iframe[%s] siwtch success by nameOrId.", value));
 			}
 			else if("byIFrameIndex".equals(type))
 			{
@@ -73,9 +79,13 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 				if(index != -1)
 				{
 					driver = engine.turnToRootDriver(driver);
-					driver = driver.switchTo().frame(index);
 					
-					logger.debug(String.format("iframe[%s] siwtch success.", value));
+					logger.debug(driver.getCurrentUrl());
+					iframeWait(driver, locator.getTimeout(), index);
+
+//					driver = driver.switchTo().frame(index);
+					
+					logger.debug(String.format("iframe[%s] siwtch success by index.", value));
 				}
 				else
 				{
@@ -92,7 +102,9 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 			}
 			else if("byValue".equals(type))
 			{
-				List<WebElement> eles = driver.findElements(By.tagName("input"));
+				By tmpBy = By.tagName("input");
+				elementWait(driver, locator.getTimeout(), tmpBy);
+				List<WebElement> eles = driver.findElements(tmpBy);
 				for(WebElement item : eles)
 				{
 					if(item.getAttribute("value").equals(locator.getValue()))
@@ -113,7 +125,7 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 			
 			try
 			{
-				elementWait(locator.getTimeout(), by);
+				elementWait(driver, locator.getTimeout(), by);
 				
 				if(webEle == null)
 				{
@@ -141,12 +153,38 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 	 * @param locator
 	 * @param by
 	 */
-	private void elementWait(long timeout, By by)
+	@SuppressWarnings("unchecked")
+	private void elementWait(WebDriver driver, long timeout, By by)
 	{
-		if(timeout > 0)
+		eleWait(driver, timeout, ExpectedConditions.visibilityOfElementLocated(by));
+	}
+
+	@SuppressWarnings("unchecked")
+	private void iframeWait(WebDriver driver, long timeout, int index)
+	{
+		eleWait(driver, timeout, ExpectedConditions.frameToBeAvailableAndSwitchToIt(index));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void iframeWait(WebDriver driver, long timeout, String locator)
+	{
+		eleWait(driver, timeout, ExpectedConditions.frameToBeAvailableAndSwitchToIt(locator));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void eleWait(WebDriver driver, long timeout, ExpectedCondition<? extends SearchContext> ...isTrueArray)
+	{
+		if(timeout > 0 && isTrueArray != null && isTrueArray.length > 0)
 		{
-			WebDriverWait wait = new WebDriverWait(engine.getDriver(), timeout);
-			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			logger.debug(String.format("prepare to waiting [%s] seconds.", timeout));
+			
+			WebDriverWait wait = new WebDriverWait(driver, timeout);
+			for(ExpectedCondition<? extends SearchContext> isTrue : isTrueArray)
+			{
+				wait.until(isTrue);
+			}
+			
+			logger.debug(String.format("prepare to waiting [%s] seconds done.", timeout));
 		}
 	}
 

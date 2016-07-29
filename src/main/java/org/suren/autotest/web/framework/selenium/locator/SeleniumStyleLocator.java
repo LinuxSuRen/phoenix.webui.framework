@@ -6,20 +6,21 @@ package org.suren.autotest.web.framework.selenium.locator;
 
 /**
  * @author suren
- * @date 2016年7月27日 下午4:23:21
+ * @date 2016年7月29日 下午2:59:24
  */
-public abstract class SeleniumValueLocator extends SeleniumAttrLocator
+public abstract class SeleniumStyleLocator extends SeleniumAttrLocator
 {
 
 	@Override
 	public String getType()
 	{
-		return "byValue";
+		return "byStyle";
 	}
 
 	@Override
 	public String getAttrName()
 	{
-		return "value";
+		return "style";
 	}
+
 }

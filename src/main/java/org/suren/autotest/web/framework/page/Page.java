@@ -26,7 +26,7 @@ public class Page
 	/**
 	 * 打开（进入）当前页面
 	 */
-	public void open()
+	public final void open()
 	{
 		engine.openUrl(url);
 	}
@@ -65,7 +65,7 @@ public class Page
 	/**
 	 * @return 获取当前页面的url地址
 	 */
-	public String getCurrentUrl()
+	public final String getCurrentUrl()
 	{
 		return engine.getDriver().getCurrentUrl();
 	}
@@ -73,7 +73,7 @@ public class Page
 	/**
 	 * @return 当前页面源码
 	 */
-	public String getPageSource()
+	public final String getPageSource()
 	{
 		return engine.getDriver().getPageSource();
 	}
@@ -81,7 +81,7 @@ public class Page
 	/**
 	 * @return 当前页面的title
 	 */
-	public String getTitle()
+	public final String getTitle()
 	{
 		return engine.getDriver().getTitle();
 	}

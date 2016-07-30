@@ -6,6 +6,7 @@ package org.suren.autotest.web.framework.selenium.locator;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -34,7 +35,7 @@ public class SeleniumCssLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	public WebElement findElement(WebDriver driver)
+	public WebElement findElement(SearchContext driver)
 	{
 		String css = getValue();
 		String[] cssArray = css.split(" ");
@@ -45,7 +46,11 @@ public class SeleniumCssLocator extends AbstractLocator<WebElement>
 		List<WebElement> elementList = driver.findElements(by);
 		for(WebElement ele : elementList)
 		{
-			new Actions(driver).moveToElement(ele);
+			if(driver instanceof WebDriver)
+			{
+				new Actions((WebDriver) driver).moveToElement(ele);
+			}
+			
 			if(css.equals(ele.getAttribute("class")))
 			{
 				return ele;

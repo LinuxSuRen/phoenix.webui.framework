@@ -8,7 +8,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
-import org.suren.autotest.web.framework.core.action.KeyBoardAble;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 
 /**
@@ -27,8 +26,6 @@ public class Text extends AbstractElement
 	private ValueEditor	valueEditor;
 	@Autowired
 	private ClickAble	clickAble;
-	@Autowired
-	private KeyBoardAble keyBoardAble;
 
 	public Text()
 	{

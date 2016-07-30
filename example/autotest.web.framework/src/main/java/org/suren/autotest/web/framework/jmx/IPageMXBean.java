@@ -4,7 +4,6 @@
 package org.suren.autotest.web.framework.jmx;
 
 import java.util.List;
-import java.util.Map;
 
 import org.suren.autotest.web.framework.page.Page;
 

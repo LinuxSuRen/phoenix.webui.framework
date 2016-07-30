@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.LocatorAware;
-import org.suren.autotest.web.framework.core.ui.Element;
 
 /**
  * @author suren
@@ -48,18 +47,28 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 		this.timeout = timeout;
 	}
 	
-	public E findElement(WebDriver driver)
+	public E findElement(SearchContext driver)
 	{
 		By by = getBy();
 		
-		elementWait(driver, getTimeout(), by);
+		if(driver instanceof WebDriver)
+		{
+			elementWait((WebDriver) driver, getTimeout(), by);
+		}
 		
 		return (E) driver.findElement(by);
 	}
 	
-	public List<E> findElements()
+	public List<E> findElements(SearchContext driver)
 	{
-		return null;
+		By by = getBy();
+		
+		if(driver instanceof WebDriver)
+		{
+			elementWait((WebDriver) driver, getTimeout(), by);
+		}
+		
+		return (List<E>) driver.findElements(by);
 	}
 	
 	protected abstract By getBy();
@@ -70,25 +79,25 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 	 * @param by
 	 */
 	@SuppressWarnings("unchecked")
-	protected void elementWait(WebDriver driver, long timeout, By by)
+	protected boolean elementWait(WebDriver driver, long timeout, By by)
 	{
-		eleWait(driver, timeout, ExpectedConditions.visibilityOfElementLocated(by));
+		return eleWait(driver, timeout, ExpectedConditions.visibilityOfElementLocated(by));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void iframeWait(WebDriver driver, long timeout, int index)
+	protected boolean iframeWait(WebDriver driver, long timeout, int index)
 	{
-		eleWait(driver, timeout, ExpectedConditions.frameToBeAvailableAndSwitchToIt(index));
+		return eleWait(driver, timeout, ExpectedConditions.frameToBeAvailableAndSwitchToIt(index));
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void iframeWait(WebDriver driver, long timeout, String locator)
+	protected boolean iframeWait(WebDriver driver, long timeout, String locator)
 	{
-		eleWait(driver, timeout, ExpectedConditions.frameToBeAvailableAndSwitchToIt(locator));
+		return eleWait(driver, timeout, ExpectedConditions.frameToBeAvailableAndSwitchToIt(locator));
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void eleWait(WebDriver driver, long timeout, ExpectedCondition<? extends SearchContext> ...isTrueArray)
+	protected boolean eleWait(WebDriver driver, long timeout, ExpectedCondition<? extends SearchContext> ...isTrueArray)
 	{
 		if(timeout > 0 && isTrueArray != null && isTrueArray.length > 0)
 		{
@@ -100,7 +109,13 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 				wait.until(isTrue);
 			}
 			
+			return true;
+			
 //			logger.debug(String.format("prepare to waiting [%s] seconds done.", timeout));
+		}
+		else
+		{
+			return false;
 		}
 	}
 }

@@ -4,6 +4,7 @@
 package org.suren.autotest.web.framework.selenium.locator;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,20 @@ public class SeleniumIFrameLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	public WebElement findElement(WebDriver driver)
+	public WebElement findElement(SearchContext driver)
 	{
-		driver = engine.turnToRootDriver(driver);
+		if(!(driver instanceof WebDriver))
+		{
+			throw new IllegalArgumentException("Argument must be instanceof WebDriver.");
+		}
 		
-		iframeWait(driver, getTimeout(), getValue());
+		WebDriver webDriver = (WebDriver) driver;
+		
+		webDriver = engine.turnToRootDriver(webDriver);
+		if(!iframeWait(webDriver, getTimeout(), getValue()))
+		{
+			webDriver.switchTo().frame(getValue());
+		}
 		
 		return null;
 	}

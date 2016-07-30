@@ -48,6 +48,10 @@ public class SeleniumCheck implements CheckAble
 		List<Locator> locatorList = element.getLocatorList();
 		List<Locator> tmpList = new ArrayList<Locator>(locatorList);
 		
+		Locator lastLocator = locatorList.get(locatorList.size() - 1);
+		valueLocator.setHostType(lastLocator.getType());
+		valueLocator.setHostValue(lastLocator.getValue());
+		
 		locatorList.clear();
 		locatorList.add(valueLocator);
 		valueLocator.setValue(text);

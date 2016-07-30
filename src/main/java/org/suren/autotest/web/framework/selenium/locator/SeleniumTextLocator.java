@@ -6,15 +6,21 @@ package org.suren.autotest.web.framework.selenium.locator;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * @author suren
  * @date 2016年7月27日 下午12:11:23
  */
-public abstract class SeleniumTextLocator extends AbstractLocator<WebElement>
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class SeleniumTextLocator extends AbstractTreeLocator
 {
 
 	@Override
@@ -24,7 +30,7 @@ public abstract class SeleniumTextLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	public WebElement findElement(WebDriver driver)
+	public WebElement findElement(SearchContext driver)
 	{
 		String text = getValue();
 		
@@ -33,7 +39,11 @@ public abstract class SeleniumTextLocator extends AbstractLocator<WebElement>
 		List<WebElement> elementList = driver.findElements(by);
 		for(WebElement ele : elementList)
 		{
-			new Actions(driver).moveToElement(ele);
+			if(driver instanceof WebDriver)
+			{
+				new Actions((WebDriver) driver).moveToElement(ele);
+			}
+			
 			if(text.equals(ele.getText()))
 			{
 				return ele;

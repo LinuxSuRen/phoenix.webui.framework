@@ -35,10 +35,14 @@ import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.aspectj.AspectJAopUtils;
+import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
+import org.springframework.aop.framework.DefaultAopProxyFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.LocatorAware;
 import org.suren.autotest.web.framework.core.PageContext;
@@ -49,6 +53,7 @@ import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.jmx.IPageMXBean;
+import org.suren.autotest.web.framework.log.InfoLog;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -73,16 +78,10 @@ public class SettingUtil implements Closeable
 	{
 		if(packages == null)
 		{
-			packages = new String[]{"org.suren"};
-		}
-		else
-		{
-			String[] tmpArray = Arrays.copyOf(packages, packages.length + 1);
-			tmpArray[packages.length] = "org.suren";
-			packages = tmpArray;
+			packages = new String[]{};
 		}
 		
-		context = new AnnotationConfigApplicationContext(packages);
+		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
 		
 		try
 		{

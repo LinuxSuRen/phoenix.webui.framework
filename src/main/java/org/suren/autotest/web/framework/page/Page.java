@@ -40,6 +40,9 @@ public class Page
 		engine.close();
 	}
 	
+	/**
+	 * 关闭当前窗口以外的所有窗口并切换到当前窗口
+	 */
 	public final void closeOthers()
 	{
 		String currentTitle = getTitle();

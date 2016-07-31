@@ -13,7 +13,7 @@
 	
 	<context:component-scan base-package="org.suren.autotest.web.framework, org.suren.sdf.web.test"></context:component-scan>
 	
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 	
-	<p:bean class="org.suren.autotest.web.framework.log.InfoLog"></p:bean>
+	<p:bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
 </p:beans>

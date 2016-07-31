@@ -3,6 +3,7 @@
 */
 package org.suren.autotest.web.framework.page;
 
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
@@ -34,9 +35,26 @@ public class Page
 	/**
 	 * 关闭当前页面
 	 */
-	public void close()
+	public final void close()
 	{
 		engine.close();
+	}
+	
+	public final void closeOthers()
+	{
+		String currentTitle = getTitle();
+		String currentWinHandle = engine.getDriver().getWindowHandle();
+		
+		for(String winHandle : engine.getDriver().getWindowHandles())
+		{
+			WebDriver itemDrive = engine.getDriver().switchTo().window(winHandle);
+			if(!itemDrive.getTitle().equals(currentTitle))
+			{
+				itemDrive.close();
+			}
+		}
+		
+		engine.getDriver().switchTo().window(currentWinHandle);
 	}
 
 	public String getId()

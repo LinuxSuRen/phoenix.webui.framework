@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	<context:property-placeholder location="classpath:packages.properties"/>
 	
-	<context:component-scan base-package="org.suren.autotest.web.framework, org.suren.sdf.web.test"></context:component-scan>
+	<context:component-scan base-package="org.suren.autotest.web.framework"></context:component-scan>
 	
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	

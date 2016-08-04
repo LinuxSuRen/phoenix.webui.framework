@@ -81,7 +81,7 @@ public class SettingUtil implements Closeable
 			packages = new String[]{};
 		}
 		
-		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
+		context = new ClassPathXmlApplicationContext(new String[]{"classpath*:applicationContext.xml"});
 		
 		try
 		{

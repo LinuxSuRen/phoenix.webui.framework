@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.rmi.registry.LocateRegistry;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,13 +34,9 @@ import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.aspectj.AspectJAopUtils;
-import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
-import org.springframework.aop.framework.DefaultAopProxyFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.LocatorAware;
@@ -53,7 +48,6 @@ import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.jmx.IPageMXBean;
-import org.suren.autotest.web.framework.log.InfoLog;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -70,7 +64,7 @@ public class SettingUtil implements Closeable
 	
 	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
-	private ApplicationContext			context;
+	private AbstractApplicationContext			context;
 	
 	private boolean closed = false;
 
@@ -557,6 +551,7 @@ public class SettingUtil implements Closeable
 		if(engine != null)
 		{
 			engine.close();
+			context.destroy();
 			closed = true;
 		}
 		else

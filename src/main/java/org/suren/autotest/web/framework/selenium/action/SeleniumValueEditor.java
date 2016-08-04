@@ -4,11 +4,14 @@
 package org.suren.autotest.web.framework.selenium.action;
 
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
 /**
  * @author suren
@@ -17,7 +20,8 @@ import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 @Component
 public class SeleniumValueEditor implements ValueEditor
 {
-
+	private static final Logger logger = LoggerFactory.getLogger(SeleniumValueEditor.class);
+	
 	@Autowired
 	private SearchStrategyUtils		searchStrategyUtils;
 
@@ -36,9 +40,16 @@ public class SeleniumValueEditor implements ValueEditor
 		}
 
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
-		webEle.click();
-		webEle.clear();
-		webEle.sendKeys(value.toString());
+		if(webEle != null)
+		{
+			webEle.click();
+			webEle.clear();
+			webEle.sendKeys(value.toString());
+		}
+		else
+		{
+			logger.error(String.format("can not found element [%s].", ele));
+		}
 	}
 
 	@Override

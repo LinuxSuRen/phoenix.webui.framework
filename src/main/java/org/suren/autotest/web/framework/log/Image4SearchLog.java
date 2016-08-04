@@ -9,7 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.imageio.ImageIO;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,6 +30,7 @@ import org.openqa.selenium.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
 
 /**
  * @author suren
@@ -37,6 +42,26 @@ public class Image4SearchLog
 {
 	@Autowired
 	private SeleniumEngine engine;
+	
+	private File outputDir;
+	private List<File> elementSearchImageFileList = new ArrayList<File>();
+	
+	private AnimatedGifEncoder animatedGifEncoder;
+	
+	@PostConstruct
+	public void init()
+	{
+		outputDir = new File("d:/ElementSearch/image");
+		if(!outputDir.isDirectory())
+		{
+			outputDir.mkdirs(); // TODO这里没有进行是否创建成功的判断
+		}
+		
+		animatedGifEncoder = new AnimatedGifEncoder();
+		animatedGifEncoder.start(new File(outputDir, System.currentTimeMillis() + ".gif").getAbsolutePath());
+		animatedGifEncoder.setDelay(800);
+		animatedGifEncoder.setRepeat(0);
+	}
 
 	@Around("execution(* org.suren.autotest.web.framework.core.ElementSearchStrategy.search*(..))")
 	public Object hello(ProceedingJoinPoint joinPoint)
@@ -75,15 +100,12 @@ public class Image4SearchLog
 				
 				try
 				{
-					File outputDir = new File("d:/ElementSearch/image");
-					if(!outputDir.isDirectory())
-					{
-						outputDir.mkdirs(); // TODO这里没有进行是否创建成功的判断
-					}
-					
-					output = new FileOutputStream(new File(outputDir, file.getName()));
+					File elementSearchImageFile = new File(outputDir, file.getName());
+					output = new FileOutputStream(elementSearchImageFile);
 					
 					ImageIO.write(bufImg, "gif", output);
+					elementSearchImageFileList.add(elementSearchImageFile);
+					animatedGifEncoder.addFrame(bufImg);
 				}
 				finally
 				{
@@ -97,5 +119,11 @@ public class Image4SearchLog
 		}
 		
 		return res;
+	}
+	
+	@PreDestroy
+	public void finish()
+	{
+		animatedGifEncoder.finish();
 	}
 }

@@ -30,21 +30,14 @@ public class SeleniumValueEditor implements ValueEditor
 	@Override
 	public void setValue(Element ele, Object value)
 	{
-		if (value == null)
+		if(value == null)
 		{
 			value = "";
 		}
 
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
 		webEle.click();
-		try
-		{
-			Thread.sleep(500);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
+		webEle.clear();
 		webEle.sendKeys(value.toString());
 	}
 

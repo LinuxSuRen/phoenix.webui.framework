@@ -199,6 +199,11 @@
 				<xs:documentation><![CDATA[ 定位元素时的等待超时时间。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="extend" type="xs:string">
+			<xs:annotation>
+				<xs:documentation><![CDATA[扩展属性。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:simpleType name="pageFieldLocatorTypeEnum">
@@ -213,6 +218,7 @@
 			<xs:enumeration value="byIFrame"></xs:enumeration>
 			<xs:enumeration value="byIFrameIndex"></xs:enumeration>
 			<xs:enumeration value="byText"></xs:enumeration>
+			<xs:enumeration value="byXAttr"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

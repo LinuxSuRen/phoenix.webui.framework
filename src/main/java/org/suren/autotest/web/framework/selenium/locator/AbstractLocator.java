@@ -46,6 +46,9 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 	{
 		this.timeout = timeout;
 	}
+
+	@Override
+	public void setExtend(String extend){}
 	
 	public E findElement(SearchContext driver)
 	{

@@ -455,6 +455,7 @@ public class SettingUtil implements Closeable
 			String name = node.attributeValue("name");
 			String value = node.attributeValue("value");
 			String timeoutStr = node.attributeValue("timeout");
+			String extend = node.attributeValue("extend");
 			
 			if(StringUtils.isBlank(name) || StringUtils.isBlank(value))
 			{
@@ -485,6 +486,7 @@ public class SettingUtil implements Closeable
 					LocatorAware locatorAware = (LocatorAware) locator;
 					locatorAware.setValue(value);
 					locatorAware.setTimeout(timeout);
+					locatorAware.setExtend(extend);
 					
 					absEle.getLocatorList().add(locator);
 					

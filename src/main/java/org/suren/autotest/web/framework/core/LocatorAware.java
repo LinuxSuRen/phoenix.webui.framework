@@ -20,4 +20,10 @@ public interface LocatorAware
 	 * @param timeout
 	 */
 	void setTimeout(long timeout);
+	
+	/**
+	 * 扩展字段
+	 * @param extend
+	 */
+	void setExtend(String extend);
 }

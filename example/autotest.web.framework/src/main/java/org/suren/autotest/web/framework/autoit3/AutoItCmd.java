@@ -65,9 +65,14 @@ public class AutoItCmd
 			
 			logger.debug(String.format("prepare to exec autoit cmd [%s]", cmd));
 			
-			Runtime.getRuntime().exec(cmd);
+			Process process = Runtime.getRuntime().exec(cmd);
+			process.waitFor();
 		}
 		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (InterruptedException e)
 		{
 			e.printStackTrace();
 		}

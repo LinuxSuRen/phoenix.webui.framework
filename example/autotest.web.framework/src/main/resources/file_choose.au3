@@ -6,8 +6,10 @@ While 1
 	if WinExists($Title) Then
 		ControlGetFocus('$Title')
 		ControlClick($Title, '', '[CLASS:Edit;INSTANCE:1]')
-		Send($FileAbsPath)
-		Send(@CR)
+		While Not (ControlGetText($Title, '', '[CLASS:Edit;INSTANCE:1]') == $FileAbsPath)
+			ControlSetText($Title, '', '[CLASS:Edit;INSTANCE:1]', $FileAbsPath)
+		Wend
+		ControlSend($Title, '', '[CLASS:Edit;INSTANCE:1]', @CR)
 		ExitLoop
 	EndIf
 Wend

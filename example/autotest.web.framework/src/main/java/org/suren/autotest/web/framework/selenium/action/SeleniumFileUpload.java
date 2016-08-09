@@ -53,25 +53,33 @@ public class SeleniumFileUpload implements FileUploadAble
 	}
 
 	@Override
-	public boolean upload(Element element, File file)
+	public boolean upload(Element element, final File file)
 	{
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
 		if(webEle != null)
 		{
-			String title = "打开";
+			final String title = "打开";
 //			title = "选择要上载的问加你，通过：192.168.8.120";
 			
-			AutoItCmd.execFileChoose(title, file);
-			System.out.println("exec auit3 over");
+			new Thread()
+			{
+				@Override
+				public void run()
+				{
+					AutoItCmd.execFileChoose(title, file);
+					System.out.println("exec auit3 over");
+				}
+			}.start();
+			
 			try
 			{
 				Thread.sleep(1000);
 			}
 			catch (InterruptedException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			click(element);
 			
 			return true;

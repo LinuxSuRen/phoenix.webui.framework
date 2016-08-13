@@ -4,6 +4,8 @@
 package org.suren.autotest.web.framework.core.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.CheckAble;
 
@@ -13,6 +15,7 @@ import org.suren.autotest.web.framework.core.action.CheckAble;
  * @date Jul 16, 2016 9:11:49 PM
  */
 @Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CheckBoxGroup extends AbstractElement
 {
 	@Autowired

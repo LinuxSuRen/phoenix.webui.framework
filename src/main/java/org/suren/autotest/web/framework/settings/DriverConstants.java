@@ -13,4 +13,6 @@ public interface DriverConstants
 	String DRIVER_CHROME = "chrome";
 	String DRIVER_IE = "ie";
 	String DRIVER_FIREFOX = "firefox";
+	
+	String ENGINE_CONFIG_FILE_NAME = "engine.properties";
 }

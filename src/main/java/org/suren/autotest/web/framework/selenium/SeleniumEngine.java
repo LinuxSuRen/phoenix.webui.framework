@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +28,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.settings.DriverConstants;
+import static org.suren.autotest.web.framework.settings.DriverConstants.*;
 
 /**
  * 浏览器引擎封装类
@@ -71,19 +72,19 @@ public class SeleniumEngine
 		}
 		
 		String driverStr = getDriverStr();
-		if(DriverConstants.DRIVER_CHROME.equals(driverStr))
+		if(DRIVER_CHROME.equals(driverStr))
 		{
 			driver = new ChromeDriver();
 		}
-		else if(DriverConstants.DRIVER_IE.equals(driverStr))
+		else if(DRIVER_IE.equals(driverStr))
 		{
 			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
 			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			driver = new InternetExplorerDriver(capability);
 		}
-		else if(DriverConstants.DRIVER_FIREFOX.equals(driverStr))
+		else if(DRIVER_FIREFOX.equals(driverStr))
 		{
-			FirefoxProfile profile = new FirefoxProfile();
+			FirefoxProfile profile = new FirefoxProfile(new File("C:\\Users\\zhaoxj\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\8qtjpqgj.default"));
 			driver = new FirefoxDriver(profile);
 		}
 		
@@ -121,33 +122,76 @@ public class SeleniumEngine
 	 * @param enginePro
 	 */
 	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro) {
+		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
+		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
+		
+		enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
+		enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
+		
+		Enumeration<URL> resurceUrls = null;
+		URL defaultResourceUrl = null;
+		try
+		{
+			resurceUrls = classLoader.getResources(ENGINE_CONFIG_FILE_NAME);
+			defaultResourceUrl = classLoader.getResource(ENGINE_CONFIG_FILE_NAME);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if(resurceUrls == null)
+		{
+			return;
+		}
+
+		try
+		{
+			loadFromURL(enginePro, defaultResourceUrl);
+		}
+		catch (IOException e)
+		{
+			logger.error("loading engine error.", e);
+		}
+		
+		while(resurceUrls.hasMoreElements())
+		{
+			URL url = resurceUrls.nextElement();
+			if(url == defaultResourceUrl)
+			{
+				continue;
+			}
+
+			try
+			{
+				loadFromURL(enginePro, url);
+			}
+			catch (IOException e)
+			{
+				logger.error("loading engine error.", e);
+			}
+		}
+		
 		String os = System.getProperty("os.name");
 		if(!"Linux".equals(os))
 		{
-			URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
-			URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
-			
-			enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
-			enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
 		}
 		else
 		{
-			InputStream inputStream = classLoader.getResourceAsStream("engine.properties");
-			if(inputStream != null)
-			{
-				try
-				{
-					enginePro.load(inputStream);
-				}
-				catch (IOException e)
-				{
-					logger.error("loading engine error.", e);
-				}
-				finally
-				{
-					IOUtils.closeQuietly(inputStream);
-				}
-			}
+		}
+	}
+	
+	private void loadFromURL(Properties enginePro, URL url) throws IOException
+	{
+		InputStream inputStream = null;
+		try
+		{
+			inputStream = url.openStream();
+			enginePro.load(inputStream);
+		}
+		finally
+		{
+			IOUtils.closeQuietly(inputStream);
 		}
 	}
 	

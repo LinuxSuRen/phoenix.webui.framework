@@ -21,39 +21,21 @@ public class InfoLog
 	private static final Logger logger = LoggerFactory.getLogger(InfoLog.class);
 	
 	@Around("execution(* org.suren.autotest.web.framework.core.action.ClickAble.click*(..))")
-	public Object clickAround(ProceedingJoinPoint joinPoint)
+	public Object clickAround(ProceedingJoinPoint joinPoint) throws Throwable
 	{
 		Object[] args = joinPoint.getArgs();
 		
-		Object res = null;
-		try
-		{
-			res = joinPoint.proceed(args);
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-		}
-		
-		return res;
+		return joinPoint.proceed(args);
 	}
 	
 	@Around("execution(* org.suren.autotest.web.framework.core.ElementSearchStrategy.search*(..))")
-	public Object hello(ProceedingJoinPoint joinPoint)
+	public Object hello(ProceedingJoinPoint joinPoint) throws Throwable
 	{
 		long beginTime = System.currentTimeMillis();
 		
 		Object[] args = joinPoint.getArgs();
 		
-		Object res = null;
-		try
-		{
-			res = joinPoint.proceed(args);
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-		}
+		Object res = joinPoint.proceed(args);
 		
 		long endTime = System.currentTimeMillis();
 		

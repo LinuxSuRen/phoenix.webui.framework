@@ -64,58 +64,49 @@ public class Image4SearchLog
 	}
 
 	@Around("execution(* org.suren.autotest.web.framework.core.ElementSearchStrategy.search*(..))")
-	public Object hello(ProceedingJoinPoint joinPoint)
+	public Object hello(ProceedingJoinPoint joinPoint) throws Throwable
 	{
 		Object[] args = joinPoint.getArgs();
 		
-		Object res = null;
-		try
+		Object res = joinPoint.proceed(args);
+		if(res instanceof WebElement)
 		{
-			res = joinPoint.proceed(args);
+			WebDriver driver = engine.getDriver();
+			TakesScreenshot shot = (TakesScreenshot) driver;
 			
-			if(res instanceof WebElement)
+			File file = shot.getScreenshotAs(OutputType.FILE);
+			BufferedImage bufImg = ImageIO.read(file);
+			
+			try
 			{
-				WebDriver driver = engine.getDriver();
-				TakesScreenshot shot = (TakesScreenshot) driver;
+				WebElement webEle = (WebElement) res;
+				Point loc = webEle.getLocation();
+				Dimension size = webEle.getSize();
 				
-				File file = shot.getScreenshotAs(OutputType.FILE);
-				BufferedImage bufImg = ImageIO.read(file);
-				
-				try
-				{
-					WebElement webEle = (WebElement) res;
-					Point loc = webEle.getLocation();
-					Dimension size = webEle.getSize();
-					
-					Graphics2D g = bufImg.createGraphics();
-					g.setColor(Color.red);
-					g.drawRect(loc.getX(), loc.getY(), size.getWidth(), size.getHeight());
-				}
-				catch(StaleElementReferenceException e)
-				{
-					//
-				}
-				
-				OutputStream output = null;
-				
-				try
-				{
-					File elementSearchImageFile = new File(outputDir, file.getName());
-					output = new FileOutputStream(elementSearchImageFile);
-					
-					ImageIO.write(bufImg, "gif", output);
-					elementSearchImageFileList.add(elementSearchImageFile);
-					animatedGifEncoder.addFrame(bufImg);
-				}
-				finally
-				{
-					IOUtils.closeQuietly(output);
-				}
+				Graphics2D g = bufImg.createGraphics();
+				g.setColor(Color.red);
+				g.drawRect(loc.getX(), loc.getY(), size.getWidth(), size.getHeight());
 			}
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
+			catch(StaleElementReferenceException e)
+			{
+				//
+			}
+			
+			OutputStream output = null;
+			
+			try
+			{
+				File elementSearchImageFile = new File(outputDir, file.getName());
+				output = new FileOutputStream(elementSearchImageFile);
+				
+				ImageIO.write(bufImg, "gif", output);
+				elementSearchImageFileList.add(elementSearchImageFile);
+				animatedGifEncoder.addFrame(bufImg);
+			}
+			finally
+			{
+				IOUtils.closeQuietly(output);
+			}
 		}
 		
 		return res;

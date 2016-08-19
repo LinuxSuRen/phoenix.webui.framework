@@ -46,10 +46,6 @@ public class SeleniumEngine
 	private boolean		fullScreen;
 	private int			width;
 	private int			height;
-
-	public SeleniumEngine()
-	{
-	}
 	
 	/**
 	 * 浏览器引擎初始化
@@ -71,18 +67,18 @@ public class SeleniumEngine
 			IOUtils.closeQuietly(inputStream);
 		}
 		
-		String driverStr = getDriverStr();
-		if(DRIVER_CHROME.equals(driverStr))
+		String curDriverStr = getDriverStr();
+		if(DRIVER_CHROME.equals(curDriverStr))
 		{
 			driver = new ChromeDriver();
 		}
-		else if(DRIVER_IE.equals(driverStr))
+		else if(DRIVER_IE.equals(curDriverStr))
 		{
 			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
 			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			driver = new InternetExplorerDriver(capability);
 		}
-		else if(DRIVER_FIREFOX.equals(driverStr))
+		else if(DRIVER_FIREFOX.equals(curDriverStr))
 		{
 			FirefoxProfile profile = new FirefoxProfile(new File("C:\\Users\\zhaoxj\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\8qtjpqgj.default"));
 			driver = new FirefoxDriver(profile);
@@ -102,7 +98,7 @@ public class SeleniumEngine
 			}
 			catch(UnsupportedCommandException e)
 			{
-				e.printStackTrace();
+				logger.error("Unsupported fullScreen command.", e);
 			}
 		}
 		
@@ -137,7 +133,7 @@ public class SeleniumEngine
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			logger.error("Engine properties loading error.", e);
 		}
 		
 		if(resurceUrls == null)
@@ -183,15 +179,9 @@ public class SeleniumEngine
 	
 	private void loadFromURL(Properties enginePro, URL url) throws IOException
 	{
-		InputStream inputStream = null;
-		try
+		try(InputStream inputStream = url.openStream())
 		{
-			inputStream = url.openStream();
 			enginePro.load(inputStream);
-		}
-		finally
-		{
-			IOUtils.closeQuietly(inputStream);
 		}
 	}
 	
@@ -205,24 +195,24 @@ public class SeleniumEngine
 		File driverFile = null;
 		if("jar".equals(url.getProtocol()))
 		{
-			InputStream inputStream = null;
 			OutputStream output = null;
-			try
+			driverFile = new File("surenpi.com." + new File(url.getFile()).getName());
+			if(driverFile.exists())
 			{
-				inputStream = url.openStream();
-				
-				driverFile = File.createTempFile("org", "suren");
-				
+				return driverFile.getAbsolutePath();
+			}
+			
+			try(InputStream inputStream = url.openStream())
+			{
 				output = new FileOutputStream(driverFile);
 				IOUtils.copy(inputStream, output);
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				logger.error("Driver file copy error.", e);
 			}
 			finally
 			{
-				IOUtils.closeQuietly(inputStream);
 				IOUtils.closeQuietly(output);
 			}
 		}
@@ -245,11 +235,20 @@ public class SeleniumEngine
 		}
 	}
 	
+	/**
+	 * 转为为初始化的驱动
+	 * @param driver
+	 * @return
+	 */
 	public WebDriver turnToRootDriver(WebDriver driver)
 	{
 		return driver.switchTo().defaultContent();
 	}
 
+	/**
+	 * 打开指定地址
+	 * @param url
+	 */
 	public void openUrl(String url)
 	{
 		driver.get(url);

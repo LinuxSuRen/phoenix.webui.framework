@@ -262,7 +262,7 @@ public class SettingUtil implements Closeable
 		}
 		catch (NoSuchBeanDefinitionException e)
 		{
-			e.printStackTrace();
+			logger.error("Can not found bean SeleniumEngine.", e);
 		}
 
 		// pages parse progress

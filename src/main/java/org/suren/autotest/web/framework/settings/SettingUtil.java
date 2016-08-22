@@ -68,13 +68,8 @@ public class SettingUtil implements Closeable
 	
 	private boolean closed = false;
 
-	public SettingUtil(String ...packages)
+	public SettingUtil()
 	{
-		if(packages == null)
-		{
-			packages = new String[]{};
-		}
-		
 		context = new ClassPathXmlApplicationContext(new String[]{"classpath*:applicationContext.xml"});
 		
 		try
@@ -297,6 +292,7 @@ public class SettingUtil implements Closeable
 		//parse datasources
 		xpath = new DefaultXPath("/ns:autotest/ns:dataSources/ns:dataSource");
 		xpath.setNamespaceContext(simpleNamespaceContext);
+		@SuppressWarnings("unchecked")
 		List<Element> dataSourceNodes = xpath.selectNodes(doc);
 		if(dataSourceNodes != null)
 		{
@@ -496,11 +492,19 @@ public class SettingUtil implements Closeable
 		}
 	}
 
+	/**
+	 * @param name
+	 * @return 给定名称的Page对象
+	 */
 	public Object getPage(String name)
 	{
 		return pageMap.get(name);
 	}
 
+	/**
+	 * @param type
+	 * @return 给定类型的Page对象
+	 */
 	@SuppressWarnings("unchecked")
 	@Deprecated
 	public <T> T getPage(T type)
@@ -508,6 +512,10 @@ public class SettingUtil implements Closeable
 		return (T) getPage(type.getClass().getName());
 	}
 
+	/**
+	 * @param type
+	 * @return 给定类型的Page对象
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getPage(Class<T> type)
 	{
@@ -541,6 +549,9 @@ public class SettingUtil implements Closeable
 		}
 	}
 
+	/**
+	 * 关闭引擎
+	 */
 	@Override
 	public void close() throws IOException
 	{
@@ -563,7 +574,7 @@ public class SettingUtil implements Closeable
 	}
 
 	/**
-	 * @return the closed
+	 * @return 是否已经关闭
 	 */
 	public boolean isClosed()
 	{

@@ -8,9 +8,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -26,6 +31,8 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -40,6 +47,8 @@ import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
 @Aspect
 public class Image4SearchLog
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Image4SearchLog.class);
+	
 	@Autowired
 	private SeleniumEngine engine;
 	
@@ -51,7 +60,26 @@ public class Image4SearchLog
 	@PostConstruct
 	public void init()
 	{
-		outputDir = new File("d:/ElementSearch/image");
+		Properties pro = new Properties();
+		try
+		{
+			Enumeration<URL> urls = Image4SearchLog.class.getClassLoader().getResources(LoggerConstants.IMG_LOG_CONF_FILE_NAME);
+			while(urls.hasMoreElements())
+			{
+				URL url = urls.nextElement();
+				
+				try(InputStream imgCfgStream = url.openStream())
+				{
+					pro.load(imgCfgStream);
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			LOGGER.error("Image4Search config file finding error.", e);
+		}
+		
+		outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR, "d:/ElementSearch/image")); // TODO 这里还没有处理写死的情况
 		if(!outputDir.isDirectory())
 		{
 			outputDir.mkdirs(); // TODO这里没有进行是否创建成功的判断

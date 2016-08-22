@@ -26,13 +26,13 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
 
 /**
+ * 添加搜索时的图片记录
  * @author suren
  * @date 2016年8月4日 上午8:13:56
  */
@@ -92,20 +92,12 @@ public class Image4SearchLog
 				//
 			}
 			
-			OutputStream output = null;
-			
-			try
+			File elementSearchImageFile = new File(outputDir, file.getName());
+			try(OutputStream output = new FileOutputStream(elementSearchImageFile))
 			{
-				File elementSearchImageFile = new File(outputDir, file.getName());
-				output = new FileOutputStream(elementSearchImageFile);
-				
 				ImageIO.write(bufImg, "gif", output);
 				elementSearchImageFileList.add(elementSearchImageFile);
 				animatedGifEncoder.addFrame(bufImg);
-			}
-			finally
-			{
-				IOUtils.closeQuietly(output);
 			}
 		}
 		

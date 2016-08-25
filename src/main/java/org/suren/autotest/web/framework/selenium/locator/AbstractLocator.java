@@ -15,6 +15,7 @@ import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.LocatorAware;
 
 /**
+ * 元素定位器的抽象父类，实现了部分通用方法
  * @author suren
  * @date 2016年7月25日 下午12:43:15
  */
@@ -50,6 +51,7 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 	@Override
 	public void setExtend(String extend){}
 	
+	@SuppressWarnings("unchecked")
 	public E findElement(SearchContext driver)
 	{
 		By by = getBy();
@@ -62,6 +64,7 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 		return (E) driver.findElement(by);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<E> findElements(SearchContext driver)
 	{
 		By by = getBy();
@@ -104,8 +107,6 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 	{
 		if(timeout > 0 && isTrueArray != null && isTrueArray.length > 0)
 		{
-//			logger.debug(String.format("prepare to waiting [%s] seconds.", timeout));
-			
 			WebDriverWait wait = new WebDriverWait(driver, timeout);
 			for(ExpectedCondition<? extends SearchContext> isTrue : isTrueArray)
 			{
@@ -113,8 +114,6 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 			}
 			
 			return true;
-			
-//			logger.debug(String.format("prepare to waiting [%s] seconds done.", timeout));
 		}
 		else
 		{

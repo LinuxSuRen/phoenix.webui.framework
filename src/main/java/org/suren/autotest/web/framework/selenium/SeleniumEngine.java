@@ -218,10 +218,13 @@ public class SeleniumEngine
 		}
 		else
 		{
-			try {
+			try
+			{
 				driverFile = new File(URLDecoder.decode(url.getFile(), "utf-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+			}
+			catch (UnsupportedEncodingException e)
+			{
+				logger.error(e.getMessage(), e);
 			}
 		}
 		
@@ -265,56 +268,94 @@ public class SeleniumEngine
 		}
 	}
 
+	/**
+	 * @return 引擎对象
+	 */
 	public WebDriver getDriver()
 	{
 		return driver;
 	}
 
+	/**
+	 * @return 引擎名称
+	 */
 	public String getDriverStr()
 	{
 		return driverStr;
 	}
 
+	/**
+	 * 设置引擎名称
+	 * @param driverStr
+	 */
 	public void setDriverStr(String driverStr)
 	{
 		this.driverStr = driverStr;
 	}
 
+	/**
+	 * @return 超时时间
+	 */
 	public long getTimeout()
 	{
 		return timeout;
 	}
 
+	/**
+	 * 设定超时时间
+	 * @param timeout
+	 */
 	public void setTimeout(long timeout)
 	{
 		this.timeout = timeout;
 	}
 
+	/**
+	 * @return 全屏返回true，否则返回false
+	 */
 	public boolean isFullScreen()
 	{
 		return fullScreen;
 	}
 
+	/**
+	 * 设置是否要全屏
+	 * @param fullScreen
+	 */
 	public void setFullScreen(boolean fullScreen)
 	{
 		this.fullScreen = fullScreen;
 	}
 
+	/**
+	 * @return 浏览器宽度
+	 */
 	public int getWidth()
 	{
 		return width;
 	}
 
+	/**
+	 * 设置浏览器宽度
+	 * @param width
+	 */
 	public void setWidth(int width)
 	{
 		this.width = width;
 	}
 
+	/**
+	 * @return 浏览器高度
+	 */
 	public int getHeight()
 	{
 		return height;
 	}
 
+	/**
+	 * 设置浏览器高度
+	 * @param height
+	 */
 	public void setHeight(int height)
 	{
 		this.height = height;

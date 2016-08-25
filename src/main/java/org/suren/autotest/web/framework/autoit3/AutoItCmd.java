@@ -10,11 +10,11 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Properties;
 
-import org.openqa.selenium.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 使用autoid来实现文件上传
  * @author suren
  * @date 2016年7月19日 上午8:13:28
  */
@@ -27,31 +27,34 @@ public class AutoItCmd
 	
 	static
 	{
-		InputStream input = null;
-		try
+		try(InputStream input = AutoItCmd.class.getClassLoader().getResourceAsStream("autoit3.properties"))
 		{
-			input = AutoItCmd.class.getClassLoader().getResourceAsStream("autoit3.properties");
-			
 			Properties pro = new Properties();
 			pro.load(input);
 			
 			autoitExe = pro.getProperty("path");
 		}
-		catch(Throwable e)
+		catch (IOException e)
 		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			IOUtils.closeQuietly(input);
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
+	/**
+	 * 执行文件选择
+	 * @param title
+	 * @param file
+	 */
 	public static void execFileChoose(String title, File file)
 	{
 		execFileChoose(title, file.getAbsolutePath());
 	}
 	
+	/**
+	 * 执行文件选择
+	 * @param title
+	 * @param filePath
+	 */
 	public static void execFileChoose(String title, String filePath)
 	{
 		String au3ExePath = getAu3ExePath();
@@ -68,17 +71,14 @@ public class AutoItCmd
 			Process process = Runtime.getRuntime().exec(cmd);
 			process.waitFor();
 		}
-		catch (IOException e)
+		catch (IOException | InterruptedException e)
 		{
-			e.printStackTrace();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 
 	/**
+	 * 获取autoit的安装目录
 	 * @return
 	 */
 	private static String getAu3ExePath()

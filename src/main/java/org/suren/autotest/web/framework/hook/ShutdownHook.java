@@ -16,7 +16,7 @@ import org.suren.autotest.web.framework.settings.SettingUtil;
  */
 public class ShutdownHook extends Thread
 {
-	private static final Logger logger = LoggerFactory.getLogger(ShutdownHook.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownHook.class);
 	
 	private SettingUtil settingUtil;
 	
@@ -26,13 +26,13 @@ public class ShutdownHook extends Thread
 	public ShutdownHook(SettingUtil settingUtil)
 	{
 		this.settingUtil = settingUtil;
-		logger.info("egnine close hook already regist.");
+		LOGGER.info("egnine close hook already regist.");
 	}
 
 	@Override
 	public void run()
 	{
-		logger.info("prepare to execute engine close operation.");
+		LOGGER.info("prepare to execute engine close operation.");
 		
 		try
 		{
@@ -40,10 +40,10 @@ public class ShutdownHook extends Thread
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 
-		logger.info("engine closed successful.");
+		LOGGER.info("engine closed successful.");
 	}
 
 }

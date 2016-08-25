@@ -13,7 +13,9 @@
 	
 	<context:component-scan base-package="org.suren.autotest.web.framework"></context:component-scan>
 	
+	<!-- 
 	<aop:aspectj-autoproxy proxy-target-class="true" />
+	 -->
 	
 	<p:bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
 </p:beans>

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
+ * 元素值定位器
  * @author suren
  * @date 2016年7月27日 下午4:23:21
  */

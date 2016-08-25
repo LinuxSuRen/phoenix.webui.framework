@@ -7,6 +7,8 @@ import java.io.File;
 import java.net.URL;
 
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.autoit3.AutoItCmd;
@@ -17,12 +19,14 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**
+ * 利用Selenium实现文件上传
  * @author suren
  * @date 2016年7月19日 上午9:24:34
  */
 @Component
 public class SeleniumFileUpload implements FileUploadAble
 {
+	private static final Logger logger = LoggerFactory.getLogger(SeleniumFileUpload.class);
 
 	@Autowired
 	private SeleniumEngine			engine;
@@ -34,15 +38,13 @@ public class SeleniumFileUpload implements FileUploadAble
 	@Override
 	public boolean isEnabled(Element element)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return clickAble.isEnabled(element);
 	}
 
 	@Override
 	public boolean isHidden(Element element)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return clickAble.isHidden(element);
 	}
 
 	@Override
@@ -77,7 +79,7 @@ public class SeleniumFileUpload implements FileUploadAble
 			}
 			catch (InterruptedException e)
 			{
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 			
 			click(element);
@@ -88,7 +90,7 @@ public class SeleniumFileUpload implements FileUploadAble
 			}
 			catch (InterruptedException e)
 			{
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 			
 			return true;

@@ -1,29 +1,27 @@
-/**
-* Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
-*/
 package org.suren.autotest.web.framework.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Text;
-
 
 /**
- * 
- * 此处填写类简介
- * <p>
- * 此处填写类说明
- * </p>
- * @author sunyp
- * @since jdk1.6
- * 2016年6月24日
- *  
+ * 反射工具类
+ * @author suren
+ * @date 2016年8月24日 下午3:05:12
  */
-
-public class BeanUtil {
-	public static void set(Object instance, String name, Object value) {
+public class BeanUtil
+{
+	private BeanUtil(){}
+	
+	/**
+	 * 根据属性名称设置值
+	 * @param instance
+	 * @param name
+	 * @param value
+	 */
+	public static void set(Object instance, String name, Object value)
+	{
 		if(value == null)
 		{
 			return;
@@ -32,11 +30,6 @@ public class BeanUtil {
 		Class<? extends Object> cls = instance.getClass();
 		
 		try {
-			Class<?> clz = Text.class;
-			if(value instanceof Button) {
-				clz = Button.class;
-			}
-			
 			Method setterMethod = cls.getMethod("set" + name.substring(0, 1).toUpperCase() + name.substring(1), value.getClass());
 
 			if(value instanceof Button) {
@@ -44,20 +37,8 @@ public class BeanUtil {
 			}else{
 				setterMethod.invoke(instance, value);
 			}
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
+ * 元素文本定位器
  * @author suren
  * @date 2016年7月27日 下午12:11:23
  */

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
+ * id定位器
  * @author suren
  * @date 2016年7月25日 上午8:11:27
  */

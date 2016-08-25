@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.poi.util.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -19,20 +18,28 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 
 /**
+ * xml格式的数据源实现
  * @author suren
  * @date Jul 17, 2016 8:56:51 AM
  */
 @Component("xml_data_source")
 public class XmlDataSource implements DataSource
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(XmlDataSource.class);
+	
 	private Page page;
 
+	/**
+	 * 加载xml格式的数据到page对象中
+	 */
 	@Override
 	public boolean loadData(DataResource resource, Page page)
 	{
@@ -43,24 +50,13 @@ public class XmlDataSource implements DataSource
 			return false;
 		}
 		
-		InputStream inputStream = null;
-		try
+		try(InputStream inputStream = url.openStream())
 		{
-			inputStream = url.openStream();
-			
 			parse(inputStream);
 		}
-		catch (IOException e)
+		catch (IOException | DocumentException e)
 		{
-			e.printStackTrace();
-		}
-		catch (DocumentException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			IOUtils.closeQuietly(inputStream);
+			LOGGER.error(e.getMessage(), e);
 		}
 		
 		return false;
@@ -85,6 +81,7 @@ public class XmlDataSource implements DataSource
 		
 		XPath xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page", pageClass));
 		xpath.setNamespaceContext(simpleNamespaceContext);
+		@SuppressWarnings("unchecked")
 		List<Element> dataSourceList = xpath.selectNodes(doc);
 		if (dataSourceList == null)
 		{
@@ -122,20 +119,9 @@ public class XmlDataSource implements DataSource
 						Text text = (Text) eleObj;
 						text.setValue(value);
 					}
-					catch (IllegalAccessException e)
+					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					catch (IllegalArgumentException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					catch (InvocationTargetException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						LOGGER.error(e.getMessage(), e);
 					}
 				}
 			});

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
+ * css定位器
  * @author suren
  * @date 2016年7月25日 上午8:12:32
  */

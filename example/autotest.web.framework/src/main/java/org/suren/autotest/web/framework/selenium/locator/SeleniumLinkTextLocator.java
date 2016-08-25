@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
+ * 超链接文本定位器
  * @author suren
  * @date 2016年7月25日 下午1:16:59
  */

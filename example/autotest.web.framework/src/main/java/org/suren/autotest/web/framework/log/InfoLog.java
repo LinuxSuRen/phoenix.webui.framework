@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
+ * 有关元素查找所需时间的日志输出
  * @author suren
  * @date Jul 30, 2016 10:09:16 PM
  */
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class InfoLog
 {
-	private static final Logger logger = LoggerFactory.getLogger(InfoLog.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfoLog.class);
 	
 	@Around("execution(* org.suren.autotest.web.framework.core.action.ClickAble.click*(..))")
 	public Object clickAround(ProceedingJoinPoint joinPoint) throws Throwable
@@ -39,7 +40,7 @@ public class InfoLog
 		
 		long endTime = System.currentTimeMillis();
 		
-		logger.debug(String.format("target [%s] time [%s].",
+		LOGGER.debug(String.format("target [%s] time [%s].",
 				joinPoint.getSignature(), endTime - beginTime));
 		
 		return res;

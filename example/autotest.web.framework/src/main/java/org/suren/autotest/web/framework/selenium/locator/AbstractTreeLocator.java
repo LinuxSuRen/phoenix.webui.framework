@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.suren.autotest.web.framework.core.LocatorAware;
 
 /**
+ * 通过属性结构来定位元素的抽象父类
  * @author suren
  * @date Jul 30, 2016 7:47:18 PM
  */
@@ -74,14 +75,17 @@ public abstract class AbstractTreeLocator extends AbstractLocator<WebElement>
 	{
 		return hostType;
 	}
+	
 	public void setHostType(String hostType)
 	{
 		this.hostType = hostType;
 	}
+	
 	public String getHostValue()
 	{
 		return hostValue;
 	}
+	
 	public void setHostValue(String hostValue)
 	{
 		this.hostValue = hostValue;

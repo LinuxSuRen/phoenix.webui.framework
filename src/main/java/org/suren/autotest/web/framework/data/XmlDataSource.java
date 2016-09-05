@@ -44,7 +44,13 @@ public class XmlDataSource implements DataSource
 	public boolean loadData(DataResource resource, Page page)
 	{
 		this.page = page;
-		URL url = resource.getUrl();
+		URL url = null;
+		try {
+			url = resource.getUrl();
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		
 		if(url == null)
 		{
 			return false;

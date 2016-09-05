@@ -3,6 +3,8 @@
  */
 package org.suren.autotest.web.framework.data;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -12,12 +14,17 @@ import java.net.URL;
  */
 public class FileResource implements DataResource
 {
+	private File file;
+	
+	public FileResource(File file)
+	{
+		this.file = file;
+	}
 
 	@Override
-	public URL getUrl()
+	public URL getUrl() throws MalformedURLException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return file.toURI().toURL();
 	}
 
 }

@@ -1,12 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.suren</groupId>
 		<artifactId>org.suren.parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+	 
 	<groupId>org.suren.autotest</groupId>
 	<artifactId>autotest.web.framework</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
@@ -59,6 +60,21 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>maven.surenpi.com</id>
+			<name>SuRen Maven Repositories</name>
+			<url>http://maven.surenpi.com/nexus/content/repositories/public/</url>
+			<snapshots>
+				<enabled>true</enabled>
+        		<updatePolicy>always</updatePolicy>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.suren</groupId>

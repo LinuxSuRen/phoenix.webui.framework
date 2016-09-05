@@ -50,9 +50,9 @@ public class XmlDataSource implements DataSource
 			return false;
 		}
 		
-		try(InputStream inputStream = url.openStream())
+		try(InputStream inputStream = url.openStream()) //打开文件流
 		{
-			parse(inputStream);
+			parse(inputStream); //解析xml数据源文件
 		}
 		catch (IOException | DocumentException e)
 		{

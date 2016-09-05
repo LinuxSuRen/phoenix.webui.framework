@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.page.Page;
 
 /**
+ * Excel格式的数据源实现类
  * @author suren
  * @date Jul 17, 2016 8:56:31 AM
  */
@@ -33,7 +34,14 @@ public class ExcelDataSource implements DataSource
 	public boolean loadData(DataResource resource, Page page)
 	{
 		this.page = page;
-		URL url = resource.getUrl();
+		URL url = null;
+		
+		try {
+			url = resource.getUrl();
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		
 		if(url == null)
 		{
 			return false;

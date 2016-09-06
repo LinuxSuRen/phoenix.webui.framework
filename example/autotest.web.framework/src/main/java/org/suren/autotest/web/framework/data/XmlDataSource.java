@@ -69,6 +69,7 @@ public class XmlDataSource implements DataSource
 	}
 
 	/**
+	 * 解析xml文档
 	 * @param inputStream
 	 * @throws DocumentException 
 	 */
@@ -79,6 +80,10 @@ public class XmlDataSource implements DataSource
 		parse(document);
 	}
 	
+	/**
+	 * 解析docment对象
+	 * @param doc
+	 */
 	private void parse(Document doc)
 	{
 		String pageClass = page.getClass().getName();

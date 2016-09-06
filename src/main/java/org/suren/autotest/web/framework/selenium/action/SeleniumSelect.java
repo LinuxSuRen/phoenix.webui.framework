@@ -14,6 +14,7 @@ import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**
+ * 下拉列表实现
  * @author suren
  * @since jdk1.6
  * @since 3.1.1-SNAPSHOT 2016年7月1日

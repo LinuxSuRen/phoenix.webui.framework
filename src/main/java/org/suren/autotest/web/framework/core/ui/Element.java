@@ -8,15 +8,25 @@ import java.util.List;
 import org.suren.autotest.web.framework.core.Locator;
 
 /**
+ * 页面元素的顶层接口
  * @author suren
  * @since jdk1.6 2016年6月30日
  */
 public interface Element
 {
+	/**
+	 * @return 标签id属性
+	 */
 	String getId();
 
+	/**
+	 * @return 标签name属性
+	 */
 	String getName();
 
+	/**
+	 * @return 标签名称
+	 */
 	String getTagName();
 
 	/**
@@ -24,6 +34,9 @@ public interface Element
 	 */
 	String getCSS();
 
+	/**
+	 * @return 标签xpath路径
+	 */
 	String getXPath();
 
 	/**

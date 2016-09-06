@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
-import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
 /**
+ * 给文本框中填入值
  * @author suren
  * @since jdk1.6 2016年6月29日
  */
@@ -31,6 +31,9 @@ public class SeleniumValueEditor implements ValueEditor
 		return searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele).getText();
 	}
 
+	/**
+	 * 实现逻辑：点击文本框、清空文本框、填入值 
+	  */
 	@Override
 	public void setValue(Element ele, Object value)
 	{

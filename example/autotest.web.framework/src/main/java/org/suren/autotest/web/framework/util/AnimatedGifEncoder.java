@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * Gif图片编码器
  * @author suren
  * @date 2016年8月4日 下午12:31:31
  */

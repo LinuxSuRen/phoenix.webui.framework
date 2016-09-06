@@ -6,7 +6,11 @@ package org.suren.autotest.web.framework.data;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,32 +32,40 @@ public class ExcelDataSource implements DataSource
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelDataSource.class);
 	
-	private Page page;
+	/** 要填充的page对象 */
+	private Page targetPage;
+	
+	private List<Page> pageCache = new LinkedList<Page>();
+	private Set<DataResource> dataResourceSet = new HashSet<DataResource>();
 
 	@Override
 	public boolean loadData(DataResource resource, Page page)
 	{
-		this.page = page;
-		URL url = null;
+		this.targetPage = page;
 		
-		try {
-			url = resource.getUrl();
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-		
-		if(url == null)
+		if(!dataResourceSet.contains(resource))
 		{
-			return false;
-		}
-		
-		try(InputStream inputStream = url.openStream()) //打开文件流
-		{
-			parse(inputStream); //解析excel数据源文件
-		}
-		catch (IOException e)
-		{
-			LOGGER.error(e.getMessage(), e);
+			URL url = null;
+			
+			try {
+				url = resource.getUrl();
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+			
+			if(url == null)
+			{
+				return false;
+			}
+			
+			try(InputStream inputStream = url.openStream()) //打开文件流
+			{
+				parse(inputStream); //解析excel数据源文件
+			}
+			catch (IOException e)
+			{
+				LOGGER.error(e.getMessage(), e);
+			}
 		}
 		
 		return false;
@@ -64,7 +76,8 @@ public class ExcelDataSource implements DataSource
 	 * @param inputStream
 	 * @throws IOException 
 	 */
-	private void parse(InputStream inputStream) throws IOException {
+	private void parse(InputStream inputStream) throws IOException
+	{
 		Workbook workbook = new XSSFWorkbook(inputStream);
 		
 		Sheet sheet = workbook.getSheetAt(0);
@@ -76,14 +89,26 @@ public class ExcelDataSource implements DataSource
 	 * 解析sheet内容
 	 * @param sheet
 	 */
-	private void sheetParse(Sheet sheet) {
+	private void sheetParse(Sheet sheet)
+	{
 		Row headerRow = sheet.getRow(0);
 		
 		Iterator<Cell> cellIterator = headerRow.iterator();
-		while(cellIterator.hasNext()) {
+		while(cellIterator.hasNext())
+		{
 			Cell cell = cellIterator.next();
 			System.out.println(cell.getStringCellValue());
 		}
+		
+		rowParse(null);
+	}
+	
+	/**
+	 * 行解析
+	 * @param row
+	 */
+	private void rowParse(Row row)
+	{
 	}
 
 }

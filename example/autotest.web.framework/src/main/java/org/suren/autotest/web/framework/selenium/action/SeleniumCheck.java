@@ -23,6 +23,7 @@ import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
 /**
+ * 复选框选择
  * @author suren
  * @date Jul 27, 2016 1:00:30 PM
  */

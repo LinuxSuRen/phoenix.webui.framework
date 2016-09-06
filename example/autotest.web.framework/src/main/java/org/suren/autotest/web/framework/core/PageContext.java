@@ -8,6 +8,7 @@ import java.util.Map;
 import org.suren.autotest.web.framework.page.Page;
 
 /**
+ * 页面上下文对象
  * @author suren
  * @date 2016年7月22日 下午2:41:26
  */

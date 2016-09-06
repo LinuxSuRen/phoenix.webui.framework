@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ import java.util.Map;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -44,7 +42,7 @@ import org.suren.autotest.web.framework.core.PageContext;
 import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.data.DataResource;
+import org.suren.autotest.web.framework.data.ClasspathResource;
 import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.jmx.IPageMXBean;
@@ -74,7 +72,9 @@ public class SettingUtil implements Closeable
 		
 		try
 		{
-			Map<String, PageContextAware> pageContextAwareList = context.getBeansOfType(PageContextAware.class);
+			//设置页面上下文对象
+			Map<String, PageContextAware> pageContextAwareList =
+					context.getBeansOfType(PageContextAware.class);
 			if(pageContextAwareList != null)
 			{
 				for(PageContextAware ware : pageContextAwareList.values())
@@ -83,11 +83,13 @@ public class SettingUtil implements Closeable
 				}
 			}
 			
+			//提供运行时管理功能
 			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
 			
 			LocateRegistry.createRegistry(5006);
 			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-			server.registerMBean(pageMXBean, new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+			server.registerMBean(pageMXBean,
+					new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
 		}
 		catch(Exception e)
 		{
@@ -108,17 +110,9 @@ public class SettingUtil implements Closeable
 	public void read(String filePath) throws Exception
 	{
 		File file = new File(filePath);
-		FileInputStream fis = null;
-
-		try
+		try(FileInputStream fis = new FileInputStream(file))
 		{
-			fis = new FileInputStream(file);
-
 			read(fis);
-		}
-		finally
-		{
-			IOUtils.closeQuietly(fis);
 		}
 	}
 
@@ -132,11 +126,9 @@ public class SettingUtil implements Closeable
 	public void readFromClassPath(String fileName)
 			throws IOException, DocumentException
 	{
-		InputStream inputStream = null;
-
-		inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
+		ClassLoader classLoader = this.getClass().getClassLoader();
 		
-		try
+		try(InputStream inputStream = classLoader.getResourceAsStream(fileName))
 		{
 			Validation.validationFramework(inputStream); //这里会把流关闭了
 		}
@@ -145,20 +137,14 @@ public class SettingUtil implements Closeable
 			logger.error("framework validation process error.", e);
 		}
 		
-		try
+		//读取主配置文件
+		try(InputStream confInput = classLoader.getResourceAsStream(fileName))
 		{
-			
-			inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
-
-			read(inputStream);
+			read(confInput);
 		}
 		catch (Exception e)
 		{
 			logger.error("main config parse process error.", e);
-		}
-		finally
-		{
-			IOUtils.closeQuietly(inputStream);
 		}
 	}
 
@@ -194,16 +180,10 @@ public class SettingUtil implements Closeable
 			}
 			
 			DataSource dataSource = context.getBean(dataSourceInfo.getType(), DataSource.class);
+			ClasspathResource clzResource = new ClasspathResource(
+					SettingUtil.class, dataSourceInfo.getResource());
 			
-			dataSource.loadData(new DataResource()
-			{
-
-				@Override
-				public URL getUrl()
-				{
-					return SettingUtil.class.getClassLoader().getResource(dataSourceInfo.getResource());
-				}
-			}, page);
+			dataSource.loadData(clzResource, page);
 		}
 	}
 

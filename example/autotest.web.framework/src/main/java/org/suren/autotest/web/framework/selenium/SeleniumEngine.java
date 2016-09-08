@@ -44,6 +44,7 @@ public class SeleniumEngine
 	private WebDriver	driver;
 	private long		timeout;
 	private boolean		fullScreen;
+	private boolean 	maximize;
 	private int			width;
 	private int			height;
 	
@@ -100,6 +101,11 @@ public class SeleniumEngine
 			{
 				logger.error("Unsupported fullScreen command.", e);
 			}
+		}
+		
+		if(maximize)
+		{
+			window.maximize();
 		}
 		
 		if(getWidth() > 0)
@@ -359,5 +365,21 @@ public class SeleniumEngine
 	public void setHeight(int height)
 	{
 		this.height = height;
+	}
+
+	/**
+	 * @return the maximize
+	 */
+	public boolean isMaximize()
+	{
+		return maximize;
+	}
+
+	/**
+	 * @param maximize the maximize to set
+	 */
+	public void setMaximize(boolean maximize)
+	{
+		this.maximize = maximize;
 	}
 }

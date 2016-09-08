@@ -206,7 +206,8 @@ public class SettingUtil implements Closeable
 
 		String driverStr = engineEle.attributeValue("driver");
 		String timeOutStr = engineEle.attributeValue("timeout");
-		String fullScreenStr = engineEle.attributeValue("fullScreen");
+		String fullScreenStr = engineEle.attributeValue("fullScreen", "false");
+		String maximizeStr = engineEle.attributeValue("maximize", "true");
 		String widthStr = engineEle.attributeValue("width");
 		String heightStr = engineEle.attributeValue("height");
 		try
@@ -232,6 +233,7 @@ public class SettingUtil implements Closeable
 			catch(NumberFormatException e){}
 			
 			seleniumEngine.setFullScreen(Boolean.parseBoolean(fullScreenStr));
+			seleniumEngine.setMaximize(Boolean.parseBoolean(maximizeStr));
 			
 			seleniumEngine.init();
 		}

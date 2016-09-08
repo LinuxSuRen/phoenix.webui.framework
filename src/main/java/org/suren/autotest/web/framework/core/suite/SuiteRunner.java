@@ -97,7 +97,7 @@ public class SuiteRunner
 				}
 			}
 			
-			Thread.sleep(9000);
+			Thread.sleep(suite.getAfterSleep());
 		}
 	}
 }

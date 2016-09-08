@@ -27,6 +27,12 @@ public class SuiteParser
 {
 	private SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 	
+	/**
+	 * 解析测试套件配置文件
+	 * @param suiteInputStream 配置文件输入流
+	 * @return 测试套件对象
+	 * @throws DocumentException
+	 */
 	public Suite parse(InputStream suiteInputStream) throws DocumentException
 	{
 		Document document = new SAXReader().read(suiteInputStream);
@@ -43,7 +49,9 @@ public class SuiteParser
 		
 		Suite suite = new Suite();
 		String xmlConfPath = suiteEle.attributeValue("xml");
+		String afterSleep = suiteEle.attributeValue("afterSleep", "0");
 		suite.setXmlConfPath(xmlConfPath);
+		suite.setAfterSleep(Long.parseLong(afterSleep));
 		
 		List<SuitePage> pageList = new ArrayList<SuitePage>();
 		suite.setPageList(pageList);
@@ -73,17 +81,23 @@ public class SuiteParser
 		{
 			String pageCls = pageEle.attributeValue("class");
 			
-			xpath = new DefaultXPath("/ns:suite/ns:page/ns:actions");
+			xpath = new DefaultXPath("ns:actions");
 			xpath.setNamespaceContext(simpleNamespaceContext);
 			
-			Element actionsEle = (Element) xpath.selectSingleNode(document);
+			Element actionsEle = (Element) xpath.selectSingleNode(pageEle);
 			if(actionsEle == null)
 			{
 				throw new RuntimeException("can not found actions config.");
 			}
 			
-			String beforeSleep = actionsEle.attributeValue("beforeSleep");
-			String afterSleep = actionsEle.attributeValue("afterSleep");
+			String disable = actionsEle.attributeValue("disable", "false");
+			if(Boolean.parseBoolean(disable))
+			{
+				continue;
+			}
+			
+			String beforeSleep = actionsEle.attributeValue("beforeSleep", "0");
+			String afterSleep = actionsEle.attributeValue("afterSleep", "0");
 			
 			List<SuiteAction> actionList = new ArrayList<SuiteAction>();
 			
@@ -91,26 +105,34 @@ public class SuiteParser
 			suitePage.setActionList(actionList);
 			pageList.add(suitePage);
 			
-			parse(actionList, document);
+			parse(actionList, actionsEle, beforeSleep, afterSleep);
 		}
 	}
 
 	/**
+	 * 解析具体的action元素
 	 * @param actionList
-	 * @param document
+	 * @param actionsEle action组元素
+	 * @param afterSleep action所在组的休眠时间
+	 * @param beforeSleep action所在组的休眠时间
 	 */
-	private void parse(List<SuiteAction> actionList, Document document)
+	private void parse(List<SuiteAction> actionList, Element actionsEle,
+			String beforeSleep, String afterSleep)
 	{
-		DefaultXPath xpath = new DefaultXPath("/ns:suite/ns:page/ns:actions/ns:action");
+		DefaultXPath xpath = new DefaultXPath("ns:action");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		
-		List<Element> actionEleList = xpath.selectNodes(document);
+		List<Element> actionEleList = xpath.selectNodes(actionsEle);
 		for(Element actionEle : actionEleList)
 		{
 			String field = actionEle.attributeValue("field");
 			String name = actionEle.attributeValue("name");
+			String actionBeforeSleep = actionEle.attributeValue("beforeSleep", beforeSleep);
+			String actionAfterSleep = actionEle.attributeValue("afterSleep", afterSleep);
 			
 			SuiteAction suiteAction = new SuiteAction(field, name);
+			suiteAction.setBeforeSleep(Long.parseLong(actionBeforeSleep));
+			suiteAction.setAfterSleep(Long.parseLong(actionAfterSleep));
 			actionList.add(suiteAction);
 		}
 	}

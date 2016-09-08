@@ -53,6 +53,7 @@
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="fullScreen" type="xs:boolean" />
+		<xs:attribute name="maximize" type="xs:boolean" />
 		<xs:attribute name="width" type="xs:positiveInteger">
 			<xs:annotation>
 				<xs:documentation><![CDATA[浏览器宽度，必须为正整数，单位为像素，可选。]]></xs:documentation>

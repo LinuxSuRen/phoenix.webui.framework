@@ -16,6 +16,8 @@ public class Suite
 	private String xmlConfPath;
 	/** Page对象列表，按照该顺序来执行任务 */
 	private List<SuitePage> pageList;
+	/** 测试套件运行结束后的休眠时间（毫秒） */
+	private long afterSleep;
 
 	/**
 	 * @return the xmlConfPath
@@ -47,5 +49,21 @@ public class Suite
 	public void setPageList(List<SuitePage> pageList)
 	{
 		this.pageList = pageList;
+	}
+
+	/**
+	 * @return the afterSleep
+	 */
+	public long getAfterSleep()
+	{
+		return afterSleep;
+	}
+
+	/**
+	 * @param afterSleep the afterSleep to set
+	 */
+	public void setAfterSleep(long afterSleep)
+	{
+		this.afterSleep = afterSleep;
 	}
 }

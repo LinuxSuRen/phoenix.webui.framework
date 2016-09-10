@@ -88,7 +88,7 @@ public class XmlDataSource implements DataSource
 	{
 		String pageClass = page.getClass().getName();
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
-		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
+		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
 		
 		XPath xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page", pageClass));
 		xpath.setNamespaceContext(simpleNamespaceContext);

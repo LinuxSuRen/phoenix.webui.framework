@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://suite.surenpi.com"
+	xmlns:suren="http://suite.surenpi.com"
+	elementFormDefault="qualified">
+	<xs:element name="suite">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="page" type="suren:page">
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[用于测试的Page类配置。]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="pageConfig" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[当前测试流程使用的Page描述文件。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="page">
+		<xs:sequence>
+			<xs:element name="actions" type="suren:actions">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="class" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[Page类对应的全路径，必填。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="actions">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[操作集合，必填。]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="action" type="suren:action" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[具体的操作描述，必填。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="commonActionAttr">
+		</xs:attributeGroup>
+	</xs:complexType>
+
+	<xs:complexType name="action">
+		<xs:attribute name="field" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[动作对应Page类中的属性名称（大小写敏感）。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="suren:actionEnum" default="click" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[动作对应的操作名。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:attributeGroup name="commonActionAttr">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[子节点可以覆盖父节点的配置。]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="beforeSleep" type="xs:positiveInteger" default="0" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[操作前的休眠时间（单位：毫秒），可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="afterSleep" type="xs:positiveInteger" default="0" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[操作后的休眠时间（单位：毫秒），可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="disable" type="xs:boolean" default="false" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[是否禁用该操作，true为禁用，false为启用，可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="repeat" type="xs:positiveInteger" default="1" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[重复次数（默认为：1），可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+		
+	<xs:simpleType name="actionEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="fillValue">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[填入文本。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="click">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[单击。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="enter">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[回车键。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="upload">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[上传文件。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="selectByText">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[根据文本选择。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -18,18 +19,80 @@ import org.suren.autotest.web.framework.settings.SettingUtil;
 import org.suren.autotest.web.framework.settings.SuiteParser;
 
 /**
+ * 测试套件运行入口类
  * @author suren
  * @date 2016年9月7日 下午10:31:09
  */
 public class SuiteRunner
 {
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
-		SuiteParser suiteParser = new SuiteParser();
+		if(args == null)
+		{
+			System.out.println("need runner_suite.xml, please recheck!");
+			return;
+		}
+		else
+		{
+			System.out.println(Arrays.toString(args));
+		}
 		
+		SuiteParser suiteParser = new SuiteParser();
+		for(String path : args)
+		{
+			try
+			{
+				runFromClasspathFile(suiteParser, path);
+			}
+			catch (NoSuchFieldException e)
+			{
+				e.printStackTrace();
+			}
+			catch (SecurityException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			catch (DocumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * 从类路径中查找配置文件
+	 * @param suiteParser
+	 * @param filePath
+	 * @throws IOException
+	 * @throws DocumentException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InterruptedException
+	 */
+	private static void runFromClasspathFile(SuiteParser suiteParser, String filePath)
+			throws IOException, DocumentException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException
+	{
 		ClassLoader classLoader = SuiteRunner.class.getClassLoader();
 		
-		Enumeration<URL> resources = classLoader.getResources("runner_suite.xml");
+		Enumeration<URL> resources = classLoader.getResources(filePath);
 		while(resources.hasMoreElements())
 		{
 			URL url = resources.nextElement();
@@ -83,6 +146,8 @@ public class SuiteRunner
 					Field pageField = pageClz.getDeclaredField(field);
 					pageField.setAccessible(true);
 					
+					Thread.sleep(action.getBeforeSleep());
+					
 					switch(name)
 					{
 						case "click":
@@ -94,6 +159,8 @@ public class SuiteRunner
 							text.fillValue();
 							break;
 					}
+					
+					Thread.sleep(action.getAfterSleep());
 				}
 			}
 			

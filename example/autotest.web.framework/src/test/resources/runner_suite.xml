@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite xmlns="http://surenpi.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://surenpi.com http://surenpi.com" xml="test.xml" afterSleep="9000">
+	<page class="org.suren.test.Page">
+		<actions beforeSleep="3" afterSleep="3">
+			<action field="userName" name="fillValue"></action>
+			<action field="loginBut" name="click"></action>
+			<action field="attachPic" name="upload" beforeSleep="3" afterSleep="3"></action>
+		</actions>
+	</page>
+</suite>

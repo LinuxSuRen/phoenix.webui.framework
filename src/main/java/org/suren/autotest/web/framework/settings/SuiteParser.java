@@ -37,7 +37,7 @@ public class SuiteParser
 	{
 		Document document = new SAXReader().read(suiteInputStream);
 		
-		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
+		simpleNamespaceContext.addNamespace("ns", "http://suite.surenpi.com");
 		
 		XPath xpath = new DefaultXPath("/ns:suite");
 		xpath.setNamespaceContext(simpleNamespaceContext);
@@ -48,7 +48,7 @@ public class SuiteParser
 		}
 		
 		Suite suite = new Suite();
-		String xmlConfPath = suiteEle.attributeValue("xml");
+		String xmlConfPath = suiteEle.attributeValue("pageConfig");
 		String afterSleep = suiteEle.attributeValue("afterSleep", "0");
 		suite.setXmlConfPath(xmlConfPath);
 		suite.setAfterSleep(Long.parseLong(afterSleep));
@@ -98,11 +98,14 @@ public class SuiteParser
 			
 			String beforeSleep = actionsEle.attributeValue("beforeSleep", "0");
 			String afterSleep = actionsEle.attributeValue("afterSleep", "0");
+			String repeat = actionsEle.attributeValue("repeat", "1");
 			
 			List<SuiteAction> actionList = new ArrayList<SuiteAction>();
 			
 			SuitePage suitePage = new SuitePage(pageCls);
 			suitePage.setActionList(actionList);
+			suitePage.setRepeat(Integer.parseInt(repeat));
+			
 			pageList.add(suitePage);
 			
 			parse(actionList, actionsEle, beforeSleep, afterSleep);
@@ -126,13 +129,16 @@ public class SuiteParser
 		for(Element actionEle : actionEleList)
 		{
 			String field = actionEle.attributeValue("field");
-			String name = actionEle.attributeValue("name");
+			String name = actionEle.attributeValue("name", "click");
 			String actionBeforeSleep = actionEle.attributeValue("beforeSleep", beforeSleep);
 			String actionAfterSleep = actionEle.attributeValue("afterSleep", afterSleep);
+			String repeat = actionEle.attributeValue("repeat", "1");
 			
 			SuiteAction suiteAction = new SuiteAction(field, name);
 			suiteAction.setBeforeSleep(Long.parseLong(actionBeforeSleep));
 			suiteAction.setAfterSleep(Long.parseLong(actionAfterSleep));
+			suiteAction.setRepeat(Integer.parseInt(repeat));
+			
 			actionList.add(suiteAction);
 		}
 	}

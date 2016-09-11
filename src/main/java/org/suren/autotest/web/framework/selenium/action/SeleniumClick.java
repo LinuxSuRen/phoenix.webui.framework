@@ -3,7 +3,13 @@
 */
 package org.suren.autotest.web.framework.selenium.action;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -44,6 +50,14 @@ public class SeleniumClick implements ClickAble
 		
 		try
 		{
+			Dimension size = webEle.getSize();
+			Point loc = webEle.getLocation();
+			int toolbarHeight = engine.getToolbarHeight();
+			int x = size.getWidth() / 2 + loc.getX();
+			int y = size.getHeight() / 2 + loc.getY() + toolbarHeight;
+			
+			new Robot().mouseMove(x, y);
+			
 			webEle.click();
 		}
 		catch(WebDriverException e)
@@ -58,6 +72,10 @@ public class SeleniumClick implements ClickAble
 				
 				webEle.click();
 			}
+		}
+		catch (AWTException e)
+		{
+			e.printStackTrace();
 		}
 	}
 

@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Window;
@@ -28,6 +29,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 import static org.suren.autotest.web.framework.settings.DriverConstants.*;
 
 /**
@@ -47,6 +49,7 @@ public class SeleniumEngine
 	private boolean 	maximize;
 	private int			width;
 	private int			height;
+	private int			toolbarHeight;
 	
 	/**
 	 * 浏览器引擎初始化
@@ -381,5 +384,29 @@ public class SeleniumEngine
 	public void setMaximize(boolean maximize)
 	{
 		this.maximize = maximize;
+	}
+	
+	/**
+	 * 计算工具栏高度
+	 * @return
+	 */
+	public int computeToolbarHeight()
+	{
+		JavascriptExecutor jsExe = (JavascriptExecutor) driver;
+		Object objectHeight = jsExe.executeScript("return window.outerHeight - window.innerHeight;");
+		if(objectHeight instanceof Long)
+		{
+			toolbarHeight = ((Long) objectHeight).intValue();
+		}
+
+		return toolbarHeight;
+	}
+
+	/**
+	 * @return the toolbarHeight
+	 */
+	public int getToolbarHeight()
+	{
+		return toolbarHeight;
 	}
 }

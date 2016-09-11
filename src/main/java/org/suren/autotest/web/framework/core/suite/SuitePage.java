@@ -12,8 +12,12 @@ import java.util.List;
  */
 public class SuitePage
 {
+	/** 对应的Page全路径 */
 	private String pageCls;
+	/** 要执行的动作集合 */
 	private List<SuiteAction> actionList;
+	/** 重复执行次数 */
+	private int repeat;
 	
 	public SuitePage(String page)
 	{
@@ -50,5 +54,21 @@ public class SuitePage
 	public void setActionList(List<SuiteAction> actionList)
 	{
 		this.actionList = actionList;
+	}
+
+	/**
+	 * @return the repeat
+	 */
+	public int getRepeat()
+	{
+		return repeat;
+	}
+
+	/**
+	 * @param repeat the repeat to set
+	 */
+	public void setRepeat(int repeat)
+	{
+		this.repeat = repeat;
 	}
 }

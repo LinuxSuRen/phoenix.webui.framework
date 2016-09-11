@@ -12,6 +12,8 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
@@ -27,6 +29,8 @@ import org.suren.autotest.web.framework.settings.SuiteParser;
  */
 public class SuiteRunner
 {
+	private static final Logger logger = LoggerFactory.getLogger(SuiteRunner.class);
+	
 	public static void main(String[] args)
 	{
 		if(args == null)
@@ -149,7 +153,7 @@ public class SuiteRunner
 				int repeat = suitePage.getRepeat();
 				for(int i = 0; i < repeat; i++)
 				{
-					performActionList(page, actionList);
+					performActionList(page, actionList, settingUtil);
 				}
 			}
 			
@@ -161,25 +165,56 @@ public class SuiteRunner
 	 * 执行动作集合
 	 * @param page 
 	 * @param actionList
+	 * @param settingUtil 
 	 * @throws SecurityException 
 	 * @throws NoSuchFieldException 
 	 * @throws InterruptedException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private static void performActionList(Page page, List<SuiteAction> actionList)
-			throws NoSuchFieldException, SecurityException, InterruptedException,
+	private static void performActionList(Page page, List<SuiteAction> actionList, SettingUtil settingUtil)
+			throws SecurityException, InterruptedException,
 			IllegalArgumentException, IllegalAccessException
 	{
-		Class<?> pageClz = page.getClass();
-		
 		for(SuiteAction action : actionList)
 		{
+			Page targetPage = page;
 			String field = action.getField();
 			String name = action.getName();
 			
-			Field pageField = pageClz.getDeclaredField(field);
-			pageField.setAccessible(true);
+			Field pageField = null;
+			int otherPage = field.indexOf(".");
+			if(otherPage != -1)
+			{
+				String pkg = page.getClass().getPackage().getName();
+				String otherPageStr = String.format("%s.%s", pkg, field.substring(0, otherPage));
+				Object pageObj = settingUtil.getPage(otherPageStr);
+				if(pageObj == null)
+				{
+					logger.error(String.format("Can not found page [%s].", otherPageStr));
+					continue;
+				}
+				else if(!(pageObj instanceof Page))
+				{
+					logger.error(String.format("Not the page class [%s].", otherPageStr));
+					continue;
+				}
+				else
+				{
+					targetPage = (Page) pageObj;
+					field = field.substring(otherPage + 1);
+				}
+			}
+			
+			try
+			{
+				pageField = targetPage.getClass().getDeclaredField(field);
+				pageField.setAccessible(true);
+			}
+			catch (NoSuchFieldException e)
+			{
+				e.printStackTrace();
+			}
 			
 			Thread.sleep(action.getBeforeSleep());
 			
@@ -187,7 +222,7 @@ public class SuiteRunner
 
 			for(int i = 0; i < repeat; i++)
 			{
-				String actionResult = performAction(name, pageField, page);
+				String actionResult = performAction(name, pageField, targetPage);
 				System.out.println(actionResult);
 			}
 			

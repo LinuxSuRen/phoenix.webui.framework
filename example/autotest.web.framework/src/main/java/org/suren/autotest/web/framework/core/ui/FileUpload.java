@@ -26,6 +26,8 @@ public class FileUpload extends AbstractElement
 
 	@Autowired
 	private FileUploadAble	fileUploadAble;
+	/** 待上传文件 */
+	private File targetFile;
 	
 	public boolean click()
 	{
@@ -33,14 +35,33 @@ public class FileUpload extends AbstractElement
 		return true;
 	}
 
+	/**
+	 * 上传指定的文件
+	 * @param file
+	 * @return
+	 */
 	public boolean upload(File file)
 	{
 		return fileUploadAble.upload(this, file);
 	}
 	
+	/**
+	 * 从网络中上传指定的文件
+	 * @param url
+	 * @return
+	 */
 	public boolean upload(URL url)
 	{
 		return fileUploadAble.upload(this, url);
+	}
+	
+	/**
+	 * 上传默认的文件
+	 * @return
+	 */
+	public boolean upload()
+	{
+		return upload(targetFile);
 	}
 
 	@Override
@@ -53,6 +74,22 @@ public class FileUpload extends AbstractElement
 	public boolean isHidden()
 	{
 		return fileUploadAble.isHidden(this);
+	}
+
+	/**
+	 * @return the targetFile
+	 */
+	public File getTargetFile()
+	{
+		return targetFile;
+	}
+
+	/**
+	 * @param targetFile the targetFile to set
+	 */
+	public void setTargetFile(File targetFile)
+	{
+		this.targetFile = targetFile;
 	}
 
 }

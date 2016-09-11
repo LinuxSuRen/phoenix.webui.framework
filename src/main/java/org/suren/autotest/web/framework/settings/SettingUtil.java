@@ -6,6 +6,7 @@ package org.suren.autotest.web.framework.settings;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
@@ -36,6 +37,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.suren.autotest.web.framework.core.ConfigException;
 import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.LocatorAware;
 import org.suren.autotest.web.framework.core.PageContext;
@@ -145,6 +147,32 @@ public class SettingUtil implements Closeable
 		catch (Exception e)
 		{
 			logger.error("main config parse process error.", e);
+		}
+	}
+	
+	/**
+	 * 从操作系统路径中加载配置文件
+	 * @param filePath
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws DocumentException 
+	 */
+	public void readFromSystemPath(String filePath) throws FileNotFoundException, 
+		IOException, DocumentException
+	{
+		File configFile = new File(filePath);
+		if(!configFile.isFile())
+		{
+			throw new ConfigException(String.format("Target file [%s] is not a file.", filePath));
+		}
+		else if(filePath.endsWith(".xml"))
+		{
+			logger.warn("Target file [%s] is not end with .xml", filePath);
+		}
+		
+		try(InputStream configInput = new FileInputStream(configFile))
+		{
+			read(configInput);
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
+import org.suren.autotest.web.framework.core.LocatorNotFoundException;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
@@ -83,19 +85,39 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		{
 			by = By.tagName(element.getTagName());
 		}
+		else
+		{
+			throw new LocatorNotFoundException();
+		}
 
 		return findElement(by);
 	}
 
+	/**
+	 * 通用的元素查找方法
+	 * @param by 具体的查找方法
+	 * @return
+	 */
 	private WebElement findElement(By by)
 	{
-		WebDriverWait wait = new WebDriverWait(engine.getDriver(), 10);
+		WebDriver driver = engine.getDriver();
+		driver = engine.turnToRootDriver(driver);
+		
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-		return engine.getDriver().findElement(by);
+		return driver.findElement(by);
 	}
 
+	/**
+	 * 查找多个元素
+	 * @param by
+	 * @return
+	 */
 	private List<WebElement> findElements(By by)
 	{
-		return engine.getDriver().findElements(by);
+		WebDriver driver = engine.getDriver();
+		driver = engine.turnToRootDriver(driver);
+		
+		return driver.findElements(by);
 	}
 }

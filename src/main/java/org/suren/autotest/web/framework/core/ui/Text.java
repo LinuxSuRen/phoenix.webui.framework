@@ -76,6 +76,10 @@ public class Text extends AbstractElement
 		this.clickAble = clickAble;
 	}
 	
+	/**
+	 * 执行回车操作
+	 * @return
+	 */
 	public Text performEnter()
 	{
 		valueEditor.submit(this);

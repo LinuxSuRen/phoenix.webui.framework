@@ -18,6 +18,8 @@ public class SuiteAction
 	private long beforeSleep;
 	/** 操作后休眠时间 */
 	private long afterSleep;
+	/** 重复次数 */
+	private int repeat;
 	public SuiteAction(){}
 	/**
 	 * @param field
@@ -83,5 +85,19 @@ public class SuiteAction
 	public void setAfterSleep(long afterSleep)
 	{
 		this.afterSleep = afterSleep;
+	}
+	/**
+	 * @return the repeat
+	 */
+	public int getRepeat()
+	{
+		return repeat;
+	}
+	/**
+	 * @param repeat the repeat to set
+	 */
+	public void setRepeat(int repeat)
+	{
+		this.repeat = repeat;
 	}
 }

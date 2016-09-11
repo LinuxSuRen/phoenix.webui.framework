@@ -21,6 +21,18 @@ public class CheckBoxGroup extends AbstractElement
 	@Autowired
 	private CheckAble checkAble;
 	
+	/** 待选择的文本 */
+	private String targetText;
+	
+	/**
+	 * 根据待选择文本来选择
+	 * @return
+	 */
+	public boolean selectByText()
+	{
+		return selectByText(targetText);
+	}
+	
 	/**
 	 * 根据文本选择
 	 * @param text
@@ -60,15 +72,28 @@ public class CheckBoxGroup extends AbstractElement
 	@Override
 	public boolean isEnabled()
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isHidden()
 	{
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/**
+	 * @return 待选择的文本
+	 */
+	public String getTargetText() {
+		return targetText;
+	}
+
+	/**
+	 * 设置待选择的文本
+	 * @param targetText
+	 */
+	public void setTargetText(String targetText) {
+		this.targetText = targetText;
 	}
 
 }

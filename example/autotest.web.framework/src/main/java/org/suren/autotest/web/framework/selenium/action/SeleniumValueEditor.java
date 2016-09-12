@@ -3,6 +3,7 @@
 */
 package org.suren.autotest.web.framework.selenium.action;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.core.ui.Element;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**
@@ -21,7 +23,9 @@ import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 public class SeleniumValueEditor implements ValueEditor
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumValueEditor.class);
-	
+
+	@Autowired
+	private SeleniumEngine			engine;
 	@Autowired
 	private SearchStrategyUtils		searchStrategyUtils;
 
@@ -45,6 +49,7 @@ public class SeleniumValueEditor implements ValueEditor
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
 		if(webEle != null)
 		{
+			((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
 			webEle.click();
 			webEle.clear();
 			webEle.sendKeys(value.toString());

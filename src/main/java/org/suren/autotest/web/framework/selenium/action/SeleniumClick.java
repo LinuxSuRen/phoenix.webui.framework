@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.ui.Element;
+import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
@@ -50,14 +51,18 @@ public class SeleniumClick implements ClickAble
 		
 		try
 		{
-			Dimension size = webEle.getSize();
-			Point loc = webEle.getLocation();
-			int toolbarHeight = engine.getToolbarHeight();
-			int x = size.getWidth() / 2 + loc.getX();
-			int y = size.getHeight() / 2 + loc.getY() + toolbarHeight;
-			
-			new Robot().mouseMove(x, y);
-			
+			if(!(ele instanceof FileUpload))
+			{
+				Dimension size = webEle.getSize();
+				Point loc = webEle.getLocation();
+				int toolbarHeight = engine.getToolbarHeight();
+				int x = size.getWidth() / 2 + loc.getX();
+				int y = size.getHeight() / 2 + loc.getY() + toolbarHeight;
+				
+				new Robot().mouseMove(x, y);
+				
+				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
+			}
 			webEle.click();
 		}
 		catch(WebDriverException e)

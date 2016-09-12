@@ -30,6 +30,7 @@ public class Page
 	public final void open()
 	{
 		engine.openUrl(url);
+		engine.computeToolbarHeight();
 	}
 
 	/**

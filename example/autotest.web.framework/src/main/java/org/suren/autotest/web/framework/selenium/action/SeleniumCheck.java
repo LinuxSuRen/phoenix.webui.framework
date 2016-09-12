@@ -69,7 +69,10 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 			WebElement itemWebEle = strategy.search(element);
 			if(itemWebEle != null)
 			{
-				itemWebEle.click();
+				if(!itemWebEle.isSelected())
+				{
+					itemWebEle.click();
+				}
 			}
 		}
 		finally

@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 
@@ -122,13 +123,16 @@ public class XmlDataSource implements DataSource
 					try
 					{
 						Object eleObj = getterMethod.invoke(page);
-						if(!(eleObj instanceof Text))
+						if(eleObj instanceof Text)
 						{
-							return;
+							Text text = (Text) eleObj;
+							text.setValue(value);
+						}
+						else if(eleObj instanceof CheckBoxGroup)
+						{
+							((CheckBoxGroup) eleObj).setTargetText(value);
 						}
 						
-						Text text = (Text) eleObj;
-						text.setValue(value);
 					}
 					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 					{

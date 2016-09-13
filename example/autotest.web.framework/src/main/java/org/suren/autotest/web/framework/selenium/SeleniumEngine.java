@@ -84,7 +84,7 @@ public class SeleniumEngine
 		}
 		else if(DRIVER_FIREFOX.equals(curDriverStr))
 		{
-			FirefoxProfile profile = new FirefoxProfile(new File("C:\\Users\\zhaoxj\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\8qtjpqgj.default"));
+			FirefoxProfile profile = new FirefoxProfile();
 			driver = new FirefoxDriver(profile);
 		}
 		

@@ -21,6 +21,8 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 import org.suren.autotest.web.framework.settings.SuiteParser;
+import org.suren.autotest.web.framework.validation.Validation;
+import org.xml.sax.SAXException;
 
 /**
  * 测试套件运行入口类
@@ -31,7 +33,9 @@ public class SuiteRunner
 {
 	private static final Logger logger = LoggerFactory.getLogger(SuiteRunner.class);
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws NoSuchFieldException, SecurityException,
+		IllegalArgumentException, IllegalAccessException, IOException, DocumentException,
+		InterruptedException, SAXException
 	{
 		if(args == null)
 		{
@@ -46,38 +50,7 @@ public class SuiteRunner
 		SuiteParser suiteParser = new SuiteParser();
 		for(String path : args)
 		{
-			try
-			{
-				runFromClasspathFile(suiteParser, path);
-			}
-			catch (NoSuchFieldException e)
-			{
-				e.printStackTrace();
-			}
-			catch (SecurityException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IllegalArgumentException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			catch (DocumentException e)
-			{
-				e.printStackTrace();
-			}
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
+			runFromClasspathFile(suiteParser, path);
 		}
 	}
 	
@@ -92,9 +65,12 @@ public class SuiteRunner
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws InterruptedException
+	 * @throws SAXException 
 	 */
 	private static void runFromClasspathFile(SuiteParser suiteParser, String filePath)
-			throws IOException, DocumentException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException
+			throws IOException, DocumentException, NoSuchFieldException,
+			SecurityException, IllegalArgumentException, IllegalAccessException,
+			InterruptedException, SAXException
 	{
 		ClassLoader classLoader = SuiteRunner.class.getClassLoader();
 		
@@ -102,6 +78,10 @@ public class SuiteRunner
 		while(resources.hasMoreElements())
 		{
 			URL url = resources.nextElement();
+			
+			try(InputStream input4Valid = url.openStream()){
+				Validation.validationSuite(input4Valid);
+			}
 
 			try(InputStream input = url.openStream())
 			{
@@ -113,6 +93,7 @@ public class SuiteRunner
 	}
 
 	/**
+	 * 测试套件运行入口
 	 * @param suite
 	 * @throws DocumentException 
 	 * @throws IOException 
@@ -130,34 +111,57 @@ public class SuiteRunner
 		try(SettingUtil settingUtil = new SettingUtil())
 		{
 			settingUtil.readFromClassPath(xmlConfPath);
-			settingUtil.initData();
 			
 			List<SuitePage> pageList = suite.getPageList();
-			for(SuitePage suitePage : pageList)
+			
+			//执行指定的数据组（按照数据序列）
+			Integer[] rowsArray = suite.getRowsArray();
+			for(int row : rowsArray)
 			{
-				String pageCls = suitePage.getPage();
-				Page page = (Page) settingUtil.getPage(pageCls);
-				if(page == null)
-				{
-					System.err.println(String.format("the page[%s] is null.", pageCls));
-					continue;
-				}
+				runSuiteWithData(settingUtil, row, pageList);
 				
-				String url = page.getUrl();
-				if(url != null)
-				{
-					page.open();
-				}
-				
-				List<SuiteAction> actionList = suitePage.getActionList();
-				int repeat = suitePage.getRepeat();
-				for(int i = 0; i < repeat; i++)
-				{
-					performActionList(page, actionList, settingUtil);
-				}
+				Thread.sleep(suite.getAfterSleep());
+			}
+		}
+	}
+	
+	/**
+	 * 使用指定数据组来运行
+	 * @param settingUtil
+	 * @param row
+	 * @param pageList
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InterruptedException
+	 */
+	private static void runSuiteWithData(SettingUtil settingUtil, int row, List<SuitePage> pageList)
+			throws SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException
+	{
+		settingUtil.initData(row);
+		
+		for(SuitePage suitePage : pageList)
+		{
+			String pageCls = suitePage.getPage();
+			Page page = (Page) settingUtil.getPage(pageCls);
+			if(page == null)
+			{
+				System.err.println(String.format("the page[%s] is null.", pageCls));
+				continue;
 			}
 			
-			Thread.sleep(suite.getAfterSleep());
+			String url = page.getUrl();
+			if(url != null)
+			{
+				page.open();
+			}
+			
+			List<SuiteAction> actionList = suitePage.getActionList();
+			int repeat = suitePage.getRepeat();
+			for(int i = 0; i < repeat; i++)
+			{
+				performActionList(page, actionList, settingUtil);
+			}
 		}
 	}
 	
@@ -222,6 +226,8 @@ public class SuiteRunner
 
 			for(int i = 0; i < repeat; i++)
 			{
+//				settingUtil.initPageData(targetPage, 1);
+				
 				String actionResult = performAction(name, pageField, targetPage);
 				System.out.println(actionResult);
 			}

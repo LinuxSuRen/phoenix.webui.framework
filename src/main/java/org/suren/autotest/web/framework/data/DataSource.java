@@ -19,4 +19,13 @@ public interface DataSource
 	 * @return
 	 */
 	boolean loadData(DataResource resource, Page page);
+	
+	/**
+	 * 从数据源中加载指定行（row）的数据到Page类中
+	 * @param resource
+	 * @param row
+	 * @param page
+	 * @return
+	 */
+	boolean loadData(DataResource resource, int row, Page page);
 }

@@ -111,4 +111,11 @@ public class ExcelDataSource implements DataSource
 	{
 	}
 
+	@Override
+	public boolean loadData(DataResource resource, int row, Page page)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

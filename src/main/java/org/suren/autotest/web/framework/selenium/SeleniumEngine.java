@@ -3,6 +3,11 @@
 */
 package org.suren.autotest.web.framework.selenium;
 
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_FIREFOX;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
+import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,6 +17,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +36,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import static org.suren.autotest.web.framework.settings.DriverConstants.*;
+import org.suren.autotest.web.framework.util.BrowserUtil;
 
 /**
  * 浏览器引擎封装类
@@ -84,7 +90,9 @@ public class SeleniumEngine
 		}
 		else if(DRIVER_FIREFOX.equals(curDriverStr))
 		{
-			FirefoxProfile profile = new FirefoxProfile();
+			String proFile = System.getProperty("firefox.profile", null);
+			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
+			fireFoxPreSet(profile);
 			driver = new FirefoxDriver(profile);
 		}
 		
@@ -119,6 +127,41 @@ public class SeleniumEngine
 		if(getHeight() > 0)
 		{
 			window.setSize(new Dimension(window.getSize().getWidth(), getHeight()));
+		}
+	}
+
+	/**
+	 * 设定firefox首选项
+	 * @param profile
+	 */
+	private void fireFoxPreSet(FirefoxProfile profile)
+	{
+		BrowserUtil browserUtil = new BrowserUtil();
+		Map<String, Boolean> boolMap = browserUtil.getFirefoxPreBoolMap();
+		Iterator<String> boolIt = boolMap.keySet().iterator();
+		while(boolIt.hasNext())
+		{
+			String key = boolIt.next();
+			
+			profile.setPreference(key, boolMap.get(key));
+		}
+		
+		Map<String, Integer> intMap = browserUtil.getFirefoxPreIntMap();
+		Iterator<String> intIt = intMap.keySet().iterator();
+		while(intIt.hasNext())
+		{
+			String key = intIt.next();
+			
+			profile.setPreference(key, intMap.get(key));
+		}
+		
+		Map<String, Integer> strMap = browserUtil.getFirefoxPreIntMap();
+		Iterator<String> strIt = intMap.keySet().iterator();
+		while(strIt.hasNext())
+		{
+			String key = strIt.next();
+			
+			profile.setPreference(key, strMap.get(key));
 		}
 	}
 

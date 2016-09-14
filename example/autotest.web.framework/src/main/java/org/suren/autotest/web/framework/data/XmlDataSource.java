@@ -44,6 +44,89 @@ public class XmlDataSource implements DataSource
 	@Override
 	public boolean loadData(DataResource resource, Page page)
 	{
+		return loadData(resource, 0, page);
+	}
+
+	/**
+	 * 解析xml文档
+	 * @param inputStream
+	 * @param row 
+	 * @throws DocumentException 
+	 */
+	private void parse(InputStream inputStream, int row) throws DocumentException
+	{
+		Document document = new SAXReader().read(inputStream);
+
+		parse(document, row);
+	}
+	
+	/**
+	 * 解析docment对象
+	 * @param doc
+	 * @param row
+	 */
+	private void parse(Document doc, int row)
+	{
+		String pageClass = page.getClass().getName();
+		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
+		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
+		
+		XPath xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page[%s]",
+				pageClass, String.valueOf(row)));
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		@SuppressWarnings("unchecked")
+		List<Element> dataSourceList = xpath.selectNodes(doc);
+		if (dataSourceList == null || dataSourceList.size() == 0)
+		{
+			throw new RuntimeException("can not found datasource config.");
+		}
+		
+		Element dataSource = dataSourceList.get(0);
+		dataSource.accept(new VisitorSupport()
+		{
+
+			@Override
+			public void visit(Element node)
+			{
+				if(!"field".equals(node.getName()))
+				{
+					return;
+				}
+				
+				String fieldName = node.attributeValue("name");
+				String value = node.attributeValue("data");
+				
+				value = value.replace("${now}", String.valueOf(System.currentTimeMillis()));
+
+				Method getterMethod = BeanUtils.findMethod(page.getClass(),
+						"get" + fieldName.substring(0, 1).toUpperCase()
+								+ fieldName.substring(1));
+				
+				try
+				{
+					Object eleObj = getterMethod.invoke(page);
+					if(eleObj instanceof Text)
+					{
+						Text text = (Text) eleObj;
+						text.setValue(value);
+					}
+					else if(eleObj instanceof CheckBoxGroup)
+					{
+						((CheckBoxGroup) eleObj).setTargetText(value);
+					}
+					
+				}
+				catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+				{
+					LOGGER.error(e.getMessage(), e);
+				}
+			}
+		});
+	}
+
+	@Override
+	public boolean loadData(DataResource resource, int row, Page page)
+	{
 		this.page = page;
 		URL url = null;
 		try {
@@ -59,7 +142,9 @@ public class XmlDataSource implements DataSource
 		
 		try(InputStream inputStream = url.openStream()) //打开文件流
 		{
-			parse(inputStream); //解析xml数据源文件
+			parse(inputStream, row); //解析xml数据源文件
+			
+			return true;
 		}
 		catch (IOException | DocumentException e)
 		{
@@ -67,80 +152,6 @@ public class XmlDataSource implements DataSource
 		}
 		
 		return false;
-	}
-
-	/**
-	 * 解析xml文档
-	 * @param inputStream
-	 * @throws DocumentException 
-	 */
-	private void parse(InputStream inputStream) throws DocumentException
-	{
-		Document document = new SAXReader().read(inputStream);
-
-		parse(document);
-	}
-	
-	/**
-	 * 解析docment对象
-	 * @param doc
-	 */
-	private void parse(Document doc)
-	{
-		String pageClass = page.getClass().getName();
-		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
-		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
-		
-		XPath xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page", pageClass));
-		xpath.setNamespaceContext(simpleNamespaceContext);
-		@SuppressWarnings("unchecked")
-		List<Element> dataSourceList = xpath.selectNodes(doc);
-		if (dataSourceList == null)
-		{
-			throw new RuntimeException("can not found datasource config.");
-		}
-		
-		for(Element dataSource : dataSourceList)
-		{
-			dataSource.accept(new VisitorSupport()
-			{
-
-				@Override
-				public void visit(Element node)
-				{
-					if(!"field".equals(node.getName()))
-					{
-						return;
-					}
-					
-					String fieldName = node.attributeValue("name");
-					String value = node.attributeValue("data");
-
-					Method getterMethod = BeanUtils.findMethod(page.getClass(),
-							"get" + fieldName.substring(0, 1).toUpperCase()
-									+ fieldName.substring(1));
-					
-					try
-					{
-						Object eleObj = getterMethod.invoke(page);
-						if(eleObj instanceof Text)
-						{
-							Text text = (Text) eleObj;
-							text.setValue(value);
-						}
-						else if(eleObj instanceof CheckBoxGroup)
-						{
-							((CheckBoxGroup) eleObj).setTargetText(value);
-						}
-						
-					}
-					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-					{
-						LOGGER.error(e.getMessage(), e);
-					}
-				}
-			});
-		}
 	}
 
 }

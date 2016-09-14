@@ -15,9 +15,11 @@ import java.lang.reflect.Method;
 import java.rmi.registry.LocateRegistry;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -67,6 +69,9 @@ public class SettingUtil implements Closeable
 	private AbstractApplicationContext			context;
 	
 	private boolean closed = false;
+	
+	/** 不希望被加载数据的Page集合 */
+	private Set<String> excludePageSet = new HashSet<String>();
 
 	public SettingUtil()
 	{
@@ -190,32 +195,95 @@ public class SettingUtil implements Closeable
 	}
 
 	/**
-	 * 从数据源中加载数据，设置到page类中
+	 * 从数据源中加载第一组数据，设置到所有page类中
+	 * @see {@link #initData(int)}
 	 */
 	public void initData()
+	{
+		initData(1);
+	}
+	
+	/**
+	 * 从数据源中加载指定的数据组，设置到所有page类中
+	 * @param 数据组序号（从1开始）
+	 */
+	public void initData(int row)
 	{
 		Iterator<String> pageIterator = pageMap.keySet().iterator();
 		while(pageIterator.hasNext())
 		{
 			String pageKey = pageIterator.next();
-			Page page = pageMap.get(pageKey);
-			
-			String dataSourceStr = page.getDataSource();
-			final DataSourceInfo dataSourceInfo = dataSourceMap.get(dataSourceStr);
-			if(dataSourceInfo == null)
+			if(containExcludePage(pageKey))
 			{
+				logger.warn(String.format("Page [%s] has been exclude, ignore for init data!", pageKey));
 				continue;
 			}
 			
-			DataSource dataSource = context.getBean(dataSourceInfo.getType(), DataSource.class);
-			ClasspathResource clzResource = new ClasspathResource(
-					SettingUtil.class, dataSourceInfo.getResource());
-			
-			dataSource.loadData(clzResource, page);
+			Page page = pageMap.get(pageKey);
+			initPageData(page, row);
 		}
+	}
+	
+	/**
+	 * 从数据源中加载指定的数据组到指定的Page类中
+	 * @param page
+	 * @param row 数据组序号（从1开始）
+	 * @return
+	 */
+	public boolean initPageData(Page page, int row)
+	{
+		String dataSourceStr = page.getDataSource();
+		final DataSourceInfo dataSourceInfo = dataSourceMap.get(dataSourceStr);
+		if(dataSourceInfo == null)
+		{
+			return false;
+		}
+		
+		DataSource dataSource = context.getBean(dataSourceInfo.getType(), DataSource.class);
+		ClasspathResource clzResource = new ClasspathResource(
+				SettingUtil.class, dataSourceInfo.getResource());
+		
+		return dataSource.loadData(clzResource, row, page);
+	}
+	
+	/**
+	 * 添加Page到要排除的集合中
+	 * @param pageCls
+	 */
+	public void addExcludePage(String pageCls)
+	{
+		excludePageSet.add(pageCls);
+	}
+	
+	/**
+	 * 从要排除的Page集合中移除
+	 * @param pageCls
+	 */
+	public void removeExcludePage(String pageCls)
+	{
+		excludePageSet.remove(pageCls);
+	}
+	
+	/**
+	 * 是否包含在要排除的Page集合中
+	 * @param pageCls
+	 * @return
+	 */
+	public boolean containExcludePage(String pageCls)
+	{
+		return excludePageSet.contains(pageCls);
+	}
+	
+	/**
+	 * 清空要排除的Page集合
+	 */
+	public void clearExcludePage()
+	{
+		excludePageSet.clear();
 	}
 
 	/**
+	 * 解析整个框架主配置文件
 	 * @param document
 	 */
 	private void parse(Document doc)

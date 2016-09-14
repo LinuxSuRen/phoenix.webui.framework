@@ -49,8 +49,15 @@ public class SuiteParser
 		
 		Suite suite = new Suite();
 		String xmlConfPath = suiteEle.attributeValue("pageConfig");
+		String rows = suiteEle.attributeValue("rows", "1");
+		String lackLines = suiteEle.attributeValue("lackLines", "nearby");
+		String errorLines = suiteEle.attributeValue("errorLines", "stop");
 		String afterSleep = suiteEle.attributeValue("afterSleep", "0");
+		
 		suite.setXmlConfPath(xmlConfPath);
+		suite.setRows(rows);
+		suite.setLackLines(lackLines);
+		suite.setErrorLines(errorLines);
 		suite.setAfterSleep(Long.parseLong(afterSleep));
 		
 		List<SuitePage> pageList = new ArrayList<SuitePage>();

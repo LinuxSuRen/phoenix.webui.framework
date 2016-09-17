@@ -21,6 +21,13 @@
 						<xs:sequence>
 							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded" />
 						</xs:sequence>
+						<xs:attribute name="pagePackage" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>
+									<![CDATA[公用的Page类包]]>
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="dataSources" minOccurs="0" maxOccurs="1">

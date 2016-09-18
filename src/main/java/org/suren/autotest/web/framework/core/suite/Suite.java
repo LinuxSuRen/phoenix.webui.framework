@@ -15,6 +15,8 @@ public class Suite
 {
 	/** page类描述文件 */
 	private String xmlConfPath;
+	/** page类的包 */
+	private String pagePackage;
 	/** Page对象列表，按照该顺序来执行任务 */
 	private List<SuitePage> pageList;
 	/** 测试套件运行结束后的休眠时间（毫秒） */
@@ -178,5 +180,21 @@ public class Suite
 	public void setErrorLines(String errorLines)
 	{
 		this.errorLines = errorLines;
+	}
+
+	/**
+	 * @return the pagePackage
+	 */
+	public String getPagePackage()
+	{
+		return pagePackage;
+	}
+
+	/**
+	 * @param pagePackage the pagePackage to set
+	 */
+	public void setPagePackage(String pagePackage)
+	{
+		this.pagePackage = pagePackage;
 	}
 }

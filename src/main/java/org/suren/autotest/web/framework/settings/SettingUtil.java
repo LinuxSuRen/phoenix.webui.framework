@@ -32,6 +32,7 @@ import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
+import org.eclipse.jetty.util.StringUtil;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -337,6 +338,15 @@ public class SettingUtil implements Closeable
 		{
 			logger.error("Can not found bean SeleniumEngine.", e);
 		}
+		
+		xpath = new DefaultXPath("/ns:autotest/ns:pages");
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		Element pagesEle = (Element) xpath.selectSingleNode(doc);
+		String pagePackage = pagesEle.attributeValue("pagePackage", "");
+		if(StringUtil.isNotBlank(pagePackage))
+		{
+			pagePackage = (pagePackage.trim() + ".");
+		}
 
 		// pages parse progress
 		xpath = new DefaultXPath("/ns:autotest/ns:pages/ns:page");
@@ -354,6 +364,7 @@ public class SettingUtil implements Closeable
 					continue;
 				}
 
+				pageClsStr = (pagePackage + pageClsStr);
 				String dataSrcClsStr = ele.attributeValue("dataSource");
 
 				try

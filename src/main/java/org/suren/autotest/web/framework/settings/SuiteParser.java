@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -49,21 +50,20 @@ public class SuiteParser
 		
 		Suite suite = new Suite();
 		String xmlConfPath = suiteEle.attributeValue("pageConfig");
+		String pagePackage = suiteEle.attributeValue("pagePackage", "");
 		String rows = suiteEle.attributeValue("rows", "1");
 		String lackLines = suiteEle.attributeValue("lackLines", "nearby");
 		String errorLines = suiteEle.attributeValue("errorLines", "stop");
 		String afterSleep = suiteEle.attributeValue("afterSleep", "0");
 		
 		suite.setXmlConfPath(xmlConfPath);
+		suite.setPagePackage(pagePackage);
 		suite.setRows(rows);
 		suite.setLackLines(lackLines);
 		suite.setErrorLines(errorLines);
 		suite.setAfterSleep(Long.parseLong(afterSleep));
 		
-		List<SuitePage> pageList = new ArrayList<SuitePage>();
-		suite.setPageList(pageList);
-		
-		pagesParse(document, pageList);
+		pagesParse(document, suite);
 		
 		return suite;
 	}
@@ -71,10 +71,19 @@ public class SuiteParser
 	/**
 	 * 解析page配置
 	 * @param document
-	 * @param pageList
+	 * @param suite
 	 */
-	private void pagesParse(Document document, List<SuitePage> pageList)
+	private void pagesParse(Document document, Suite suite)
 	{
+		List<SuitePage> pageList = new ArrayList<SuitePage>();
+		suite.setPageList(pageList);
+		
+		String pagePackage = suite.getPagePackage();
+		if(!StringUtils.isBlank(pagePackage))
+		{
+			pagePackage = (pagePackage.trim() + ".");
+		}
+		
 		XPath xpath = new DefaultXPath("/ns:suite/ns:page");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		
@@ -109,7 +118,7 @@ public class SuiteParser
 			
 			List<SuiteAction> actionList = new ArrayList<SuiteAction>();
 			
-			SuitePage suitePage = new SuitePage(pageCls);
+			SuitePage suitePage = new SuitePage(String.format("%s%s", pagePackage, pageCls));
 			suitePage.setActionList(actionList);
 			suitePage.setRepeat(Integer.parseInt(repeat));
 			

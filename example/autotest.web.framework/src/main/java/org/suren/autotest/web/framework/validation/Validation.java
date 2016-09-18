@@ -3,12 +3,16 @@
  */
 package org.suren.autotest.web.framework.validation;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.xml.XMLConstants;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -34,15 +38,17 @@ public class Validation
 	 */
 	public static void validation(String xsdFile, InputStream xmlInput) throws SAXException, IOException
 	{
-		SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		URL xsdURL = Validation.class.getClassLoader().getResource(xsdFile);
 		if(xsdURL != null)
 		{
 			Schema schema = factory.newSchema(xsdURL);
 			Validator validator = schema.newValidator();
-			
+			validator.setErrorHandler(new AutoErrorHandler());
+
 			Source source = new StreamSource(xmlInput);
-			validator.validate(source);
+			Result result = new StreamResult(new File(xsdFile + ".xml"));
+			validator.validate(source, result);
 		}
 		else
 		{

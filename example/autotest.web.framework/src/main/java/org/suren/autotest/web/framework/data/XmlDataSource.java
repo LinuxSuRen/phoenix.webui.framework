@@ -13,10 +13,12 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
+import org.eclipse.jetty.util.StringUtil;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,8 +73,17 @@ public class XmlDataSource implements DataSource
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
 		
-		XPath xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page[%s]",
-				pageClass, String.valueOf(row)));
+		XPath xpath = new DefaultXPath("/ns:dataSources");
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		Element rootEle = (Element) xpath.selectSingleNode(doc);
+		String pagePackage = rootEle.attributeValue("pagePackage", "");
+		if(StringUtil.isNotBlank(pagePackage))
+		{
+			pagePackage = (pagePackage.trim() + ".");
+		}
+		
+		xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s%s']/ns:page[%s]",
+				pagePackage, pageClass, String.valueOf(row)));
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		@SuppressWarnings("unchecked")
 		List<Element> dataSourceList = xpath.selectNodes(doc);

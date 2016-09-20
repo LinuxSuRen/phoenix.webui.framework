@@ -186,6 +186,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="select">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[根据文本选择。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

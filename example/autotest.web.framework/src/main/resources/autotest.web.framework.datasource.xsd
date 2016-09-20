@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="http://datasource.surenpi.com"
-	xmlns="http://datasource.surenpi.com"
+	xmlns:suren="http://datasource.surenpi.com"
 	elementFormDefault="qualified">
 	<xs:element name="dataSources">
 		<xs:complexType>
@@ -34,5 +34,13 @@
 	<xs:complexType name="pageFieldType">
 		<xs:attribute name="name" type="xs:string" use="required" />
 		<xs:attribute name="data" type="xs:string" use="required" />
+		<xs:attribute name="type" type="suren:dataTypeEnum" default="simple"></xs:attribute>
 	</xs:complexType>
+	
+	<xs:simpleType name="dataTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="simple"></xs:enumeration>
+			<xs:enumeration value="groovy"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType
 </xs:schema>

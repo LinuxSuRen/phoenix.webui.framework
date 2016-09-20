@@ -3,17 +3,22 @@
  */
 package org.suren.autotest.web.framework.data;
 
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
@@ -23,8 +28,10 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
+import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 
@@ -39,6 +46,8 @@ public class XmlDataSource implements DataSource
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlDataSource.class);
 	
 	private Page page;
+	
+	private Map<String, Object> globalMap = new HashMap<String, Object>();
 
 	/**
 	 * 加载xml格式的数据到page对象中
@@ -106,8 +115,36 @@ public class XmlDataSource implements DataSource
 				
 				String fieldName = node.attributeValue("name");
 				String value = node.attributeValue("data");
+				String type = node.attributeValue("type", "simple");
 				
-				value = value.replace("${now}", String.valueOf(System.currentTimeMillis()));
+				if("simple".equals(type))
+				{
+					value = value.replace("${now}", String.valueOf(System.currentTimeMillis()));
+				}
+				else if("groovy".equals(type))
+				{
+					Binding binding = new Binding();
+					GroovyShell shell = new GroovyShell(binding);
+					
+					binding.setVariable("globalMap", XmlDataSource.this.getGlobalMap());
+					Object resObj = null;
+					try
+					{
+						resObj = shell.evaluate(value);
+						if(resObj != null)
+						{
+							value = resObj.toString();
+						}
+						else
+						{
+							value = "not return!";
+						}
+					}
+					catch(CompilationFailedException e)
+					{
+						value = e.getMessage();
+					}
+				}
 
 				Method getterMethod = BeanUtils.findMethod(page.getClass(),
 						"get" + fieldName.substring(0, 1).toUpperCase()
@@ -124,6 +161,10 @@ public class XmlDataSource implements DataSource
 					else if(eleObj instanceof CheckBoxGroup)
 					{
 						((CheckBoxGroup) eleObj).setTargetText(value);
+					}
+					else if(eleObj instanceof Selector)
+					{
+						((Selector) eleObj).setText(value);
 					}
 					
 				}
@@ -163,6 +204,22 @@ public class XmlDataSource implements DataSource
 		}
 		
 		return false;
+	}
+
+	/**
+	 * @return the globalMap
+	 */
+	public Map<String, Object> getGlobalMap()
+	{
+		return globalMap;
+	}
+
+	/**
+	 * @param globalMap the globalMap to set
+	 */
+	public void setGlobalMap(Map<String, Object> globalMap)
+	{
+		this.globalMap = globalMap;
 	}
 
 }

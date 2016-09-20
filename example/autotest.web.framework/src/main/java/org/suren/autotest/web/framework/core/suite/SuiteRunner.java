@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
+import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.settings.SettingUtil;
@@ -229,7 +230,7 @@ public class SuiteRunner
 //				settingUtil.initPageData(targetPage, 1);
 				
 				String actionResult = performAction(name, pageField, targetPage);
-				System.out.println(actionResult);
+				System.out.println("action result : " + actionResult);
 			}
 			
 			Thread.sleep(action.getAfterSleep());
@@ -286,6 +287,13 @@ public class SuiteRunner
 				if(CheckBoxGroup != null)
 				{
 					actionResult = Boolean.toString(CheckBoxGroup.selectByText());
+				}
+				break;
+			case "select":
+				Selector selector = getFieldObj(Selector.class, pageField, page);
+				if(selector != null)
+				{
+					actionResult = Boolean.toString(selector.selectByText());
 				}
 				break;
 		}

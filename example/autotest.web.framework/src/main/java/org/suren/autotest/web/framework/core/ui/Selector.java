@@ -20,6 +20,8 @@ import org.suren.autotest.web.framework.core.action.SelectAble;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Selector extends AbstractElement
 {
+	private String text;
+	
 	@Autowired
 	private SelectAble selectAble;
 
@@ -32,6 +34,11 @@ public class Selector extends AbstractElement
 	public boolean selectByText(String text)
 	{
 		return selectAble.selectByText(this, text);
+	}
+	
+	public boolean selectByText()
+	{
+		return selectByText(this.text);
 	}
 
 	public SelectAble getSelectAble()
@@ -54,5 +61,21 @@ public class Selector extends AbstractElement
 	public boolean isHidden()
 	{
 		return selectAble.isHidden(this);
+	}
+
+	/**
+	 * @return the text
+	 */
+	public String getText()
+	{
+		return text;
+	}
+
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(String text)
+	{
+		this.text = text;
 	}
 }

@@ -295,54 +295,57 @@ public class SettingUtil implements Closeable
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
 		
-		XPath xpath = new DefaultXPath("/ns:autotest/ns:engine");
-		xpath.setNamespaceContext(simpleNamespaceContext);
-		// engine parse progress
-		Element engineEle = (Element) xpath.selectSingleNode(doc);
-		if (engineEle == null)
+		SeleniumEngine seleniumEngine = context
+				.getBean(SeleniumEngine.class);
+		if(seleniumEngine.getDriverStr() == null || "".equals(seleniumEngine.getDriverStr()))
 		{
-			throw new RuntimeException("can not found engine config.");
-		}
-
-		String driverStr = engineEle.attributeValue("driver");
-		String timeOutStr = engineEle.attributeValue("timeout");
-		String fullScreenStr = engineEle.attributeValue("fullScreen", "false");
-		String maximizeStr = engineEle.attributeValue("maximize", "true");
-		String widthStr = engineEle.attributeValue("width");
-		String heightStr = engineEle.attributeValue("height");
-		try
-		{
-			SeleniumEngine seleniumEngine = context
-					.getBean(SeleniumEngine.class);
-			seleniumEngine.setDriverStr(driverStr);
+			XPath xpath = new DefaultXPath("/ns:autotest/ns:engine");
+			xpath.setNamespaceContext(simpleNamespaceContext);
+			// engine parse progress
+			Element engineEle = (Element) xpath.selectSingleNode(doc);
+			if (engineEle == null)
+			{
+				throw new RuntimeException("can not found engine config.");
+			}
 			
+			String driverStr = engineEle.attributeValue("driver");
+			String timeOutStr = engineEle.attributeValue("timeout");
+			String fullScreenStr = engineEle.attributeValue("fullScreen", "false");
+			String maximizeStr = engineEle.attributeValue("maximize", "true");
+			String widthStr = engineEle.attributeValue("width");
+			String heightStr = engineEle.attributeValue("height");
 			try
 			{
-				seleniumEngine.setTimeout(Long.parseLong(timeOutStr));
+				seleniumEngine.setDriverStr(driverStr);
+				
+				try
+				{
+					seleniumEngine.setTimeout(Long.parseLong(timeOutStr));
+				}
+				catch(NumberFormatException e)
+				{
+					seleniumEngine.setTimeout(5);
+				}
+				
+				try
+				{
+					seleniumEngine.setWidth(Integer.parseInt(widthStr));
+					seleniumEngine.setHeight(Integer.parseInt(heightStr));
+				}
+				catch(NumberFormatException e){}
+				
+				seleniumEngine.setFullScreen(Boolean.parseBoolean(fullScreenStr));
+				seleniumEngine.setMaximize(Boolean.parseBoolean(maximizeStr));
+				
+				seleniumEngine.init();
 			}
-			catch(NumberFormatException e)
+			catch (NoSuchBeanDefinitionException e)
 			{
-				seleniumEngine.setTimeout(5);
+				logger.error("Can not found bean SeleniumEngine.", e);
 			}
-			
-			try
-			{
-				seleniumEngine.setWidth(Integer.parseInt(widthStr));
-				seleniumEngine.setHeight(Integer.parseInt(heightStr));
-			}
-			catch(NumberFormatException e){}
-			
-			seleniumEngine.setFullScreen(Boolean.parseBoolean(fullScreenStr));
-			seleniumEngine.setMaximize(Boolean.parseBoolean(maximizeStr));
-			
-			seleniumEngine.init();
-		}
-		catch (NoSuchBeanDefinitionException e)
-		{
-			logger.error("Can not found bean SeleniumEngine.", e);
 		}
 		
-		xpath = new DefaultXPath("/ns:autotest/ns:includePage");
+		XPath xpath = new DefaultXPath("/ns:autotest/ns:includePage");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		List<Element> includePageList = xpath.selectNodes(doc);
 		if(includePageList != null && includePageList.size() > 0)

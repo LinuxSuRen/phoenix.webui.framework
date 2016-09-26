@@ -187,8 +187,9 @@ public class SettingUtil implements Closeable
 	 * 
 	 * @param inputStream
 	 * @throws DocumentException
+	 * @throws IOException 
 	 */
-	public void read(InputStream inputStream) throws DocumentException
+	public void read(InputStream inputStream) throws DocumentException, IOException
 	{
 		Document document = new SAXReader().read(inputStream);
 
@@ -286,8 +287,10 @@ public class SettingUtil implements Closeable
 	/**
 	 * 解析整个框架主配置文件
 	 * @param document
+	 * @throws DocumentException 
+	 * @throws IOException 
 	 */
-	private void parse(Document doc)
+	private void parse(Document doc) throws IOException, DocumentException
 	{
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
@@ -337,6 +340,19 @@ public class SettingUtil implements Closeable
 		catch (NoSuchBeanDefinitionException e)
 		{
 			logger.error("Can not found bean SeleniumEngine.", e);
+		}
+		
+		xpath = new DefaultXPath("/ns:autotest/ns:includePage");
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		List<Element> includePageList = xpath.selectNodes(doc);
+		if(includePageList != null && includePageList.size() > 0)
+		{
+			for(Element includePage : includePageList)
+			{
+				String pageConfig = includePage.attributeValue("pageConfig");
+				
+				readFromClassPath(pageConfig);
+			}
 		}
 		
 		xpath = new DefaultXPath("/ns:autotest/ns:pages");

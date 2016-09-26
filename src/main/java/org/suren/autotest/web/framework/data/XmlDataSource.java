@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -28,7 +32,6 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.Selector;
@@ -46,8 +49,32 @@ public class XmlDataSource implements DataSource
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlDataSource.class);
 	
 	private Page page;
-	
 	private Map<String, Object> globalMap = new HashMap<String, Object>();
+	
+	private static final String groovyCls;
+	
+	static
+	{
+		StringBuffer buf = new StringBuffer();
+		try(InputStream stream = XmlDataSource.class.getClassLoader().getResource("random.groovy").openStream())
+		{
+			byte[] bf = new byte[1024];
+			int len = -1;
+			while((len = stream.read(bf)) != -1)
+			{
+				buf.append(new String(bf, 0, len));
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		groovyCls = buf.toString();
+	}
+	
+	public XmlDataSource()
+	{
+	}
 
 	/**
 	 * 加载xml格式的数据到page对象中
@@ -130,19 +157,41 @@ public class XmlDataSource implements DataSource
 					Object resObj = null;
 					try
 					{
-						resObj = shell.evaluate(value);
+						resObj = shell.evaluate(groovyCls + value);
+						if(resObj != null)
+						{
+							value = resObj.toString();
+						}
+						else
+					 	{
+							value = "groovy not return!";
+						}
+					}
+					catch(CompilationFailedException e)
+					{
+						value = e.getMessage();
+						e.printStackTrace();
+					}
+				}
+				else if("javascript".equals(type))
+				{
+					ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+					try
+					{
+						Object resObj = engine.eval(value);
 						if(resObj != null)
 						{
 							value = resObj.toString();
 						}
 						else
 						{
-							value = "not return!";
+							value = "js not return!";
 						}
 					}
-					catch(CompilationFailedException e)
+					catch (ScriptException e)
 					{
 						value = e.getMessage();
+						e.printStackTrace();
 					}
 				}
 

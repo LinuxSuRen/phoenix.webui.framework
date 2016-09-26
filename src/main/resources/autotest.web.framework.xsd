@@ -13,6 +13,9 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element name="includePage" type="suren:includePageType"
+					minOccurs="0" maxOccurs="unbounded" >
+				</xs:element>
 				<xs:element name="pages">
 					<xs:annotation>
 						<xs:documentation><![CDATA[页面列表配置]]></xs:documentation>
@@ -71,6 +74,10 @@
 				<xs:documentation><![CDATA[浏览器高度，必须为正整数，单位为像素，可选。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:complexType name="includePageType">
+		<xs:attribute name="pageConfig" use="required"></xs:attribute>
 	</xs:complexType>
 	
 	<xs:simpleType name="engineTypeDriverEnum">

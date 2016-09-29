@@ -43,5 +43,5 @@
 			<xs:enumeration value="groovy"></xs:enumeration>
 			<xs:enumeration value="javascript"></xs:enumeration>
 		</xs:restriction>
-	</xs:simpleType
+	</xs:simpleType>
 </xs:schema>

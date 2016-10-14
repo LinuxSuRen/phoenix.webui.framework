@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
+import org.suren.autotest.web.framework.core.action.HoverAble;
 
 /**
  * 代表HTML页面中的按钮，即在xml配置文件中type值为button的元素
@@ -21,6 +22,8 @@ public class Button extends AbstractElement
 {
 	@Autowired
 	private ClickAble clickAble;
+	@Autowired
+	private HoverAble hoverAble;
 
 	/**
 	 * 触发单击事件
@@ -29,15 +32,13 @@ public class Button extends AbstractElement
 	{
 		clickAble.click(this);
 	}
-
-	public ClickAble getClickAble()
+	
+	/**
+	 * 鼠标悬停
+	 */
+	public void hover()
 	{
-		return clickAble;
-	}
-
-	public void setClickAble(ClickAble clickAble)
-	{
-		this.clickAble = clickAble;
+		hoverAble.hover(this);
 	}
 
 	@Override
@@ -50,5 +51,26 @@ public class Button extends AbstractElement
 	public boolean isHidden()
 	{
 		return clickAble.isHidden(this);
+	}
+
+	public ClickAble getClickAble()
+	{
+		return clickAble;
+	}
+
+	/** setter and getter */
+	public void setClickAble(ClickAble clickAble)
+	{
+		this.clickAble = clickAble;
+	}
+
+	public HoverAble getHoverAble()
+	{
+		return hoverAble;
+	}
+
+	public void setHoverAble(HoverAble hoverAble)
+	{
+		this.hoverAble = hoverAble;
 	}
 }

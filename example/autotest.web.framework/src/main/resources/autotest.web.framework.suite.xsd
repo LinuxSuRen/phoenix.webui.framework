@@ -193,6 +193,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="hover">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[鼠标悬停。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

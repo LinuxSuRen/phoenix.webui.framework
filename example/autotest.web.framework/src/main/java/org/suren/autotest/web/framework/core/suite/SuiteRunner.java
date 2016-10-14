@@ -296,6 +296,10 @@ public class SuiteRunner
 					actionResult = Boolean.toString(selector.selectByText());
 				}
 				break;
+			case "hover":
+				Button hoverBut = getFieldObj(Button.class, pageField, page);
+				hoverBut.hover();
+				break;
 		}
 		
 		return actionResult;

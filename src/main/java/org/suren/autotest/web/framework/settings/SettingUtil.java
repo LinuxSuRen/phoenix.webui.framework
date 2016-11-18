@@ -153,6 +153,7 @@ public class SettingUtil implements Closeable
 		catch (Exception e)
 		{
 			logger.error("main config parse process error.", e);
+			throw e;
 		}
 	}
 	
@@ -347,6 +348,7 @@ public class SettingUtil implements Closeable
 		
 		XPath xpath = new DefaultXPath("/ns:autotest/ns:includePage");
 		xpath.setNamespaceContext(simpleNamespaceContext);
+		@SuppressWarnings("unchecked")
 		List<Element> includePageList = xpath.selectNodes(doc);
 		if(includePageList != null && includePageList.size() > 0)
 		{

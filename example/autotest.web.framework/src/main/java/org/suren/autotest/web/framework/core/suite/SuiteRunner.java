@@ -315,6 +315,7 @@ public class SuiteRunner
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
+	@SuppressWarnings("unchecked")
 	private static <T> T getFieldObj(Class<T> type, Field pageField, Object instance)
 			throws IllegalArgumentException, IllegalAccessException
 	{

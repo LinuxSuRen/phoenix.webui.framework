@@ -125,7 +125,9 @@ public class XmlDataSource implements DataSource
 		List<Element> dataSourceList = xpath.selectNodes(doc);
 		if (dataSourceList == null || dataSourceList.size() == 0)
 		{
-			throw new RuntimeException("can not found datasource config.");
+			throw new RuntimeException(
+					String.format("Can not found datasource config by xpath [%s].",
+							xpath.toString()));
 		}
 		
 		Element dataSource = dataSourceList.get(0);

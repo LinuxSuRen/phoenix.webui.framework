@@ -55,6 +55,7 @@ import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.validation.Validation;
+import org.xml.sax.SAXException;
 
 /**
  * 页面（page）以及数据配置加载
@@ -113,9 +114,11 @@ public class SettingUtil implements Closeable
 	 * 从本地文件中读取
 	 * 
 	 * @param filePath
-	 * @throws Exception
+	 * @throws DocumentException
+	 * @throws IOException
+	 * @throws SAXException 
 	 */
-	public void read(String filePath) throws Exception
+	public void read(String filePath) throws DocumentException, IOException, SAXException
 	{
 		File file = new File(filePath);
 		try(FileInputStream fis = new FileInputStream(file))
@@ -129,10 +132,11 @@ public class SettingUtil implements Closeable
 	 * 
 	 * @param fileName
 	 * @throws IOException
-	 * @throws DocumentException
+	 * @throws DocumentException xml文件解析错误
+	 * @throws SAXException xml文件格式校验错误
 	 */
 	public void readFromClassPath(String fileName)
-			throws IOException, DocumentException
+			throws IOException, DocumentException, SAXException
 	{
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		
@@ -140,9 +144,10 @@ public class SettingUtil implements Closeable
 		{
 			Validation.validationFramework(inputStream); //这里会把流关闭了
 		}
-		catch (Exception e)
+		catch (SAXException | IOException e)
 		{
-			logger.error("framework validation process error.", e);
+			logger.error("Framework validation process error.", e);
+			throw e;
 		}
 		
 		//读取主配置文件
@@ -150,9 +155,9 @@ public class SettingUtil implements Closeable
 		{
 			read(confInput);
 		}
-		catch (Exception e)
+		catch (DocumentException | IOException e)
 		{
-			logger.error("main config parse process error.", e);
+			logger.error(String.format("Main config [%s] parse process error.", fileName), e);
 			throw e;
 		}
 	}
@@ -163,9 +168,10 @@ public class SettingUtil implements Closeable
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 * @throws DocumentException 
+	 * @throws SAXException 
 	 */
 	public void readFromSystemPath(String filePath) throws FileNotFoundException, 
-		IOException, DocumentException
+		IOException, DocumentException, SAXException
 	{
 		File configFile = new File(filePath);
 		if(!configFile.isFile())
@@ -189,8 +195,9 @@ public class SettingUtil implements Closeable
 	 * @param inputStream
 	 * @throws DocumentException
 	 * @throws IOException 
+	 * @throws SAXException 
 	 */
-	public void read(InputStream inputStream) throws DocumentException, IOException
+	public void read(InputStream inputStream) throws DocumentException, IOException, SAXException
 	{
 		Document document = new SAXReader().read(inputStream);
 
@@ -290,8 +297,9 @@ public class SettingUtil implements Closeable
 	 * @param document
 	 * @throws DocumentException 
 	 * @throws IOException 
+	 * @throws SAXException 配置文件格式错误 
 	 */
-	private void parse(Document doc) throws IOException, DocumentException
+	private void parse(Document doc) throws IOException, DocumentException, SAXException
 	{
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");

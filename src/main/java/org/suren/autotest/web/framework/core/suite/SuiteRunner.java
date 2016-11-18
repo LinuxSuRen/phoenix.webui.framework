@@ -103,10 +103,11 @@ public class SuiteRunner
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 * @throws InterruptedException 
+	 * @throws SAXException 
 	 */
 	private static void runSuite(Suite suite)
 			throws IOException, DocumentException, NoSuchFieldException,
-			SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException
+			SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException, SAXException
 	{
 		String xmlConfPath = suite.getXmlConfPath();
 		try(SettingUtil settingUtil = new SettingUtil())

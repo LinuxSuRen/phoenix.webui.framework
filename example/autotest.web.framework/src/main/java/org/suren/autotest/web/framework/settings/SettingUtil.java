@@ -333,6 +333,7 @@ public class SettingUtil implements Closeable
 				}
 				catch(NumberFormatException e)
 				{
+					logger.warn(String.format("Invalid number string [%s].", timeOutStr));
 					seleniumEngine.setTimeout(5);
 				}
 				
@@ -341,7 +342,12 @@ public class SettingUtil implements Closeable
 					seleniumEngine.setWidth(Integer.parseInt(widthStr));
 					seleniumEngine.setHeight(Integer.parseInt(heightStr));
 				}
-				catch(NumberFormatException e){}
+				catch(NumberFormatException e)
+				{
+					logger.warn(
+							String.format("Invalid number width [%s] or height [%s].",
+									widthStr, heightStr));
+				}
 				
 				seleniumEngine.setFullScreen(Boolean.parseBoolean(fullScreenStr));
 				seleniumEngine.setMaximize(Boolean.parseBoolean(maximizeStr));

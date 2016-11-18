@@ -6,6 +6,9 @@ package org.suren.autotest.web.framework.data;
 import java.io.IOException;
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 类路径资源
  * @author suren
@@ -13,6 +16,8 @@ import java.net.URL;
  */
 public class ClasspathResource implements DataResource
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClasspathResource.class);
+	
 	private Class<?> clz;
 	private String resourceName;
 	
@@ -25,7 +30,12 @@ public class ClasspathResource implements DataResource
 	@Override
 	public URL getUrl() throws IOException
 	{
-		return clz.getClassLoader().getResource(resourceName);
+		URL resUrl = clz.getClassLoader().getResource(resourceName);
+		if(resUrl == null) {
+			LOGGER.warn(String.format("Can not found resource by [%s].", resourceName));
+		}
+		
+		return resUrl;
 	}
 
 }

@@ -225,7 +225,8 @@ public class SettingUtil implements Closeable
 			String pageKey = pageIterator.next();
 			if(containExcludePage(pageKey))
 			{
-				logger.warn(String.format("Page [%s] has been exclude, ignore for init data!", pageKey));
+				logger.warn(String.format("Page [%s] has been exclude, "
+						+ "ignore for init data [%s]!", pageKey, row));
 				continue;
 			}
 			

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -36,10 +37,12 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 
 /**
@@ -54,8 +57,9 @@ public class SeleniumEngine
 
 	private Properties enginePro = new Properties(); //引擎参数集合
 	
-	private String		driverStr;
 	private WebDriver	driver;
+	private String		driverStr;
+	private String 		remoteStr;
 	private long		timeout;
 	private boolean		fullScreen;
 	private boolean 	maximize;
@@ -82,14 +86,16 @@ public class SeleniumEngine
 			IOUtils.closeQuietly(inputStream);
 		}
 		
+		DesiredCapabilities capability = null;
 		String curDriverStr = getDriverStr();
 		if(DRIVER_CHROME.equals(curDriverStr))
 		{
-			driver = new ChromeDriver();
+			capability = DesiredCapabilities.chrome();
+			driver = new ChromeDriver(capability);
 		}
 		else if(DRIVER_IE.equals(curDriverStr))
 		{
-			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
+			capability = DesiredCapabilities.internetExplorer();
 			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			driver = new InternetExplorerDriver(capability);
 		}
@@ -102,11 +108,25 @@ public class SeleniumEngine
 		}
 		else if(DRIVER_SAFARI.equals(curDriverStr))
 		{
-			driver = new SafariDriver();
+			capability = DesiredCapabilities.safari();
+			driver = new SafariDriver(capability);
 		}
 		else if(DRIVER_OPERA.equals(curDriverStr))
 		{
-			driver = new OperaDriver();
+			capability = DesiredCapabilities.operaBlink();
+			driver = new OperaDriver(capability);
+		}
+		
+		if(getRemoteStr() != null)
+		{
+			try
+			{
+				driver = new RemoteWebDriver(new URL(getRemoteStr()), capability);
+			}
+			catch (MalformedURLException e)
+			{
+				throw new AutoTestException();
+			}
 		}
 		
 		if(timeout > 0)
@@ -358,6 +378,11 @@ public class SeleniumEngine
 	public void setDriverStr(String driverStr)
 	{
 		this.driverStr = driverStr;
+	}
+
+	public String getRemoteStr()
+	{
+		return remoteStr;
 	}
 
 	/**

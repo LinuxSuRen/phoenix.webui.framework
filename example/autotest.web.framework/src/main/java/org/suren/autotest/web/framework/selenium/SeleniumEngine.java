@@ -385,6 +385,11 @@ public class SeleniumEngine
 		return remoteStr;
 	}
 
+	public void setRemoteStr(String remoteStr)
+	{
+		this.remoteStr = remoteStr;
+	}
+
 	/**
 	 * @return 超时时间
 	 */

@@ -52,9 +52,14 @@
 	</xs:element>
 	
 	<xs:complexType name="engineType">
-		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome">
+		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome" use="required">
 			<xs:annotation>
 				<xs:documentation><![CDATA[浏览器类型配置，默认值为chrome，必填。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="remote" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation><![CDATA[远程服务模式，可选；例如http://192.168.1.2:4444/wd/hub。不填写的话即为本地模式]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="timeout" type="xs:positiveInteger">

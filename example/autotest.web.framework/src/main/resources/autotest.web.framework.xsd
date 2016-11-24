@@ -67,8 +67,16 @@
 				<xs:documentation><![CDATA[显示地设置元素查找超时事件，单位为秒，可选。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="fullScreen" type="xs:boolean" />
-		<xs:attribute name="maximize" type="xs:boolean" />
+		<xs:attribute name="fullScreen" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation><![CDATA[浏览器全屏，可能会不支持，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="maximize" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation><![CDATA[如果为true的话，浏览器启动后会最大化，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="width" type="xs:positiveInteger">
 			<xs:annotation>
 				<xs:documentation><![CDATA[浏览器宽度，必须为正整数，单位为像素，可选。]]></xs:documentation>

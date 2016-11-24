@@ -47,6 +47,8 @@ import org.suren.autotest.web.framework.util.BrowserUtil;
 public class SeleniumEngine
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumEngine.class);
+
+	private Properties enginePro = new Properties(); //引擎参数集合
 	
 	private String		driverStr;
 	private WebDriver	driver;
@@ -65,7 +67,6 @@ public class SeleniumEngine
 		InputStream  inputStream = null;
 		try
 		{
-			Properties enginePro = new Properties();
 			ClassLoader classLoader = this.getClass().getClassLoader();
 			
 			loadDefaultEnginePath(classLoader, enginePro); //加载默认配置
@@ -169,7 +170,8 @@ public class SeleniumEngine
 	 * 加载默认的engine
 	 * @param enginePro
 	 */
-	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro) {
+	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro)
+	{
 		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
 		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
 		
@@ -220,6 +222,7 @@ public class SeleniumEngine
 			}
 		}
 		
+		// TODO 没有实现对多个操作系统的兼容性设置
 		String os = System.getProperty("os.name");
 		if(!"Linux".equals(os))
 		{

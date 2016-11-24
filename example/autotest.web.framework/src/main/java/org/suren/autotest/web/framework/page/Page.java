@@ -3,6 +3,9 @@
 */
 package org.suren.autotest.web.framework.page;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -116,5 +119,22 @@ public class Page
 	public void setDataSource(String dataSource)
 	{
 		this.dataSource = dataSource;
+	}
+	
+	public void mouseWheel()
+	{
+		mouseWheel(1);
+	}
+	
+	public void mouseWheel(int num)
+	{
+		try
+		{
+			new Robot().mouseWheel(num);
+		}
+		catch (AWTException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

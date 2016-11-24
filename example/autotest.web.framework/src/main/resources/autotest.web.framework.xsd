@@ -52,7 +52,7 @@
 	</xs:element>
 	
 	<xs:complexType name="engineType">
-		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome" use="required">
+		<xs:attribute name="driver" type="suren:engineTypeDriverEnum" default="chrome">
 			<xs:annotation>
 				<xs:documentation><![CDATA[浏览器类型配置，默认值为chrome，必填。]]></xs:documentation>
 			</xs:annotation>

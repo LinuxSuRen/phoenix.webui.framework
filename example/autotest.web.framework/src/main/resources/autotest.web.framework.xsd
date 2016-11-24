@@ -95,6 +95,7 @@
 	
 	<xs:simpleType name="engineTypeDriverEnum">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="ie" />
 			<xs:enumeration value="chrome" />
 			<xs:enumeration value="firefox" /> 
 			<xs:enumeration value="opera" />

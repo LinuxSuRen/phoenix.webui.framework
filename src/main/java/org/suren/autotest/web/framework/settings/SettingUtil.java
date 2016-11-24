@@ -41,6 +41,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.core.ConfigException;
+import org.suren.autotest.web.framework.core.ConfigNotFoundException;
 import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.LocatorAware;
 import org.suren.autotest.web.framework.core.PageContext;
@@ -75,6 +76,9 @@ public class SettingUtil implements Closeable
 	/** 不希望被加载数据的Page集合 */
 	private Set<String> excludePageSet = new HashSet<String>();
 
+	/**
+	 * 初始化bean容器，初始化上下文对象，增加JMX管理模块，增加程序关闭钩子。
+	 */
 	public SettingUtil()
 	{
 		context = new ClassPathXmlApplicationContext(new String[]{"classpath*:applicationContext.xml"});
@@ -142,6 +146,11 @@ public class SettingUtil implements Closeable
 		
 		try(InputStream inputStream = classLoader.getResourceAsStream(fileName))
 		{
+			if(inputStream == null)
+			{
+				throw new ConfigNotFoundException("ClassPath", fileName);
+			}
+			
 			Validation.validationFramework(inputStream); //这里会把流关闭了
 		}
 		catch (SAXException | IOException e)

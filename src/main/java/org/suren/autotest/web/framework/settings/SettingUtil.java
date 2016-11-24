@@ -328,6 +328,7 @@ public class SettingUtil implements Closeable
 			}
 			
 			String driverStr = engineEle.attributeValue("driver");
+			String remoteStr = engineEle.attributeValue("remote");
 			String timeOutStr = engineEle.attributeValue("timeout");
 			String fullScreenStr = engineEle.attributeValue("fullScreen", "false");
 			String maximizeStr = engineEle.attributeValue("maximize", "true");
@@ -336,6 +337,7 @@ public class SettingUtil implements Closeable
 			try
 			{
 				seleniumEngine.setDriverStr(driverStr);
+				seleniumEngine.setRemoteStr(remoteStr);
 				
 				try
 				{

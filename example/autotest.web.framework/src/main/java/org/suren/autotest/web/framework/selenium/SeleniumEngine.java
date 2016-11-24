@@ -6,6 +6,8 @@ package org.suren.autotest.web.framework.selenium;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_FIREFOX;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_OPERA;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
 import java.io.File;
@@ -32,7 +34,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -95,6 +99,14 @@ public class SeleniumEngine
 			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
 			fireFoxPreSet(profile);
 			driver = new FirefoxDriver(profile);
+		}
+		else if(DRIVER_SAFARI.equals(curDriverStr))
+		{
+			driver = new SafariDriver();
+		}
+		else if(DRIVER_OPERA.equals(curDriverStr))
+		{
+			driver = new OperaDriver();
 		}
 		
 		if(timeout > 0)

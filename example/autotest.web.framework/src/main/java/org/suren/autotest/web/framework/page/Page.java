@@ -3,11 +3,10 @@
 */
 package org.suren.autotest.web.framework.page;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.suren.autotest.web.framework.core.Keyboard;
+import org.suren.autotest.web.framework.core.Mouse;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
@@ -26,6 +25,10 @@ public class Page
 
 	@Autowired
 	private SeleniumEngine	engine;
+	@Autowired
+	private Mouse mouse;
+	@Autowired
+	private Keyboard keyboard;
 
 	/**
 	 * 打开（进入）当前页面
@@ -120,21 +123,20 @@ public class Page
 	{
 		this.dataSource = dataSource;
 	}
-	
-	public void mouseWheel()
+
+	/**
+	 * @return the mouse
+	 */
+	public Mouse getMouse()
 	{
-		mouseWheel(1);
+		return mouse;
 	}
-	
-	public void mouseWheel(int num)
+
+	/**
+	 * @return the keyboard
+	 */
+	public Keyboard getKeyboard()
 	{
-		try
-		{
-			new Robot().mouseWheel(num);
-		}
-		catch (AWTException e)
-		{
-			e.printStackTrace();
-		}
+		return keyboard;
 	}
 }

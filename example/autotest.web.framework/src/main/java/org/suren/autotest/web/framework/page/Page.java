@@ -3,6 +3,9 @@
 */
 package org.suren.autotest.web.framework.page;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.core.Keyboard;
@@ -22,6 +25,8 @@ public class Page
 	private String			url;
 	/** 当前页面所关联的数据源 */
 	private String			dataSource;
+	/** 用于保存元素对象相关的数据 */
+	private Map<String, Object>				data = new HashMap<String, Object>();
 
 	@Autowired
 	private SeleniumEngine	engine;
@@ -122,6 +127,42 @@ public class Page
 	public void setDataSource(String dataSource)
 	{
 		this.dataSource = dataSource;
+	}
+	
+	/**
+	 * 添加数据
+	 * @param key
+	 * @param value
+	 */
+	public void putData(String key, Object value)
+	{
+		data.put(key, value);
+	}
+	
+	/**
+	 * 移出数据
+	 * @param key
+	 */
+	public void removeData(String key)
+	{
+		data.remove(key);
+	}
+	
+	/**
+	 * @param key
+	 * @return 是否包含指定key的数据
+	 */
+	public boolean containsKey(String key)
+	{
+		return data.containsKey(key);
+	}
+	
+	/**
+	 * 清空数据
+	 */
+	public void clearData()
+	{
+		data.clear();
 	}
 
 	/**

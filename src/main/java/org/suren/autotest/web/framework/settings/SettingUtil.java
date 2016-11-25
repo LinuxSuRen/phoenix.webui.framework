@@ -97,12 +97,12 @@ public class SettingUtil implements Closeable
 			}
 			
 			//提供运行时管理功能
-			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
-			
-			LocateRegistry.createRegistry(5006);
-			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-			server.registerMBean(pageMXBean,
-					new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+//			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
+//			
+//			LocateRegistry.createRegistry(5006);
+//			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+//			server.registerMBean(pageMXBean,
+//					new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
 		}
 		catch(Exception e)
 		{

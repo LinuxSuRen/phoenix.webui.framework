@@ -27,6 +27,7 @@ public class Page
 	private String			dataSource;
 	/** 用于保存元素对象相关的数据 */
 	private Map<String, Object>				data = new HashMap<String, Object>();
+	private String paramPrefix;
 
 	@Autowired
 	private SeleniumEngine	engine;
@@ -179,5 +180,15 @@ public class Page
 	public Keyboard getKeyboard()
 	{
 		return keyboard;
+	}
+
+	public String getParamPrefix()
+	{
+		return paramPrefix;
+	}
+
+	public void setParamPrefix(String paramPrefix)
+	{
+		this.paramPrefix = paramPrefix;
 	}
 }

@@ -4,7 +4,9 @@
 package org.suren.autotest.web.framework.core.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.suren.autotest.web.framework.core.Locator;
 
@@ -25,6 +27,8 @@ public abstract class AbstractElement implements Element
 	private String							partialLinkText;
 	private List<Locator>					locatorList = new ArrayList<Locator>();
 	private String							strategy;
+	/** 用于保存元素对象相关的数据 */
+	private Map<String, Object>				data = new HashMap<String, Object>();
 
 	@Override
 	public String getId()
@@ -129,6 +133,42 @@ public abstract class AbstractElement implements Element
 	public void setStrategy(String strategy)
 	{
 		this.strategy = strategy;
+	}
+	
+	/**
+	 * 添加数据
+	 * @param key
+	 * @param value
+	 */
+	public void putData(String key, Object value)
+	{
+		data.put(key, value);
+	}
+	
+	/**
+	 * 移出数据
+	 * @param key
+	 */
+	public void removeData(String key)
+	{
+		data.remove(key);
+	}
+	
+	/**
+	 * @param key
+	 * @return 是否包含指定key的数据
+	 */
+	public boolean containsKey(String key)
+	{
+		return data.containsKey(key);
+	}
+	
+	/**
+	 * 清空数据
+	 */
+	public void clearData()
+	{
+		data.clear();
 	}
 
 	/**

@@ -131,6 +131,11 @@
 				<xs:documentation><![CDATA[当前Page配置所对应的数据源名称，可选。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="paramPrefix" type="xs:string" default="param">
+			<xs:annotation>
+				<xs:documentation><![CDATA[配置用于变量替换的参数前缀，默认值为param。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:complexType name="pageFieldType">
@@ -161,6 +166,11 @@
 		<xs:attribute name="strategy" type="suren:strategyEnum" default="priority">
 			<xs:annotation>
 				<xs:documentation><![CDATA[配置用于查找当前Field对应的元素的策略，默认值为priority。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="paramPrefix" type="xs:string" default="param">
+			<xs:annotation>
+				<xs:documentation><![CDATA[配置用于变量替换的参数前缀，默认值为param。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

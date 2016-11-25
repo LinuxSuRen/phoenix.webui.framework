@@ -29,6 +29,7 @@ public abstract class AbstractElement implements Element
 	private String							strategy;
 	/** 用于保存元素对象相关的数据 */
 	private Map<String, Object>				data = new HashMap<String, Object>();
+	private String paramPrefix;
 
 	@Override
 	public String getId()
@@ -180,4 +181,14 @@ public abstract class AbstractElement implements Element
 	 * @return 隐藏返回true，否则返回false
 	 */
 	public abstract boolean isHidden();
+
+	public String getParamPrefix()
+	{
+		return paramPrefix;
+	}
+
+	public void setParamPrefix(String paramPrefix)
+	{
+		this.paramPrefix = paramPrefix;
+	}
 }

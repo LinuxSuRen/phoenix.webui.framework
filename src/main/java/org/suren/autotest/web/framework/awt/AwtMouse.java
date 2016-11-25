@@ -7,6 +7,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 
+import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.Mouse;
 
 /**
@@ -14,6 +15,7 @@ import org.suren.autotest.web.framework.core.Mouse;
  * @author suren
  * @date 2016年11月25日 上午8:10:36
  */
+@Component
 public class AwtMouse implements Mouse
 {
 

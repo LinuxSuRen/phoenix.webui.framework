@@ -7,12 +7,14 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
+import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.Keyboard;
 
 /**
  * @author suren
  * @date 2016年11月25日 上午8:13:40
  */
+@Component
 public class AwtKeyboard implements Keyboard
 {
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.Locator;
+import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
@@ -43,6 +44,12 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 		
 		logger.info(String.format("zone search strategy, locators count[%s].", locators.size()));
 		
+		AbstractElement absEle = null;
+		if(element instanceof AbstractElement)
+		{
+			absEle = (AbstractElement) element;
+		}
+		
 		WebDriver driver = engine.getDriver();
 		for(Locator locator : locators)
 		{
@@ -53,13 +60,19 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 				continue;
 			}
 			
+			AbstractLocator<WebElement> absLocator = ((AbstractLocator<WebElement>) locator);
+			if(absEle != null)
+			{
+				absLocator.setValue(absEle.paramTranslate(absLocator.getValue()));
+			}
+
 			if(webEle != null)
 			{
-				webEle = ((AbstractLocator<WebElement>) locator).findElement(webEle);
+				webEle = absLocator.findElement(webEle);
 			}
 			else
 			{
-				webEle = ((AbstractLocator<WebElement>) locator).findElement(driver);
+				webEle = absLocator.findElement(driver);
 			}
 		}
 		

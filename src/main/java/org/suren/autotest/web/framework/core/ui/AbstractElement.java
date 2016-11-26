@@ -5,6 +5,7 @@ package org.suren.autotest.web.framework.core.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -181,6 +182,34 @@ public abstract class AbstractElement implements Element
 	 * @return 隐藏返回true，否则返回false
 	 */
 	public abstract boolean isHidden();
+	
+	/**
+	 * 把参数型的值进行转换
+	 * @param value
+	 * @return
+	 */
+	public String paramTranslate(String value)
+	{
+		String result = value;
+		
+		Iterator<String> dataIt = data.keySet().iterator();
+		while(dataIt.hasNext())
+		{
+			String param = dataIt.next();
+			if(!param.startsWith(paramPrefix))
+			{
+				continue;
+			}
+			
+			Object paramVal = data.get(param);
+			if(paramVal != null)
+			{
+				result = result.replace("${" + param + "}", paramVal.toString());
+			}
+		}
+		
+		return result;
+	}
 
 	public String getParamPrefix()
 	{

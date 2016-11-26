@@ -9,10 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.rmi.registry.LocateRegistry;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,9 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
@@ -51,7 +46,6 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.ClasspathResource;
 import org.suren.autotest.web.framework.data.DataSource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
-import org.suren.autotest.web.framework.jmx.IPageMXBean;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -461,7 +455,9 @@ public class SettingUtil implements Closeable
 		{
 			BeanUtil.set(pageInstance, "url", url);
 		}
-		
+		String paramPrefix = ele.attributeValue("paramPrefix", "param");
+		BeanUtil.set(pageInstance, "paramPrefix", paramPrefix);
+
 		BeanUtil.set(pageInstance, "dataSource", dataSrcClsStr);
 
 		ele.accept(new VisitorSupport()
@@ -486,6 +482,7 @@ public class SettingUtil implements Closeable
 				String data = node.attributeValue("data");
 				String type = node.attributeValue("type");
 				String strategy = node.attributeValue("strategy");
+				String paramPrefix = node.attributeValue("paramPrefix", "param");
 				if (fieldName == null || "".equals(fieldName))
 				{
 					return;
@@ -526,6 +523,7 @@ public class SettingUtil implements Closeable
 						ele.setLinkText(byLinkText);
 						ele.setPartialLinkText(byPartialLinkText);
 						ele.setStrategy(strategy);
+						ele.setParamPrefix(paramPrefix);
 					}
 					else
 					{

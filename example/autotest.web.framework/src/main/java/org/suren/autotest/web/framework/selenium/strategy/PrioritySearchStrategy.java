@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.LocatorNotFoundException;
+import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
@@ -71,7 +72,13 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		}
 		else if (StringUtils.isNotBlank(element.getXPath()))
 		{
-			by = By.xpath(element.getXPath());
+			String orginXPath = element.getXPath();
+			String paramXPath = orginXPath;
+			if(element instanceof AbstractElement)
+			{
+				paramXPath = ((AbstractElement) element).paramTranslate(paramXPath);
+			}
+			by = By.xpath(paramXPath);
 		}
 		else if (StringUtils.isNotBlank(element.getLinkText()))
 		{

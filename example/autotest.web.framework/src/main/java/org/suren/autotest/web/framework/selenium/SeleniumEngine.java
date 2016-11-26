@@ -139,7 +139,7 @@ public class SeleniumEngine
 		{
 			try
 			{
-				window.fullscreen();
+//				window.fullscreen();
 			}
 			catch(UnsupportedCommandException e)
 			{

@@ -176,7 +176,7 @@ public class Page
 	public String paramTranslate(String value)
 	{
 		String result = value;
-		result = StringUtil.paramTranslate(data, result, value);
+		result = StringUtil.paramTranslate(data, getParamPrefix(), result);
 		
 		return result;
 	}

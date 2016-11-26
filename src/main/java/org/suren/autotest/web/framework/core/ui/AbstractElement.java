@@ -5,7 +5,6 @@ package org.suren.autotest.web.framework.core.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -192,7 +191,7 @@ public abstract class AbstractElement implements Element
 	public String paramTranslate(String value)
 	{
 		String result = value;
-		result = StringUtil.paramTranslate(data, result, value);
+		result = StringUtil.paramTranslate(data, getParamPrefix(), result);
 		
 		return result;
 	}

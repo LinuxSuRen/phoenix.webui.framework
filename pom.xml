@@ -115,6 +115,17 @@
 			<version>2.52.0</version>
 		</dependency>
 		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-remote-driver</artifactId>
+			<version>2.45.0</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>1.4.01</version>
@@ -199,6 +210,11 @@
 		    <groupId>org.codehaus.groovy</groupId>  
 		    <artifactId>groovy-jsr223</artifactId>  
 		    <version>2.4.4</version>  
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.ant</groupId>
+		    <artifactId>ant</artifactId>
+		    <version>1.7.0</version>
 		</dependency>
 	</dependencies>
 </project>

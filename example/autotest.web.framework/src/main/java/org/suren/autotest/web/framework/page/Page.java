@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.core.Keyboard;
 import org.suren.autotest.web.framework.core.Mouse;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.util.StringUtil;
 
 /**
  * 对HTML页面的逻辑封装，不一定是一一对应
@@ -41,7 +42,9 @@ public class Page
 	 */
 	public final void open()
 	{
-		engine.openUrl(url);
+		String paramUrl = paramTranslate(url);
+		
+		engine.openUrl(paramUrl);
 		engine.computeToolbarHeight();
 	}
 
@@ -164,6 +167,18 @@ public class Page
 	public void clearData()
 	{
 		data.clear();
+	}
+	
+	/**
+	 * @param value
+	 * @return
+	 */
+	public String paramTranslate(String value)
+	{
+		String result = value;
+		result = StringUtil.paramTranslate(data, result, value);
+		
+		return result;
 	}
 
 	/**

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.suren.autotest.web.framework.core.Locator;
+import org.suren.autotest.web.framework.util.StringUtil;
 
 /**
  * 所有HTML页面元素的抽象， 包含了元素的id、name、tagName、css、xpath、linktext、partialLinkText等属性
@@ -191,22 +192,7 @@ public abstract class AbstractElement implements Element
 	public String paramTranslate(String value)
 	{
 		String result = value;
-		
-		Iterator<String> dataIt = data.keySet().iterator();
-		while(dataIt.hasNext())
-		{
-			String param = dataIt.next();
-			if(!param.startsWith(paramPrefix))
-			{
-				continue;
-			}
-			
-			Object paramVal = data.get(param);
-			if(paramVal != null)
-			{
-				result = result.replace("${" + param + "}", paramVal.toString());
-			}
-		}
+		result = StringUtil.paramTranslate(data, result, value);
 		
 		return result;
 	}

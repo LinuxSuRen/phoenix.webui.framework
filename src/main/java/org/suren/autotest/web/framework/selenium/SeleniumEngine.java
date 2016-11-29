@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -28,21 +27,21 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 
 /**
@@ -91,6 +90,39 @@ public class SeleniumEngine
 		if(DRIVER_CHROME.equals(curDriverStr))
 		{
 			capability = DesiredCapabilities.chrome();
+			
+			//chrome://version/
+			ChromeOptions options = new ChromeOptions();
+			Iterator<Object> chromeKeys = enginePro.keySet().iterator();
+			while(chromeKeys.hasNext())
+			{
+				String key = chromeKeys.next().toString();
+				if(!key.startsWith("chrome"))
+				{
+					continue;
+				}
+				
+				if(key.startsWith("chrome.args"))
+				{
+					String arg = key.replace("chrome.args.", "") + "=" + enginePro.getProperty(key);
+					if(arg.endsWith("="))
+					{
+						arg = arg.substring(0, arg.length() - 1);
+					}
+					options.addArguments(arg);
+					logger.info(String.format("chrome arguments : [%s]", arg));
+				}
+				else if(key.startsWith("chrome.cap.proxy.http"))
+				{
+					String val = enginePro.getProperty(key);
+					
+					Proxy proxy = new Proxy();
+					proxy.setHttpProxy(val);
+					capability.setCapability("proxy", proxy);
+				}
+			}
+			capability.setCapability(ChromeOptions.CAPABILITY, options);
+		
 			driver = new ChromeDriver(capability);
 		}
 		else if(DRIVER_IE.equals(curDriverStr))
@@ -119,14 +151,14 @@ public class SeleniumEngine
 		
 		if(getRemoteStr() != null)
 		{
-			try
-			{
-				driver = new RemoteWebDriver(new URL(getRemoteStr()), capability);
-			}
-			catch (MalformedURLException e)
-			{
-				throw new AutoTestException();
-			}
+//			try
+//			{
+//				driver = new RemoteWebDriver(new URL(getRemoteStr()), capability);
+//			}
+//			catch (MalformedURLException e)
+//			{
+//				throw new AutoTestException();
+//			}
 		}
 		
 		if(timeout > 0)

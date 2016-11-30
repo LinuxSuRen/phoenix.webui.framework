@@ -16,9 +16,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -38,10 +40,12 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 
 /**
@@ -55,6 +59,8 @@ public class SeleniumEngine
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumEngine.class);
 
 	private Properties enginePro = new Properties(); //引擎参数集合
+	
+	private Map<String, DesiredCapabilities> engineCapMap = new HashMap<String, DesiredCapabilities>();
 	
 	private WebDriver	driver;
 	private String		driverStr;
@@ -85,50 +91,32 @@ public class SeleniumEngine
 			IOUtils.closeQuietly(inputStream);
 		}
 		
-		DesiredCapabilities capability = null;
-		String curDriverStr = getDriverStr();
-		if(DRIVER_CHROME.equals(curDriverStr))
-		{
-			capability = DesiredCapabilities.chrome();
-			
-			//chrome://version/
-			ChromeOptions options = new ChromeOptions();
-			Iterator<Object> chromeKeys = enginePro.keySet().iterator();
-			while(chromeKeys.hasNext())
-			{
-				String key = chromeKeys.next().toString();
-				if(!key.startsWith("chrome"))
-				{
-					continue;
-				}
-				
-				if(key.startsWith("chrome.args"))
-				{
-					String arg = key.replace("chrome.args.", "") + "=" + enginePro.getProperty(key);
-					if(arg.endsWith("="))
-					{
-						arg = arg.substring(0, arg.length() - 1);
-					}
-					options.addArguments(arg);
-					logger.info(String.format("chrome arguments : [%s]", arg));
-				}
-				else if(key.startsWith("chrome.cap.proxy.http"))
-				{
-					String val = enginePro.getProperty(key);
-					
-					Proxy proxy = new Proxy();
-					proxy.setHttpProxy(val);
-					capability.setCapability("proxy", proxy);
-				}
-			}
-			capability.setCapability(ChromeOptions.CAPABILITY, options);
+		initCapMap();
 		
+		String curDriverStr = getDriverStr();
+		DesiredCapabilities capability = engineCapMap.get(curDriverStr);
+		if(capability == null)
+		{
+			throw new RuntimeException(String.format("Unknow type driver [%s].", curDriverStr));
+		}
+		
+		if(getRemoteStr() != null)
+		{
+			try
+			{
+				driver = new RemoteWebDriver(new URL(getRemoteStr()), capability);
+			}
+			catch (MalformedURLException e)
+			{
+				throw new AutoTestException();
+			}
+		}
+		else if(DRIVER_CHROME.equals(curDriverStr))
+		{
 			driver = new ChromeDriver(capability);
 		}
 		else if(DRIVER_IE.equals(curDriverStr))
 		{
-			capability = DesiredCapabilities.internetExplorer();
-			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			driver = new InternetExplorerDriver(capability);
 		}
 		else if(DRIVER_FIREFOX.equals(curDriverStr))
@@ -140,25 +128,11 @@ public class SeleniumEngine
 		}
 		else if(DRIVER_SAFARI.equals(curDriverStr))
 		{
-			capability = DesiredCapabilities.safari();
 			driver = new SafariDriver(capability);
 		}
 		else if(DRIVER_OPERA.equals(curDriverStr))
 		{
-			capability = DesiredCapabilities.operaBlink();
 			driver = new OperaDriver(capability);
-		}
-		
-		if(getRemoteStr() != null)
-		{
-//			try
-//			{
-//				driver = new RemoteWebDriver(new URL(getRemoteStr()), capability);
-//			}
-//			catch (MalformedURLException e)
-//			{
-//				throw new AutoTestException();
-//			}
 		}
 		
 		if(timeout > 0)
@@ -192,6 +166,73 @@ public class SeleniumEngine
 		if(getHeight() > 0)
 		{
 			window.setSize(new Dimension(window.getSize().getWidth(), getHeight()));
+		}
+	}
+	
+	/**
+	 * 初始化所有浏览器的配置
+	 */
+	private void initCapMap()
+	{
+		//chrome://version/
+		{
+			DesiredCapabilities capability = DesiredCapabilities.chrome();
+			
+			ChromeOptions options = new ChromeOptions();
+			Iterator<Object> chromeKeys = enginePro.keySet().iterator();
+			while(chromeKeys.hasNext())
+			{
+				String key = chromeKeys.next().toString();
+				if(!key.startsWith("chrome"))
+				{
+					continue;
+				}
+				
+				if(key.startsWith("chrome.args"))
+				{
+					String arg = key.replace("chrome.args.", "") + "=" + enginePro.getProperty(key);
+					if(arg.endsWith("="))
+					{
+						arg = arg.substring(0, arg.length() - 1);
+					}
+					options.addArguments(arg);
+					logger.info(String.format("chrome arguments : [%s]", arg));
+				}
+				else if(key.startsWith("chrome.cap.proxy.http"))
+				{
+					String val = enginePro.getProperty(key);
+					
+					Proxy proxy = new Proxy();
+					proxy.setHttpProxy(val);
+					capability.setCapability("proxy", proxy);
+				}
+			}
+			capability.setCapability(ChromeOptions.CAPABILITY, options);
+		
+			engineCapMap.put(DRIVER_CHROME, capability);
+		}
+		
+		{
+			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
+			capability.setCapability(
+					InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+			engineCapMap.put(DRIVER_IE, capability);
+		}
+		
+		{
+			String proFile = System.getProperty("firefox.profile", null);
+			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
+			fireFoxPreSet(profile);
+		}
+		
+		{
+			DesiredCapabilities capability = DesiredCapabilities.safari();
+			engineCapMap.put(DRIVER_SAFARI, capability);
+		}
+		
+		{
+			DesiredCapabilities capability = DesiredCapabilities.operaBlink();
+			engineCapMap.put(DRIVER_OPERA, capability);
 		}
 	}
 

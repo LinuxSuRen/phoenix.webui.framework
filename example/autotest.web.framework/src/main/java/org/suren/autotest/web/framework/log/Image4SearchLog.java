@@ -79,10 +79,12 @@ public class Image4SearchLog
 			LOGGER.error("Image4Search config file finding error.", e);
 		}
 		
-		outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR, "d:/ElementSearch/image")); // TODO 这里还没有处理写死的情况
+		outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR, System.getProperty("java.io.tmpdir"))); 
 		if(!outputDir.isDirectory())
 		{
-			outputDir.mkdirs(); // TODO这里没有进行是否创建成功的判断
+			if(!outputDir.mkdirs()) {
+				LOGGER.error(String.format("Can not create img dir [%s].", outputDir));
+			}
 		}
 		
 		animatedGifEncoder = new AnimatedGifEncoder();

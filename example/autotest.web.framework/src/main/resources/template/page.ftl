@@ -7,6 +7,10 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.page.Page;
 
+/**
+ * @author suren
+ * ${page.comment}
+ */
 @Component
 public class ${page.name} extends Page {
 <#list page.fields as field>

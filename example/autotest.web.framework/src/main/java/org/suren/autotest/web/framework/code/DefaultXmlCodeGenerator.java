@@ -43,6 +43,7 @@ public class DefaultXmlCodeGenerator implements Generator
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlCodeGenerator.class);
 	
 	private Map<String, Map<String, String>> pageMap = new HashMap<String, Map<String, String>>();
+	private Map<String, String> pageCommentMap = new HashMap<String, String>();
 	
 	private Map<String, String> fieldTypeMap = new HashMap<String, String>();
 	
@@ -83,6 +84,11 @@ public class DefaultXmlCodeGenerator implements Generator
 				autoPage.setPackageName(pageCls.substring(0, index));
 			}
 			autoPage.setName(pageCls.substring(index + 1));
+			autoPage.setComment("");
+			if(pageCommentMap.containsKey(pageCls))
+			{
+				autoPage.setComment(pageCommentMap.get(pageCls));
+			}
 			
 			List<AutoField> fields = new ArrayList<AutoField>();
 			Iterator<String> fieldIt = fieldMap.keySet().iterator();
@@ -177,6 +183,11 @@ public class DefaultXmlCodeGenerator implements Generator
 				}
 
 				pageClsStr = (pagePackage + pageClsStr);
+				Object commentObj = ele.getData();
+				if(commentObj != null)
+				{
+					pageCommentMap.put(pageClsStr, commentObj.toString().trim());
+				}
 
 				try
 				{

@@ -289,6 +289,10 @@ public class SuiteRunner
 				{
 					actionResult = Boolean.toString(CheckBoxGroup.selectByText());
 				}
+				else
+				{
+					logger.warn(String.format("Can not found CheckBoxGroup by [%s].", pageField));
+				}
 				break;
 			case "select":
 				Selector selector = getFieldObj(Selector.class, pageField, page);

@@ -3,6 +3,10 @@
  */
 package org.suren.autotest.web.framework.jdt;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
 
 /**
@@ -11,33 +15,45 @@ import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
  */
 public class SuRenCompilationUnit implements ICompilationUnit
 {
+    private File file;
+    private String workDir;
 
-	@Override
-	public char[] getFileName()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public SuRenCompilationUnit(File file, String workDir) {
+        this.file = file;
+        this.workDir = workDir;
+    }
 
-	@Override
-	public char[] getContents()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public char[] getContents() {
+        try {
+            return FileUtils.readFileToString(file).toCharArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public char[] getMainTypeName()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public char[] getMainTypeName() {
+        return file.getName().replace(".java", "").toCharArray();
+    }
 
-	@Override
-	public char[][] getPackageName()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+    public char[][] getPackageName() {
+        String fullPkgName = this.file.getParentFile().getAbsolutePath().replace(workDir, "");
+        fullPkgName = fullPkgName.replace("/", ".").replace("\\", ".");
+        if (fullPkgName.startsWith("."))
+            fullPkgName = fullPkgName.substring(1);
+        String[] items = fullPkgName.split("[.]");
+        char[][] pkgName = new char[items.length][];
+        for (int i = 0; i < items.length; i++) {
+            pkgName[i] = items[i].toCharArray();
+        }
+        return pkgName;
+    }
+
+    public boolean ignoreOptionalProblems() {
+        return false;
+    }
+
+    public char[] getFileName() {
+        return this.file.getName().toCharArray();
+    }
+
 }

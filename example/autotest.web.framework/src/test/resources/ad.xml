@@ -307,6 +307,36 @@
 				</suren:locators>
 			</suren:field>
 		</suren:page>
+		
+		<suren:page class="demo.page.JdPage"
+		url="http://www.jd.com"
+		dataSource="jd_datasource">
+			<suren:field name="login" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byLinkText" value="你好，请登录" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="userName" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="loginname" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="password" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="nloginpwd" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="loginBut" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="loginsubmit" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="vipLink" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byLinkText" value="京东会员" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+		</suren:page>
 	</suren:pages>
 	
 	<suren:dataSources>

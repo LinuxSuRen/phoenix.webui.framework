@@ -16,6 +16,11 @@ public class ${page.name} extends Page {
 <#list page.fields as field>
 	@Autowired
 	private ${field.type} ${field.name};
+</#list>
+	/**
+	* getter and setter methods zone
+	*/
+<#list page.fields as field>
 	public ${field.type} ${field.getterMethod}()
 	{
 		return ${field.name};

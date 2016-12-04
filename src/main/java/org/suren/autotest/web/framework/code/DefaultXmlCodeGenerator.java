@@ -26,6 +26,8 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -113,8 +115,11 @@ public class DefaultXmlCodeGenerator implements Generator
 	{
 		try
 		{
+			TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass(), "/template");
+			
 			Configuration configuration = new Configuration();
-			configuration.setDirectoryForTemplateLoading(new File("d:/ftp"));
+//			configuration.setDirectoryForTemplateLoading(new File("d:/ftp"));
+			configuration.setTemplateLoader(templateLoader);
 			configuration.setObjectWrapper(new DefaultObjectWrapper()); 
 			configuration.setDefaultEncoding("UTF-8");
 			

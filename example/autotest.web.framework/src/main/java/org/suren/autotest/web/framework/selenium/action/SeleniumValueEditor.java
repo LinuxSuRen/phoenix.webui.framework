@@ -4,6 +4,7 @@
 package org.suren.autotest.web.framework.selenium.action;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +50,23 @@ public class SeleniumValueEditor implements ValueEditor
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
 		if(webEle != null)
 		{
-			((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
-			webEle.click();
-			webEle.clear();
-			webEle.sendKeys(value.toString());
+			try
+			{
+				webEle.click();
+				webEle.clear();
+				webEle.sendKeys(value.toString());
+			}
+			catch(WebDriverException e)
+			{
+				if(e.getMessage().contains("Element is not clickable at point"))
+				{
+					((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
+
+					webEle.click();
+					webEle.clear();
+					webEle.sendKeys(value.toString());
+				}
+			}
 		}
 		else
 		{

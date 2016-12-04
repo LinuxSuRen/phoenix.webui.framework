@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * 读取浏览器配置的工具类
  * @author suren
  * @date 2016年9月13日 下午8:16:08
  */
@@ -18,6 +19,9 @@ public class BrowserUtil
 	private Map<String, String> preStrMap;
 	private Map<String, Integer> preIntMap;
 	
+	/**
+	 * @return 火狐浏览器的布尔值类型Map
+	 */
 	public Map<String, Boolean> getFirefoxPreBoolMap()
 	{
 		preBoolMap = new HashMap<String, Boolean>();
@@ -38,6 +42,9 @@ public class BrowserUtil
 		return preBoolMap;
 	}
 	
+	/**
+	 * @return 火狐浏览器的字符串类型Map
+	 */
 	public Map<String, String> getFirefoxPreStrMap()
 	{
 		preStrMap = new HashMap<String, String>();
@@ -58,6 +65,9 @@ public class BrowserUtil
 		return preStrMap;
 	}
 	
+	/**
+	 * @return 火狐浏览器的整型类型Map
+	 */
 	public Map<String, Integer> getFirefoxPreIntMap()
 	{
 		preIntMap = new HashMap<String, Integer>();

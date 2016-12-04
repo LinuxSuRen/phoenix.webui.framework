@@ -69,8 +69,6 @@ public class DefaultXmlCodeGenerator implements Generator
 			e.printStackTrace();
 		}
 		
-		System.out.println(pageMap);
-		
 		Iterator<String> pageIt = pageMap.keySet().iterator();
 		while(pageIt.hasNext())
 		{
@@ -133,8 +131,22 @@ public class DefaultXmlCodeGenerator implements Generator
 			paramMap.put("page", autoPage);
 			Template template = configuration.getTemplate("page.ftl");
 			
+			StringBuffer pathBuf = new StringBuffer();
+			String packageName = autoPage.getPackageName();
+			String[] packageArray = packageName.split("\\.");
+			if(packageArray != null && packageArray.length > 0)
+			{
+				for(String pkName : packageArray)
+				{
+					if(!pkName.equals(""))
+					{
+						pathBuf.append(pkName).append("/");
+					}
+				}
+			}
+			
 			Writer writer = new OutputStreamWriter(
-					new FileOutputStream(autoPage.getName() + ".java"),"UTF-8"); 
+					new FileOutputStream(pathBuf.toString() + autoPage.getName() + ".java"),"UTF-8"); 
 		    template.process(paramMap, writer);
 		}
 		catch (IOException e)

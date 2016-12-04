@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suren:autotest xmlns:suren="http://surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://surenpi.com http://autotest.surenpi.com/ ">
+	<suren:engine driver="chrome" remote="http://192.168.199.141:4444/wd/hub" />
+	<suren:pages>
+		<suren:page class="demo.page.LoginPage"
+		url="http://www.rawayledgesw.com/tracking202/redirect/dl.php?t202id=621883&amp;t202kw="
+		dataSource="ad_datasource">
+			<suren:field name="gender" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="sendlead" timeout="3000" />
+					<suren:locator name="byCss" value="gender"/>
+				</suren:locators>
+			</suren:field>
+			<suren:field name="firstName" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="firstname" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="lastName" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="lastname" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="email" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="email" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="day" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="dobday" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="month" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="dobmonth" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="year" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="dobyear" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="phone" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="phone" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="postCode" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="postcode" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="searchPostCode" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="searchpostcode" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="selectedAddress" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="selectedaddress" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="terms" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byCss" value="label-terms" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="singleButton" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="singlebutton" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			
+			<!-- offers -->
+			<suren:field name="firstQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_a2d34ea3e9d608608e209361aa236113" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="secondQus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_cf2f620e06839623b3e515dd0f0514a5" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="thirdQus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_267eff81fecdd45c35a4c93cfec82480" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="five_Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_267eff81fecdd45c35a4c93cfec82480" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="fourQus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_cfa4923bc705fb35b281fedb3e49b8b6" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="fiveQus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_dd3076d5bc6290be99b0b7879a94480d" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="sixQus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_dd3076d5bc6290be99b0b7879a94480d" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="sevenQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_a97101280ead25a311a8cf7b77f9790c" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="eightQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_2_dd3076d5bc6290be99b0b7879a94480d" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="nineQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_3_dd3076d5bc6290be99b0b7879a94480d" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="tenQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_42bb021d1bf42523eac7f17431212b71" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="eleQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_2497e3c8991a291a77212bbcc0476872" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_12Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_432de3c93e039c6516b19dfa34235604" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_13Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_432de3c93e039c6516b19dfa34235604" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_14Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_2_432de3c93e039c6516b19dfa34235604" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_15Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_3_432de3c93e039c6516b19dfa34235604" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_16Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_190e01a4c4a41c943241ce26328eff2c" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_17Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_190e01a4c4a41c943241ce26328eff2c" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_18Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_a35f2deff8dc762ecdf67d212295de2e" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_19Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_9eeb850c911d12473520a2b95ffdc611" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="okQus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byXpath" value="//*[@id='page_0']/button" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			
+			<!-- 第二页问题 -->
+			<suren:field name="_20Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_e0473edcee127f49ffc26c8624a5a2b0" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_21Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_3218fddaa0d7d82759f9692a25e60bd2" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_22Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_e0473edcee127f49ffc26c8624a5a2b0" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_23Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_12ec0b1f859a543bc673d849d7b594cf" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_24Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_29b1b0952cf353fd6cce7c76ea6397a4" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_25Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_6a9b1fdccbdc7bc55f6bbf60b2fbb8e3" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_26Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_6a9b1fdccbdc7bc55f6bbf60b2fbb8e3" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_27Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_2_6a9b1fdccbdc7bc55f6bbf60b2fbb8e3" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_28Qus" type="select" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_3_6a9b1fdccbdc7bc55f6bbf60b2fbb8e3" timeout="3000" />
+					<suren:locator name="byTagName" value="select" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_29Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_9ed74e39e1d9467240fc5caa9298050c" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_30Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_3a22cb10f33bf41750320ad8234ddc7d" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_31Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_3b7fc4fbb3143ea2d797992a4b4fa129" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			
+			<!-- 第三页 -->
+			<suren:field name="_32Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_b3ca3312fc597ba5727bdc84efe766cc" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_33Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_5a2fe0746ff637f2327b68d1edbedfdc" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_34Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_1_5a2fe0746ff637f2327b68d1edbedfdc" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_35Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_2_5a2fe0746ff637f2327b68d1edbedfdc" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+			<suren:field name="_36Qus" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="fe_0_3c11497cd970ed1754f4a932a5b6ef2a" timeout="3000" />
+					<suren:locator name="byTagName" value="label" timeout="3000" />
+				</suren:locators>
+			</suren:field>
+		</suren:page>
+	</suren:pages>
+	
+	<suren:dataSources>
+		<suren:dataSource name="ad_datasource" type="xml_data_source" resource="ad_datasource.xml"/>
+	</suren:dataSources>
+</suren:autotest>

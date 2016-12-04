@@ -63,6 +63,7 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 			AbstractLocator<WebElement> absLocator = ((AbstractLocator<WebElement>) locator);
 			if(absEle != null)
 			{
+				//动态参数转换
 				absLocator.setValue(absEle.paramTranslate(absLocator.getValue()));
 			}
 

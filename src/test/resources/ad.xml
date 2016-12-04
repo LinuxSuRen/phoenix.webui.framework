@@ -7,6 +7,7 @@
 		<suren:page class="demo.page.LoginPage"
 		url="http://www.rawayledgesw.com/tracking202/redirect/dl.php?t202id=621883&amp;t202kw="
 		dataSource="ad_datasource">
+			<![CDATA[登录页面]]>
 			<suren:field name="gender" type="button" strategy="zone">
 				<suren:locators>
 					<suren:locator name="byId" value="sendlead" timeout="3000" />

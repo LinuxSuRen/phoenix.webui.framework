@@ -18,6 +18,9 @@ public class PageContext
 	
 	public PageContext(){}
 	
+	/**
+	 * @param pageMap
+	 */
 	public PageContext(Map<String, Page> pageMap)
 	{
 		this.pageMap = pageMap;

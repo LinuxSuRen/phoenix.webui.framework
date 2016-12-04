@@ -17,6 +17,10 @@ public class ConfigNotFoundException extends AutoTestException
 	private String type;
 	private String configPath;
 	
+	/**
+	 * @param type
+	 * @param configPath
+	 */
 	public ConfigNotFoundException(String type, String configPath)
 	{
 		this.type = type;

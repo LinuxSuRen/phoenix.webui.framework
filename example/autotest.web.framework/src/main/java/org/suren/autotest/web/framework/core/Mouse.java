@@ -10,8 +10,21 @@ package org.suren.autotest.web.framework.core;
  */
 public interface Mouse
 {
+	/**
+	 * 向下滚动一次
+	 */
 	void wheel();
+	/**
+	 * 向下滚动n次
+	 * @param num
+	 */
 	void wheel(int num);
+	/**
+	 * 左单击
+	 */
 	void click();
+	/**
+	 * 右单击
+	 */
 	void rightClick();
 }

@@ -8,5 +8,10 @@ import org.suren.autotest.web.framework.core.ui.Element;
  */
 public interface ElementSearchStrategy<T>
 {
+	/**
+	 * 根据元素信息来定位元素
+	 * @param element
+	 * @return
+	 */
 	T search(Element element);
 }

@@ -12,6 +12,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class SeleniumClick implements ClickAble
 		
 		try
 		{
-			if(!(ele instanceof FileUpload))
+			if(!(ele instanceof FileUpload) && !(engine.getDriver() instanceof RemoteWebDriver))
 			{
 				Dimension size = webEle.getSize();
 				Point loc = webEle.getLocation();
@@ -59,8 +60,8 @@ public class SeleniumClick implements ClickAble
 				int y = size.getHeight() / 2 + loc.getY() + toolbarHeight;
 				
 				new Robot().mouseMove(x, y);
-				
-				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
+//				
+//				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
 			}
 			webEle.click();
 		}

@@ -6,6 +6,7 @@ package org.suren.autotest.web.framework.selenium.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,6 @@ import org.suren.autotest.web.framework.core.action.CheckAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumValueLocator;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
-import org.suren.autotest.web.framework.selenium.strategy.ZoneSearchStrategy;
 
 /**
  * 复选框选择
@@ -64,9 +64,10 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 		locatorList.add(valueLocator);
 		valueLocator.setValue(text);
 		
+		WebElement itemWebEle = null;
 		try
 		{
-			WebElement itemWebEle = strategy.search(element);
+			itemWebEle = strategy.search(element);
 			if(itemWebEle != null)
 			{
 				if(!itemWebEle.isSelected())
@@ -74,6 +75,11 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 					itemWebEle.click();
 				}
 			}
+		}
+		catch(ElementNotVisibleException e)
+		{
+			e.printStackTrace();
+			logger.error(String.format("Element [%s] click error, parent [%s], text [%s].", itemWebEle, element, text));
 		}
 		finally
 		{

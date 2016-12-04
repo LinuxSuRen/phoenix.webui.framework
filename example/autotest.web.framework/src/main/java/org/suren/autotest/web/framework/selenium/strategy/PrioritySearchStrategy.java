@@ -40,6 +40,9 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 	@Autowired
 	private SeleniumEngine engine;
 
+	/**
+	 * 根据定位元素的优先级来进行元素查找
+	 */
 	@Override
 	public WebElement search(Element element)
 	{
@@ -47,11 +50,22 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 
 		if (StringUtils.isNotBlank(element.getId()))
 		{
-			by = By.id(element.getId());
+			String orginId = element.getId();
+			String paramId = orginId;
+			if(element instanceof AbstractElement)
+			{
+				paramId = ((AbstractElement) element).paramTranslate(paramId);
+			}
+			by = By.id(paramId);
 		}
 		else if (StringUtils.isNoneBlank(element.getCSS()))
 		{
 			String css = element.getCSS();
+			if(element instanceof AbstractElement)
+			{
+				css = ((AbstractElement) element).paramTranslate(css);
+			}
+			
 			String[] cssArray = css.split(" ");
 			by = By.className(cssArray[0]);
 			List<WebElement> elementList = findElements(by);
@@ -68,7 +82,13 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		}
 		else if(StringUtils.isNotBlank(element.getName()))
 		{
-			by = By.name(element.getName());
+			String orginName = element.getName();
+			String paramName = orginName;
+			if(element instanceof AbstractElement)
+			{
+				paramName = ((AbstractElement) element).paramTranslate(paramName);
+			}
+			by = By.name(paramName);
 		}
 		else if (StringUtils.isNotBlank(element.getXPath()))
 		{
@@ -82,15 +102,33 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		}
 		else if (StringUtils.isNotBlank(element.getLinkText()))
 		{
+			String orginLinkText = element.getLinkText();
+			String paramLinkText = orginLinkText;
+			if(element instanceof AbstractElement)
+			{
+				paramLinkText = ((AbstractElement) element).paramTranslate(paramLinkText);
+			}
 			by = By.linkText(element.getLinkText());
 		}
 		else if (StringUtils.isNoneBlank(element.getPartialLinkText()))
 		{
+			String orginPartialLinkText = element.getPartialLinkText();
+			String paramPartialLinkText = orginPartialLinkText;
+			if(element instanceof AbstractElement)
+			{
+				paramPartialLinkText = ((AbstractElement) element).paramTranslate(paramPartialLinkText);
+			}
 			by = By.partialLinkText(element.getPartialLinkText());
 		}
 		else if (StringUtils.isNotBlank(element.getTagName()))
 		{
-			by = By.tagName(element.getTagName());
+			String orginTagName = element.getTagName();
+			String paramTagName = orginTagName;
+			if(element instanceof AbstractElement)
+			{
+				paramTagName = ((AbstractElement) element).paramTranslate(paramTagName);
+			}
+			by = By.tagName(paramTagName);
 		}
 		else
 		{

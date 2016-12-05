@@ -412,9 +412,14 @@ public class SettingUtil implements Closeable
 				{
 					parse(pageClsStr, dataSrcClsStr, ele);
 				}
+				catch (NoSuchBeanDefinitionException e)
+				{
+					logger.error("Page element [{}] parse error, in document [{}].", "pageClsStr", doc);
+					throw e;
+				}
 				catch (Exception e)
 				{
-					logger.error("page element parse error.", e);
+					logger.error("Page element parse error.", e);
 				}
 			}
 		}

@@ -14,10 +14,12 @@ public class ConfigException extends RuntimeException
 	/**  */
 	private static final long	serialVersionUID	= 1L;
 	
-	private String message;
+	private final String message;
 
-	public ConfigException(){}
-	
+	/**
+	 * 带有自定义消息的构造函数
+	 * @param message
+	 */
 	public ConfigException(String message)
 	{
 		this.message = message;

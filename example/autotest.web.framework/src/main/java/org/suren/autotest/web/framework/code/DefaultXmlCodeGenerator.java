@@ -3,7 +3,6 @@
  */
 package org.suren.autotest.web.framework.code;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +46,9 @@ public class DefaultXmlCodeGenerator implements Generator
 	
 	private Map<String, String> fieldTypeMap = new HashMap<String, String>();
 	
+	/**
+	 * 默认构造函数
+	 */
 	public DefaultXmlCodeGenerator()
 	{
 		fieldTypeMap.put("button", "Button");
@@ -115,6 +117,10 @@ public class DefaultXmlCodeGenerator implements Generator
 		return null;
 	}
 	
+	/**
+	 * 根据Page对象来创建Java源文件
+	 * @param autoPage
+	 */
 	private void create(AutoPage autoPage)
 	{
 		try

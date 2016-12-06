@@ -10,5 +10,10 @@ package org.suren.autotest.web.framework.code;
  */
 public interface Generator
 {
+	/**
+	 * 根据源文件生成Java代码
+	 * @param srcCoding
+	 * @return
+	 */
 	String generate(String srcCoding);
 }

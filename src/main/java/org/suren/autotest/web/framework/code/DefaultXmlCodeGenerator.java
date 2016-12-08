@@ -3,6 +3,7 @@
  */
 package org.suren.autotest.web.framework.code;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -151,8 +152,11 @@ public class DefaultXmlCodeGenerator implements Generator
 				}
 			}
 			
+			String parentDir = pathBuf.toString();
+			new File(parentDir).mkdirs();
+			
 			Writer writer = new OutputStreamWriter(
-					new FileOutputStream(pathBuf.toString() + autoPage.getName() + ".java"),"UTF-8"); 
+					new FileOutputStream(parentDir + autoPage.getName() + ".java"),"UTF-8"); 
 		    template.process(paramMap, writer);
 		}
 		catch (IOException e)

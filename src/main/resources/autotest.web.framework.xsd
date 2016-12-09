@@ -173,6 +173,11 @@
 				<xs:documentation><![CDATA[配置用于变量替换的参数前缀，默认值为param。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="timeout" type="xs:integer" default="0">
+			<xs:annotation>
+				<xs:documentation><![CDATA[显示地设置元素查找超时事件，单位为秒，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:attributeGroup name="pageFieldLocatorAttrGroup">

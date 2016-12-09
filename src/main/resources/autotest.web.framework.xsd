@@ -236,7 +236,7 @@
 		</xs:attribute>
 		<xs:attribute name="timeout" type="xs:long">
 			<xs:annotation>
-				<xs:documentation><![CDATA[ 定位元素时的等待超时时间。]]></xs:documentation>
+				<xs:documentation><![CDATA[显示地设置元素查找超时事件，单位为秒，可选。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="extend" type="xs:string">

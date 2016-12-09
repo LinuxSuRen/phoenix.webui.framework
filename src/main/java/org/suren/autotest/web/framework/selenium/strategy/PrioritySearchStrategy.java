@@ -39,6 +39,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 
 	@Autowired
 	private SeleniumEngine engine;
+	private Element element;
 
 	/**
 	 * 根据定位元素的优先级来进行元素查找
@@ -48,6 +49,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 	{
 		By by = null;
 
+		this.element = element;
 		if (StringUtils.isNotBlank(element.getId()))
 		{
 			String orginId = element.getId();
@@ -148,8 +150,12 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		WebDriver driver = engine.getDriver();
 		driver = engine.turnToRootDriver(driver);
 		
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+		if(element.getTimeOut() > 0)
+		{
+			WebDriverWait wait = new WebDriverWait(driver, element.getTimeOut());
+			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+		}
+		
 		return driver.findElement(by);
 	}
 

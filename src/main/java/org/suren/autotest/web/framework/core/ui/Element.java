@@ -57,4 +57,9 @@ public interface Element
 	 * @return 元素查找策略
 	 */
 	String getStrategy();
+	
+	/**
+	 * @return 元素查找超时时间
+	 */
+	long getTimeOut();
 }

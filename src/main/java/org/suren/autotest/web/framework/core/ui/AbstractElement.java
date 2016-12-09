@@ -31,6 +31,7 @@ public abstract class AbstractElement implements Element
 	/** 用于保存元素对象相关的数据 */
 	private Map<String, Object>				data = new HashMap<String, Object>();
 	private String paramPrefix;
+	private long timeOut;
 
 	@Override
 	public String getId()
@@ -204,5 +205,21 @@ public abstract class AbstractElement implements Element
 	public void setParamPrefix(String paramPrefix)
 	{
 		this.paramPrefix = paramPrefix;
+	}
+
+	/**
+	 * @return the timeOut
+	 */
+	public long getTimeOut()
+	{
+		return timeOut;
+	}
+
+	/**
+	 * @param timeOut the timeOut to set
+	 */
+	public void setTimeOut(long timeOut)
+	{
+		this.timeOut = timeOut;
 	}
 }

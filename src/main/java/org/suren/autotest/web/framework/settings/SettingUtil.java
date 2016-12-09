@@ -488,6 +488,7 @@ public class SettingUtil implements Closeable
 				String type = node.attributeValue("type");
 				String strategy = node.attributeValue("strategy");
 				String paramPrefix = node.attributeValue("paramPrefix", "param");
+				String timeOut = node.attributeValue("timeout", "0");
 				if (fieldName == null || "".equals(fieldName))
 				{
 					return;
@@ -529,6 +530,7 @@ public class SettingUtil implements Closeable
 						ele.setPartialLinkText(byPartialLinkText);
 						ele.setStrategy(strategy);
 						ele.setParamPrefix(paramPrefix);
+						ele.setTimeOut(Long.parseLong(timeOut));
 					}
 					else
 					{

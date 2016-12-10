@@ -282,7 +282,7 @@ public class SuiteRunner
 					enterText.performEnter();
 				}
 				break;
-			case "selectByText":
+			case "checkByText":
 				CheckBoxGroup CheckBoxGroup =
 					getFieldObj(CheckBoxGroup.class, pageField, page);
 				if(CheckBoxGroup != null)
@@ -295,10 +295,25 @@ public class SuiteRunner
 				}
 				break;
 			case "select":
+			case "selectByText":
 				Selector selector = getFieldObj(Selector.class, pageField, page);
 				if(selector != null)
 				{
 					actionResult = Boolean.toString(selector.selectByText());
+				}
+				break;
+			case "selectByIndex":
+				Selector indexSelector = getFieldObj(Selector.class, pageField, page);
+				if(indexSelector != null)
+				{
+					actionResult = Boolean.toString(indexSelector.selectByIndex());
+				}
+				break;
+			case "selectByValue":
+				Selector valueSelector = getFieldObj(Selector.class, pageField, page);
+				if(valueSelector != null)
+				{
+					actionResult = Boolean.toString(valueSelector.selectByIndex());
 				}
 				break;
 			case "hover":

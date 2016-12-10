@@ -100,7 +100,7 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="name" type="suren:actionEnum" default="click" use="optional">
+		<xs:attribute name="name" type="suren:actionEnum" default="click">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[动作对应的操作名。]]>
@@ -112,35 +112,35 @@
 	</xs:complexType>
 	
 	<xs:attributeGroup name="commonActionAttr">
-		<xs:attribute name="beforeSleep" type="xs:int" default="0" use="optional">
+		<xs:attribute name="beforeSleep" type="xs:int" default="0">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[操作前的休眠时间（单位：毫秒），可选。]]>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="afterSleep" type="xs:int" default="0" use="optional">
+		<xs:attribute name="afterSleep" type="xs:int" default="0">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[操作后的休眠时间（单位：毫秒），可选。]]>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="disable" type="xs:boolean" default="false" use="optional">
+		<xs:attribute name="disable" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[是否禁用该操作，true为禁用，false为启用，可选。]]>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="repeat" type="xs:positiveInteger" default="1" use="optional">
+		<xs:attribute name="repeat" type="xs:positiveInteger" default="1">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[重复次数（默认为：1），可选。]]>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="rows" type="xs:string" default="1" use="optional">
+		<xs:attribute name="rows" type="xs:string" default="1">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[指定数据行数（默认为：1），可选。]]>
@@ -176,6 +176,20 @@
 				<xs:annotation>
 					<xs:documentation>
 						<![CDATA[上传文件。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="selectByValue">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[根据Option的value选择。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="selectByIndex">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[根据序号选择，从0开始。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

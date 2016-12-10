@@ -2,6 +2,7 @@ package org.suren.autotest.web.framework.selenium.strategy;
 
 import java.util.List;
 
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 	
 	@Autowired
 	private SeleniumEngine engine;
+	
+	private int failedCount = 0;
+	private int maxFailed = 6;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -69,14 +73,43 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 
 			if(webEle != null)
 			{
-				webEle = absLocator.findElement(webEle);
+				webEle = retry(absLocator, webEle); 
 			}
 			else
 			{
-				webEle = absLocator.findElement(driver);
+				webEle = retry(absLocator, driver);
 			}
 		}
 		
 		return webEle;
+	}
+	
+	/**
+	 * 失败重试
+	 * @param absLocator
+	 * @param webEle
+	 * @return
+	 */
+	private WebElement retry(AbstractLocator<WebElement> absLocator, SearchContext webEle)
+	{
+		WebElement result = null;
+		
+		if(webEle != null)
+		{
+			result = absLocator.findElement(webEle);
+		}
+		else
+		{
+			result = absLocator.findElement(webEle);
+		}
+		
+		if(result != null || ++failedCount > maxFailed)
+		{
+			return result;
+		}
+		else
+		{
+			return retry(absLocator, webEle);
+		}
 	}
 }

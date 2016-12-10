@@ -182,28 +182,35 @@
 			<xs:enumeration value="selectByValue">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[根据Option的value选择。]]>
+						<![CDATA[根据Option的value选择下拉列表。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="selectByIndex">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[根据序号选择，从0开始。]]>
+						<![CDATA[根据序号选择，从0开始下拉列表。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="selectByText">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[根据文本选择。]]>
+						<![CDATA[根据文本选择下拉列表。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="select">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[根据文本选择。]]>
+						<![CDATA[根据文本选择下拉列表。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="checkByText">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[根据文本选择单（多）选框。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

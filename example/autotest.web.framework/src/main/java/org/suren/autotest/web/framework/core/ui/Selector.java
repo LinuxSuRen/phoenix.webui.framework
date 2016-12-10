@@ -24,6 +24,8 @@ public class Selector extends AbstractElement
 	private String text;
 	/** 序号 */
 	private int index;
+	/** 值 */
+	private String value;
 	
 	@Autowired
 	private SelectAble selectAble;
@@ -65,6 +67,25 @@ public class Selector extends AbstractElement
 	public boolean selectByIndex()
 	{
 		return selectByIndex(index);
+	}
+	
+	/**
+	 * 根据指定的值来选择
+	 * @param value
+	 * @return
+	 */
+	public boolean selectByValue(String value)
+	{
+		return selectAble.selectByValue(this, value);
+	}
+	
+	/**
+	 * 根据数据源中指定的值来选择
+	 * @return
+	 */
+	public boolean selectByValue()
+	{
+		return selectByValue(value);
 	}
 
 	public SelectAble getSelectAble()

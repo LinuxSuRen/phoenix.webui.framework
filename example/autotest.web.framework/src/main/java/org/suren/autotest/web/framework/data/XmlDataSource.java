@@ -147,6 +147,8 @@ public class XmlDataSource implements DataSource
 				String type = node.attributeValue("type", "simple");
 				String field = node.attributeValue("field", "value");
 				
+				LOGGER.debug("Field [{}], value [{}], type [{}], field [{}].", fieldName, value, type, field);
+				
 				if("simple".equals(type))
 				{
 					value = value.replace("${now}", String.valueOf(System.currentTimeMillis()));

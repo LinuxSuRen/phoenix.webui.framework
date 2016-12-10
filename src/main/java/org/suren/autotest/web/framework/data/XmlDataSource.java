@@ -145,6 +145,7 @@ public class XmlDataSource implements DataSource
 				String fieldName = node.attributeValue("name");
 				String value = node.attributeValue("data");
 				String type = node.attributeValue("type", "simple");
+				String field = node.attributeValue("field", "value");
 				
 				if("simple".equals(type))
 				{
@@ -215,7 +216,15 @@ public class XmlDataSource implements DataSource
 					}
 					else if(eleObj instanceof Selector)
 					{
-						((Selector) eleObj).setText(value);
+						switch(field)
+						{
+							case "value":
+								((Selector) eleObj).setText(value);
+								break;
+							case "index":
+								((Selector) eleObj).setIndex(Integer.parseInt(value));
+								break;
+						}
 					}
 					
 				}

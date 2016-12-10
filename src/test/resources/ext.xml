@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suren:suite xmlns:suren="http://suite.surenpi.com"
+	xmlns:ext="http://external.suite.surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	suren:schemaLocation="http://suite.surenpi.com
+	http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd
+	http://external.suite.surenpi.com
+	http://surenpi.com/schema/suite/autotest.web.framework.suite.external.xsd ">
+	<ext:test name="qeeW">
+	</ext:test>
+	
+	<suren:page class="">
+		<suren:actions>
+			<suren:action field="name" name="click"/>
+		</suren:actions>
+	</suren:page>
+</suren:suite>

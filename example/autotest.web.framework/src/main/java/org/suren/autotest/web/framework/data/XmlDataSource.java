@@ -218,11 +218,14 @@ public class XmlDataSource implements DataSource
 					{
 						switch(field)
 						{
-							case "value":
+							case "text":
 								((Selector) eleObj).setText(value);
 								break;
 							case "index":
 								((Selector) eleObj).setIndex(Integer.parseInt(value));
+								break;
+							case "value":
+								((Selector) eleObj).setValue(value);
 								break;
 						}
 					}

@@ -6,6 +6,8 @@ package org.suren.autotest.web.framework.page;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.core.Keyboard;
@@ -45,7 +47,21 @@ public class Page
 		String paramUrl = paramTranslate(url);
 		
 		engine.openUrl(paramUrl);
-		engine.computeToolbarHeight();
+		
+		try
+		{
+			engine.computeToolbarHeight();
+		}
+		catch(UnhandledAlertException e)
+		{
+			Alert alert = engine.getDriver().switchTo().alert();
+			if(alert != null)
+			{
+				alert.dismiss();
+
+				engine.computeToolbarHeight();
+			}
+		}
 	}
 
 	/**

@@ -10,6 +10,7 @@ import java.io.InputStream;
 import org.dom4j.DocumentException;
 import org.junit.Test;
 import org.suren.autotest.web.framework.core.suite.Suite;
+import org.suren.autotest.web.framework.core.suite.SuiteRunner;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
@@ -20,6 +21,8 @@ import org.xml.sax.SAXException;
  */
 public class SuiteParseTest
 {
+	private String suite = "runner_suite.xml";
+	
 	@Test
 	public void test() throws FileNotFoundException, DocumentException
 	{
@@ -34,5 +37,13 @@ public class SuiteParseTest
 	{
 		InputStream runnerInput = SuiteParseTest.class.getClassLoader().getResourceAsStream("runner_suite.xml");
 		Validation.validationSuite(runnerInput);
+	}
+	
+	@Test
+	public void invoker() throws NoSuchFieldException, SecurityException,
+		IllegalArgumentException, IllegalAccessException, IOException,
+		DocumentException, InterruptedException, SAXException
+	{
+		SuiteRunner.main(new String[]{suite});
 	}
 }

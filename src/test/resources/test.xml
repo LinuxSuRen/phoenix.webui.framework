@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suren:autotest xmlns:suren="http://surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://surenpi.com http://autotest.surenpi.com/ ">
+	<suren:engine driver="chrome" />
+	<suren:pages>
+		<suren:page class="org.suren.autotest.web.framework.page.LoginPage">
+			<![CDATA[登录页面]]>
+			<suren:field name="gender" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="sendlead" timeout="3000" />
+					<suren:locator name="byCss" value="gender"/>
+				</suren:locators>
+			</suren:field>
+		</suren:page>
+	</suren:pages>
+</suren:autotest>

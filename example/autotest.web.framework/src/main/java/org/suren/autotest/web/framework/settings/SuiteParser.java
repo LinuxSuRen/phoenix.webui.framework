@@ -146,11 +146,13 @@ public class SuiteParser
 		{
 			String field = actionEle.attributeValue("field");
 			String name = actionEle.attributeValue("name", "click");
+			String invoker = actionEle.attributeValue("invoker");
 			String actionBeforeSleep = actionEle.attributeValue("beforeSleep", beforeSleep);
 			String actionAfterSleep = actionEle.attributeValue("afterSleep", afterSleep);
 			String repeat = actionEle.attributeValue("repeat", "1");
 			
 			SuiteAction suiteAction = new SuiteAction(field, name);
+			suiteAction.setInvoker(invoker);
 			suiteAction.setBeforeSleep(Long.parseLong(actionBeforeSleep));
 			suiteAction.setAfterSleep(Long.parseLong(actionAfterSleep));
 			suiteAction.setRepeat(Integer.parseInt(repeat));

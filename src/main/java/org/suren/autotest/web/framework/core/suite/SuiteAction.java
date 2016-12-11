@@ -14,6 +14,8 @@ public class SuiteAction
 	private String field;
 	/** 动作名 */
 	private String name;
+	/** 动作执行者 */
+	private String invoker;
 	/** 操作前休眠时间 */
 	private long beforeSleep;
 	/** 操作后休眠时间 */
@@ -57,6 +59,20 @@ public class SuiteAction
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	/**
+	 * @return the invoker
+	 */
+	public String getInvoker()
+	{
+		return invoker;
+	}
+	/**
+	 * @param invoker the invoker to set
+	 */
+	public void setInvoker(String invoker)
+	{
+		this.invoker = invoker;
 	}
 	/**
 	 * @return the beforeSleep

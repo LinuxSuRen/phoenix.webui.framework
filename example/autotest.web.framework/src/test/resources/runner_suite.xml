@@ -14,5 +14,4 @@
 			<action field="attachPic" name="upload" beforeSleep="3" afterSleep="3"></action>
 		</actions>
 	</page>
-	<external:test name=""></external:test>
 </suite>

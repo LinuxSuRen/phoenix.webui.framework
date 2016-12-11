@@ -232,8 +232,8 @@ public class SuiteRunner
 			{
 //				settingUtil.initPageData(targetPage, 1);
 				
-				String actionResult = performAction(action, pageField, targetPage);
-				System.out.println("action result : " + actionResult);
+				String actionResult = performAction(action, pageField, targetPage, settingUtil);
+				logger.debug("Action result : ", actionResult);
 			}
 			
 			Thread.sleep(action.getAfterSleep());
@@ -245,11 +245,13 @@ public class SuiteRunner
 	 * @param SuiteAction action
 	 * @param pageField
 	 * @param page
+	 * @param settingUtil
 	 * @return
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private static String performAction(SuiteAction action, Field pageField, Page page)
+	private static String performAction(SuiteAction action, Field pageField, 
+			Page page, SettingUtil settingUtil)
 			throws IllegalArgumentException, IllegalAccessException
 	{
 		String name = action.getName();
@@ -345,8 +347,8 @@ public class SuiteRunner
 				try
 				{
 					Class<?> invokeClazz = Class.forName(invokeCls);
-					Method invokeM = invokeClazz.getMethod(invokeMethod);
-					invokeM.invoke(null);
+					Method invokeM = invokeClazz.getMethod(invokeMethod, SettingUtil.class);
+					invokeM.invoke(null, settingUtil);
 				}
 				catch (ClassNotFoundException e)
 				{

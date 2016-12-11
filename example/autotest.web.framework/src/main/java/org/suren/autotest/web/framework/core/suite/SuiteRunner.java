@@ -6,11 +6,14 @@ package org.suren.autotest.web.framework.core.suite;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,7 +189,6 @@ public class SuiteRunner
 		{
 			Page targetPage = page;
 			String field = action.getField();
-			String name = action.getName();
 			
 			Field pageField = null;
 			int otherPage = field.indexOf(".");
@@ -230,7 +232,7 @@ public class SuiteRunner
 			{
 //				settingUtil.initPageData(targetPage, 1);
 				
-				String actionResult = performAction(name, pageField, targetPage);
+				String actionResult = performAction(action, pageField, targetPage);
 				System.out.println("action result : " + actionResult);
 			}
 			
@@ -240,16 +242,19 @@ public class SuiteRunner
 
 	/**
 	 * 执行动作
-	 * @param name
+	 * @param SuiteAction action
 	 * @param pageField
 	 * @param page
 	 * @return
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private static String performAction(String name, Field pageField, Page page)
+	private static String performAction(SuiteAction action, Field pageField, Page page)
 			throws IllegalArgumentException, IllegalAccessException
 	{
+		String name = action.getName();
+		String invoker = action.getField();
+		
 		String actionResult = "void";
 		
 		switch(name)
@@ -319,6 +324,51 @@ public class SuiteRunner
 			case "hover":
 				Button hoverBut = getFieldObj(Button.class, pageField, page);
 				hoverBut.hover();
+				break;
+			case "invoke":
+				if(StringUtils.isBlank(invoker))
+				{
+					logger.error("The action in page [{}] is invoke, "
+							+ "but can not found invoker [{}].", page.getClass(), invoker);
+					break;
+				}
+				
+				String[] invokers = invoker.split("!");
+				String invokeMethod = "execute";
+				if(invokers.length > 1)
+				{
+					invokeMethod = invokers[1];
+				}
+				
+				String invokeCls = invokers[0];
+				
+				try
+				{
+					Class<?> invokeClazz = Class.forName(invokeCls);
+					Method invokeM = invokeClazz.getMethod(invokeMethod);
+					invokeM.invoke(null);
+				}
+				catch (ClassNotFoundException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (NoSuchMethodException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (SecurityException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (InvocationTargetException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				break;
 		}
 		

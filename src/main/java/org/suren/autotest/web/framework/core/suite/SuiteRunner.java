@@ -253,7 +253,7 @@ public class SuiteRunner
 			throws IllegalArgumentException, IllegalAccessException
 	{
 		String name = action.getName();
-		String invoker = action.getField();
+		String invoker = action.getInvoker();
 		
 		String actionResult = "void";
 		

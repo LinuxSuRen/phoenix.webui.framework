@@ -103,7 +103,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
-	<xs:complexType name="pageType">
+	<xs:complexType name="pageType" mixed="true">
 		<xs:sequence>
 			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" minOccurs="1">
 				<xs:annotation>

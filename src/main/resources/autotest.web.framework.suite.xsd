@@ -93,6 +93,10 @@
 	</xs:complexType>
 
 	<xs:complexType name="actionType">
+		<xs:sequence>
+			<xs:element name="param" type="suren:paramType" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+		</xs:sequence>
 		<xs:attribute name="field" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>
@@ -116,6 +120,11 @@
 		</xs:attribute>
 		<xs:attributeGroup ref="suren:commonActionAttr">
 		</xs:attributeGroup>
+	</xs:complexType>
+	
+	<xs:complexType name="paramType">
+		<xs:attribute name="value" type="xs:string">
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:attributeGroup name="commonActionAttr">

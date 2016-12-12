@@ -157,7 +157,27 @@ public class SuiteParser
 			suiteAction.setAfterSleep(Long.parseLong(actionAfterSleep));
 			suiteAction.setRepeat(Integer.parseInt(repeat));
 			
+			parseActionParam(actionEle, suiteAction);
+			
 			actionList.add(suiteAction);
+		}
+	}
+
+	/**
+	 * @param actionEle
+	 * @param suiteAction
+	 */
+	private void parseActionParam(Element actionEle, SuiteAction suiteAction)
+	{
+		List<String> paramList = suiteAction.getParamList();
+		
+		List<Element> paramEleList = actionEle.elements("param");
+		if(paramEleList != null)
+		{
+			for(Element paramEle : paramEleList)
+			{
+				paramList.add(paramEle.attributeValue("value"));
+			}
 		}
 	}
 }

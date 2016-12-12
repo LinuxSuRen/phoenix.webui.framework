@@ -7,7 +7,13 @@
 	<page class="org.suren.autotest.web.framework.page.LoginPage">
 		<actions beforeSleep="3" afterSleep="3">
 			<action field="gender" name="invoke"
-				invoker="org.suren.autotest.web.framework.suite.DemoInvoker"></action>
+				invoker="org.suren.autotest.web.framework.suite.DemoInvoker">
+			</action>
+			<action field="gender" name="invoke"
+				invoker="org.suren.autotest.web.framework.suite.DemoInvoker!otherExecute">
+				<param value="abc" />
+				<param value="def" />
+			</action>
 		</actions>
 	</page>
 </suite>

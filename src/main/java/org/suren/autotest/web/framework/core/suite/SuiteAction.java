@@ -3,6 +3,9 @@
  */
 package org.suren.autotest.web.framework.core.suite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 测试套件中的动作定义
  * @author suren
@@ -22,6 +25,8 @@ public class SuiteAction
 	private long afterSleep;
 	/** 重复次数 */
 	private int repeat;
+	/** 参数列表 */
+	private List<String> paramList = new ArrayList<String>();
 	public SuiteAction(){}
 	/**
 	 * @param field
@@ -115,5 +120,17 @@ public class SuiteAction
 	public void setRepeat(int repeat)
 	{
 		this.repeat = repeat;
+	}
+	public List<String> getParamList()
+	{
+		return paramList;
+	}
+	public void setParamList(List<String> paramList)
+	{
+		this.paramList = paramList;
+	}
+	public void addParam(String param)
+	{
+		this.paramList.add(param);
 	}
 }

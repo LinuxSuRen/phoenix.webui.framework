@@ -344,21 +344,73 @@ public class SuiteRunner
 				
 				String invokeCls = invokers[0];
 				
+				Class<?> invokeClazz = null;
 				try
 				{
-					Class<?> invokeClazz = Class.forName(invokeCls);
-					Method invokeM = invokeClazz.getMethod(invokeMethod, SettingUtil.class);
-					invokeM.invoke(null, settingUtil);
+					invokeClazz = Class.forName(invokeCls);
 				}
 				catch (ClassNotFoundException e)
 				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				catch (NoSuchMethodException e)
+				catch (SecurityException e)
 				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+				
+				List<String> paramList = action.getParamList();
+				Method invokeM = null;
+				
+				try
+				{
+					if(invokeM == null)
+					{
+						if(paramList.size() > 0)
+						{
+							invokeM = invokeClazz.getMethod(invokeMethod, SettingUtil.class, String[].class);
+							invokeM.invoke(null, settingUtil, paramList.toArray(new String[]{}));
+						}
+						else
+						{
+							invokeM = invokeClazz.getMethod(invokeMethod, SettingUtil.class);
+							invokeM.invoke(null, settingUtil);
+						}
+					}
+				}
+				catch (NoSuchMethodException e)
+				{
+				}
+				catch (SecurityException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (InvocationTargetException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try
+				{
+					if(invokeM == null)
+					{
+						if(paramList.size() > 0)
+						{
+							invokeM = invokeClazz.getMethod(invokeMethod, String[].class);
+							invokeM.invoke(null, paramList.toArray(new String[]{}));
+						}
+						else
+						{
+							invokeM = invokeClazz.getMethod(invokeMethod);
+							invokeM.invoke(null);
+						}
+					}
+				}
+				catch (NoSuchMethodException e)
+				{
 				}
 				catch (SecurityException e)
 				{

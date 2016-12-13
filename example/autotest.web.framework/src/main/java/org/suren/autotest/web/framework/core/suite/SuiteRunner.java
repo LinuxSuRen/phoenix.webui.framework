@@ -51,16 +51,14 @@ public class SuiteRunner
 			System.out.println(Arrays.toString(args));
 		}
 		
-		SuiteParser suiteParser = new SuiteParser();
 		for(String path : args)
 		{
-			runFromClasspathFile(suiteParser, path);
+			runFromClasspathFile(path);
 		}
 	}
 	
 	/**
 	 * 从类路径中查找配置文件
-	 * @param suiteParser
 	 * @param filePath
 	 * @throws IOException
 	 * @throws DocumentException
@@ -71,11 +69,12 @@ public class SuiteRunner
 	 * @throws InterruptedException
 	 * @throws SAXException 
 	 */
-	private static void runFromClasspathFile(SuiteParser suiteParser, String filePath)
+	public static void runFromClasspathFile(String filePath)
 			throws IOException, DocumentException, NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException,
 			InterruptedException, SAXException
 	{
+		SuiteParser suiteParser = new SuiteParser();
 		ClassLoader classLoader = SuiteRunner.class.getClassLoader();
 		
 		Enumeration<URL> resources = classLoader.getResources(filePath);

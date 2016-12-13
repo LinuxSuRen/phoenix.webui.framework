@@ -6,6 +6,10 @@ package org.suren.autotest.web.framework.settings;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.dom4j.DocumentException;
 import org.junit.Test;
@@ -45,5 +49,16 @@ public class SuiteParseTest
 		DocumentException, InterruptedException, SAXException
 	{
 		SuiteRunner.main(new String[]{suite});
+	}
+	
+	@Test
+	public void reflectInvoker() throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{
+		List<String> suiteList = new ArrayList<String>();
+		suiteList.add(suite);
+		
+		Class<?> runnerCls = Class.forName(SuiteRunner.class.getName());
+		Method mainMethod = runnerCls.getMethod("main", String[].class);
+		mainMethod.invoke(null, new Object[]{suiteList.toArray(new String[]{})});
 	}
 }

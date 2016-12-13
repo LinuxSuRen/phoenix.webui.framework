@@ -400,7 +400,7 @@ public class SuiteRunner
 						if(paramList.size() > 0)
 						{
 							invokeM = invokeClazz.getMethod(invokeMethod, String[].class);
-							invokeM.invoke(null, paramList.toArray(new String[]{}));
+							invokeM.invoke(null, new Object[]{paramList.toArray(new String[]{})});
 						}
 						else
 						{

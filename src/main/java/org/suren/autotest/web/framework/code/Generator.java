@@ -15,5 +15,5 @@ public interface Generator
 	 * @param srcCoding
 	 * @return
 	 */
-	String generate(String srcCoding);
+	void generate(String srcCoding, String outputDir);
 }

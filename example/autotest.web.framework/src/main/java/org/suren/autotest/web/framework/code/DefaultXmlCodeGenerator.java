@@ -47,6 +47,8 @@ public class DefaultXmlCodeGenerator implements Generator
 	
 	private Map<String, String> fieldTypeMap = new HashMap<String, String>();
 	
+	private String outputDir;
+	
 	/**
 	 * 默认构造函数
 	 */
@@ -60,6 +62,8 @@ public class DefaultXmlCodeGenerator implements Generator
 	@Override
 	public void generate(String srcCoding, String outputDir)
 	{
+		this.outputDir = outputDir;
+		
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		try(InputStream inputStream = classLoader.getResourceAsStream(srcCoding))
 		{
@@ -136,7 +140,8 @@ public class DefaultXmlCodeGenerator implements Generator
 			paramMap.put("page", autoPage);
 			Template template = configuration.getTemplate("page.ftl");
 			
-			StringBuffer pathBuf = new StringBuffer();
+			StringBuffer pathBuf = new StringBuffer(outputDir);
+			pathBuf.append("/");
 			String packageName = autoPage.getPackageName();
 			String[] packageArray = packageName.split("\\.");
 			if(packageArray != null && packageArray.length > 0)

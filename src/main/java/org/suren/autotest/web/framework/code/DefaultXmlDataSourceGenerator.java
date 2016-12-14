@@ -187,7 +187,10 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		InputStream dsInput = null;
 		try
 		{
-			dsInput = url.openStream();
+			if(url != null)
+			{
+				dsInput = url.openStream();
+			}
 		}
 		catch (IOException e1)
 		{
@@ -212,7 +215,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		{
 			doc = DocumentHelper.createDocument();
 		}
-		
+
 		doc.addComment("Auto created by AutoTest, " + new Date().toLocaleString());
 		
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
@@ -240,6 +243,15 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		if(dataSourceEle == null)
 		{
 			String prefix = dataSourcesEle.getNamespacePrefix();
+			if(StringUtils.isBlank(""))
+			{
+				String parentName = dataSourcesEle.getName();
+				if(parentName.contains(":"))
+				{
+					prefix = parentName.split(":")[0];
+				}
+			}
+			
 			if(StringUtils.isNotBlank(prefix))
 			{
 				prefix = prefix + ":";
@@ -281,7 +293,15 @@ public class DefaultXmlDataSourceGenerator implements Generator
 			}
 		}
 		
-		String outputFileName = new File(url.getFile()).getName();
+		String outputFileName = null;
+		if(url != null)
+		{
+			outputFileName = new File(url.getFile()).getName();
+		}
+		else
+		{
+			outputFileName = new File(dsResource).getName();
+		}
 
 		try(OutputStream dsOutput = new FileOutputStream(new File(outputDir, outputFileName)))
 		{

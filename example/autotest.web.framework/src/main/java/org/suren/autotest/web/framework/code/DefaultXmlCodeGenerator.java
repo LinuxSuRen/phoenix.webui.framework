@@ -58,7 +58,7 @@ public class DefaultXmlCodeGenerator implements Generator
 	}
 
 	@Override
-	public String generate(String srcCoding)
+	public void generate(String srcCoding, String outputDir)
 	{
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		try(InputStream inputStream = classLoader.getResourceAsStream(srcCoding))
@@ -114,8 +114,6 @@ public class DefaultXmlCodeGenerator implements Generator
 			
 			create(autoPage);
 		}
-		
-		return null;
 	}
 	
 	/**

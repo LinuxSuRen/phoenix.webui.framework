@@ -17,12 +17,12 @@ public class CodeTest
 	 */
 	public static void main(String[] args)
 	{
-		new DefaultXmlCodeGenerator().generate("ad.xml");
+		new DefaultXmlCodeGenerator().generate("ad.xml", ".");
 	}
 
 	@Test
 	public void testPage()
 	{
-		new DefaultXmlCodeGenerator().generate("test.xml");
+		new DefaultXmlCodeGenerator().generate("test.xml", ".");
 	}
 }

@@ -305,7 +305,13 @@ public class DefaultXmlDataSourceGenerator implements Generator
 			outputFileName = new File(dsResource).getName();
 		}
 
-		try(OutputStream dsOutput = new FileOutputStream(new File(outputDir, outputFileName)))
+		File outputDirFile = new File(outputDir);
+		if(!outputDirFile.isDirectory())
+		{
+			outputDirFile.mkdirs();
+		}
+		
+		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
 		{
 			xmlWriter = new XMLWriter(dsOutput, OutputFormat.createPrettyPrint());
 			

@@ -12,7 +12,8 @@ public interface Generator
 {
 	/**
 	 * 根据源文件生成Java代码
-	 * @param srcCoding
+	 * @param srcCoding 源文件路径
+	 * @param outputDir 输出的目录
 	 * @return
 	 */
 	void generate(String srcCoding, String outputDir);

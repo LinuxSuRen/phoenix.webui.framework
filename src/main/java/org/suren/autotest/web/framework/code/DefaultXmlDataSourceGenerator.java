@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -216,7 +217,8 @@ public class DefaultXmlDataSourceGenerator implements Generator
 			doc = DocumentHelper.createDocument();
 		}
 
-		doc.addComment("Auto created by AutoTest, " + new Date().toLocaleString());
+		SimpleDateFormat dateFormat = new SimpleDateFormat();
+		doc.addComment("Auto created by AutoTest, " + dateFormat.format(new Date()));
 		
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");

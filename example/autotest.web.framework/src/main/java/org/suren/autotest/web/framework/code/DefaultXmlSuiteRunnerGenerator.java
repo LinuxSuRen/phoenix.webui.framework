@@ -44,9 +44,10 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlDataSourceGenerator.class);
 
 	private String outputDir;
-	private String srcCoding;
 	
 	private Map<String, String> suiteActionMap = new HashMap<String, String>();
+	
+	private Document suiteRunnerDoc = null;
 	
 	public DefaultXmlSuiteRunnerGenerator()
 	{
@@ -58,8 +59,44 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	@Override
 	public void generate(String srcCoding, String outputDir)
 	{
-		this.srcCoding = srcCoding;
 		this.outputDir = outputDir;
+
+		String srcPath = srcCoding;
+		srcPath = srcPath.replace(".xml", "");
+		srcPath = srcPath + "_runner.xml";
+		
+		ClassLoader clsLoader = this.getClass().getClassLoader();
+		URL url = clsLoader.getResource(srcPath);
+		InputStream dsInput = null;
+		try
+		{
+			if(url != null)
+			{
+				dsInput = url.openStream();
+			}
+		}
+		catch (IOException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if(dsInput != null)
+		{
+			try
+			{
+				suiteRunnerDoc = new SAXReader().read(dsInput);
+			}
+			catch (DocumentException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			suiteRunnerDoc = DocumentHelper.createDocument();
+		}
 		
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		
@@ -73,6 +110,53 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 			logger.error(String.format("Main config [%s] parse process error.", srcCoding), e);
 		}
 		catch (SAXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		XMLWriter xmlWriter = null;
+		if(dsInput != null)
+		{
+			try
+			{
+				dsInput.close();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		String outputFileName = null;
+		if(url != null)
+		{
+			outputFileName = new File(url.getFile()).getName();
+		}
+		else
+		{
+			outputFileName = new File(srcPath).getName();
+		}
+
+		File outputDirFile = new File(outputDir);
+		if(!outputDirFile.isDirectory())
+		{
+			outputDirFile.mkdirs();
+		}
+
+		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
+		{
+			xmlWriter = new XMLWriter(dsOutput, OutputFormat.createPrettyPrint());
+			
+			xmlWriter.write(suiteRunnerDoc);
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,46 +262,8 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	 */
 	private void updateXmlDataSourceByEle(Element ele, String pageClsStr)
 	{
-		String srcPath = srcCoding;
-		srcPath = srcPath.replace(".xml", "");
-		srcPath = srcPath + "_runner.xml";
-		
-		ClassLoader clsLoader = this.getClass().getClassLoader();
-		URL url = clsLoader.getResource(srcPath);
-		InputStream dsInput = null;
-		try
-		{
-			if(url != null)
-			{
-				dsInput = url.openStream();
-			}
-		}
-		catch (IOException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		Document doc = null;
-		if(dsInput != null)
-		{
-			try
-			{
-				doc = new SAXReader().read(dsInput);
-			}
-			catch (DocumentException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			doc = DocumentHelper.createDocument();
-		}
-
 		SimpleDateFormat dateFormat = new SimpleDateFormat();
-		doc.addComment("Auto created by AutoTest, " + dateFormat.format(new Date()));
+		suiteRunnerDoc.addComment("Auto created by AutoTest, " + dateFormat.format(new Date()));
 		
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://suite.surenpi.com");
@@ -226,11 +272,11 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		
 		//先查找是否有该标签
-		Element dataSourcesEle = (Element) xpath.selectSingleNode(doc);
+		Element dataSourcesEle = suiteRunnerDoc.getRootElement();//(Element) xpath.selectSingleNode(suiteRunnerDoc);
 		if(dataSourcesEle == null)
 		{
 			String prefix = "suren";
-			dataSourcesEle = doc.addElement(prefix + ":suite");
+			dataSourcesEle = suiteRunnerDoc.addElement(prefix + ":suite");
 			
 			dataSourcesEle.addNamespace(prefix, "http://suite.surenpi.com");
 			dataSourcesEle.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -240,7 +286,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		
 		xpath = new DefaultXPath("/ns:suite/ns:page[@class='" + pageClsStr + "']");
 		xpath.setNamespaceContext(simpleNamespaceContext);
-		Element dataSourceEle = (Element) xpath.selectSingleNode(doc);
+		Element dataSourceEle = (Element) xpath.selectSingleNode(suiteRunnerDoc);
 		if(dataSourceEle == null)
 		{
 			String prefix = dataSourcesEle.getNamespacePrefix();
@@ -264,7 +310,8 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		}
 		
 		//只更新第一个子标签
-		xpath = new DefaultXPath("//ns:actions[1]");
+		
+		xpath = new DefaultXPath("/ns:suite/ns:page[@class='" + pageClsStr + "']/ns:actions[1]");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element pageEle = (Element) xpath.selectSingleNode(dataSourceEle);
 		if(pageEle == null)
@@ -279,53 +326,6 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		}
 		
 		ele.accept(new PageFieldVisitor(pageEle));
-
-		XMLWriter xmlWriter = null;
-		if(dsInput != null)
-		{
-			try
-			{
-				dsInput.close();
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		String outputFileName = null;
-		if(url != null)
-		{
-			outputFileName = new File(url.getFile()).getName();
-		}
-		else
-		{
-			outputFileName = new File(srcPath).getName();
-		}
-
-		File outputDirFile = new File(outputDir);
-		if(!outputDirFile.isDirectory())
-		{
-			outputDirFile.mkdirs();
-		}
-
-		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
-		{
-			xmlWriter = new XMLWriter(dsOutput, OutputFormat.createPrettyPrint());
-			
-			xmlWriter.write(doc);
-		}
-		catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	class PageFieldVisitor extends VisitorSupport

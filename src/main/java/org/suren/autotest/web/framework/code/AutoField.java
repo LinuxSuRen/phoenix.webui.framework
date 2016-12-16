@@ -4,6 +4,7 @@
 package org.suren.autotest.web.framework.code;
 
 /**
+ * 用于描述Page中的字段
  * @author suren
  * @date 2016年12月3日 下午9:09:53
  */
@@ -11,6 +12,7 @@ public class AutoField
 {
 	private String name;
 	private String type;
+	private String comment;
 	private String getterMethod;
 	private String setterMethod;
 	/**
@@ -68,5 +70,13 @@ public class AutoField
 	public void setSetterMethod(String setterMethod)
 	{
 		this.setterMethod = setterMethod;
+	}
+	public String getComment()
+	{
+		return comment;
+	}
+	public void setComment(String comment)
+	{
+		this.comment = comment;
 	}
 }

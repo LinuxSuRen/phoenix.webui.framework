@@ -308,6 +308,11 @@
 				</suren:locators>
 			</suren:field>
 		</suren:page>
+		
+		<suren:page class="demo.page.LoginTestPage" dataSource="ad_datasource">
+			<suren:field name="hello" type="button"></suren:field>
+			<suren:field name="abc" type="input"></suren:field>
+		</suren:page>
 	</suren:pages>
 	
 	<suren:dataSources>

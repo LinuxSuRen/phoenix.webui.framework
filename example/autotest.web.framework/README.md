@@ -9,6 +9,11 @@
 - 支持纯XML编写完成自动化测试功能
 - 自带Windows版本的driver驱动
 
+远程的XSD地址如下:
+http://surenpi.com/schema/autotest/autotest.web.framework.xsd
+http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd
+http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd
+
 本项目在码云和Github上都有托管，下面是各自的地址：
 Github  https://github.com/LinuxSuRen/autotest.web.framework
 码云    https://git.oschina.net/surenpi/autotest.web.framework

@@ -110,7 +110,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			{
 				paramLinkText = ((AbstractElement) element).paramTranslate(paramLinkText);
 			}
-			by = By.linkText(element.getLinkText());
+			by = By.linkText(paramLinkText);
 		}
 		else if (StringUtils.isNoneBlank(element.getPartialLinkText()))
 		{
@@ -120,7 +120,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			{
 				paramPartialLinkText = ((AbstractElement) element).paramTranslate(paramPartialLinkText);
 			}
-			by = By.partialLinkText(element.getPartialLinkText());
+			by = By.partialLinkText(paramPartialLinkText);
 		}
 		else if (StringUtils.isNotBlank(element.getTagName()))
 		{

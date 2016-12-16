@@ -265,7 +265,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		}
 		
 		//只更新第一个子标签
-		xpath = new DefaultXPath("//ns:page[1]");
+		xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element pageEle = (Element) xpath.selectSingleNode(dataSourceEle);
 		if(pageEle == null)

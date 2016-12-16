@@ -13,6 +13,8 @@
 http://surenpi.com/schema/autotest/autotest.web.framework.xsd
 http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd
 http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd
+如果不知道如何配置Eclipse的XML智能提示，请访问下面的教程：
+http://surenpi.com/2016/07/21/eclipse_prompt_xml/
 
 本项目在码云和Github上都有托管，下面是各自的地址：
 Github  https://github.com/LinuxSuRen/autotest.web.framework

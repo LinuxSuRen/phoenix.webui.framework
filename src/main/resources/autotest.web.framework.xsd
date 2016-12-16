@@ -138,7 +138,7 @@
 		</xs:attribute>
 	</xs:complexType>
 	
-	<xs:complexType name="pageFieldType">
+	<xs:complexType name="pageFieldType" mixed="true">
 		<xs:sequence>
 			<xs:element name="locators" type="suren:pageFieldLocators" minOccurs="0" maxOccurs="1">
 				<xs:annotation>

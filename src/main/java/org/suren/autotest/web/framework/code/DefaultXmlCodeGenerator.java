@@ -57,6 +57,8 @@ public class DefaultXmlCodeGenerator implements Generator
 		fieldTypeMap.put("button", "Button");
 		fieldTypeMap.put("input", "Text");
 		fieldTypeMap.put("select", "Selector");
+		fieldTypeMap.put("file_upload", "FileUpload");
+		fieldTypeMap.put("check_box_group", "CheckBoxGroup");
 	}
 
 	@Override

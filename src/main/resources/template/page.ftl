@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.core.ui.Selector;
+import org.suren.autotest.web.framework.core.ui.FileUpload;
+import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.page.Page;
 
 /**

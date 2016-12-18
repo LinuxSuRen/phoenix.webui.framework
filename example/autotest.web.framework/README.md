@@ -20,6 +20,11 @@ http://surenpi.com/2016/07/21/eclipse_prompt_xml/
 Github  https://github.com/LinuxSuRen/autotest.web.framework
 码云    https://git.oschina.net/surenpi/autotest.web.framework
 
+浏览器支持：
+chrome v53-55
+ie
+firefox
+
 从附件中下载到示例工程后，可以直接运行看到效果。
 示例工程的源码如下：
 https://git.oschina.net/surenpi/autotest.web.framework.demo

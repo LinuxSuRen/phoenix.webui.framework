@@ -75,7 +75,8 @@ public class SettingUtil implements Closeable
 	 */
 	public SettingUtil()
 	{
-		context = new ClassPathXmlApplicationContext(new String[]{"classpath*:applicationContext.xml"});
+		context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
+				"classpath*:applicationContext.xml"});
 		
 		try
 		{

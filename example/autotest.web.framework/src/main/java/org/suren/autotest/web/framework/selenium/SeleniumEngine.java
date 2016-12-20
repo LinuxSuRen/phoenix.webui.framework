@@ -174,6 +174,11 @@ public class SeleniumEngine
 	 */
 	private void initCapMap()
 	{
+		{
+			DesiredCapabilities capability = DesiredCapabilities.firefox();
+			engineCapMap.put(DRIVER_FIREFOX, capability);
+		}
+		
 		//chrome://version/
 		{
 			DesiredCapabilities capability = DesiredCapabilities.chrome();
@@ -277,6 +282,8 @@ public class SeleniumEngine
 	 */
 	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro)
 	{
+//		String remoteHome = enginePro.getProperty("webdriver.remote.home", "http://surenpi.com/webdriver/");
+		
 		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
 		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
 		
@@ -353,7 +360,8 @@ public class SeleniumEngine
 		}
 		
 		File driverFile = null;
-		if("jar".equals(url.getProtocol()))
+		String protocol = url.getProtocol();
+		if("jar".equals(protocol) || "http".equals(protocol))
 		{
 			OutputStream output = null;
 			driverFile = new File("surenpi.com." + new File(url.getFile()).getName());

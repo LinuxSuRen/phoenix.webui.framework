@@ -27,7 +27,6 @@ import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
-import org.eclipse.jetty.util.StringUtil;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -385,7 +384,7 @@ public class SettingUtil implements Closeable
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element pagesEle = (Element) xpath.selectSingleNode(doc);
 		String pagePackage = pagesEle.attributeValue("pagePackage", "");
-		if(StringUtil.isNotBlank(pagePackage))
+		if(StringUtils.isNotBlank(pagePackage))
 		{
 			pagePackage = (pagePackage.trim() + ".");
 		}

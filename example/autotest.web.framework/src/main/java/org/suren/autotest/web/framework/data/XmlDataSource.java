@@ -19,6 +19,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -27,7 +28,6 @@ import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
-import org.eclipse.jetty.util.StringUtil;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,7 +113,7 @@ public class XmlDataSource implements DataSource
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element rootEle = (Element) xpath.selectSingleNode(doc);
 		String pagePackage = rootEle.attributeValue("pagePackage", "");
-		if(StringUtil.isNotBlank(pagePackage))
+		if(StringUtils.isNotBlank(pagePackage))
 		{
 			pagePackage = (pagePackage.trim() + ".");
 		}

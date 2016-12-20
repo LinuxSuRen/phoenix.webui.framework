@@ -27,7 +27,6 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.xpath.DefaultXPath;
-import org.eclipse.jetty.util.StringUtil;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -204,7 +203,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element pagesEle = (Element) xpath.selectSingleNode(doc);
 		String pagePackage = pagesEle.attributeValue("pagePackage", "");
-		if(StringUtil.isNotBlank(pagePackage))
+		if(StringUtils.isNotBlank(pagePackage))
 		{
 			pagePackage = (pagePackage.trim() + ".");
 		}

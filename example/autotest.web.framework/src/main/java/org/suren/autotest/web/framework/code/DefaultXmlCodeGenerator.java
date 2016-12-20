@@ -15,13 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
-import org.eclipse.jetty.util.StringUtil;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,7 +188,7 @@ public class DefaultXmlCodeGenerator implements Generator
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element pagesEle = (Element) xpath.selectSingleNode(doc);
 		String pagePackage = pagesEle.attributeValue("pagePackage", "");
-		if(StringUtil.isNotBlank(pagePackage))
+		if(StringUtils.isNotBlank(pagePackage))
 		{
 			pagePackage = (pagePackage.trim() + ".");
 		}

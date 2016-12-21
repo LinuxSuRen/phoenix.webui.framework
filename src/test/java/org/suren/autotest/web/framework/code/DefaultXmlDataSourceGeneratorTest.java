@@ -15,6 +15,7 @@ public class DefaultXmlDataSourceGeneratorTest
 	public void test()
 	{
 		Generator generator = new DefaultXmlDataSourceGenerator();
-		generator.generate("ad.xml", "src/test/resources");
+		generator.generate("oschina.xml", "src/test/resources");
+		generator.generate("git.oschina.xml", "src/test/resources");
 	}
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Auto created by AutoTest, 16-12-16 下午12:38-->
+<suren:suite xmlns:suren="http://suite.surenpi.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://suite.surenpi.com http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd ">  
+  <suren:page class="demo.page.LoginPage"> 
+    <suren:actions> 
+      <suren:action field="gender" name="click"/>  
+      <suren:action field="firstName" name="fillValue"/>  
+      <suren:action field="lastName" name="fillValue"/>  
+      <suren:action field="email" name="fillValue"/>  
+      <suren:action field="day" name="select"/>  
+      <suren:action field="month" name="select"/>  
+      <suren:action field="year" name="select"/>  
+      <suren:action field="phone" name="fillValue"/>  
+      <suren:action field="postCode" name="fillValue"/>  
+      <suren:action field="searchPostCode" name="click"/>  
+      <suren:action field="selectedAddress" name="select"/>  
+      <suren:action field="terms" name="click"/>  
+      <suren:action field="singleButton" name="click"/>  
+      <suren:action field="firstQus" name="click"/>  
+      <suren:action field="secondQus" name="select"/>  
+      <suren:action field="thirdQus" name="select"/>  
+      <suren:action field="five_Qus" name="click"/>  
+      <suren:action field="fourQus" name="select"/>  
+      <suren:action field="fiveQus" name="select"/>  
+      <suren:action field="sixQus" name="select"/>  
+      <suren:action field="sevenQus" name="click"/>  
+      <suren:action field="eightQus" name="click"/>  
+      <suren:action field="nineQus" name="click"/>  
+      <suren:action field="tenQus" name="click"/>  
+      <suren:action field="eleQus" name="click"/>  
+      <suren:action field="_12Qus" name="select"/>  
+      <suren:action field="_13Qus" name="select"/>  
+      <suren:action field="_14Qus" name="select"/>  
+      <suren:action field="_15Qus" name="select"/>  
+      <suren:action field="_16Qus" name="click"/>  
+      <suren:action field="_17Qus" name="click"/>  
+      <suren:action field="_18Qus" name="click"/>  
+      <suren:action field="_19Qus" name="click"/>  
+      <suren:action field="okQus" name="click"/>  
+      <suren:action field="_20Qus" name="click"/>  
+      <suren:action field="_21Qus" name="click"/>  
+      <suren:action field="_22Qus" name="click"/>  
+      <suren:action field="_23Qus" name="select"/>  
+      <suren:action field="_24Qus" name="click"/>  
+      <suren:action field="_25Qus" name="click"/>  
+      <suren:action field="_26Qus" name="click"/>  
+      <suren:action field="_27Qus" name="select"/>  
+      <suren:action field="_28Qus" name="select"/>  
+      <suren:action field="_29Qus" name="click"/>  
+      <suren:action field="_30Qus" name="click"/>  
+      <suren:action field="_31Qus" name="click"/>  
+      <suren:action field="_32Qus" name="click"/>  
+      <suren:action field="_33Qus" name="click"/>  
+      <suren:action field="_34Qus" name="click"/>  
+      <suren:action field="_35Qus" name="click"/>  
+      <suren:action field="_36Qus" name="click"/> 
+    </suren:actions> 
+  </suren:page>  
+  <suren:page class="demo.page.LoginTestPage"> 
+    <suren:actions> 
+      <suren:action field="hello" name="click"/>  
+      <suren:action field="abc" name="fillValue"/>
+    </suren:actions> 
+  </suren:page> 
+</suren:suite>
+<!--Auto created by AutoTest, 16-12-16 下午12:38-->
+<!--Auto created by AutoTest, 16-12-19 下午1:15-->
+<!--Auto created by AutoTest, 16-12-19 下午1:15-->

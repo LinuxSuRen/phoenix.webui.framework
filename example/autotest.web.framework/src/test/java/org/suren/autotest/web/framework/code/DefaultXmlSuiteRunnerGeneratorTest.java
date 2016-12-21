@@ -15,6 +15,7 @@ public class DefaultXmlSuiteRunnerGeneratorTest
 	public void test()
 	{
 		Generator generator = new DefaultXmlSuiteRunnerGenerator();
-		generator.generate("ad.xml", "src/test/resources");
+		generator.generate("oschina.xml", "src/test/resources");
+		generator.generate("git.oschina.xml", "src/test/resources");
 	}
 }

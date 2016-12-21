@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suren:autotest xmlns:suren="http://surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://surenpi.com http://surenpi.com/schema/autotest/autotest.web.framework.xsd ">
+	<suren:engine driver="chrome"/>
+	<suren:pages pagePackage="autotest.demo.oschina.page">
+		<suren:page class="HomePage" url="http://www.oschina.net/" dataSource="user_home_data">
+			<suren:field name="loginBut" type="button" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="OSC_Userbar"/>
+					<suren:locator name="byPartialLinkText" value="登录"/>
+				</suren:locators>
+			</suren:field>
+			
+			<suren:field name="dongTang" type="input" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="TForm"/>
+					<suren:locator name="byTagName" value="area"/>
+				</suren:locators>
+			</suren:field>
+			
+			<suren:field name="osSoftSearch" type="input" byId="channel_q"></suren:field>
+		</suren:page>
+		
+		<suren:page class="LoginPage" dataSource="login_data">
+			<suren:field name="userName" type="input" byId="userMail" />
+			<suren:field name="password" type="input" byId="userPassword" />
+			<suren:field name="loginBut" type="button" byXpath="//*[@id='account_login']/form/div/div[5]/button"></suren:field>
+		</suren:page>
+		
+		<suren:page class="SearchResultPage">
+			<suren:field name="itemTitle" type="button"
+				byPartialLinkText="基于 Selenium 的 Web 自动测试框架 AutoTest"></suren:field>
+		</suren:page>
+	</suren:pages>
+	
+	<suren:dataSources>
+		<suren:dataSource name="login_data" type="xml_data_source" resource="login_data.xml"/>
+		<suren:dataSource name="user_home_data" type="xml_data_source" resource="user_home_data.xml"/>
+	</suren:dataSources>
+</suren:autotest>

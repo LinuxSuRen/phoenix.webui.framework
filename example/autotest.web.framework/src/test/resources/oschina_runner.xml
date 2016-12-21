@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Auto created by AutoTest, 16-12-21 下午12:58-->
+<suren:suite xmlns:suren="http://suite.surenpi.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://suite.surenpi.com http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd " pageConfig="oschina.xml">  
+    <suren:page class="autotest.demo.oschina.page.HomePage"> 
+        <suren:actions> 
+            <suren:action field="loginBut" name="click"/>  
+            <suren:action field="dongTang" name="fillValue"/>  
+            <suren:action field="osSoftSearch" name="fillValue"/> 
+        </suren:actions> 
+    </suren:page>  
+    <suren:page class="autotest.demo.oschina.page.LoginPage"> 
+        <suren:actions> 
+            <suren:action field="userName" name="fillValue"/>  
+            <suren:action field="password" name="fillValue"/> 
+        </suren:actions> 
+    </suren:page>  
+    <suren:page class="autotest.demo.oschina.page.SearchResultPage"> 
+        <suren:actions> 
+            <suren:action field="itemTitle" name="click"/> 
+        </suren:actions> 
+    </suren:page> 
+</suren:suite>
+<!--Auto created by AutoTest, 16-12-21 下午12:58-->
+<!--Auto created by AutoTest, 16-12-21 下午12:58-->
+<!--Auto created by AutoTest, 16-12-21 下午12:59-->
+<!--Auto created by AutoTest, 16-12-21 下午12:59-->
+<!--Auto created by AutoTest, 16-12-21 下午12:59-->

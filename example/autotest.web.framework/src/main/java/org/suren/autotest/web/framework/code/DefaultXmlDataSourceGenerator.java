@@ -312,7 +312,9 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		
 		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
 		{
-			xmlWriter = new XMLWriter(dsOutput, OutputFormat.createPrettyPrint());
+			OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+			outputFormat.setIndentSize(4);
+			xmlWriter = new XMLWriter(dsOutput, outputFormat);
 			
 			xmlWriter.write(doc);
 		}

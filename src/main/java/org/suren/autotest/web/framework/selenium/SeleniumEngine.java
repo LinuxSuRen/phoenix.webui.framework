@@ -124,7 +124,7 @@ public class SeleniumEngine
 			String proFile = System.getProperty("firefox.profile", null);
 			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
 			fireFoxPreSet(profile);
-			driver = new FirefoxDriver(profile);
+			driver = new FirefoxDriver(null, profile, capability);
 		}
 		else if(DRIVER_SAFARI.equals(curDriverStr))
 		{
@@ -176,6 +176,7 @@ public class SeleniumEngine
 	{
 		{
 			DesiredCapabilities capability = DesiredCapabilities.firefox();
+			capability.setCapability("marionette", true);
 			engineCapMap.put(DRIVER_FIREFOX, capability);
 		}
 		

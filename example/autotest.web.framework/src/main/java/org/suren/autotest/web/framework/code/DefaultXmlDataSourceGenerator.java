@@ -278,7 +278,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 			pageEle = dataSourceEle.addElement(prefix + "page");
 		}
 		
-		ele.accept(new PageFieldVisitor(pageEle));
+		ele.accept(new PageFieldVisitor(pageEle, pageClsStr));
 
 		XMLWriter xmlWriter = null;
 		if(dsInput != null)
@@ -332,10 +332,12 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	{
 		private SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		private Element pageEle;
+		private String pageClsStr;
 		
-		public PageFieldVisitor(Element pageEle)
+		public PageFieldVisitor(Element pageEle, String pageClsStr)
 		{
 			this.pageEle = pageEle;
+			this.pageClsStr = pageClsStr;
 			simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
 		}
 
@@ -356,7 +358,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 				return;
 			}
 			
-			XPath xpath = new DefaultXPath("//ns:field[@name='" + fieldName + "']");
+			XPath xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]/ns:field[@name='" + fieldName + "']");
 			xpath.setNamespaceContext(simpleNamespaceContext);
 			
 			Element fieldEle = (Element) xpath.selectSingleNode(pageEle);

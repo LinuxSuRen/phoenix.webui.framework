@@ -43,6 +43,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlDataSourceGenerator.class);
 
 	private String outputDir;
+	private String srcCoding;
 	
 	private Map<String, String> suiteActionMap = new HashMap<String, String>();
 	
@@ -59,7 +60,8 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	public void generate(String srcCoding, String outputDir)
 	{
 		this.outputDir = outputDir;
-
+		this.srcCoding = srcCoding;
+		
 		String srcPath = srcCoding;
 		srcPath = srcPath.replace(".xml", "");
 		srcPath = srcPath + "_runner.xml";
@@ -146,7 +148,9 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 
 		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
 		{
-			xmlWriter = new XMLWriter(dsOutput, OutputFormat.createPrettyPrint());
+			OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+			outputFormat.setIndentSize(4);
+			xmlWriter = new XMLWriter(dsOutput, outputFormat);
 			
 			xmlWriter.write(suiteRunnerDoc);
 		}
@@ -281,6 +285,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 			dataSourcesEle.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 			dataSourcesEle.addAttribute("xsi:schemaLocation", "http://suite.surenpi.com "
 					+ "http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd ");
+			dataSourcesEle.addAttribute("pageConfig", this.srcCoding);
 		}
 		
 		xpath = new DefaultXPath("/ns:suite/ns:page[@class='" + pageClsStr + "']");

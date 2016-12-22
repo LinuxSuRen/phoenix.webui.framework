@@ -37,7 +37,7 @@ public class Text extends AbstractElement
 	}
 
 	/**
-	 * 自动填充数据，不用关系数据来源
+	 * 自动填充数据，不用关心数据来源
 	 */
 	public Text fillValue()
 	{
@@ -51,6 +51,10 @@ public class Text extends AbstractElement
 		return value;
 	}
 
+	/**
+	 * 预备数据
+	 * @param value
+	 */
 	public void setValue(String value)
 	{
 		this.value = value;
@@ -74,6 +78,14 @@ public class Text extends AbstractElement
 	public void setClickAble(ClickAble clickAble)
 	{
 		this.clickAble = clickAble;
+	}
+	
+	/**
+	 * 执行点击操作
+	 */
+	public void click()
+	{
+		getClickAble().click(this);
 	}
 	
 	/**

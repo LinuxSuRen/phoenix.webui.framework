@@ -120,4 +120,13 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 			return false;
 		}
 	}
+
+	@Override
+	public String toString()
+	{
+		By by = getBy();
+		String srtBy = (by == null ? "null locator" : by.toString());
+		
+		return srtBy;
+	}
 }

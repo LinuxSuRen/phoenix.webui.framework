@@ -109,6 +109,9 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 		}
 		else
 		{
+			logger.warn("Can not found element by locator {}, "
+					+ "will retry locate again, failed times {}.",
+					absLocator, failedCount);
 			return retry(absLocator, webEle);
 		}
 	}

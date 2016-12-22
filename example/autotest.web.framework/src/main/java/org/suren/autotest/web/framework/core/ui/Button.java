@@ -34,6 +34,14 @@ public class Button extends AbstractElement
 	}
 	
 	/**
+	 * 触发双击事件
+	 */
+	public void dbClick()
+	{
+		clickAble.dbClick(this);
+	}
+	
+	/**
 	 * 鼠标悬停
 	 */
 	public void hover()

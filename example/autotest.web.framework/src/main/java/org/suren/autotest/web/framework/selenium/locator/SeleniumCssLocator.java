@@ -38,11 +38,27 @@ public class SeleniumCssLocator extends AbstractLocator<WebElement>
 	@Override
 	public WebElement findElement(SearchContext driver)
 	{
-		String css = getValue();
-		String[] cssArray = css.split(" ");
-		setValue(cssArray[0]);
+		final String priorityCss; //优先定位的css值
+		final String targetCss;
+		final String css = getValue();
 		
+		String[] priorityCssArray = css.split(",");
+		if(priorityCssArray.length >= 2)
+		{
+			targetCss = priorityCssArray[1];
+			priorityCss = priorityCssArray[0];
+		}
+		else
+		{
+			targetCss = css;
+			priorityCss = css.split(" ")[0];
+		}
+		
+		//设定当前的定位器
+		setValue(priorityCss);
 		By by = getBy();
+		
+		//值还原
 		setValue(css);
 		List<WebElement> elementList = driver.findElements(by);
 		for(WebElement ele : elementList)
@@ -52,7 +68,7 @@ public class SeleniumCssLocator extends AbstractLocator<WebElement>
 				new Actions((WebDriver) driver).moveToElement(ele);
 			}
 			
-			if(css.equals(ele.getAttribute("class")))
+			if(targetCss.equals(ele.getAttribute("class")))
 			{
 				return ele;
 			}

@@ -320,7 +320,7 @@ public class SeleniumEngine
 		while(resurceUrls.hasMoreElements())
 		{
 			URL url = resurceUrls.nextElement();
-			if(url == defaultResourceUrl)
+			if(url.equals(defaultResourceUrl))
 			{
 				continue;
 			}

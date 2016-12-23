@@ -2,21 +2,22 @@
 
 <!--Auto created by AutoTest, 16-12-21 下午12:37-->
 <suren:dataSources xmlns:suren="http://datasource.surenpi.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datasource.surenpi.com http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ">  
-  <suren:dataSource pageClass="autotest.demo.oschina.page.LoginPage"> 
-    <suren:page> 
-      <suren:field name="userName" data=""/>  
-      <suren:field name="password" data=""/> 
-    </suren:page> 
-  </suren:dataSource>  
-  <suren:dataSource pageClass="autotest.demo.oschina.page.GitLoginPage"> 
-    <suren:page> 
-      <suren:field name="userName" data=""/>  
-      <suren:field name="password" data=""/> 
-    </suren:page> 
-  </suren:dataSource> 
+    <suren:dataSource pageClass="autotest.demo.oschina.page.LoginPage"> 
+        <suren:page> 
+            <suren:field name="userName" data=""/>  
+            <suren:field name="password" data=""/> 
+        </suren:page> 
+    </suren:dataSource>  
+    <suren:dataSource pageClass="autotest.demo.oschina.page.GitLoginPage"> 
+        <suren:page> 
+            <suren:field name="userName" data=""/>  
+            <suren:field name="password" data=""/> 
+        </suren:page> 
+    </suren:dataSource> 
 </suren:dataSources>
 <!--Auto created by AutoTest, 16-12-21 下午12:39-->
 <!--Auto created by AutoTest, 16-12-21 下午12:40-->
 <!--Auto created by AutoTest, 16-12-21 下午12:47-->
 <!--Auto created by AutoTest, 16-12-21 下午12:51-->
 <!--Auto created by AutoTest, 16-12-21 下午12:51-->
+<!--Auto created by AutoTest, 16-12-22 上午8:17-->

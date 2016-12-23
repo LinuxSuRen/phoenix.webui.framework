@@ -295,6 +295,14 @@ public class SettingUtil implements Closeable
 	{
 		excludePageSet.clear();
 	}
+	
+	/**
+	 * @return 引擎对象
+	 */
+	public SeleniumEngine getEngine()
+	{
+		return context.getBean(SeleniumEngine.class);
+	}
 
 	/**
 	 * 解析整个框架主配置文件
@@ -308,8 +316,7 @@ public class SettingUtil implements Closeable
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
 		
-		SeleniumEngine seleniumEngine = context
-				.getBean(SeleniumEngine.class);
+		SeleniumEngine seleniumEngine = getEngine();
 		if(seleniumEngine.getDriverStr() == null || "".equals(seleniumEngine.getDriverStr()))
 		{
 			XPath xpath = new DefaultXPath("/ns:autotest/ns:engine");

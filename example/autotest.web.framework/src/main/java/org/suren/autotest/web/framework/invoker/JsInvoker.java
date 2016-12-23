@@ -33,6 +33,60 @@ public class JsInvoker
 	}
 	
 	/**
+	 * 根据元素id定位并触发单击事件
+	 * @param util
+	 * @param params
+	 * @see #clickByClassName(SettingUtil, String[])
+	 */
+	public static void clickById(SettingUtil util, String[] params)
+	{
+		String id = params[0];
+		
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		scriptBuf.append("evt.initEvent('click',true,true);");
+		scriptBuf.append(String.format("var ele = document.getElementsById('%s');", id));
+		scriptBuf.append("ele.dispatchEvent(evt);");
+		
+		execute(util, new String[]{scriptBuf.toString()});
+	}
+	
+	/**
+	 * 根据元素name定位并触发单击事件
+	 * @param util
+	 * @param params
+	 * @see #clickByClassName(SettingUtil, String[])
+	 */
+	public static void clickByName(SettingUtil util, String[] params)
+	{
+		String name = params[0];
+		
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		scriptBuf.append("evt.initEvent('click',true,true);");
+		scriptBuf.append(String.format("var ele = document.getElementsByName('%s');", name));
+		scriptBuf.append("ele.dispatchEvent(evt);");
+		
+		execute(util, new String[]{scriptBuf.toString()});
+	}
+	
+	/**
+	 * 根据元素tagName定位并触发单击事件
+	 * @param util
+	 * @param params
+	 * @see #clickByClassName(SettingUtil, String[])
+	 */
+	public static void clickByTagName(SettingUtil util, String[] params)
+	{
+		String tagName = params[0];
+		
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		scriptBuf.append("evt.initEvent('click',true,true);");
+		scriptBuf.append(String.format("var ele = document.getElementsByTagName('%s');", tagName));
+		scriptBuf.append("ele.dispatchEvent(evt);");
+		
+		execute(util, new String[]{scriptBuf.toString()});
+	}
+	
+	/**
 	 * 执行js代码
 	 * @param util 框架默认提供的参数
 	 * @param params 要执行的js代码，如果有多个的话，将会顺序执行

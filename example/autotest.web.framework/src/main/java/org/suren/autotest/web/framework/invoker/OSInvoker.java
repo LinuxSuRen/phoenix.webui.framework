@@ -12,6 +12,10 @@ import java.io.IOException;
  */
 public class OSInvoker
 {
+	/**
+	 * 执行本地操作系统命令
+	 * @param cmd
+	 */
 	public static void exec(String cmd)
 	{
 		try

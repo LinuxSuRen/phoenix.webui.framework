@@ -87,6 +87,25 @@ public class JsInvoker
 	}
 	
 	/**
+	 * 定位元素，并让元素显示在屏幕的最上方
+	 * @param util
+	 * @param params 需要两个元素，第一个是定位的方式（ById、ByName、ByClassName、ByTagName），第二个是值</br>
+	 * 		例如：new String[]{"ById", "userName"}
+	 */
+	public static void scrollIntoView(SettingUtil util, String[] params)
+	{
+		if(params == null || params.length < 2)
+		{
+			return;
+		}
+		
+		String by = params[0];
+		String byVal = params[1];
+		
+		execute(util, new String[]{String.format("document.getElements%s('%s').scrollIntoView(true);", by, byVal)});
+	}
+	
+	/**
 	 * 执行js代码
 	 * @param util 框架默认提供的参数
 	 * @param params 要执行的js代码，如果有多个的话，将会顺序执行

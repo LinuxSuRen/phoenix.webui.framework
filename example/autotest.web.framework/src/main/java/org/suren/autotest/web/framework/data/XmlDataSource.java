@@ -37,6 +37,7 @@ import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
+import org.suren.autotest.web.framework.util.EncryptorUtil;
 
 /**
  * xml格式的数据源实现
@@ -198,6 +199,10 @@ public class XmlDataSource implements DataSource
 						value = e.getMessage();
 						e.printStackTrace();
 					}
+				}
+				else if("encrypt".equals(type))
+				{
+					value = EncryptorUtil.decryptWithBase64(value);
 				}
 
 				Method getterMethod = BeanUtils.findMethod(page.getClass(),

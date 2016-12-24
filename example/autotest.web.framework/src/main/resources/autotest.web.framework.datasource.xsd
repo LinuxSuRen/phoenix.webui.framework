@@ -43,6 +43,7 @@
 			<xs:enumeration value="simple"></xs:enumeration>
 			<xs:enumeration value="groovy"></xs:enumeration>
 			<xs:enumeration value="javascript"></xs:enumeration>
+			<xs:enumeration value="encrypt"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

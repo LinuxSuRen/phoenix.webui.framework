@@ -5,10 +5,13 @@ package org.suren.autotest.web.framework.selenium.action;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -60,10 +63,23 @@ public class SeleniumClick implements ClickAble
 				int y = size.getHeight() / 2 + loc.getY() + toolbarHeight;
 				
 				new Robot().mouseMove(x, y);
-//				
-//				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
 			}
+			
+			String tagName = webEle.getTagName();
+			String targetAttr = webEle.getAttribute("target");
 			webEle.click();
+			if("a".equals(tagName) && "_blank".equals(targetAttr))
+			{
+				WebDriver driver = engine.getDriver();
+				Set<String> handlers = driver.getWindowHandles();
+				Iterator<String> it = handlers.iterator();
+				while(it.hasNext())
+				{
+					String name = it.next();
+					
+					driver.switchTo().window(name);
+				}
+			}
 		}
 		catch(WebDriverException e)
 		{

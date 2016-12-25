@@ -42,11 +42,16 @@ public class Encryptor
         cipher = Cipher.getInstance(algorithm);
     }
     
-    public static Encryptor getInstance(String algorithm) throws NoSuchAlgorithmException, NoSuchPaddingException
+    public static Encryptor getInstance(String algorithm, String secretKey) throws NoSuchAlgorithmException, NoSuchPaddingException
     {
         if(encryptor == null)
         {
-            encryptor = new Encryptor(algorithm, "http://surenpi.com");
+        	if(StringUtils.isBlank(secretKey))
+        	{
+        		secretKey = "http://surenpi.com";
+        	}
+        	
+            encryptor = new Encryptor(algorithm, secretKey);
         }
         
         return encryptor;

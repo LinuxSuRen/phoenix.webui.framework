@@ -3,8 +3,11 @@
  */
 package org.suren.autotest.web.framework.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -19,6 +22,38 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class EncryptorUtil
 {
+	public static final String ENCRYPT_KEY = "encrypt.key";
+	
+	/**
+	 * @return 从配置文件中获取私钥
+	 */
+	private static String getSecretKey()
+	{
+		try(InputStream input = EncryptorUtil.class.getClassLoader().getResourceAsStream("encrypt.properties"))
+		{
+			if(input == null)
+			{
+				throw new RuntimeException("Can not found encrypt.properties!");
+			}
+			
+			Properties encryptPro = new Properties();
+			encryptPro.load(input);
+			
+			if(!encryptPro.containsKey(ENCRYPT_KEY))
+			{
+				throw new RuntimeException("Can not found " + ENCRYPT_KEY + " from encrypt.properties!");
+			}
+			
+			return encryptPro.getProperty(ENCRYPT_KEY);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 	/**
 	 * 加密字符串
 	 * @param plainText
@@ -28,7 +63,7 @@ public class EncryptorUtil
 	{
 		try
 		{
-			return Encryptor.getInstance(Encryptor.ALG_DES).encryptStr(plainText);
+			return Encryptor.getInstance(Encryptor.ALG_DES, getSecretKey()).encryptStr(plainText);
 		}
 		catch (InvalidKeyException e)
 		{
@@ -63,7 +98,7 @@ public class EncryptorUtil
 	{
 		try
 		{
-			return Encryptor.getInstance(Encryptor.ALG_DES).decryptStr(encryptText);
+			return Encryptor.getInstance(Encryptor.ALG_DES, getSecretKey()).decryptStr(encryptText);
 		}
 		catch (InvalidKeyException e)
 		{
@@ -96,35 +131,28 @@ public class EncryptorUtil
 	 */
 	public static String encryptWithBase64(String plainText)
 	{
-		String encryptText = encrypt(plainText);
-//		Encryptor.getInstance(Encryptor.ALG_DES).encrypt(plainText)
 		try
 		{
-			return Base64.encodeBase64String(Encryptor.getInstance(Encryptor.ALG_DES).encrypt(plainText));
+			return Base64.encodeBase64String(Encryptor.getInstance(Encryptor.ALG_DES, getSecretKey()).encrypt(plainText));
 		}
 		catch (InvalidKeyException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IllegalBlockSizeException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (BadPaddingException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (NoSuchAlgorithmException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (NoSuchPaddingException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -141,31 +169,26 @@ public class EncryptorUtil
 		byte[] encryptData = Base64.decodeBase64(base64Text);
 		try
 		{
-			return Encryptor.getInstance(Encryptor.ALG_DES).decryptStr(encryptData);
+			return Encryptor.getInstance(Encryptor.ALG_DES, null).decryptStr(encryptData);
 		}
 		catch (InvalidKeyException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IllegalBlockSizeException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (BadPaddingException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (NoSuchAlgorithmException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (NoSuchPaddingException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

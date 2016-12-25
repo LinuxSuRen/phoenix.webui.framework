@@ -169,7 +169,7 @@ public class EncryptorUtil
 		byte[] encryptData = Base64.decodeBase64(base64Text);
 		try
 		{
-			return Encryptor.getInstance(Encryptor.ALG_DES, null).decryptStr(encryptData);
+			return Encryptor.getInstance(Encryptor.ALG_DES, getSecretKey()).decryptStr(encryptData);
 		}
 		catch (InvalidKeyException e)
 		{

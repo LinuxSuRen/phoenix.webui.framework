@@ -24,7 +24,7 @@ public class JsInvoker
 	{
 		String className = params[0];
 		
-		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsByClassName('%s');", className));
 		scriptBuf.append("ele.dispatchEvent(evt);");
@@ -42,7 +42,7 @@ public class JsInvoker
 	{
 		String id = params[0];
 		
-		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsById('%s');", id));
 		scriptBuf.append("ele.dispatchEvent(evt);");
@@ -60,7 +60,7 @@ public class JsInvoker
 	{
 		String name = params[0];
 		
-		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsByName('%s');", name));
 		scriptBuf.append("ele.dispatchEvent(evt);");
@@ -78,7 +78,7 @@ public class JsInvoker
 	{
 		String tagName = params[0];
 		
-		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents')");
+		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsByTagName('%s');", tagName));
 		scriptBuf.append("ele.dispatchEvent(evt);");

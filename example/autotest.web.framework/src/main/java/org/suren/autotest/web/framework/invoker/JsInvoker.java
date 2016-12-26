@@ -27,7 +27,7 @@ public class JsInvoker
 		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsByClassName('%s');", className));
-		scriptBuf.append("ele.dispatchEvent(evt);");
+		scriptBuf.append("ele[0].dispatchEvent(evt);");
 		
 		execute(util, new String[]{scriptBuf.toString()});
 	}
@@ -44,7 +44,7 @@ public class JsInvoker
 		
 		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
-		scriptBuf.append(String.format("var ele = document.getElementsById('%s');", id));
+		scriptBuf.append(String.format("var ele = document.getElementById('%s');", id));
 		scriptBuf.append("ele.dispatchEvent(evt);");
 		
 		execute(util, new String[]{scriptBuf.toString()});
@@ -63,7 +63,7 @@ public class JsInvoker
 		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsByName('%s');", name));
-		scriptBuf.append("ele.dispatchEvent(evt);");
+		scriptBuf.append("ele[0].dispatchEvent(evt);");
 		
 		execute(util, new String[]{scriptBuf.toString()});
 	}
@@ -81,7 +81,7 @@ public class JsInvoker
 		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
 		scriptBuf.append(String.format("var ele = document.getElementsByTagName('%s');", tagName));
-		scriptBuf.append("ele.dispatchEvent(evt);");
+		scriptBuf.append("ele[0].dispatchEvent(evt);");
 		
 		execute(util, new String[]{scriptBuf.toString()});
 	}

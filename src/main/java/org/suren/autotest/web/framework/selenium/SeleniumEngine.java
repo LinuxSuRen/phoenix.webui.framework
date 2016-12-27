@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.util.BrowserUtil;
+import org.suren.autotest.web.framework.util.PathUtil;
 
 /**
  * 浏览器引擎封装类
@@ -364,8 +365,10 @@ public class SeleniumEngine
 		String protocol = url.getProtocol();
 		if("jar".equals(protocol) || "http".equals(protocol))
 		{
+			File rootFile = PathUtil.getRootDir();
+			
 			OutputStream output = null;
-			driverFile = new File("surenpi.com." + new File(url.getFile()).getName());
+			driverFile = new File(rootFile, "surenpi.com." + new File(url.getFile()).getName());
 			if(driverFile.exists())
 			{
 				return driverFile.getAbsolutePath();

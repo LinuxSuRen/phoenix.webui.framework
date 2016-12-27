@@ -18,6 +18,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.suren.autotest.web.framework.util.PathUtil;
 import org.xml.sax.SAXException;
 
 /**
@@ -47,7 +48,7 @@ public class Validation
 			validator.setErrorHandler(new AutoErrorHandler());
 
 			Source source = new StreamSource(xmlInput);
-			Result result = new StreamResult(new File(xsdFile + ".xml"));
+			Result result = new StreamResult(new File(PathUtil.getRootDir(), xsdFile + ".xml"));
 			validator.validate(source, result);
 		}
 		else

@@ -6,6 +6,7 @@ package org.suren.autotest.web.framework.data;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
+import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
@@ -236,7 +238,10 @@ public class XmlDataSource implements DataSource
 								break;
 						}
 					}
-					
+					else if(eleObj instanceof FileUpload)
+					{
+						((FileUpload) eleObj).setTargetFile(new File(value));
+					}
 				}
 				catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 				{

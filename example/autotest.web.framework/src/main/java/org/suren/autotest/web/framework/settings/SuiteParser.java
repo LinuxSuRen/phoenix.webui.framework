@@ -135,7 +135,7 @@ public class SuiteParser
 	 * @param afterSleep action所在组的休眠时间
 	 * @param beforeSleep action所在组的休眠时间
 	 */
-	private void parse(List<SuiteAction> actionList, Element actionsEle,
+	private void parse(List<SuiteAction> actionList, final Element actionsEle,
 			String beforeSleep, String afterSleep)
 	{
 		DefaultXPath xpath = new DefaultXPath("ns:action");
@@ -150,6 +150,12 @@ public class SuiteParser
 			String actionBeforeSleep = actionEle.attributeValue("beforeSleep", beforeSleep);
 			String actionAfterSleep = actionEle.attributeValue("afterSleep", afterSleep);
 			String repeat = actionEle.attributeValue("repeat", "1");
+			String disable = actionEle.attributeValue("disable", "false");
+			
+			if(Boolean.parseBoolean(disable))
+			{
+				continue;
+			}
 			
 			SuiteAction suiteAction = new SuiteAction(field, name);
 			suiteAction.setInvoker(invoker);

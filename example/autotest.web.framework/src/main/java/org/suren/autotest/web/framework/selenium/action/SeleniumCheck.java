@@ -35,19 +35,21 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 	@Autowired
 	private SearchStrategyUtils		searchStrategyUtils;
 	
-	@Autowired
-//	private SeleniumValueLocator valueLocator;
-//	@Autowired
-//	private ZoneSearchStrategy zoneSearchStrategy;
 	private ApplicationContext context;
 
 	@Override
 	public void checkByText(Element element, String text)
 	{
+		checkByValue(element, text);
+	}
+
+	@Override
+	public void checkByValue(Element element, String value)
+	{
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
 		if(webEle == null)
 		{
-			logger.error(String.format("can not found element byText [%s].", text));
+			logger.error(String.format("can not found element byText [%s].", value));
 			return;
 		}
 		
@@ -62,7 +64,7 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 		
 		locatorList.clear();
 		locatorList.add(valueLocator);
-		valueLocator.setValue(text);
+		valueLocator.setValue(value);
 		
 		WebElement itemWebEle = null;
 		try
@@ -79,7 +81,8 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 		catch(ElementNotVisibleException e)
 		{
 			e.printStackTrace();
-			logger.error(String.format("Element [%s] click error, parent [%s], text [%s].", itemWebEle, element, text));
+			logger.error(String.format("Element [%s] click error, parent [%s], text [%s].",
+					itemWebEle, element, value));
 		}
 		finally
 		{

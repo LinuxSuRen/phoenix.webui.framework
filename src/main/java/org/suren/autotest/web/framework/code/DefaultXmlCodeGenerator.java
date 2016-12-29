@@ -47,6 +47,7 @@ public class DefaultXmlCodeGenerator implements Generator
 	
 	private Map<String, String> fieldTypeMap = new HashMap<String, String>();
 	
+	private ClassLoader classLoader;
 	private String outputDir;
 	
 	/**
@@ -66,7 +67,7 @@ public class DefaultXmlCodeGenerator implements Generator
 	{
 		this.outputDir = outputDir;
 		
-		ClassLoader classLoader = this.getClass().getClassLoader();
+		classLoader = this.getClass().getClassLoader();
 		try(InputStream inputStream = classLoader.getResourceAsStream(srcCoding))
 		{
 			Document document = new SAXReader().read(inputStream);
@@ -120,13 +121,22 @@ public class DefaultXmlCodeGenerator implements Generator
 			
 			create(autoPage);
 		}
+		
+		done();
+	}
+	
+	/**
+	 * 代码生成完毕
+	 */
+	protected void done()
+	{
 	}
 	
 	/**
 	 * 根据Page对象来创建Java源文件
 	 * @param autoPage
 	 */
-	private void create(AutoPage autoPage)
+	protected void create(AutoPage autoPage)
 	{
 		try
 		{
@@ -262,6 +272,14 @@ public class DefaultXmlCodeGenerator implements Generator
 				fieldMap.put(fieldName, type);
 			}
 		});
+	}
+
+	/**
+	 * @return 解析配置文件所使用的类加载器
+	 */
+	public ClassLoader getClassLoader()
+	{
+		return classLoader;
 	}
 
 }

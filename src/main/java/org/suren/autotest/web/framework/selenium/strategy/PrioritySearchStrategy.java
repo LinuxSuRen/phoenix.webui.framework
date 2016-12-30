@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
+import org.suren.autotest.web.framework.core.ElementsSearchStrategy;
 import org.suren.autotest.web.framework.core.LocatorNotFoundException;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
@@ -34,18 +35,46 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * @date Jul 16, 2016 6:45:44 PM
  */
 @Component("prioritySearchStrategy")
-public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
+public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>,
+	ElementsSearchStrategy<WebElement>, ParentElement
 {
 
 	@Autowired
 	private SeleniumEngine engine;
 	private Element element;
+	private WebElement targetWebElement;
+	private WebElement parentElement;
 
 	/**
 	 * 根据定位元素的优先级来进行元素查找
 	 */
 	@Override
 	public WebElement search(Element element)
+	{
+		By by = buildBy(element);
+		if(targetWebElement != null)
+		{
+			return targetWebElement;
+		}
+		else
+		{
+			return findElement(by);
+		}
+	}
+
+	@Override
+	public List<WebElement> searchAll(Element element)
+	{
+		By by = buildBy(element);
+		return findElements(by);
+	}
+	
+	/**
+	 * 构建定位方法
+	 * @param element
+	 * @return
+	 */
+	private By buildBy(Element element)
 	{
 		By by = null;
 
@@ -76,7 +105,8 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 				new Actions(engine.getDriver()).moveToElement(ele);
 				if(css.equals(ele.getAttribute("class")))
 				{
-					return ele;
+					targetWebElement = ele;
+					break;
 				}
 			}
 			
@@ -136,8 +166,8 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		{
 			throw new LocatorNotFoundException();
 		}
-
-		return findElement(by);
+		
+		return by;
 	}
 
 	/**
@@ -156,7 +186,14 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		}
 		
-		return driver.findElement(by);
+		if(parentElement != null)
+		{
+			return parentElement.findElement(by);
+		}
+		else
+		{
+			return driver.findElement(by);
+		}
 	}
 
 	/**
@@ -169,6 +206,19 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		WebDriver driver = engine.getDriver();
 		driver = engine.turnToRootDriver(driver);
 		
-		return driver.findElements(by);
+		if(parentElement != null)
+		{
+			return parentElement.findElements(by);
+		}
+		else
+		{
+			return driver.findElements(by);
+		}
+	}
+
+	@Override
+	public void setParent(WebElement parentWebElement)
+	{
+		this.parentElement = parentWebElement;
 	}
 }

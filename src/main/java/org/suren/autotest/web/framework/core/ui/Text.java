@@ -46,6 +46,9 @@ public class Text extends AbstractElement
 		return this;
 	}
 
+	/**
+	 * @return 预备的数据
+	 */
 	public String getValue()
 	{
 		return value;
@@ -55,37 +58,19 @@ public class Text extends AbstractElement
 	 * 预备数据
 	 * @param value
 	 */
-	public void setValue(String value)
+	public Text setValue(String value)
 	{
 		this.value = value;
-	}
-
-	public ValueEditor getValueEditor()
-	{
-		return valueEditor;
-	}
-
-	public void setValueEditor(ValueEditor valueEditor)
-	{
-		this.valueEditor = valueEditor;
-	}
-
-	public ClickAble getClickAble()
-	{
-		return clickAble;
-	}
-
-	public void setClickAble(ClickAble clickAble)
-	{
-		this.clickAble = clickAble;
+		return this;
 	}
 	
 	/**
 	 * 执行点击操作
 	 */
-	public void click()
+	public Text click()
 	{
 		getClickAble().click(this);
+		return this;
 	}
 	
 	/**
@@ -109,5 +94,39 @@ public class Text extends AbstractElement
 	public boolean isHidden()
 	{
 		return valueEditor.isHidden(this);
+	}
+
+	/**
+	 * @return 可填入值的行为接口
+	 */
+	public ValueEditor getValueEditor()
+	{
+		return valueEditor;
+	}
+
+	/**
+	 * 设置用于填入值的行为
+	 * @param valueEditor
+	 */
+	public void setValueEditor(ValueEditor valueEditor)
+	{
+		this.valueEditor = valueEditor;
+	}
+
+	/**
+	 * @return 可点击的行为接口
+	 */
+	public ClickAble getClickAble()
+	{
+		return clickAble;
+	}
+
+	/**
+	 * 设置可点击的行为
+	 * @param clickAble
+	 */
+	public void setClickAble(ClickAble clickAble)
+	{
+		this.clickAble = clickAble;
 	}
 }

@@ -54,6 +54,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		suiteActionMap.put("button", "click");
 		suiteActionMap.put("input", "fillValue");
 		suiteActionMap.put("select", "select");
+		suiteActionMap.put("file_upload", "upload");
 	}
 	
 	@Override
@@ -78,7 +79,6 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		}
 		catch (IOException e1)
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -90,7 +90,6 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 			}
 			catch (DocumentException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -112,7 +111,6 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		}
 		catch (SAXException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -125,7 +123,6 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -156,12 +153,10 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

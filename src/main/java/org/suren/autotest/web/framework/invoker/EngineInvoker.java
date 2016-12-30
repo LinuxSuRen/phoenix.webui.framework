@@ -53,4 +53,27 @@ public class EngineInvoker
 		
 		driver.switchTo().window(currentHandle);
 	}
+	
+	/**
+	 * 根据index来切换iframe
+	 * @param util
+	 * @param params
+	 */
+	public static void frameSwitchByIndex(SettingUtil util, String[] params)
+	{
+		String indexStr = params[0];
+		int index = Integer.parseInt(indexStr);
+		util.getEngine().getDriver().switchTo().frame(index);
+	}
+	
+	/**
+	 * 根据name或者id来切换iframe
+	 * @param util
+	 * @param params
+	 */
+	public static void frameSwitchByNameOrId(SettingUtil util, String[] params)
+	{
+		String nameOrId = params[0];
+		util.getEngine().getDriver().switchTo().frame(nameOrId);
+	}
 }

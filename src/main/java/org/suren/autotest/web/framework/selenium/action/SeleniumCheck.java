@@ -20,6 +20,7 @@ import org.suren.autotest.web.framework.core.Locator;
 import org.suren.autotest.web.framework.core.action.CheckAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumValueLocator;
+import org.suren.autotest.web.framework.selenium.strategy.ParentElement;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
 /**
@@ -46,8 +47,8 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 	@Override
 	public void checkByValue(Element element, String value)
 	{
-		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
-		if(webEle == null)
+		WebElement parentWebEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
+		if(parentWebEle == null)
 		{
 			logger.error(String.format("can not found element byText [%s].", value));
 			return;
@@ -69,6 +70,11 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 		WebElement itemWebEle = null;
 		try
 		{
+			if(strategy instanceof ParentElement)
+			{
+				((ParentElement) strategy).setParent(parentWebEle);
+			}
+			
 			itemWebEle = strategy.search(element);
 			if(itemWebEle != null)
 			{

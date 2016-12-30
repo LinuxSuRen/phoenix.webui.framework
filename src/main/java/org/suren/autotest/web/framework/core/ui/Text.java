@@ -1,5 +1,5 @@
 /**
-* Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
+* http://surenpi.com
 */
 package org.suren.autotest.web.framework.core.ui;
 

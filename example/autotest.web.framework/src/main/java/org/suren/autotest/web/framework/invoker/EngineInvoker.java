@@ -3,10 +3,20 @@
  */
 package org.suren.autotest.web.framework.invoker;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 
 /**
@@ -75,5 +85,34 @@ public class EngineInvoker
 	{
 		String nameOrId = params[0];
 		util.getEngine().getDriver().switchTo().frame(nameOrId);
+	}
+	
+	/**
+	 * 截屏
+	 * @param util
+	 * @param params
+	 */
+	public static void takeShot(SettingUtil util, String[] params)
+	{
+		SeleniumEngine engine = util.getEngine();
+		WebDriver driver = engine.getDriver();
+		TakesScreenshot shot = (TakesScreenshot) driver;
+		
+		File tmpPicFile = shot.getScreenshotAs(OutputType.FILE);
+		
+		String targetFile = params[0];
+		try(InputStream input = new FileInputStream(tmpPicFile);
+				FileOutputStream output = new FileOutputStream(new File(targetFile)))
+		{
+			IOUtils.copy(input, output);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

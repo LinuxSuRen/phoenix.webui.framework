@@ -9,6 +9,8 @@
 - 支持纯XML编写完成自动化测试功能
 - 自带Windows版本的driver驱动
 
+更加详细的文档介绍请访问W3C提供的http://www.w3cschool.cn/autotest/
+
 远程的XSD地址如下:
 http://surenpi.com/schema/autotest/autotest.web.framework.xsd
 http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd

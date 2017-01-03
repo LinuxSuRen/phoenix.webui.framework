@@ -92,8 +92,14 @@ public class SeleniumCheck implements CheckAble, ApplicationContextAware
 		}
 		finally
 		{
+			//清空缓存
 			locatorList.clear();
 			locatorList.addAll(tmpList);
+			
+			if(strategy instanceof ParentElement)
+			{
+				((ParentElement) strategy).setParent(null);
+			}
 		}
 	}
 

@@ -25,7 +25,7 @@ import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
  * @date Jul 16, 2016 7:27:09 PM
  */
 @Component("zoneSearchStrategy")
-public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
+public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, ParentElement
 {
 	private static final Logger logger = LoggerFactory.getLogger(ZoneSearchStrategy.class);
 	
@@ -34,16 +34,17 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 	
 	private int failedCount = 0;
 	private int maxFailed = 6;
+	
+	private WebElement parentWebElement;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public WebElement search(Element element)
 	{
-		WebElement webEle = null;
 		List<Locator> locators = element.getLocatorList();
 		if(locators == null)
 		{
-			return webEle;
+			return null;
 		}
 		
 		logger.info(String.format("zone search strategy, locators count[%s].", locators.size()));
@@ -71,17 +72,17 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 				absLocator.setValue(absEle.paramTranslate(absLocator.getValue()));
 			}
 
-			if(webEle != null)
+			if(parentWebElement != null)
 			{
-				webEle = retry(absLocator, webEle); 
+				parentWebElement = retry(absLocator, parentWebElement); 
 			}
 			else
 			{
-				webEle = retry(absLocator, driver);
+				parentWebElement = retry(absLocator, driver);
 			}
 		}
 		
-		return webEle;
+		return parentWebElement;
 	}
 	
 	/**
@@ -114,5 +115,10 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>
 					absLocator, failedCount);
 			return retry(absLocator, webEle);
 		}
+	}
+
+	@Override
+	public void setParent(WebElement parentWebElement) {
+		this.parentWebElement = parentWebElement;
 	}
 }

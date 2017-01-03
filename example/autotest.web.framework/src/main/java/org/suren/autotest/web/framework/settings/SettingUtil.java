@@ -328,7 +328,7 @@ public class SettingUtil implements Closeable
 				throw new RuntimeException("can not found engine config.");
 			}
 			
-			String driverStr = engineEle.attributeValue("driver");
+			String driverStr = engineEle.attributeValue("driver", "chrome");
 			String remoteStr = engineEle.attributeValue("remote");
 			String timeOutStr = engineEle.attributeValue("timeout");
 			String fullScreenStr = engineEle.attributeValue("fullScreen", "false");

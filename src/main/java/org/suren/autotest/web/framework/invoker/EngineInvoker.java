@@ -88,6 +88,24 @@ public class EngineInvoker
 	}
 	
 	/**
+	 * window窗口切换
+	 * @param util
+	 */
+	public static void windowSwitch(SettingUtil util)
+	{
+		SeleniumEngine engine = util.getEngine();
+		WebDriver driver = engine.getDriver();
+		Set<String> handlers = driver.getWindowHandles();
+		Iterator<String> it = handlers.iterator();
+		while(it.hasNext())
+		{
+			String name = it.next();
+			
+			driver.switchTo().window(name);
+		}
+	}
+	
+	/**
 	 * 截屏
 	 * @param util
 	 * @param params

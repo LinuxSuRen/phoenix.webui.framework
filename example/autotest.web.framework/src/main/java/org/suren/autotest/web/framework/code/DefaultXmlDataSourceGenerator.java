@@ -12,7 +12,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
@@ -41,6 +43,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlDataSourceGenerator.class);
 
 	private String outputDir;
+	private Map<String, Document> docMap;
 	
 	@Override
 	public void generate(String srcCoding, String outputDir)
@@ -48,6 +51,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		this.outputDir = outputDir;
 		
 		ClassLoader classLoader = this.getClass().getClassLoader();
+		docMap = new HashMap<String, Document>();
 		
 		//读取主配置文件
 		try(InputStream confInput = classLoader.getResourceAsStream(srcCoding))
@@ -60,8 +64,15 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		}
 		catch (SAXException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally
+		{
+			for(String resPath : docMap.keySet())
+			{
+				Document doc = docMap.get(resPath);
+				write(doc, resPath);
+			}
 		}
 	}
 
@@ -182,42 +193,12 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	 */
 	private void updateXmlDataSourceByEle(Element ele, String dsResource, String pageClsStr)
 	{
-		ClassLoader clsLoader = this.getClass().getClassLoader();
-		URL url = clsLoader.getResource(dsResource);
-		InputStream dsInput = null;
-		try
+		Document doc = docMap.get(dsResource);
+		if(doc == null)
 		{
-			if(url != null)
-			{
-				dsInput = url.openStream();
-			}
+			doc = prepareDoc(dsResource);
+			docMap.put(dsResource, doc);
 		}
-		catch (IOException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		Document doc = null;
-		if(dsInput != null)
-		{
-			try
-			{
-				doc = new SAXReader().read(dsInput);
-			}
-			catch (DocumentException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			doc = DocumentHelper.createDocument();
-		}
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat();
-		doc.addComment("Auto created by AutoTest, " + dateFormat.format(new Date()));
 		
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
@@ -225,19 +206,9 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		XPath xpath = new DefaultXPath("/ns:dataSources");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		
-		//先查找是否有该标签
-		Element dataSourcesEle = (Element) xpath.selectSingleNode(doc);
-		if(dataSourcesEle == null)
-		{
-			String prefix = "suren";
-			dataSourcesEle = doc.addElement(prefix + ":dataSources");
-			
-			dataSourcesEle.addNamespace(prefix, "http://datasource.surenpi.com");
-			dataSourcesEle.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-			dataSourcesEle.addAttribute("xsi:schemaLocation", "http://datasource.surenpi.com "
-					+ "http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ");
-		}
+		Element dataSourcesEle = doc.getRootElement();
 		
+		//先查找是否有该标签
 		xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element dataSourceEle = (Element) xpath.selectSingleNode(doc);
@@ -279,20 +250,96 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		}
 		
 		ele.accept(new PageFieldVisitor(pageEle, pageClsStr));
-
-		XMLWriter xmlWriter = null;
+	}
+	
+	/**
+	 * 根据给定的路径准备好对应的xml文档对象（document），会把根元素添加好
+	 * @param resPath
+	 * @return
+	 */
+	private Document prepareDoc(final String resPath)
+	{
+		ClassLoader clsLoader = this.getClass().getClassLoader();
+		URL url = clsLoader.getResource(resPath);
+		InputStream dsInput = null;
+		try
+		{
+			if(url != null)
+			{
+				dsInput = url.openStream();
+			}
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		Document doc = null;
 		if(dsInput != null)
 		{
 			try
 			{
-				dsInput.close();
+				doc = new SAXReader().read(dsInput);
 			}
-			catch (IOException e)
+			catch (DocumentException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		else
+		{
+			doc = DocumentHelper.createDocument();
+		}
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat();
+		doc.addComment("Auto created by AutoTest, " + dateFormat.format(new Date()));
+		
+		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
+		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
+		
+		XPath xpath = new DefaultXPath("/ns:dataSources");
+		xpath.setNamespaceContext(simpleNamespaceContext);
+		
+		//先查找是否有该标签
+		Element dataSourcesEle = (Element) xpath.selectSingleNode(doc);
+		if(dataSourcesEle == null)
+		{
+			String prefix = "suren";
+			dataSourcesEle = doc.addElement(prefix + ":dataSources");
+			
+			dataSourcesEle.addNamespace(prefix, "http://datasource.surenpi.com");
+			dataSourcesEle.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			dataSourcesEle.addAttribute("xsi:schemaLocation", "http://datasource.surenpi.com "
+					+ "http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ");
+		}
+		
+		return doc;
+	}
+	
+	/**
+	 * xml文档回写
+	 * @see #write(Document, OutputFormat, String)
+	 * @param doc
+	 * @param resPath
+	 */
+	private void write(final Document doc, final String resPath)
+	{
+		OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+		outputFormat.setIndentSize(4);
+		
+		write(doc, outputFormat, resPath);
+	}
+	
+	/**
+	 * xml文档回写
+	 * @param doc 文档实例对象
+	 * @param format 格式
+	 * @param resPath 输出路径
+	 */
+	private void write(final Document doc, final OutputFormat format, final String resPath)
+	{
+		ClassLoader clsLoader = this.getClass().getClassLoader();
+		URL url = clsLoader.getResource(resPath);
 		
 		String outputFileName = null;
 		if(url != null)
@@ -301,7 +348,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		}
 		else
 		{
-			outputFileName = new File(dsResource).getName();
+			outputFileName = new File(resPath).getName();
 		}
 
 		File outputDirFile = new File(outputDir);
@@ -314,18 +361,16 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		{
 			OutputFormat outputFormat = OutputFormat.createPrettyPrint();
 			outputFormat.setIndentSize(4);
-			xmlWriter = new XMLWriter(dsOutput, outputFormat);
+			XMLWriter xmlWriter = new XMLWriter(dsOutput, outputFormat);
 			
 			xmlWriter.write(doc);
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

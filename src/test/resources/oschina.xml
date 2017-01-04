@@ -22,7 +22,7 @@
 			<suren:field name="osSoftSearch" type="input" byId="channel_q"></suren:field>
 		</suren:page>
 		
-		<suren:page class="LoginPage" dataSource="login_data">
+		<suren:page class="LoginPage" dataSource="user_home_data">
 			<suren:field name="userName" type="input" byId="userMail" />
 			<suren:field name="password" type="input" byId="userPassword" />
 			<suren:field name="loginBut" type="button" byXpath="//*[@id='account_login']/form/div/div[5]/button"></suren:field>

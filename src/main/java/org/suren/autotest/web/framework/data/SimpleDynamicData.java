@@ -3,6 +3,7 @@
  */
 package org.suren.autotest.web.framework.data;
 
+import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.IDCardUtil;
 
 /**
@@ -10,6 +11,7 @@ import org.suren.autotest.web.framework.util.IDCardUtil;
  * @author suren
  * @date 2017年1月4日 下午12:33:01
  */
+@Component
 public class SimpleDynamicData implements DynamicData
 {
 

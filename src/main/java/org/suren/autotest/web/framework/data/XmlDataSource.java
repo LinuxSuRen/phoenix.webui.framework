@@ -33,6 +33,7 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
@@ -55,6 +56,9 @@ public class XmlDataSource implements DataSource
 	private Map<String, Object> globalMap = new HashMap<String, Object>();
 	
 	private static final String groovyCls;
+	
+	@Autowired
+	private DynamicData dynamicData;
 	
 	static
 	{
@@ -154,7 +158,7 @@ public class XmlDataSource implements DataSource
 				
 				if("simple".equals(type))
 				{
-					value = value.replace("${now}", String.valueOf(System.currentTimeMillis()));
+					value = dynamicData.getValue(value);
 				}
 				else if("groovy".equals(type))
 				{

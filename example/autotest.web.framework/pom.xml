@@ -7,7 +7,7 @@
 
 	<groupId>org.suren.autotest</groupId>
 	<artifactId>autotest.web.framework</artifactId>
-	<version>1.0.1-20161230</version>
+	<version>1.0.1-20160105</version>
 
 	<properties>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>

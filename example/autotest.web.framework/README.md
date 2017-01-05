@@ -51,5 +51,7 @@ Github  https://github.com/LinuxSuRen/autotest.web.framework.plugin
 
 在线团队协作https://team.oschina.net/surenpi
 
+历史版本下载http://www.w3cschool.cn/autotest/autotest-62cq1z9u.html
+
 QQ交流群：52492046
 加群后请及时修改备注为：城市-昵称

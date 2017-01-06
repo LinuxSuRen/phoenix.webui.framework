@@ -9,7 +9,7 @@
 				<xs:element name="dataSource" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="page" type="pageType" maxOccurs="unbounded" />
+							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded" />
 						</xs:sequence>
 						<xs:attribute name="pageClass" type="xs:string"/>
 					</xs:complexType>
@@ -27,7 +27,7 @@
 	
 	<xs:complexType name="pageType">
 		<xs:sequence>
-			<xs:element name="field" type="pageFieldType" maxOccurs="unbounded" />
+			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 	

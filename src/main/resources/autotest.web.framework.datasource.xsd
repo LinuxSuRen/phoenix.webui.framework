@@ -34,9 +34,41 @@
 	<xs:complexType name="pageFieldType">
 		<xs:attribute name="name" type="xs:string" use="required" />
 		<xs:attribute name="data" type="xs:string" use="required" />
-		<xs:attribute name="field" type="xs:string" default="value"></xs:attribute>
+		<xs:attribute name="field" type="suren:fieldTypeEnum" default="value">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[数据（data）所要向元素中填充的属性名。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="type" type="suren:dataTypeEnum" default="simple"></xs:attribute>
 	</xs:complexType>
+	
+	<xs:simpleType name="fieldTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="text">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[属性名为text。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="index">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[属性名为index。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="value">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[属性名为value。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	
 	<xs:simpleType name="dataTypeEnum">
 		<xs:restriction base="xs:string">

@@ -1,3 +1,5 @@
+#AutoTest
+
 本项目是一个基于Selenium的Web自动测试框架，通过该框架可以简化测试人员的学习难度，只要编写少量的Java代码即可，大多数的工作都是编写页面元素的描述文件以及对应的数据源。以下是本框架的特色：
 - 支持多种元素选择策略（优先级、循环、区域）
 - 支持多种数据源（xml、excel）
@@ -9,7 +11,7 @@
 - 支持纯XML编写完成自动化测试功能
 - 自带Windows版本的driver驱动
 
-更加详细的文档介绍请访问W3C提供的http://www.w3cschool.cn/autotest/
+更加详细的文档介绍请访问W3C提供的<a href="http://www.w3cschool.cn/autotest/" target="_blank">http://www.w3cschool.cn/autotest/</a>
 
 远程的XSD地址如下:
 http://surenpi.com/schema/autotest/autotest.web.framework.xsd
@@ -31,7 +33,7 @@ firefox
 示例工程的源码如下：
 https://git.oschina.net/surenpi/autotest.web.framework.demo
 
-环境：
+<h1>环境</h1>
 JDK1.7，Maven
 
 更多详细内容请访问下面的博客：
@@ -49,9 +51,7 @@ Github  https://github.com/LinuxSuRen/autotest.web.framework.plugin
 由于本项目没有提交任何工程、IDE相关的文件（这样，您就可以任选Eclipse、IntelliJ IDEA或者是NetBeans作为您的开发工具了），所以check出来以后还需要一些步骤。
 这里给出在Eclipse中使用Maven的教程。
 
-在线团队协作https://team.oschina.net/surenpi
-
-历史版本下载http://www.w3cschool.cn/autotest/autotest-62cq1z9u.html
+历史版本下载<a href="http://www.w3cschool.cn/autotest/autotest-62cq1z9u.html" target="_blank">http://www.w3cschool.cn/autotest/autotest-62cq1z9u.html</a>
 
 QQ交流群：52492046
 加群后请及时修改备注为：城市-昵称

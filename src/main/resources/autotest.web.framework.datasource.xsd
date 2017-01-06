@@ -4,21 +4,43 @@
 	xmlns:suren="http://datasource.surenpi.com"
 	elementFormDefault="qualified">
 	<xs:element name="dataSources">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[整个数据源配置根节点。]]>
+			</xs:documentation>
+		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="dataSource" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[数据单元，至少有一个，没有最多限制。]]>
+						</xs:documentation>
+					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded" />
+							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>
+										<![CDATA[Page类描述，至少有一个，没有最多限制。]]>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 						</xs:sequence>
-						<xs:attribute name="pageClass" type="xs:string"/>
+						<xs:attribute name="pageClass" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>
+									<![CDATA[当前数据单元所对应的类，可以是类名简称，也可以是全称。]]>
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="pagePackage" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[公用的Page类包]]>
+						<![CDATA[公用的Page类包（package）。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
@@ -27,21 +49,45 @@
 	
 	<xs:complexType name="pageType">
 		<xs:sequence>
-			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" />
+			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[Page类中的属性，至少有一个，没有最多限制。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="pageFieldType">
-		<xs:attribute name="name" type="xs:string" use="required" />
-		<xs:attribute name="data" type="xs:string" use="required" />
-		<xs:attribute name="field" type="suren:fieldTypeEnum" default="value">
+		<xs:attribute name="name" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>
-					<![CDATA[数据（data）所要向元素中填充的属性名。]]>
+					<![CDATA[数据所在属性，必填。]]>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="type" type="suren:dataTypeEnum" default="simple"></xs:attribute>
+		<xs:attribute name="data" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[数据值，必填。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="field" type="suren:fieldTypeEnum" default="value">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[数据（data）所要向元素中填充的属性名，默认值为value，可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" type="suren:dataTypeEnum" default="simple">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[数据类型，默认值为simple，可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:simpleType name="fieldTypeEnum">
@@ -72,10 +118,34 @@
 	
 	<xs:simpleType name="dataTypeEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="simple"></xs:enumeration>
-			<xs:enumeration value="groovy"></xs:enumeration>
-			<xs:enumeration value="javascript"></xs:enumeration>
-			<xs:enumeration value="encrypt"></xs:enumeration>
+			<xs:enumeration value="simple">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[简单的数据类型，可以是静态数据或者是根据框架提供的动态数据。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="groovy">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[groovy动态数据，更多请参考http://surenpi.com/?s=groovy。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="javascript">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[javascript动态数据，更多请参考http://surenpi.com/?s=javascript。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="encrypt">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[密文，密钥在框架配置文件encrypt.properties中。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

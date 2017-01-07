@@ -210,6 +210,13 @@ public class XmlDataSource implements DataSource
 				{
 					value = EncryptorUtil.decryptWithBase64(value);
 				}
+				else if("callback".equals(type))
+				{
+				}
+				else
+				{
+					new RuntimeException("Not support type : " + type);
+				}
 
 				Method getterMethod = BeanUtils.findMethod(page.getClass(),
 						"get" + fieldName.substring(0, 1).toUpperCase()

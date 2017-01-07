@@ -88,6 +88,13 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="callback" type="xs:string" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[回调类，可选。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:simpleType name="fieldTypeEnum">

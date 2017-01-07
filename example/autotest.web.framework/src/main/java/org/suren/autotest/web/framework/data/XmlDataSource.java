@@ -153,6 +153,7 @@ public class XmlDataSource implements DataSource
 				String value = node.attributeValue("data");
 				String type = node.attributeValue("type", "simple");
 				String field = node.attributeValue("field", "value");
+				String callback = node.attributeValue("callback", "");
 				
 				LOGGER.debug("Field [{}], value [{}], type [{}], field [{}].", fieldName, value, type, field);
 				
@@ -210,9 +211,6 @@ public class XmlDataSource implements DataSource
 				{
 					value = EncryptorUtil.decryptWithBase64(value);
 				}
-				else if("callback".equals(type))
-				{
-				}
 				else
 				{
 					new RuntimeException("Not support type : " + type);
@@ -229,6 +227,11 @@ public class XmlDataSource implements DataSource
 					{
 						Text text = (Text) eleObj;
 						text.setValue(value);
+						
+						if("callback".equals(type))
+						{
+							text.setCallback(callback);
+						}
 					}
 					else if(eleObj instanceof CheckBoxGroup)
 					{

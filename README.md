@@ -5,6 +5,7 @@
 - 支持多种数据源（xml、excel）
 - 支持数据源、URL、元素定位信息的参数化
 - 支持密文数据，javascript、groovy等动态脚本数据
+- 支持动态生成日期、身份证号码、手机号、邮编等数据
 - 支持操作日志生成GIF动态图片
 - 支持主流的浏览器（ie、firefox、chrome、opera、safari）
 - 支持移动自动化（Android）

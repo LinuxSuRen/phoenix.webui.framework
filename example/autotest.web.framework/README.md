@@ -4,6 +4,7 @@
 - 支持多种元素选择策略（优先级、循环、区域）
 - 支持多种数据源（xml、excel）
 - 支持数据源、URL、元素定位信息的参数化
+- 支持密文数据，javascript、groovy等动态脚本数据
 - 支持操作日志生成GIF动态图片
 - 支持主流的浏览器（ie、firefox、chrome、opera、safari）
 - 支持移动自动化（Android）
@@ -13,10 +14,10 @@
 
 更加详细的文档介绍请访问W3C提供的<a href="http://www.w3cschool.cn/autotest/" target="_blank">http://www.w3cschool.cn/autotest/</a>
 
-远程的XSD地址如下:
-http://surenpi.com/schema/autotest/autotest.web.framework.xsd
-http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd
-http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd
+<h1>远程的XSD地址</h1>
+- http://surenpi.com/schema/autotest/autotest.web.framework.xsd
+- http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd
+- http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd
 如果不知道如何配置Eclipse的XML智能提示，请访问下面的教程：
 http://surenpi.com/2016/07/21/eclipse_prompt_xml/
 
@@ -24,7 +25,7 @@ http://surenpi.com/2016/07/21/eclipse_prompt_xml/
 Github  https://github.com/LinuxSuRen/autotest.web.framework
 码云    https://git.oschina.net/surenpi/autotest.web.framework
 
-浏览器支持：
+<h1>浏览器兼容性</h1>
 chrome v53-55
 ie
 firefox

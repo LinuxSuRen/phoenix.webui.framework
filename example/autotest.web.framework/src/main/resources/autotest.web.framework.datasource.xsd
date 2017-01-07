@@ -146,6 +146,16 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="callback">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[回调函数，要给定一个类名+方法名（可选），例如：
+						org.suren.autotest.CallBack!test。其中CallBack为类名，test为方法名，
+						如果不写方法名的话默认为execute。方法要求返回字符串类型，参数为一个字符串类型或者是SettingUtil类型和字符串类型，
+						例如：execute(String),execute(SettingUtil, String)]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

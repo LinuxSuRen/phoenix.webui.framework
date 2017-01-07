@@ -6,6 +6,8 @@ package org.suren.autotest.web.framework.util;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 /**
  * @author suren
  * @date 2016年11月26日 上午10:22:04
@@ -41,5 +43,30 @@ public class StringUtil
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * @param server 给定邮件服务器地址
+	 * @return 随机的email地址
+	 */
+	public static String email(String server)
+	{
+		StringBuffer buf = new StringBuffer();
+		
+		buf.append(RandomStringUtils.randomAlphabetic(3));
+		buf.append("@");
+		buf.append(server);
+		
+		return buf.toString();
+	}
+	
+	/**
+	 * @return 随机的email地址
+	 */
+	public static String email()
+	{
+		String server = "qq.com";
+		
+		return email(server);
 	}
 }

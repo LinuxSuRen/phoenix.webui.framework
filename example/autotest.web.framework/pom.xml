@@ -113,6 +113,14 @@
 		<!-- 暂时不需要 -->
 		<!-- <dependency> <groupId>org.suren</groupId> <artifactId>org.suren.common</artifactId> 
 			<version>0.0.1-SNAPSHOT</version> </dependency> -->
+		<!-- 
+		 -->
+		<dependency>
+			<groupId>org.suren.autotest</groupId>
+			<artifactId>autotest.interface.framework</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<!-- Selenium依赖 -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

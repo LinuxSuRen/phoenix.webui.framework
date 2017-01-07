@@ -9,6 +9,7 @@
 		dataSource="ad_datasource">
 			<![CDATA[登录页面]]>
 			<suren:field name="gender" type="button" strategy="zone">
+				<![CDATA[性别]]>
 				<suren:locators>
 					<suren:locator name="byId" value="sendlead" timeout="3000" />
 					<suren:locator name="byCss" value="gender"/>

@@ -11,18 +11,10 @@ import org.junit.Test;
  */
 public class CodeTest
 {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
-	{
-		new DefaultXmlCodeGenerator().generate("ad.xml", ".");
-	}
-
 	@Test
 	public void testPage()
 	{
-		new DefaultXmlCodeGenerator().generate("test.xml", ".");
+		new DefaultXmlCodeGenerator().generate("ad.xml", "target");
+		new DefaultXmlCodeGenerator().generate("test.xml", "target");
 	}
 }

@@ -10,6 +10,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.ElementsSearchStrategy;
@@ -35,6 +37,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * @date Jul 16, 2016 6:45:44 PM
  */
 @Component("prioritySearchStrategy")
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>,
 	ElementsSearchStrategy<WebElement>, ParentElement
 {

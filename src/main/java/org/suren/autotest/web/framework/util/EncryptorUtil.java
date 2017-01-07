@@ -5,8 +5,10 @@ package org.suren.autotest.web.framework.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.crypto.BadPaddingException;
@@ -29,7 +31,23 @@ public class EncryptorUtil
 	 */
 	private static String getSecretKey()
 	{
-		try(InputStream input = EncryptorUtil.class.getClassLoader().getResourceAsStream("encrypt.properties"))
+		ClassLoader clsLoader = EncryptorUtil.class.getClassLoader();
+		Enumeration<URL> urls = null;
+		try
+		{
+			urls = clsLoader.getResources("encrypt.properties");
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		if(urls == null || !urls.hasMoreElements())
+		{
+			throw new RuntimeException("Can not found encrypt.properties!");
+		}
+		
+		try(InputStream input = urls.nextElement().openStream())
 		{
 			if(input == null)
 			{

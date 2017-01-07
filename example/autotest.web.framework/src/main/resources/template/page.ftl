@@ -16,12 +16,15 @@ import org.suren.autotest.web.framework.page.Page;
 @Component
 public class ${page.name} extends Page {
 <#list page.fields as field>
+	/**
+	 * ${field.comment}
+	 */
 	@Autowired
 	private ${field.type} ${field.name};
 </#list>
 	/**
-	* getter and setter methods zone
-	*/
+	 * getter and setter methods zone
+	 */
 <#list page.fields as field>
 	public ${field.type} ${field.getterMethod}()
 	{

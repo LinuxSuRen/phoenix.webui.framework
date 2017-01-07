@@ -3,12 +3,17 @@
 */
 package org.suren.autotest.web.framework.core.ui;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * 文本框封装
@@ -21,11 +26,14 @@ import org.suren.autotest.web.framework.core.action.ValueEditor;
 public class Text extends AbstractElement
 {
 	private String		value;
+	private String 		callback;
 
 	@Autowired
 	private ValueEditor	valueEditor;
 	@Autowired
 	private ClickAble	clickAble;
+	@Autowired
+	private SeleniumEngine engine;
 
 	public Text()
 	{
@@ -41,7 +49,58 @@ public class Text extends AbstractElement
 	 */
 	public Text fillValue()
 	{
-		valueEditor.setValue(this, value);
+		String val4Fill = value;
+		if(StringUtils.isNotBlank(callback))
+		{
+			String methodName = "execute";
+			String callbackClsName = callback;
+			
+			int methodIndex = callback.indexOf("!");
+			if(methodIndex != -1 && !callback.endsWith("!"))
+			{
+				methodName = callback.substring(methodIndex + 1);
+				callbackClsName = callback.substring(0, methodIndex);
+			}
+			
+			try
+			{
+				Class<?> callbackCls = Class.forName(callbackClsName);
+				Method callbackMethod = callbackCls.getMethod(methodName,
+						SeleniumEngine.class, String.class);
+				
+				Object result = callbackMethod.invoke(null, engine, value);
+				if(result != null)
+				{
+					val4Fill = result.toString();
+				}
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (NoSuchMethodException e)
+			{
+				e.printStackTrace();
+			}
+			catch (SecurityException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (InvocationTargetException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		valueEditor.setValue(this, val4Fill);
 		
 		return this;
 	}
@@ -128,5 +187,15 @@ public class Text extends AbstractElement
 	public void setClickAble(ClickAble clickAble)
 	{
 		this.clickAble = clickAble;
+	}
+
+	public String getCallback()
+	{
+		return callback;
+	}
+
+	public void setCallback(String callback)
+	{
+		this.callback = callback;
 	}
 }

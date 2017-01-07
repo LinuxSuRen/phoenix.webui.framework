@@ -113,6 +113,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="callback">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[属性名为callback。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

@@ -42,7 +42,7 @@ public class DefaultXmlCodeGenerator implements Generator
 {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlCodeGenerator.class);
 	
-	private Map<String, Map<String, String>> pageMap = new HashMap<String, Map<String, String>>();
+	private Map<String, List<AutoField>> pageFieldMap = new HashMap<String, List<AutoField>>();
 	private Map<String, String> pageCommentMap = new HashMap<String, String>();
 	
 	private Map<String, String> fieldTypeMap = new HashMap<String, String>();
@@ -79,11 +79,10 @@ public class DefaultXmlCodeGenerator implements Generator
 			e.printStackTrace();
 		}
 		
-		Iterator<String> pageIt = pageMap.keySet().iterator();
+		Iterator<String> pageIt = pageFieldMap.keySet().iterator();
 		while(pageIt.hasNext())
 		{
 			String pageCls = pageIt.next();
-			Map<String, String> fieldMap = pageMap.get(pageCls);
 			
 			AutoPage autoPage = new AutoPage();
 			int index = pageCls.lastIndexOf(".");
@@ -98,26 +97,19 @@ public class DefaultXmlCodeGenerator implements Generator
 				autoPage.setComment(pageCommentMap.get(pageCls));
 			}
 			
-			List<AutoField> fields = new ArrayList<AutoField>();
-			Iterator<String> fieldIt = fieldMap.keySet().iterator();
-			while(fieldIt.hasNext())
+			List<AutoField> fieldList = pageFieldMap.get(pageCls);
+			for(AutoField autoField : fieldList)
 			{
-				String field = fieldIt.next();
-				String fieldType = fieldMap.get(field);
+				autoField.setType(fieldTypeMap.get(autoField.getType()));
 				
-				AutoField autoField = new AutoField();
-				autoField.setName(field);
-				autoField.setType(fieldTypeMap.get(fieldType));
-				
-				String methodField = field.substring(0, 1).toUpperCase() + field.substring(1);
+				String fieldName = autoField.getName();
+				String methodField = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 						
 				autoField.setGetterMethod("get" + methodField);
 				autoField.setSetterMethod("set" + methodField);
-				
-				fields.add(autoField);
 			}
 			
-			autoPage.setFields(fields);
+			autoPage.setFields(fieldList);
 			
 			create(autoPage);
 		}
@@ -176,12 +168,10 @@ public class DefaultXmlCodeGenerator implements Generator
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (TemplateException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -228,9 +218,11 @@ public class DefaultXmlCodeGenerator implements Generator
 
 				try
 				{
-					Map<String, String> fieldMap = new HashMap<String, String>();
-					pageMap.put(pageClsStr, fieldMap);
-					parse(pageClsStr, ele, fieldMap);
+					List<AutoField> fieldList = new ArrayList<AutoField>();
+					
+					pageFieldMap.put(pageClsStr, fieldList);
+					
+					parsePage(pageClsStr, ele, fieldList);
 				}
 				catch (Exception e)
 				{
@@ -246,9 +238,9 @@ public class DefaultXmlCodeGenerator implements Generator
 	 * @param pageClsStr
 	 * @param dataSrcClsStr
 	 * @param ele
-	 * @param fieldMap 
+	 * @param fieldList 
 	 */
-	private void parse(final String pageClsStr, Element ele, final Map<String, String> fieldMap) throws Exception
+	private void parsePage(final String pageClsStr, Element ele, final List<AutoField> fieldList) throws Exception
 	{
 		ele.accept(new VisitorSupport()
 		{
@@ -269,7 +261,15 @@ public class DefaultXmlCodeGenerator implements Generator
 					return;
 				}
 				
-				fieldMap.put(fieldName, type);
+				AutoField autoField = new AutoField(fieldName, type);
+				
+				Object commentObj = node.getData();
+				if(commentObj != null)
+				{
+					autoField.setComment(commentObj.toString().trim());
+				}
+				
+				fieldList.add(autoField);
 			}
 		});
 	}

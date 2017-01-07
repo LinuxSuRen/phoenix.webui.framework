@@ -15,6 +15,17 @@ public class AutoField
 	private String comment;
 	private String getterMethod;
 	private String setterMethod;
+	public AutoField(String name, String type)
+	{
+		this.name = name;
+		this.type = type;
+	}
+	public AutoField(String name, String type, String comment)
+	{
+		this.name = name;
+		this.type = type;
+		this.comment = comment;
+	}
 	/**
 	 * @return the name
 	 */

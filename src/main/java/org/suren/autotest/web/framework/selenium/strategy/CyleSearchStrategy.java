@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.ui.Element;
@@ -22,6 +24,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
  * @date Jul 16, 2016 7:20:54 PM
  */
 @Component("cyleSearchStrategy")
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 {
 

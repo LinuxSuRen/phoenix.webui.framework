@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.Locator;
@@ -25,6 +27,7 @@ import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
  * @date Jul 16, 2016 7:27:09 PM
  */
 @Component("zoneSearchStrategy")
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, ParentElement
 {
 	private static final Logger logger = LoggerFactory.getLogger(ZoneSearchStrategy.class);

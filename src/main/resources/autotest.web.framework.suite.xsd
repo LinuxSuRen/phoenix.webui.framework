@@ -223,10 +223,17 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="checkByValue">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[根据值选择单（多）选框。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="checkByText">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[根据文本选择单（多）选框。]]>
+						<![CDATA[根据文本选择单（多）选框，目前该选项和checkByValue一样。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

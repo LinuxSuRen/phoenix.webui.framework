@@ -292,6 +292,7 @@ public class SuiteRunner
 					enterText.performEnter();
 				}
 				break;
+			case "checkByValue":
 			case "checkByText":
 				CheckBoxGroup CheckBoxGroup =
 					getFieldObj(CheckBoxGroup.class, pageField, page);

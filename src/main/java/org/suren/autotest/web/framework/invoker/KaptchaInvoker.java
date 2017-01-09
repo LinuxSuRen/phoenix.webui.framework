@@ -25,7 +25,7 @@ public class KaptchaInvoker {
 	 * @param param 例如：data,http://localhost:8080/G2/captcha!getLastCode.do
 	 * @return
 	 */
-	public String execute(SeleniumEngine engine, String param) {
+	public static String execute(SeleniumEngine engine, String param) {
 		WebDriver driver = engine.getDriver();
 		Options manage = driver.manage();
 		

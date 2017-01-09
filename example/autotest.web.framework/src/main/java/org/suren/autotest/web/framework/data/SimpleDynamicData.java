@@ -3,6 +3,11 @@
  */
 package org.suren.autotest.web.framework.data;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.CommonNumberUtil;
 import org.suren.autotest.web.framework.util.IDCardUtil;
@@ -16,6 +21,13 @@ import org.suren.autotest.web.framework.util.StringUtil;
 @Component
 public class SimpleDynamicData implements DynamicData
 {
+	private List<String> formatList = new ArrayList<String>();
+	
+	public SimpleDynamicData()
+	{
+		formatList.add("yyyy-MM-DD");
+		formatList.add("yyyy-MM-DD HH:mm:ss");
+	}
 
 	@Override
 	public String getValue(final String orginData)
@@ -23,6 +35,15 @@ public class SimpleDynamicData implements DynamicData
 		String value = orginData;
 		
 		value = value.replace("${now}", String.valueOf(System.currentTimeMillis()));
+		
+		for(String format : formatList)
+		{
+			String param = "${now " + format + "}";
+			if(value.contains(param))
+			{
+				value = value.replace(param, new SimpleDateFormat(format).format(new Date()));
+			}
+		}
 		
 		if(value.contains("${id_card}"))
 		{

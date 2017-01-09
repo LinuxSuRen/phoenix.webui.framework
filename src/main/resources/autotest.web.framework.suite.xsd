@@ -17,7 +17,7 @@
 			<xs:attribute name="pageConfig" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[当前测试流程使用的Page描述文件。]]>
+						<![CDATA[当前测试流程使用的Page描述文件，如果有多个则使用逗号分割。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>

@@ -114,7 +114,11 @@ public class SuiteRunner
 		String xmlConfPath = suite.getXmlConfPath();
 		try(SettingUtil settingUtil = new SettingUtil())
 		{
-			settingUtil.readFromClassPath(xmlConfPath);
+			String[] xmlConfArray = xmlConfPath.split(",");
+			for(String xmlConf : xmlConfArray)
+			{
+				settingUtil.readFromClassPath(xmlConf);
+			}
 			
 			List<SuitePage> pageList = suite.getPageList();
 			

@@ -5,6 +5,7 @@ package org.suren.autotest.web.framework.core.ui;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,15 @@ public class Text extends AbstractElement
 			
 			try
 			{
+				if(!callbackClsName.contains("."))
+				{
+					//这种情况下，就调用框架内部的类
+					Map<Object, Object> engineConfig = engine.getEngineConfig();
+					String pkg = (String) engineConfig.get("invoker.package");
+					
+					callbackClsName = (pkg + "." + callbackClsName);
+				}
+				
 				Class<?> callbackCls = Class.forName(callbackClsName);
 				Method callbackMethod = callbackCls.getMethod(methodName,
 						SeleniumEngine.class, String.class);

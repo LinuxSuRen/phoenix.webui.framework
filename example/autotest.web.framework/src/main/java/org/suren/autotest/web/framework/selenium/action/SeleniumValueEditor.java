@@ -52,19 +52,35 @@ public class SeleniumValueEditor implements ValueEditor
 		{
 			try
 			{
+				String valueStr = value.toString();
+				
 				webEle.click();
 				webEle.clear();
 				webEle.sendKeys(value.toString());
+				
+				if("input".equals(webEle.getTagName()))
+				{
+					if(!valueStr.equals(webEle.getAttribute("value")))
+					{
+						webEle.click();
+						webEle.clear();
+						webEle.sendKeys(value.toString());
+					}
+				}
 			}
 			catch(WebDriverException e)
 			{
-				if(e.getMessage().contains("Element is not clickable at point"))
+				if(e.getMessage().contains("is not clickable at point"))
 				{
 					((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
 
 					webEle.click();
 					webEle.clear();
 					webEle.sendKeys(value.toString());
+				}
+				else
+				{
+					e.printStackTrace();
 				}
 			}
 		}

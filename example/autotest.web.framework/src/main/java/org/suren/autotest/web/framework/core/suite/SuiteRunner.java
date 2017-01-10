@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.DocumentException;
@@ -292,13 +293,13 @@ public class SuiteRunner
 					enterText.performEnter();
 				}
 				break;
-			case "checkByValue":
 			case "checkByText":
+			case "checkByValue":
 				CheckBoxGroup CheckBoxGroup =
 					getFieldObj(CheckBoxGroup.class, pageField, page);
 				if(CheckBoxGroup != null)
 				{
-					actionResult = Boolean.toString(CheckBoxGroup.selectByText());
+					CheckBoxGroup.selectByValue();
 				}
 				else
 				{
@@ -351,16 +352,23 @@ public class SuiteRunner
 				Class<?> invokeClazz = null;
 				try
 				{
+					if(!invokeCls.contains("."))
+					{
+						//这种情况下，就调用框架内部的类
+						Map<Object, Object> engineConfig = settingUtil.getEngine().getEngineConfig();
+						String pkg = (String) engineConfig.get("invoker.package");
+						
+						invokeCls = (pkg + "." + invokeCls);
+					}
+					
 					invokeClazz = Class.forName(invokeCls);
 				}
 				catch (ClassNotFoundException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				catch (SecurityException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -385,15 +393,14 @@ public class SuiteRunner
 				}
 				catch (NoSuchMethodException e)
 				{
+					e.printStackTrace();
 				}
 				catch (SecurityException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				catch (InvocationTargetException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -415,15 +422,14 @@ public class SuiteRunner
 				}
 				catch (NoSuchMethodException e)
 				{
+					e.printStackTrace();
 				}
 				catch (SecurityException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				catch (InvocationTargetException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -168,6 +169,14 @@ public class SeleniumEngine
 		{
 			window.setSize(new Dimension(window.getSize().getWidth(), getHeight()));
 		}
+	}
+	
+	/**
+	 * @return 引擎中的配置参数
+	 */
+	public final Map<Object, Object> getEngineConfig()
+	{
+		return Collections.unmodifiableMap(enginePro);
 	}
 	
 	/**

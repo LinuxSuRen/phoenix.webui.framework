@@ -83,7 +83,7 @@ public class SeleniumClick implements ClickAble
 		}
 		catch(WebDriverException e)
 		{
-			if(e.getMessage().contains("Element is not clickable at point"))
+			if(e.getMessage().contains("is not clickable at point"))
 			{
 				new Actions(engine.getDriver()).moveToElement(webEle, -50, -50).perform();
 				

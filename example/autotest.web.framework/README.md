@@ -57,3 +57,5 @@ Github  https://github.com/LinuxSuRen/autotest.web.framework.plugin
 
 QQ交流群：52492046
 加群后请及时修改备注为：城市-昵称
+
+问题交流区域：<a href="http://ask.surenpi.com/" target="_blank">http://ask.surenpi.com/</a>

@@ -17,6 +17,7 @@ import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
+import org.suren.autotest.web.framework.util.ThreadUtil;
 
 /**
  * 区域定位元素查找策略
@@ -113,9 +114,11 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, Pa
 		}
 		else
 		{
+			int timeout = 1500;
 			logger.warn("Can not found element by locator {}, "
-					+ "will retry locate again, failed times {}.",
-					absLocator, failedCount);
+					+ "will retry locate again {} millis later, failed times {}.",
+					absLocator, timeout, failedCount);
+			ThreadUtil.silentSleep(timeout);
 			return retry(absLocator, webEle);
 		}
 	}

@@ -236,6 +236,7 @@ public class XmlDataSource implements DataSource
 					else if(eleObj instanceof CheckBoxGroup)
 					{
 						((CheckBoxGroup) eleObj).setTargetText(value);
+						((CheckBoxGroup) eleObj).setValue(value);
 					}
 					else if(eleObj instanceof Selector)
 					{

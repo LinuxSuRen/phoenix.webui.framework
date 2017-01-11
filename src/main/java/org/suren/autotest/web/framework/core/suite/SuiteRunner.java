@@ -265,6 +265,10 @@ public class SuiteRunner
 		
 		switch(name)
 		{
+			case "sequence":
+				Button seqBut = getFieldObj(Button.class, pageField, page);
+				seqBut.sequenceOperation();
+				break;
 			case "click":
 				Button but = getFieldObj(Button.class, pageField, page);
 				if(but != null)

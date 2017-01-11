@@ -222,6 +222,10 @@ public class SeleniumEngine
 					proxy.setHttpProxy(val);
 					capability.setCapability("proxy", proxy);
 				}
+				else if(key.startsWith("chrome.binary"))
+				{
+					options.setBinary(enginePro.getProperty(key));
+				}
 			}
 			capability.setCapability(ChromeOptions.CAPABILITY, options);
 		

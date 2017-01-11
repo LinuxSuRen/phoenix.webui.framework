@@ -3,6 +3,8 @@
  */
 package org.suren.autotest.web.framework.data;
 
+import java.util.Map;
+
 /**
  * 动态数据
  * @author suren
@@ -11,4 +13,8 @@ package org.suren.autotest.web.framework.data;
 public interface DynamicData
 {
 	String getValue(String orginData);
+	
+	String getType();
+	
+	void setData(Map<String, Object> data);
 }

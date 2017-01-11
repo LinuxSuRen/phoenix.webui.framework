@@ -173,6 +173,16 @@ public abstract class AbstractElement implements Element
 	{
 		data.clear();
 	}
+	
+	/**
+	 * 获取数据
+	 * @param key
+	 * @return
+	 */
+	public Object getData(String key)
+	{
+		return data.get(key);
+	}
 
 	/**
 	 * @return 可用返回true，否则返回false

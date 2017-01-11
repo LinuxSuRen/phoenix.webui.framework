@@ -251,6 +251,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="sequence">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[执行静态方法。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

@@ -3,12 +3,17 @@
 */
 package org.suren.autotest.web.framework.core.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.HoverAble;
+import org.suren.autotest.web.framework.core.action.SequenceAble;
 
 /**
  * 代表HTML页面中的按钮，即在xml配置文件中type值为button的元素
@@ -24,6 +29,8 @@ public class Button extends AbstractElement
 	private ClickAble clickAble;
 	@Autowired
 	private HoverAble hoverAble;
+	@Autowired
+	private SequenceAble sequenceAble;
 
 	/**
 	 * 触发单击事件
@@ -47,6 +54,18 @@ public class Button extends AbstractElement
 	public void hover()
 	{
 		hoverAble.hover(this);
+	}
+	
+	public void sequenceOperation()
+	{
+		List<String> actions = new ArrayList<String>();
+		
+		String seqOper = (String) getData("SEQ_OPER");
+		
+		actions.addAll(Arrays.asList(seqOper.split(",")));
+		
+		clickAble.click(this);
+		sequenceAble.perform(this, actions);
 	}
 
 	@Override

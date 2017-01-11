@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.CommonNumberUtil;
@@ -66,6 +67,17 @@ public class SimpleDynamicData implements DynamicData
 		}
 		
 		return value;
+	}
+
+	@Override
+	public String getType()
+	{
+		return "simple";
+	}
+
+	@Override
+	public void setData(Map<String, Object> data)
+	{
 	}
 
 }

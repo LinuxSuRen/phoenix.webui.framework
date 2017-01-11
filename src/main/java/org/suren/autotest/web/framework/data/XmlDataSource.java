@@ -3,9 +3,6 @@
  */
 package org.suren.autotest.web.framework.data;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,12 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.groovy.control.CompilationFailedException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -35,12 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.ui.AbstractElement;
+import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
-import org.suren.autotest.web.framework.util.EncryptorUtil;
 
 /**
  * xml格式的数据源实现
@@ -55,29 +48,8 @@ public class XmlDataSource implements DataSource
 	private Page page;
 	private Map<String, Object> globalMap = new HashMap<String, Object>();
 	
-	private static final String groovyCls;
-	
 	@Autowired
-	private DynamicData dynamicData;
-	
-	static
-	{
-		StringBuffer buf = new StringBuffer();
-		try(InputStream stream = XmlDataSource.class.getClassLoader().getResource("random.groovy").openStream())
-		{
-			byte[] bf = new byte[1024];
-			int len = -1;
-			while((len = stream.read(bf)) != -1)
-			{
-				buf.append(new String(bf, 0, len));
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		groovyCls = buf.toString();
-	}
+	private List<DynamicData> dynamicDataList;
 	
 	public XmlDataSource()
 	{
@@ -157,72 +129,34 @@ public class XmlDataSource implements DataSource
 				
 				LOGGER.debug("Field [{}], value [{}], type [{}], field [{}].", fieldName, value, type, field);
 				
-				if("simple".equals(type))
+				DynamicData dynamicData = getDynamicDataByType(type);
+				if(dynamicData != null)
 				{
 					value = dynamicData.getValue(value);
 				}
-				else if("groovy".equals(type))
-				{
-					Binding binding = new Binding();
-					GroovyShell shell = new GroovyShell(binding);
-					
-					binding.setVariable("globalMap", XmlDataSource.this.getGlobalMap());
-					Object resObj = null;
-					try
-					{
-						resObj = shell.evaluate(groovyCls + value);
-						if(resObj != null)
-						{
-							value = resObj.toString();
-						}
-						else
-					 	{
-							value = "groovy not return!";
-						}
-					}
-					catch(CompilationFailedException e)
-					{
-						value = e.getMessage();
-						e.printStackTrace();
-					}
-				}
-				else if("javascript".equals(type))
-				{
-					ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
-					try
-					{
-						Object resObj = engine.eval(value);
-						if(resObj != null)
-						{
-							value = resObj.toString();
-						}
-						else
-						{
-							value = "js not return!";
-						}
-					}
-					catch (ScriptException e)
-					{
-						value = e.getMessage();
-						e.printStackTrace();
-					}
-				}
-				else if("encrypt".equals(type))
-				{
-					value = EncryptorUtil.decryptWithBase64(value);
-				}
 				else
 				{
-					new RuntimeException("Not support type : " + type);
+					throw new RuntimeException("Not support dynamic data type : " + type);
 				}
 
 				Method getterMethod = BeanUtils.findMethod(page.getClass(),
 						"get" + fieldName.substring(0, 1).toUpperCase()
 								+ fieldName.substring(1));
+				if(getterMethod == null)
+				{
+					throw new RuntimeException(String.format("Page [%s] have not field [%s], please recheck it!", page.getClass(), fieldName));
+				}
 				
 				try
 				{
 					Object eleObj = getterMethod.invoke(page);
+					if(!AbstractElement.class.isAssignableFrom(eleObj.getClass()))
+					{
+						throw new RuntimeException("Not support field type [" + type + "] in page [" + page.getClass().getName() +"].");
+					}
+					
+					((AbstractElement) eleObj).putData("DataType", type);
+					
 					if(eleObj instanceof Text)
 					{
 						Text text = (Text) eleObj;
@@ -257,6 +191,10 @@ public class XmlDataSource implements DataSource
 					{
 						((FileUpload) eleObj).setTargetFile(new File(value));
 					}
+					else if(eleObj instanceof Button)
+					{
+						((Button) eleObj).putData("SEQ_OPER", value);
+					}
 				}
 				catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 				{
@@ -264,6 +202,24 @@ public class XmlDataSource implements DataSource
 				}
 			}
 		});
+	}
+	
+	/**
+	 * 根据类型获取对应的动态数据
+	 * @param type
+	 * @return
+	 */
+	private DynamicData getDynamicDataByType(String type)
+	{
+		for(DynamicData dynamicData : dynamicDataList)
+		{
+			if(dynamicData.getType().equals(type))
+			{
+				dynamicData.setData(globalMap);
+				return dynamicData;
+			}
+		}
+		return null;
 	}
 
 	@Override

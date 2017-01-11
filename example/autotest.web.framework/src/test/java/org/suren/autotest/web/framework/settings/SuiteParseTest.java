@@ -9,12 +9,15 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.dom4j.DocumentException;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.core.suite.Suite;
 import org.suren.autotest.web.framework.core.suite.SuiteRunner;
+import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
@@ -60,5 +63,14 @@ public class SuiteParseTest
 		Class<?> runnerCls = Class.forName(SuiteRunner.class.getName());
 		Method mainMethod = runnerCls.getMethod("main", String[].class);
 		mainMethod.invoke(null, new Object[]{suiteList.toArray(new String[]{})});
+	}
+	
+	@Test
+	public void springBeanTest()
+	{
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
+		"classpath*:applicationContext.xml"});
+		
+		System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
 	}
 }

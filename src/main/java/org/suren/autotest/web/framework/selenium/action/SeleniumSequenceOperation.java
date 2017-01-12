@@ -5,11 +5,14 @@ package org.suren.autotest.web.framework.selenium.action;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -26,6 +29,7 @@ import org.suren.autotest.web.framework.util.ThreadUtil;
 @Component
 public class SeleniumSequenceOperation implements SequenceAble
 {
+	private static final Logger logger = LoggerFactory.getLogger(SeleniumSequenceOperation.class);
 
 	@Autowired
 	private SeleniumEngine engine;
@@ -48,22 +52,33 @@ public class SeleniumSequenceOperation implements SequenceAble
 		int index = 1;
 		for(; index < actions.size() - 1; index++)
 		{
-			xpath = String.format("//span[contains(text(),'%s')]", actions.get(index));
+			xpath = String.format("%s/descendant::span[contains(text(),'%s')]", parentXPath, actions.get(index));
 			
-			System.out.println(xpath);
+			logger.debug(xpath);
 			parentEle = parentEle.findElement(By.xpath(xpath));
 			String id = parentEle.getAttribute("id");
-			System.out.println(id);
+			logger.debug(id);
+			
+			if(StringUtils.isBlank(id))
+			{
+				return;
+			}
+			
 			id = id.replace("span", "switch");
-			System.out.println(id);
+			logger.debug(id);
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
 			parentEle = driver.findElement(By.id(id));
-			parentEle.click();
+			if(parentEle.getAttribute("class").endsWith("close"))
+			{
+				parentEle.click();
+			}
 			
 			ThreadUtil.silentSleep(2000);
 		}
 		
-		xpath = String.format("//span[contains(text(),'%s')]", actions.get(index));
-		System.out.println(xpath);
+		xpath = String.format("%s/descendant::span[contains(text(),'%s')]", parentXPath, actions.get(index));
+		logger.debug(xpath);
 		WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
 		parentEle.findElement(By.xpath(xpath)).click();

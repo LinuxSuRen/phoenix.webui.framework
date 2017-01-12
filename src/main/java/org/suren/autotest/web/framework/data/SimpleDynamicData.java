@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.CommonNumberUtil;
 import org.suren.autotest.web.framework.util.IDCardUtil;
@@ -23,6 +24,8 @@ import org.suren.autotest.web.framework.util.StringUtil;
 public class SimpleDynamicData implements DynamicData
 {
 	private List<String> formatList = new ArrayList<String>();
+	
+	private String random = "${random-";
 	
 	public SimpleDynamicData()
 	{
@@ -66,7 +69,33 @@ public class SimpleDynamicData implements DynamicData
 			value = value.replace("${postcode}", CommonNumberUtil.postCode());
 		}
 		
+		if(value.contains(random))
+		{
+			value = parseRandomParam(value);
+		}
+		
 		return value;
+	}
+	
+	private String parseRandomParam(String randomParam)
+	{
+		if(randomParam.contains(random))
+		{
+			int index = -1;
+			while((index = randomParam.indexOf(random)) != -1)
+			{
+				int numIndex = index + random.length();
+				int numEndIndex = randomParam.indexOf("}", numIndex);
+				
+				int num = Integer.parseInt(randomParam.substring(numIndex, numEndIndex));
+				
+				num = RandomUtils.nextInt(num);
+				
+				randomParam = randomParam.substring(0, index) + num + randomParam.substring(numEndIndex + 1);
+			}
+		}
+		
+		return randomParam;
 	}
 
 	@Override

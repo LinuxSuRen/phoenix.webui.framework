@@ -12,6 +12,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.suren.autotest.web.framework.util.PathUtil;
 
 /**
  * 使用autoid来实现文件上传
@@ -24,11 +25,18 @@ public class AutoItCmd
 	private static final Logger logger = LoggerFactory.getLogger(AutoItCmd.class);
 	
 	public static String autoitExe = null;
+	private static final String AUTO_IT3_PATH = "autoit3.properties";
+	private static final String FILE_CHOOSE_SCRIPT = "file_choose.au3";
 	
 	static
 	{
-		try(InputStream input = AutoItCmd.class.getClassLoader().getResourceAsStream("autoit3.properties"))
+		try(InputStream input = AutoItCmd.class.getClassLoader().getResourceAsStream(AUTO_IT3_PATH))
 		{
+			if(input == null)
+			{
+				throw new RuntimeException("Can not found " + AUTO_IT3_PATH + " in class path.");
+			}
+			
 			Properties pro = new Properties();
 			pro.load(input);
 			
@@ -57,7 +65,15 @@ public class AutoItCmd
 	 */
 	public static void execFileChoose(String title, String filePath)
 	{
-		String au3ExePath = getAu3ExePath();
+		if(autoItNotExists())
+		{
+			throw new RuntimeException(
+					String.format("Can not found autoIt exe file in path %s, "
+							+ "please download then install it, and set it in file %s.",
+							autoitExe, AUTO_IT3_PATH));
+		}
+		
+		String au3ExePath = getFileChooseScriptPath();
 		
 		try
 		{
@@ -78,19 +94,36 @@ public class AutoItCmd
 	}
 
 	/**
-	 * 获取autoit的安装目录
+	 * @return 检查autoit的可执行文件是否存在
+	 */
+	private static boolean autoItNotExists()
+	{
+		return !(new File(autoitExe).isFile());
+	}
+
+	/**
+	 * 获取autoit选择文件的脚本所在路径
 	 * @return
 	 */
-	private static String getAu3ExePath()
+	private static String getFileChooseScriptPath()
 	{
-		URL fileChooseURL = AutoItCmd.class.getClassLoader().getResource("file_choose.au3");
+		URL fileChooseURL = AutoItCmd.class.getClassLoader().getResource(FILE_CHOOSE_SCRIPT);
 		if(fileChooseURL != null)
 		{
-			return new File(fileChooseURL.getFile()).getAbsolutePath();
+			try(InputStream fileChooseInput = fileChooseURL.openStream())
+			{
+				//为了方便用户修改，需要拷贝到缓存目录中
+				File fileChooseScriptFile =
+						PathUtil.copyFileToRoot(fileChooseInput, FILE_CHOOSE_SCRIPT);
+				
+				return fileChooseScriptFile.getAbsolutePath();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		else
-		{
-			return null;
-		}
+		
+		return null;
 	}
 }

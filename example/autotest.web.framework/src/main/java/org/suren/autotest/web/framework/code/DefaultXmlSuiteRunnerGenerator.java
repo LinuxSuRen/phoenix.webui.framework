@@ -51,9 +51,10 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	
 	public DefaultXmlSuiteRunnerGenerator()
 	{
+		//key是元素定位中的类型，value是默认的操作名称
 		suiteActionMap.put("button", "click");
 		suiteActionMap.put("input", "fillValue");
-		suiteActionMap.put("select", "select");
+		suiteActionMap.put("select", "randomSelect");
 		suiteActionMap.put("file_upload", "upload");
 	}
 	

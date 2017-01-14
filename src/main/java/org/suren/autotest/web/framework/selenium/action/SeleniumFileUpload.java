@@ -5,6 +5,12 @@ package org.suren.autotest.web.framework.selenium.action;
 
 import java.io.File;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -17,6 +23,7 @@ import org.suren.autotest.web.framework.core.action.FileUploadAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+import org.suren.autotest.web.framework.util.ThreadUtil;
 
 /**
  * 利用Selenium实现文件上传
@@ -53,44 +60,51 @@ public class SeleniumFileUpload implements FileUploadAble
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public boolean upload(Element element, final File file)
 	{
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
 		if(webEle != null)
 		{
-			new Thread()
+			ExecutorService executor = Executors.newSingleThreadExecutor();
+			
+			try
 			{
-				@Override
-				public void run()
+				final AutoItCmd autoItCmd = new AutoItCmd();
+				Future<?> future = executor.submit(new Runnable()
 				{
-					AutoItCmd.execFileChoose(file);
-					System.out.println("exec auit3 over");
+					
+					@Override
+					public void run()
+					{
+						autoItCmd.execFileChoose(file);
+					}
+				});
+				
+				synchronized (autoItCmd)
+				{
+					autoItCmd.wait();
 				}
-			}.start();
-			
-			try
-			{
-				Thread.sleep(1000);
+					
+				click(element);
+				
+				if(!future.isDone())
+				{
+					future.get(10, TimeUnit.SECONDS);
+				}
+				
+				return true;
 			}
-			catch (InterruptedException e)
+			catch (InterruptedException | ExecutionException | TimeoutException e)
 			{
-				logger.error(e.getMessage(), e);
+				logger.error("File uplod error.", e);
+				e.printStackTrace();
 			}
-			
-			click(element);
-			
-			try
+			finally
 			{
-				Thread.sleep(2000);
+				executor.shutdown();
 			}
-			catch (InterruptedException e)
-			{
-				logger.error(e.getMessage(), e);
-			}
-			
-			return true;
 		}
 		
 		return false;

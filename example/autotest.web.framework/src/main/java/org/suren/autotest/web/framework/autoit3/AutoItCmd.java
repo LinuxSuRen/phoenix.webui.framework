@@ -31,6 +31,8 @@ public class AutoItCmd
 	
 	private static Properties autoItPro = new Properties();
 	
+	private static boolean isRunning = false;
+	
 	static
 	{
 		try(InputStream input = AutoItCmd.class.getClassLoader().getResourceAsStream(AUTO_IT3_PATH))
@@ -54,7 +56,7 @@ public class AutoItCmd
 	 * @see #execFileChoose(String, File)
 	 * @param file
 	 */
-	public static void execFileChoose(File file)
+	public void execFileChoose(File file)
 	{
 		execFileChoose(null, file);
 	}
@@ -64,7 +66,7 @@ public class AutoItCmd
 	 * @param title
 	 * @param file
 	 */
-	public static void execFileChoose(String title, File file)
+	public void execFileChoose(String title, File file)
 	{
 		if(StringUtils.isBlank(title))
 		{
@@ -79,7 +81,7 @@ public class AutoItCmd
 	 * @param title
 	 * @param filePath
 	 */
-	public static void execFileChoose(String title, String filePath)
+	public void execFileChoose(String title, String filePath)
 	{
 		if(autoItNotExists())
 		{
@@ -100,19 +102,31 @@ public class AutoItCmd
 			
 			logger.debug(String.format("prepare to exec autoit cmd [%s]", cmd));
 			
+			synchronized (this)
+			{
+				isRunning = true;
+				
+				notifyAll();
+			}
+			
 			Process process = Runtime.getRuntime().exec(cmd);
+			
 			process.waitFor();
 		}
 		catch (IOException | InterruptedException e)
 		{
 			logger.error(e.getMessage(), e);
 		}
+		finally
+		{
+			isRunning = false;
+		}
 	}
 
 	/**
 	 * @return 检查autoit的可执行文件是否存在
 	 */
-	private static boolean autoItNotExists()
+	private boolean autoItNotExists()
 	{
 		return !(new File(autoitExe).isFile());
 	}
@@ -121,7 +135,7 @@ public class AutoItCmd
 	 * 获取autoit选择文件的脚本所在路径
 	 * @return
 	 */
-	private static String getFileChooseScriptPath()
+	private String getFileChooseScriptPath()
 	{
 		URL fileChooseURL = AutoItCmd.class.getClassLoader().getResource(FILE_CHOOSE_SCRIPT);
 		if(fileChooseURL != null)
@@ -141,5 +155,10 @@ public class AutoItCmd
 		}
 		
 		return null;
+	}
+	
+	public boolean isRunning()
+	{
+		return isRunning;
 	}
 }

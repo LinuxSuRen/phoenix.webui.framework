@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.suren.autotest.web.framework.util.PathUtil;
@@ -28,6 +29,8 @@ public class AutoItCmd
 	private static final String AUTO_IT3_PATH = "autoit3.properties";
 	private static final String FILE_CHOOSE_SCRIPT = "file_choose.au3";
 	
+	private static Properties autoItPro = new Properties();
+	
 	static
 	{
 		try(InputStream input = AutoItCmd.class.getClassLoader().getResourceAsStream(AUTO_IT3_PATH))
@@ -37,15 +40,23 @@ public class AutoItCmd
 				throw new RuntimeException("Can not found " + AUTO_IT3_PATH + " in class path.");
 			}
 			
-			Properties pro = new Properties();
-			pro.load(input);
+			autoItPro.load(input);
 			
-			autoitExe = pro.getProperty("path");
+			autoitExe = autoItPro.getProperty("path");
 		}
 		catch (IOException e)
 		{
 			logger.error(e.getMessage(), e);
 		}
+	}
+	
+	/**
+	 * @see #execFileChoose(String, File)
+	 * @param file
+	 */
+	public static void execFileChoose(File file)
+	{
+		execFileChoose(null, file);
 	}
 	
 	/**
@@ -55,6 +66,11 @@ public class AutoItCmd
 	 */
 	public static void execFileChoose(String title, File file)
 	{
+		if(StringUtils.isBlank(title))
+		{
+			title = autoItPro.getProperty("dialog.title");
+		}
+		
 		execFileChoose(title, file.getAbsolutePath());
 	}
 	

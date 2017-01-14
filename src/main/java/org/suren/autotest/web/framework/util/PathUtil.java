@@ -4,6 +4,13 @@
 package org.suren.autotest.web.framework.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * 用于获取全局的文件根目录的工具类
@@ -25,5 +32,43 @@ public class PathUtil
 		}
 		
 		return rootFile;
+	}
+	
+	public static File copyFileToRoot(InputStream input, String fileName)
+	{
+		File rootFile = PathUtil.getRootDir();
+		File targetFile = new File(rootFile, fileName);
+		if(!targetFile.isFile())
+		{
+			copyFileToRoot(input, targetFile);
+		}
+		
+		return targetFile;
+	}
+	
+	/**
+	 * 把目标文件拷贝到框架的缓存根目录中
+	 * @param input
+	 * @param targetFile
+	 * @return
+	 */
+	public static boolean copyFileToRoot(InputStream input, File targetFile)
+	{
+		try(OutputStream output = new FileOutputStream(targetFile))
+		{
+			IOUtils.copy(input, output);
+			
+			return true;
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 }

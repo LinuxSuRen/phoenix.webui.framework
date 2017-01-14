@@ -50,6 +50,13 @@ public class SeleniumValueEditor implements ValueEditor
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
 		if(webEle != null)
 		{
+			String readonlyAttr = webEle.getAttribute("readonly");
+			if("true".equals(readonlyAttr))
+			{
+				logger.warn("{} is readonly, will do not call method setValue.", webEle.toString());
+				return;
+			}
+			
 			try
 			{
 				String valueStr = value.toString();

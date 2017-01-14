@@ -219,7 +219,14 @@
 			<xs:enumeration value="select">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[根据文本选择下拉列表。]]>
+						<![CDATA[根据文本选择下拉列表，和selectByText相同。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="randomSelect">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[从下拉列表中随机选择一个。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

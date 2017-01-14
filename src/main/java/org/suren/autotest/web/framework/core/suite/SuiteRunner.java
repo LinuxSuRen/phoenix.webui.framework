@@ -332,6 +332,13 @@ public class SuiteRunner
 					actionResult = Boolean.toString(valueSelector.selectByIndex());
 				}
 				break;
+			case "randomSelect":
+				Selector randomSelector = getFieldObj(Selector.class, pageField, page);
+				if(randomSelector != null)
+				{
+					actionResult = Boolean.toString(randomSelector.randomSelect());
+				}
+				break;
 			case "hover":
 				Button hoverBut = getFieldObj(Button.class, pageField, page);
 				hoverBut.hover();

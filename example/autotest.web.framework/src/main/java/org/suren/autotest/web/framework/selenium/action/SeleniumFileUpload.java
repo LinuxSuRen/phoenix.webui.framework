@@ -60,15 +60,12 @@ public class SeleniumFileUpload implements FileUploadAble
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
 		if(webEle != null)
 		{
-			final String title = "打开";
-//			title = "选择要上载的问加你，通过：192.168.8.120";
-			
 			new Thread()
 			{
 				@Override
 				public void run()
 				{
-					AutoItCmd.execFileChoose(title, file);
+					AutoItCmd.execFileChoose(file);
 					System.out.println("exec auit3 over");
 				}
 			}.start();

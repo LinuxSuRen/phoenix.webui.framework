@@ -11,10 +11,8 @@ import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_S
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -380,27 +378,14 @@ public class SeleniumEngine
 		String protocol = url.getProtocol();
 		if("jar".equals(protocol) || "http".equals(protocol))
 		{
-			File rootFile = PathUtil.getRootDir();
-			
-			OutputStream output = null;
-			driverFile = new File(rootFile, "surenpi.com." + new File(url.getFile()).getName());
-			if(driverFile.exists())
-			{
-				return driverFile.getAbsolutePath();
-			}
-			
+			String driverFileName = ("surenpi.com." + new File(url.getFile()).getName());
 			try(InputStream inputStream = url.openStream())
 			{
-				output = new FileOutputStream(driverFile);
-				IOUtils.copy(inputStream, output);
+				driverFile = PathUtil.copyFileToRoot(inputStream, driverFileName);
 			}
 			catch (IOException e)
 			{
 				logger.error("Driver file copy error.", e);
-			}
-			finally
-			{
-				IOUtils.closeQuietly(output);
 			}
 		}
 		else

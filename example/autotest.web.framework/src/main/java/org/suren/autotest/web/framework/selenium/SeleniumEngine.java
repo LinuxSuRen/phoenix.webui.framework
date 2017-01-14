@@ -237,6 +237,7 @@ public class SeleniumEngine
 			capability.setCapability(
 					InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			capability.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, "http://surenpi.com");
+			capability.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
 			engineCapMap.put(DRIVER_IE, capability);
 		}
 		

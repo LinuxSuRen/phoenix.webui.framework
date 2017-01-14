@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.action.RandomSelectAble;
 import org.suren.autotest.web.framework.core.action.SelectAble;
 
 /**
@@ -29,6 +30,8 @@ public class Selector extends AbstractElement
 	
 	@Autowired
 	private SelectAble selectAble;
+	@Autowired
+	private RandomSelectAble randomSelectAble;
 
 	/**
 	 * 根据下拉列表的文本值来选择
@@ -77,6 +80,15 @@ public class Selector extends AbstractElement
 	public boolean selectByValue(String value)
 	{
 		return selectAble.selectByValue(this, value);
+	}
+	
+	/**
+	 * 随机选择一个选项
+	 * @return
+	 */
+	public boolean randomSelect()
+	{
+		return randomSelectAble.randomSelect(this);
 	}
 	
 	/**

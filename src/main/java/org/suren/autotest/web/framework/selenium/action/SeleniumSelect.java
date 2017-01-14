@@ -5,10 +5,13 @@ package org.suren.autotest.web.framework.selenium.action;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.action.RandomSelectAble;
 import org.suren.autotest.web.framework.core.action.SelectAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
@@ -20,7 +23,7 @@ import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
  * @since 3.1.1-SNAPSHOT 2016年7月1日
  */
 @Component
-public class SeleniumSelect implements SelectAble
+public class SeleniumSelect implements SelectAble, RandomSelectAble
 {
 
 	@Autowired
@@ -149,6 +152,26 @@ public class SeleniumSelect implements SelectAble
 	}
 
 	@Override
+	public boolean randomSelect(Element ele)
+	{
+		Select select = createSelect(ele);
+		if(select != null)
+		{
+			List<WebElement> options = select.getOptions();
+			if(CollectionUtils.isNotEmpty(options))
+			{
+				int count = options.size();
+				int index = RandomUtils.nextInt(count);
+				index = (index == 0 ? 1 : index); //通常第一个选项都是无效的选项
+
+				select.selectByIndex(index);
+			}
+		}
+		
+		return false;
+	}
+
+	@Override
 	public List<Element> getOptions(Element element)
 	{
 		return null;
@@ -173,6 +196,11 @@ public class SeleniumSelect implements SelectAble
 		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();
 	}
 	
+	/**
+	 * 转化为Selenium支持的下拉列表对象
+	 * @param element
+	 * @return
+	 */
 	private Select createSelect(Element element)
 	{
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);

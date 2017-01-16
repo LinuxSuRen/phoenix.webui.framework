@@ -18,12 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.autoit3.AutoItCmd;
+import org.suren.autotest.web.framework.core.RandomFile;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.FileUploadAble;
+import org.suren.autotest.web.framework.core.action.RandomFileUploadAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
-import org.suren.autotest.web.framework.util.ThreadUtil;
 
 /**
  * 利用Selenium实现文件上传
@@ -31,7 +32,7 @@ import org.suren.autotest.web.framework.util.ThreadUtil;
  * @date 2016年7月19日 上午9:24:34
  */
 @Component
-public class SeleniumFileUpload implements FileUploadAble
+public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumFileUpload.class);
 
@@ -41,6 +42,8 @@ public class SeleniumFileUpload implements FileUploadAble
 	private SearchStrategyUtils		searchStrategyUtils;
 	@Autowired
 	private ClickAble clickAble;
+	@Autowired
+	private RandomFile randomFile;
 	
 	@Override
 	public boolean isEnabled(Element element)
@@ -57,14 +60,14 @@ public class SeleniumFileUpload implements FileUploadAble
 	@Override
 	public boolean upload(Element element, URL url)
 	{
-		// TODO Auto-generated method stub
+		logger.error("Not support upload from a url.");
 		return false;
 	}
 	
 	@Override
 	public boolean upload(Element element, final File file)
 	{
-		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
+		WebElement webEle = findElement(element);
 		if(webEle != null)
 		{
 			ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -111,9 +114,27 @@ public class SeleniumFileUpload implements FileUploadAble
 	}
 
 	@Override
+	public boolean upload(Element element)
+	{
+		File tmpFile = randomFile.createFile();
+		
+		return upload(element, tmpFile);
+	}
+	
+	/**
+	 * 超找元素
+	 * @param element
+	 * @return
+	 */
+	private WebElement findElement(Element element)
+	{
+		return searchStrategyUtils.findStrategy(WebElement.class, element).search(element);
+	}
+
+	@Override
 	public boolean click(Element element)
 	{
 		clickAble.click(element);
-		return false;
+		return true;
 	}
 }

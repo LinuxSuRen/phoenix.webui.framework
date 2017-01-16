@@ -1,5 +1,5 @@
 /**
- * Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
+ * http://surenpi.com
  */
 package org.suren.autotest.web.framework.core.ui;
 
@@ -11,11 +11,12 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.FileUploadAble;
+import org.suren.autotest.web.framework.core.action.RandomFileUploadAble;
 
 /**
  * 文件上传按钮
  * 
- * @author zhaoxj
+ * @author suren
  * @since jdk1.6
  * @since 3.1.1-SNAPSHOT 2016年7月19日
  */
@@ -26,6 +27,9 @@ public class FileUpload extends AbstractElement
 
 	@Autowired
 	private FileUploadAble	fileUploadAble;
+	@Autowired
+	private RandomFileUploadAble randomFileUploadAble;
+	
 	/** 待上传文件 */
 	private File targetFile;
 	
@@ -62,6 +66,14 @@ public class FileUpload extends AbstractElement
 	public boolean upload()
 	{
 		return upload(targetFile);
+	}
+	
+	/**
+	 * @return 随机上传文件结果
+	 */
+	public boolean randomUpload()
+	{
+		return randomFileUploadAble.upload(this);
 	}
 
 	@Override

@@ -15,6 +15,11 @@
 				</xs:element>
 				<xs:element name="includePage" type="suren:includePageType"
 					minOccurs="0" maxOccurs="unbounded" >
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[页面元素定位包含]]>
+						</xs:documentation>
+					</xs:annotation>
 				</xs:element>
 				<xs:element name="pages">
 					<xs:annotation>
@@ -22,7 +27,13 @@
 					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded" />
+							<xs:element name="page" type="suren:pageType" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>
+										<![CDATA[页面配置]]>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="pagePackage" type="xs:string">
 							<xs:annotation>
@@ -90,16 +101,52 @@
 	</xs:complexType>
 	
 	<xs:complexType name="includePageType">
-		<xs:attribute name="pageConfig" use="required"></xs:attribute>
+		<xs:attribute name="pageConfig" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[所包含的页面文件路径，必填。]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:simpleType name="engineTypeDriverEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="ie" />
-			<xs:enumeration value="chrome" />
-			<xs:enumeration value="firefox" /> 
-			<xs:enumeration value="opera" />
-			<xs:enumeration value="safari" />
+			<xs:enumeration value="ie">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[IE浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="chrome">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[谷歌（Chrome）浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="firefox">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[火狐（Firefox）浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration> 
+			<xs:enumeration value="opera">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[欧朋（Opera）浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="safari">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[Safari浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	
@@ -253,35 +300,111 @@
 	
 	<xs:simpleType name="pageFieldLocatorTypeEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="byId"></xs:enumeration>
-			<xs:enumeration value="byCss"></xs:enumeration>
-			<xs:enumeration value="byName"></xs:enumeration>
-			<xs:enumeration value="byXpath"></xs:enumeration>
-			<xs:enumeration value="byLinkText"></xs:enumeration>
-			<xs:enumeration value="byPartialLinkText"></xs:enumeration>
-			<xs:enumeration value="byTagName"></xs:enumeration>
-			<xs:enumeration value="byIFrame"></xs:enumeration>
-			<xs:enumeration value="byIFrameIndex"></xs:enumeration>
-			<xs:enumeration value="byText"></xs:enumeration>
-			<xs:enumeration value="byXAttr"></xs:enumeration>
+			<xs:enumeration value="byId">
+				<xs:annotation>
+					<xs:documentation>根据元素属性id值定位，全局唯一</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byCss">
+				<xs:annotation>
+					<xs:documentation>根据元素属性class值定位，通常用于定位一类元素</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byName">
+				<xs:annotation>
+					<xs:documentation>根据元素属性name值定位，通常在一个表单中唯一</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byXpath">
+				<xs:annotation>
+					<xs:documentation>根据元素路径（xpath）定位</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byLinkText">
+				<xs:annotation>
+					<xs:documentation>根据a元素的文本值定位</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byPartialLinkText">
+				<xs:annotation>
+					<xs:documentation>根据a元素的部分文本值定位</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byTagName">
+				<xs:annotation>
+					<xs:documentation>根据元素的名称定位，通常用于定位一类元素</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byIFrame">
+				<xs:annotation>
+					<xs:documentation>根据元素iframe的名称或者id值定位</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byIFrameIndex">
+				<xs:annotation>
+					<xs:documentation>根据元素iframe的序号来定位，从1开始</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byText">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="byXAttr">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	
 	<xs:simpleType name="strategyEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="priority"></xs:enumeration>
-			<xs:enumeration value="cyle"></xs:enumeration>
-			<xs:enumeration value="zone"></xs:enumeration>
+			<xs:enumeration value="priority">
+				<xs:annotation>
+					<xs:documentation>优先级策略</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cyle">
+				<xs:annotation>
+					<xs:documentation>循环策略</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="zone">
+				<xs:annotation>
+					<xs:documentation>区域策略</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	
 	<xs:simpleType name="fieldTypeEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="input" />
-			<xs:enumeration value="button" />
-			<xs:enumeration value="select" />
-			<xs:enumeration value="file_upload" />
-			<xs:enumeration value="check_box_group" />
+			<xs:enumeration value="input">
+				<xs:annotation>
+					<xs:documentation>文本框、文本域等用于输入字符的元素</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="button">
+				<xs:annotation>
+					<xs:documentation>按钮类需要触发单击操作的元素</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="select">
+				<xs:annotation>
+					<xs:documentation>下拉列表元素</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="file_upload">
+				<xs:annotation>
+					<xs:documentation>点击了会触发文件上传的按钮</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="check_box_group">
+				<xs:annotation>
+					<xs:documentation>单（多）选按钮组所在的父（parent）元素</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

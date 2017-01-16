@@ -290,6 +290,13 @@ public class SuiteRunner
 					actionResult = Boolean.toString(fileUpload.upload());
 				}
 				break;
+			case "randomUpload":
+				FileUpload randomFileUpload = getFieldObj(FileUpload.class, pageField, page);
+				if(randomFileUpload != null)
+				{
+					actionResult = Boolean.toString(randomFileUpload.randomUpload());
+				}
+				break;
 			case "enter":
 				Text enterText = getFieldObj(Text.class, pageField, page);
 				if(enterText != null)

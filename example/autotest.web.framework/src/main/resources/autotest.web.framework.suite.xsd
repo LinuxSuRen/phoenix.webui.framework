@@ -62,6 +62,11 @@
 	<xs:complexType name="pageType">
 		<xs:sequence>
 			<xs:element name="actions" type="suren:actionsType">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[操作列表]]>
+					</xs:documentation>
+				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="class" type="xs:string">
@@ -124,6 +129,9 @@
 	
 	<xs:complexType name="paramType">
 		<xs:attribute name="value" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>参数值</xs:documentation>
+			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
 	
@@ -192,6 +200,13 @@
 				<xs:annotation>
 					<xs:documentation>
 						<![CDATA[上传文件。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="randomUpload">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[上传随机生成的文件。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

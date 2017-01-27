@@ -16,6 +16,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,11 +89,20 @@ public class SeleniumClick implements ClickAble
 			{
 				new Actions(engine.getDriver()).moveToElement(webEle, -50, -50).perform();
 				
-//				WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
+				WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
 				
 				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle, -50, -50);
+
+				wait.until(ExpectedConditions.visibilityOf(webEle));
 				
-				webEle.click();
+				try
+				{
+					webEle.click();
+				}
+				catch(WebDriverException innerE)
+				{
+					click(ele);
+				}
 			}
 		}
 		catch (AWTException e)

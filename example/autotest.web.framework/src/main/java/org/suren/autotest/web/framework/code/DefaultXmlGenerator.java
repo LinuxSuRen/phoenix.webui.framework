@@ -22,6 +22,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
+import org.suren.autotest.web.framework.core.Callback;
 
 /**
  * 生成xml格式所有的文件（Page类、数据源、测试套件）
@@ -160,5 +161,12 @@ public class DefaultXmlGenerator implements Generator
 
 		generator = new DefaultXmlSuiteRunnerGenerator();
 		generator.generate(srcCoding, outputDir); //这里从类路径下读取}
+	}
+
+	@Override
+	public void generate(InputStream input, String outputDir, Callback callback)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

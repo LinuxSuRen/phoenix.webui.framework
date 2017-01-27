@@ -5,7 +5,6 @@ package org.suren.autotest.web.framework.selenium.action;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.suren.autotest.web.framework.core.action.SequenceAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.util.ThreadUtil;
 
 /**
@@ -27,9 +27,9 @@ import org.suren.autotest.web.framework.util.ThreadUtil;
  * @date 2017年1月11日 下午4:56:58
  */
 @Component
-public class SeleniumSequenceOperation implements SequenceAble
+public class SeleniumZTreeSequenceOperation implements SequenceAble
 {
-	private static final Logger logger = LoggerFactory.getLogger(SeleniumSequenceOperation.class);
+	private static final Logger logger = LoggerFactory.getLogger(SeleniumZTreeSequenceOperation.class);
 
 	@Autowired
 	private SeleniumEngine engine;
@@ -82,6 +82,12 @@ public class SeleniumSequenceOperation implements SequenceAble
 		WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
 		parentEle.findElement(By.xpath(xpath)).click();
+	}
+
+	@Override
+	public String getName()
+	{
+		return "ztree";
 	}
 
 }

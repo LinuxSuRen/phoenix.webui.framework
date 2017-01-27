@@ -25,7 +25,7 @@ public class JdtTest
 {
 
 	private static final File	WORKDIR	= new File(
-		"D:/Program Files (x86)/Gboat-Toolkit-Suit/workspace_surenpi/autotest.web.framework");
+		"D:/Program Files (x86)/Gboat-Toolkit-Suit/workspace_surenpi/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/autotest.platform/deploy/src");
 
 	/**
 	 * @param args
@@ -45,7 +45,7 @@ public class JdtTest
  
         jdtCompiler.compile(
         		new ICompilationUnit[] {
-        				new SuRenCompiler(new File(WORKDIR, "demo/page/JdPage.java"), WORKDIR.getAbsolutePath())});
+        				new SuRenCompiler(new File(WORKDIR, "com/glodon/fujian/page/LoginPage.java"), WORKDIR.getAbsolutePath())});
 	}
 	
     public static CompilerOptions getCompilerOptions() {

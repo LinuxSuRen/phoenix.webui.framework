@@ -10,10 +10,10 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.suren.autotest.web.framework.util.PathUtil;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 使用autoid来实现文件上传

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.suren.autotest.web.framework.core.Locator;
-import org.suren.autotest.web.framework.util.StringUtil;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 所有HTML页面元素的抽象， 包含了元素的id、name、tagName、css、xpath、linktext、partialLinkText等属性
@@ -183,6 +183,24 @@ public abstract class AbstractElement implements Element
 	{
 		return data.get(key);
 	}
+	
+	/**
+	 * 获取数据的字符串
+	 * @param key
+	 * @return
+	 */
+	public String getDataStr(String key)
+	{
+		Object dataObj = data.get(key);
+		if(dataObj == null)
+		{
+			return "";
+		}
+		else
+		{
+			return dataObj.toString();
+		}
+	}
 
 	/**
 	 * @return 可用返回true，否则返回false
@@ -202,7 +220,7 @@ public abstract class AbstractElement implements Element
 	public String paramTranslate(String value)
 	{
 		String result = value;
-		result = StringUtil.paramTranslate(data, getParamPrefix(), result);
+		result = StringUtils.paramTranslate(data, getParamPrefix(), result);
 		
 		return result;
 	}

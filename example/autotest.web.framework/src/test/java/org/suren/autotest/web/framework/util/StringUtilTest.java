@@ -17,13 +17,13 @@ public class StringUtilTest
 	{
 		String server = "126.com";
 		
-		String email = StringUtil.email(server);
+		String email = StringUtils.email(server);
 		
 		System.out.println(email);
 		Assert.assertNotNull(email);
 		Assert.assertTrue(email.endsWith(server));
 		
-		email = StringUtil.email();
+		email = StringUtils.email();
 		System.out.println(email);
 		Assert.assertNotNull(email);
 	}

@@ -150,7 +150,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
-	<xs:complexType name="pageType" mixed="true">
+	<xs:complexType name="pageType" mixed="false">
 		<xs:sequence>
 			<xs:element name="field" type="suren:pageFieldType" maxOccurs="unbounded" minOccurs="1">
 				<xs:annotation>
@@ -185,7 +185,7 @@
 		</xs:attribute>
 	</xs:complexType>
 	
-	<xs:complexType name="pageFieldType" mixed="true">
+	<xs:complexType name="pageFieldType" mixed="false">
 		<xs:sequence>
 			<xs:element name="locators" type="suren:pageFieldLocators" minOccurs="0" maxOccurs="1">
 				<xs:annotation>

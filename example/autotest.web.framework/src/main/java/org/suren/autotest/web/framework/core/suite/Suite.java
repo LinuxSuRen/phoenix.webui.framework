@@ -3,6 +3,7 @@
  */
 package org.suren.autotest.web.framework.core.suite;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
  */
 public class Suite
 {
+	/** 当前测试套件所在路径 */
+	private URL pathUrl;
 	/** page类描述文件 */
 	private String xmlConfPath;
 	/** page类的包 */
@@ -196,5 +199,15 @@ public class Suite
 	public void setPagePackage(String pagePackage)
 	{
 		this.pagePackage = pagePackage;
+	}
+
+	public URL getPathUrl()
+	{
+		return pathUrl;
+	}
+
+	public void setPathUrl(URL pathUrl)
+	{
+		this.pathUrl = pathUrl;
 	}
 }

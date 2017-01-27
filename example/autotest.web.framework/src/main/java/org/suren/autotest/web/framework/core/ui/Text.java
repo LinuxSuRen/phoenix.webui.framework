@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 文本框封装
@@ -44,6 +44,18 @@ public class Text extends AbstractElement
 	{
 		this.value = value;
 	}
+	
+	/**
+	 * 使用给定数据来填充
+	 * @param value
+	 * @return
+	 */
+	public Text fillValue(String value)
+	{
+		setValue(value);
+		
+		return fillValue();
+	}
 
 	/**
 	 * 自动填充数据，不用关心数据来源
@@ -53,6 +65,7 @@ public class Text extends AbstractElement
 		String val4Fill = value;
 		if(StringUtils.isNotBlank(callback))
 		{
+			System.out.println(Thread.currentThread().getName());;
 			String methodName = "execute";
 			String callbackClsName = callback;
 			
@@ -70,6 +83,10 @@ public class Text extends AbstractElement
 					//这种情况下，就调用框架内部的类
 					Map<Object, Object> engineConfig = engine.getEngineConfig();
 					String pkg = (String) engineConfig.get("invoker.package");
+					if(StringUtils.isBlank(pkg))
+					{
+						pkg = "org.suren.autotest.web.framework.invoker";
+					}
 					
 					callbackClsName = (pkg + "." + callbackClsName);
 				}

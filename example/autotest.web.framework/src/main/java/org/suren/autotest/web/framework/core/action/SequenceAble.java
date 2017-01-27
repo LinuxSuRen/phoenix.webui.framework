@@ -20,4 +20,9 @@ public interface SequenceAble
 	 * @param actions 序列操作信息
 	 */
 	void perform(Element element, List<String> actions);
+	
+	/**
+	 * @return 当前序列操作的名称
+	 */
+	String getName();
 }

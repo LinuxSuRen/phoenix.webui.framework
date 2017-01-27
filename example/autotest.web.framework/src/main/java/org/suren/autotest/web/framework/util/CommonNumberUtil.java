@@ -3,8 +3,6 @@
  */
 package org.suren.autotest.web.framework.util;
 
-import org.apache.commons.lang3.RandomUtils;
-
 /**
  * 常见数字类型生成工具类
  * @author suren

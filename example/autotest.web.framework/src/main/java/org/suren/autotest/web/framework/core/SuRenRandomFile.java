@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.PathUtil;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 默认提供的随机文件生成类
@@ -29,6 +30,11 @@ public class SuRenRandomFile implements RandomFile
 	public File createFile()
 	{
 		String fileName = (String) engine.getEngineConfig().get("upload.file.random.name");
+		if(StringUtils.isBlank(fileName))
+		{
+			fileName = "suren.png";
+		}
+		
 		File randomFile = null;
 		try(InputStream content = randomContent.getContent())
 		{

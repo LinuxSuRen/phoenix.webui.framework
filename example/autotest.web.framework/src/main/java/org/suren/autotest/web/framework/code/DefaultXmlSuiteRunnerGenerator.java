@@ -9,14 +9,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -31,6 +29,9 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.Callback;
+import org.suren.autotest.web.framework.util.StringUtils;
 import org.xml.sax.SAXException;
 
 /**
@@ -38,6 +39,7 @@ import org.xml.sax.SAXException;
  * @author suren
  * @date 2016年12月14日 上午8:24:36
  */
+@Component("xml_to_suite_runner")
 public class DefaultXmlSuiteRunnerGenerator implements Generator
 {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlDataSourceGenerator.class);
@@ -61,50 +63,66 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	@Override
 	public void generate(String srcCoding, String outputDir)
 	{
-		this.outputDir = outputDir;
 		this.srcCoding = srcCoding;
-		
-		String srcPath = srcCoding;
-		srcPath = srcPath.replace(".xml", "");
-		srcPath = srcPath + "_runner.xml";
-		
-		ClassLoader clsLoader = this.getClass().getClassLoader();
-		URL url = clsLoader.getResource(srcPath);
-		InputStream dsInput = null;
-		try
-		{
-			if(url != null)
-			{
-				dsInput = url.openStream();
-			}
-		}
-		catch (IOException e1)
-		{
-			e1.printStackTrace();
-		}
-		
-		if(dsInput != null)
-		{
-			try
-			{
-				suiteRunnerDoc = new SAXReader().read(dsInput);
-			}
-			catch (DocumentException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			suiteRunnerDoc = DocumentHelper.createDocument();
-		}
 		
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		
 		//读取主配置文件
 		try(InputStream confInput = classLoader.getResourceAsStream(srcCoding))
 		{
-			read(confInput);
+			generate(confInput, outputDir, null);
+		}
+		catch (IOException e)
+		{
+			logger.error(String.format("Main config [%s] parse process error.", srcCoding), e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void generate(InputStream input, String outputDir, Callback callback)
+	{
+		this.outputDir = outputDir;
+		
+//		String srcPath = srcCoding;
+//		srcPath = srcPath.replace(".xml", "");
+//		srcPath = srcPath + "_runner.xml";
+		
+//		ClassLoader clsLoader = this.getClass().getClassLoader();
+//		URL url = clsLoader.getResource(srcPath);
+//		InputStream dsInput = null;
+//		try
+//		{
+//			if(url != null)
+//			{
+//				dsInput = url.openStream();
+//			}
+//		}
+//		catch (IOException e1)
+//		{
+//			e1.printStackTrace();
+//		}
+		
+//		if(dsInput != null)
+//		{
+//			try
+//			{
+//				suiteRunnerDoc = new SAXReader().read(dsInput);
+//			}
+//			catch (DocumentException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
+//		else
+//		{
+			suiteRunnerDoc = DocumentHelper.createDocument();
+//		}
+		
+		//读取主配置文件
+		try
+		{
+			read(input);
 		}
 		catch (DocumentException | IOException e)
 		{
@@ -116,27 +134,27 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		}
 		
 		XMLWriter xmlWriter = null;
-		if(dsInput != null)
-		{
-			try
-			{
-				dsInput.close();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+//		if(dsInput != null)
+//		{
+//			try
+//			{
+//				dsInput.close();
+//			}
+//			catch (IOException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
 		
-		String outputFileName = null;
-		if(url != null)
-		{
-			outputFileName = new File(url.getFile()).getName();
-		}
-		else
-		{
-			outputFileName = new File(srcPath).getName();
-		}
+//		String outputFileName = null;
+//		if(url != null)
+//		{
+//			outputFileName = new File(url.getFile()).getName();
+//		}
+//		else
+//		{
+//			outputFileName = new File(srcPath).getName();
+//		}
 
 		File outputDirFile = new File(outputDir);
 		if(!outputDirFile.isDirectory())
@@ -144,13 +162,19 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 			outputDirFile.mkdirs();
 		}
 
-		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
+		File outputFile = new File(outputDir, System.currentTimeMillis() + ".xml");
+		try(OutputStream dsOutput = new FileOutputStream(outputFile))
 		{
 			OutputFormat outputFormat = OutputFormat.createPrettyPrint();
 			outputFormat.setIndentSize(4);
 			xmlWriter = new XMLWriter(dsOutput, outputFormat);
 			
 			xmlWriter.write(suiteRunnerDoc);
+			
+			if(callback != null)
+			{
+				callback.callback(outputFile);
+			}
 		}
 		catch (FileNotFoundException e)
 		{
@@ -205,7 +229,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 		String pagePackage = pagesEle.attributeValue("pagePackage", "");
 		if(StringUtils.isNotBlank(pagePackage))
 		{
-			pagePackage = (pagePackage.trim() + ".");
+			pagePackage = pagePackage.trim();
 		}
 
 		// pages parse progress
@@ -224,11 +248,9 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 					continue;
 				}
 
-				pageClsStr = (pagePackage + pageClsStr);
-
 				try
 				{
-					parse(doc, pageClsStr, ele);
+					parse(doc, pagePackage, pageClsStr, ele);
 				}
 				catch (NoSuchBeanDefinitionException e)
 				{
@@ -250,16 +272,16 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 	 * @param dataSrc
 	 * @param ele
 	 */
-	private void parse(Document doc, final String pageClsStr,
+	private void parse(Document doc, final String pagePackage, final String pageClsStr,
 			Element ele) throws Exception
 	{
-		updateXmlDataSourceByEle(ele, pageClsStr);
+		updateXmlDataSourceByEle(ele, pagePackage, pageClsStr);
 	}
 
 	/**
 	 * @param ele
 	 */
-	private void updateXmlDataSourceByEle(Element ele, String pageClsStr)
+	private void updateXmlDataSourceByEle(Element ele, String pagePackage, String pageClsStr)
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat();
 		suiteRunnerDoc.addComment("Auto created by AutoTest, " + dateFormat.format(new Date()));
@@ -282,6 +304,7 @@ public class DefaultXmlSuiteRunnerGenerator implements Generator
 			dataSourcesEle.addAttribute("xsi:schemaLocation", "http://suite.surenpi.com "
 					+ "http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd ");
 			dataSourcesEle.addAttribute("pageConfig", this.srcCoding);
+			dataSourcesEle.addAttribute("pagePackage", pagePackage);
 		}
 		
 		xpath = new DefaultXPath("/ns:suite/ns:page[@class='" + pageClsStr + "']");

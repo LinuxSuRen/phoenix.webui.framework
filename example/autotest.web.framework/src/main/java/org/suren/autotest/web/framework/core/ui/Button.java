@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.HoverAble;
 import org.suren.autotest.web.framework.core.action.SequenceAble;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 代表HTML页面中的按钮，即在xml配置文件中type值为button的元素
@@ -30,7 +31,7 @@ public class Button extends AbstractElement
 	@Autowired
 	private HoverAble hoverAble;
 	@Autowired
-	private SequenceAble sequenceAble;
+	private List<SequenceAble> sequenceAbleList;
 
 	/**
 	 * 触发单击事件
@@ -61,11 +62,27 @@ public class Button extends AbstractElement
 		List<String> actions = new ArrayList<String>();
 		
 		String seqOper = (String) getData("SEQ_OPER");
+		String seqOperName = getDataStr("SEQ_OPER_NAME");
 		
 		actions.addAll(Arrays.asList(seqOper.split(",")));
 		
 		clickAble.click(this);
-		sequenceAble.perform(this, actions);
+		
+		for(SequenceAble sequenceAble : sequenceAbleList)
+		{
+			String tagetSeqName = sequenceAble.getName();
+			if(StringUtils.isBlank(tagetSeqName))
+			{
+				throw new RuntimeException(String.format("The SequenceAble'name is blank! Class is %s.",
+						sequenceAble.getClass()));
+			}
+			
+			if(tagetSeqName.equals(seqOperName))
+			{
+				sequenceAble.perform(this, actions);
+				break;
+			}
+		}
 	}
 
 	@Override

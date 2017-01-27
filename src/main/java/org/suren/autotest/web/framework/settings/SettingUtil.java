@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -32,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.core.ConfigException;
 import org.suren.autotest.web.framework.core.ConfigNotFoundException;
@@ -43,11 +42,14 @@ import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.ClasspathResource;
+import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
+import org.suren.autotest.web.framework.data.FileResource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.BeanUtil;
+import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
@@ -62,7 +64,10 @@ public class SettingUtil implements Closeable
 	
 	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
-	private AbstractApplicationContext			context;
+	private ApplicationContext			context;
+	
+	/** 系统配置路径 */
+	private File configFile;
 	
 	private boolean closed = false;
 	
@@ -74,8 +79,12 @@ public class SettingUtil implements Closeable
 	 */
 	public SettingUtil()
 	{
-		context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
-				"classpath*:applicationContext.xml"});
+		context = SpringUtils.getApplicationContext();
+		if(context == null)
+		{
+			context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
+			"classpath*:applicationContext.xml"});
+		}
 		
 		try
 		{
@@ -176,12 +185,12 @@ public class SettingUtil implements Closeable
 	public void readFromSystemPath(String filePath) throws FileNotFoundException, 
 		IOException, DocumentException, SAXException
 	{
-		File configFile = new File(filePath);
+		configFile = new File(filePath);
 		if(!configFile.isFile())
 		{
 			throw new ConfigException(String.format("Target file [%s] is not a file.", filePath));
 		}
-		else if(filePath.endsWith(".xml"))
+		else if(!filePath.endsWith(".xml"))
 		{
 			logger.warn("Target file [%s] is not end with .xml", filePath);
 		}
@@ -254,8 +263,25 @@ public class SettingUtil implements Closeable
 		}
 		
 		DataSource dataSource = context.getBean(dataSourceInfo.getType(), DataSource.class);
-		ClasspathResource clzResource = new ClasspathResource(
+		DataResource clzResource = new ClasspathResource(
 				SettingUtil.class, dataSourceInfo.getResource());
+		try
+		{
+			if(clzResource.getUrl() == null)
+			{
+				File file = new File(configFile.getParentFile(), dataSourceInfo.getResource());
+				if(!file.isFile())
+				{
+					throw new RuntimeException("Can not found datasource file : " + file.getAbsolutePath());
+				}
+				
+				clzResource = new FileResource(file);
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 		return dataSource.loadData(clzResource, row, page);
 	}
@@ -459,8 +485,10 @@ public class SettingUtil implements Closeable
 	private void parse(final String pageClsStr, String dataSrcClsStr,
 			Element ele) throws Exception
 	{
-		final Class<?> pageCls = Class.forName(pageClsStr);
-		final Object pageInstance = context.getBean(pageCls);
+//		final Class<?> pageCls = Class.forName(pageClsStr);
+		System.out.println(context);
+		final Object pageInstance = context.getBean(pageClsStr);
+		final Class<?> pageCls = pageInstance.getClass();
 
 		String url = ele.attributeValue("url");
 		if (url != null)
@@ -712,7 +740,7 @@ public class SettingUtil implements Closeable
 		if(engine != null)
 		{
 			engine.close();
-			context.destroy();
+//			context.destroy();
 			closed = true;
 		}
 		else

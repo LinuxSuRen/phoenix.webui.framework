@@ -9,11 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.CommonNumberUtil;
 import org.suren.autotest.web.framework.util.IDCardUtil;
-import org.suren.autotest.web.framework.util.StringUtil;
+import org.suren.autotest.web.framework.util.RandomUtils;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 简单的动态数据实现
@@ -56,7 +56,7 @@ public class SimpleDynamicData implements DynamicData
 		
 		if(value.contains("${email}"))
 		{
-			value = value.replace("${email}", StringUtil.email());
+			value = value.replace("${email}", StringUtils.email());
 		}
 		
 		if(value.contains("${phone}"))

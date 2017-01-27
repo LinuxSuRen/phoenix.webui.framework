@@ -3,18 +3,21 @@
  */
 package org.suren.autotest.web.framework.core.suite;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 import org.suren.autotest.web.framework.settings.SuiteParser;
+import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
@@ -83,7 +87,8 @@ public class SuiteRunner
 		{
 			URL url = resources.nextElement();
 			
-			try(InputStream input4Valid = url.openStream()){
+			try(InputStream input4Valid = url.openStream())
+			{
 				Validation.validationSuite(input4Valid);
 			}
 
@@ -93,6 +98,78 @@ public class SuiteRunner
 				
 				runSuite(suite);
 			}
+		}
+	}
+	
+	public static void runFromFile(File runnerFile)
+	{
+		if(runnerFile == null || !runnerFile.isFile())
+		{
+			return;
+		}
+		
+		SuiteParser suiteParser = new SuiteParser();
+		
+		try(InputStream input4Valid = new FileInputStream(runnerFile))
+		{
+//			Validation.validationSuite(input4Valid);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+//		catch (SAXException e)
+//		{
+//			e.printStackTrace();
+//		}
+
+		try(InputStream input = new FileInputStream(runnerFile))
+		{
+			Suite suite = suiteParser.parse(input);
+			suite.setPathUrl(runnerFile.toURI().toURL());
+			
+			runSuite(suite);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (DocumentException e)
+		{
+			e.printStackTrace();
+		}
+		catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
+		}
+		catch (SecurityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (SAXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -113,12 +190,23 @@ public class SuiteRunner
 			SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException, SAXException
 	{
 		String xmlConfPath = suite.getXmlConfPath();
+		URL suitePathUrl = suite.getPathUrl();
 		try(SettingUtil settingUtil = new SettingUtil())
 		{
 			String[] xmlConfArray = xmlConfPath.split(",");
 			for(String xmlConf : xmlConfArray)
 			{
-				settingUtil.readFromClassPath(xmlConf);
+				if(suite.getPathUrl() != null)
+				{
+					File patentFile = new File(URLDecoder.decode(suitePathUrl.getFile(), "utf-8"));
+					patentFile = patentFile.getParentFile();
+					
+					settingUtil.readFromSystemPath(new File(patentFile, xmlConf).toString());
+				}
+				else
+				{
+					settingUtil.readFromClassPath(xmlConf);
+				}
 			}
 			
 			List<SuitePage> pageList = suite.getPageList();
@@ -160,7 +248,7 @@ public class SuiteRunner
 			}
 			
 			String url = page.getUrl();
-			if(url != null)
+			if(StringUtils.isNotBlank(url))
 			{
 				page.open();
 			}

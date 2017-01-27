@@ -3,8 +3,6 @@
  */
 package org.suren.autotest.web.framework.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 有关操作系统的一些工具方法
  * @author suren

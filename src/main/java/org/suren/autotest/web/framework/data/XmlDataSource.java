@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -34,6 +34,7 @@ import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * xml格式的数据源实现
@@ -94,12 +95,18 @@ public class XmlDataSource implements DataSource
 		String pagePackage = rootEle.attributeValue("pagePackage", "");
 		if(StringUtils.isNotBlank(pagePackage))
 		{
-			pagePackage = (pagePackage.trim() + ".");
+			pagePackage = (pagePackage.trim());
+			xpath = new DefaultXPath(String.format("/ns:dataSources[@pagePackage='%s']/ns:dataSource[@pageClass='%s']/ns:page[%s]",
+					pagePackage, pageClass.replace(pagePackage + ".", ""), String.valueOf(row)));
+			xpath.setNamespaceContext(simpleNamespaceContext);
+		}
+		else
+		{
+			xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s']/ns:page[%s]",
+					pageClass, String.valueOf(row)));
+			xpath.setNamespaceContext(simpleNamespaceContext);
 		}
 		
-		xpath = new DefaultXPath(String.format("/ns:dataSources/ns:dataSource[@pageClass='%s%s']/ns:page[%s]",
-				pagePackage, pageClass, String.valueOf(row)));
-		xpath.setNamespaceContext(simpleNamespaceContext);
 		@SuppressWarnings("unchecked")
 		List<Element> dataSourceList = xpath.selectNodes(doc);
 		if (dataSourceList == null || dataSourceList.size() == 0)
@@ -155,7 +162,11 @@ public class XmlDataSource implements DataSource
 						throw new RuntimeException("Not support field type [" + type + "] in page [" + page.getClass().getName() +"].");
 					}
 					
-					((AbstractElement) eleObj).putData("DataType", type);
+					AbstractElement absEle = (AbstractElement) eleObj;
+					absEle.putData("DataType", type);
+					
+					//解析数据源中单个数据项的扩展参数
+					parseDataParamList(absEle, node);
 					
 					if(eleObj instanceof Text)
 					{
@@ -203,6 +214,28 @@ public class XmlDataSource implements DataSource
 			}
 		});
 	}
+
+	/**
+	 * 解析数据源中单个数据项的扩展参数
+	 * @param absEle
+	 * @param node
+	 */
+	private void parseDataParamList(AbstractElement absEle, Element node)
+	{
+		@SuppressWarnings("unchecked")
+		List<Element> paramEleList = node.elements("param");
+		if(CollectionUtils.isEmpty(paramEleList))
+		{
+			return;
+		}
+		
+		for(Element element : paramEleList)
+		{
+			String key = element.attributeValue("name");
+			String value = element.attributeValue("value");
+			absEle.putData(key, value);
+		}
+	}
 	
 	/**
 	 * 根据类型获取对应的动态数据
@@ -244,9 +277,9 @@ public class XmlDataSource implements DataSource
 			
 			return true;
 		}
-		catch (IOException | DocumentException e)
+		catch (IOException | DocumentException| RuntimeException e)
 		{
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage() + "==" + url.toString(), e);
 		}
 		
 		return false;

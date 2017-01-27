@@ -3,6 +3,12 @@
  */
 package org.suren.autotest.web.framework.code;
 
+import java.io.InputStream;
+
+import org.dom4j.DocumentException;
+import org.suren.autotest.web.framework.core.Callback;
+import org.xml.sax.SAXException;
+
 /**
  * 生成器
  * @author suren
@@ -17,4 +23,7 @@ public interface Generator
 	 * @return
 	 */
 	void generate(String srcCoding, String outputDir);
+	
+	void generate(InputStream input, String outputDir, Callback<?> callback)
+			throws DocumentException, SAXException;
 }

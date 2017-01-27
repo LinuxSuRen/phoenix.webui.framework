@@ -4,6 +4,7 @@
 package org.suren.autotest.web.framework.code;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -25,9 +25,13 @@ import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.Callback;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import freemarker.core.InvalidReferenceException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -38,6 +42,7 @@ import freemarker.template.TemplateException;
  * @author suren
  * @date 2016年12月3日 下午8:43:19
  */
+@Component("xml_to_java")
 public class DefaultXmlCodeGenerator implements Generator
 {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlCodeGenerator.class);
@@ -66,17 +71,33 @@ public class DefaultXmlCodeGenerator implements Generator
 	public void generate(String srcCoding, String outputDir)
 	{
 		this.outputDir = outputDir;
-		
 		classLoader = this.getClass().getClassLoader();
-		try(InputStream inputStream = classLoader.getResourceAsStream(srcCoding))
+		
+		if(new File(srcCoding).isFile())
 		{
-			Document document = new SAXReader().read(inputStream);
-			
-			read(document);
+			try(InputStream inputStream = new FileInputStream(new File(srcCoding)))
+			{
+				Document document = new SAXReader().read(inputStream);
+				
+				read(document);
+			}
+			catch (DocumentException | IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (DocumentException | IOException e)
+		else
 		{
-			e.printStackTrace();
+			try(InputStream inputStream = classLoader.getResourceAsStream(srcCoding))
+			{
+				Document document = new SAXReader().read(inputStream);
+				
+				read(document);
+			}
+			catch (DocumentException | IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		Iterator<String> pageIt = pageFieldMap.keySet().iterator();
@@ -100,7 +121,15 @@ public class DefaultXmlCodeGenerator implements Generator
 			List<AutoField> fieldList = pageFieldMap.get(pageCls);
 			for(AutoField autoField : fieldList)
 			{
-				autoField.setType(fieldTypeMap.get(autoField.getType()));
+				if(StringUtils.isBlank(autoField.getType()))
+				{
+					continue;
+				}
+				
+				if(fieldTypeMap.get(autoField.getType()) != null)
+				{
+					autoField.setType(fieldTypeMap.get(autoField.getType()));
+				}
 				
 				String fieldName = autoField.getName();
 				String methodField = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
@@ -117,6 +146,13 @@ public class DefaultXmlCodeGenerator implements Generator
 		done();
 	}
 	
+	@Override
+	public void generate(InputStream input, String outputDir, Callback callback)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * 代码生成完毕
 	 */
@@ -168,6 +204,11 @@ public class DefaultXmlCodeGenerator implements Generator
 		}
 		catch (IOException e)
 		{
+			e.printStackTrace();
+		}
+		catch(InvalidReferenceException e)
+		{
+			System.out.println(autoPage);
 			e.printStackTrace();
 		}
 		catch (TemplateException e)

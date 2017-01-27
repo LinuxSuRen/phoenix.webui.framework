@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -18,6 +17,7 @@ import org.jaxen.SimpleNamespaceContext;
 import org.suren.autotest.web.framework.core.suite.Suite;
 import org.suren.autotest.web.framework.core.suite.SuiteAction;
 import org.suren.autotest.web.framework.core.suite.SuitePage;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 测试套件配置文件解析

@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -31,6 +30,9 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.Callback;
+import org.suren.autotest.web.framework.util.StringUtils;
 import org.xml.sax.SAXException;
 
 /**
@@ -38,25 +40,26 @@ import org.xml.sax.SAXException;
  * @author suren
  * @date 2016年12月14日 上午8:21:27
  */
+@Component("xml_to_datasource")
 public class DefaultXmlDataSourceGenerator implements Generator
 {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultXmlDataSourceGenerator.class);
 
 	private String outputDir;
 	private Map<String, Document> docMap;
+	@SuppressWarnings("rawtypes")
+	private Callback callback;
 	
 	@Override
 	public void generate(String srcCoding, String outputDir)
 	{
 		this.outputDir = outputDir;
-		
 		ClassLoader classLoader = this.getClass().getClassLoader();
-		docMap = new HashMap<String, Document>();
 		
 		//读取主配置文件
 		try(InputStream confInput = classLoader.getResourceAsStream(srcCoding))
 		{
-			read(confInput);
+			generate(confInput, outputDir, null);
 		}
 		catch (DocumentException | IOException e)
 		{
@@ -77,6 +80,38 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	}
 
 	/**
+	 * @param input 输入流，根据该流的内容进行生成
+	 * @param outputDir 输入目录
+	 * @param callback 回调接口，当文件输出时回调，其中的参数类型为java.io.File；如果有多个文件输出则回调多次
+	 */
+	@Override
+	public void generate(InputStream input, String outputDir, Callback<?> callback)
+			throws DocumentException, SAXException
+	{
+		this.callback = callback;
+		this.outputDir = outputDir;
+		docMap = new HashMap<String, Document>();
+		
+		//读取主配置文件
+		try
+		{
+			read(input);
+		}
+		catch (IOException e)
+		{
+			logger.error(String.format("Main config parse process error."), e);
+		}
+		finally
+		{
+			for(String resPath : docMap.keySet())
+			{
+				Document doc = docMap.get(resPath);
+				write(doc, resPath);
+			}
+		}
+	}
+
+	/**
 	 * 从流中读取配置文件
 	 * 
 	 * @param inputStream
@@ -84,7 +119,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	public void read(InputStream inputStream) throws DocumentException, IOException, SAXException
+	private void read(InputStream inputStream) throws DocumentException, IOException, SAXException
 	{
 		Document document = new SAXReader().read(inputStream);
 
@@ -119,7 +154,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		String pagePackage = pagesEle.attributeValue("pagePackage", "");
 		if(StringUtils.isNotBlank(pagePackage))
 		{
-			pagePackage = (pagePackage.trim() + ".");
+			pagePackage = pagePackage.trim();
 		}
 
 		// pages parse progress
@@ -138,12 +173,11 @@ public class DefaultXmlDataSourceGenerator implements Generator
 					continue;
 				}
 
-				pageClsStr = (pagePackage + pageClsStr);
 				String dataSrc = ele.attributeValue("dataSource");
 
 				try
 				{
-					parse(doc, pageClsStr, dataSrc, ele);
+					parse(doc, pagePackage, pageClsStr, dataSrc, ele);
 				}
 				catch (NoSuchBeanDefinitionException e)
 				{
@@ -163,9 +197,10 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	 * 
 	 * @param pageClsStr
 	 * @param dataSrc
+	 * @param dataSrc2 
 	 * @param ele
 	 */
-	private void parse(Document doc, final String pageClsStr, String dataSrc,
+	private void parse(Document doc,String pagePackage,  final String pageClsStr, String dataSrc,
 			Element ele) throws Exception
 	{
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
@@ -185,13 +220,14 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		
 		logger.debug("DataSource type is {}, resource is {}.", dsType, dsResource);
 		
-		updateXmlDataSourceByEle(ele, dsResource, pageClsStr);
+		updateXmlDataSourceByEle(ele, dsResource, pagePackage, pageClsStr);
 	}
 
 	/**
 	 * @param ele
+	 * @param pageClsStr2 
 	 */
-	private void updateXmlDataSourceByEle(Element ele, String dsResource, String pageClsStr)
+	private void updateXmlDataSourceByEle(Element ele, String dsResource, String pagePackage, String pageClsStr)
 	{
 		Document doc = docMap.get(dsResource);
 		if(doc == null)
@@ -207,10 +243,20 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		
 		Element dataSourcesEle = doc.getRootElement();
+		dataSourcesEle.addAttribute("pagePackage", pagePackage);
 		
 		//先查找是否有该标签
-		xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']");
-		xpath.setNamespaceContext(simpleNamespaceContext);
+		if(StringUtils.isNotBlank(pagePackage))
+		{
+			pagePackage = (pagePackage.trim());
+			xpath = new DefaultXPath("/ns:dataSources[@pagePackage='" + pagePackage + "']/ns:dataSource[@pageClass='" + pageClsStr + "']");
+			xpath.setNamespaceContext(simpleNamespaceContext);
+		}
+		else
+		{
+			xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']");
+			xpath.setNamespaceContext(simpleNamespaceContext);
+		}
 		Element dataSourceEle = (Element) xpath.selectSingleNode(doc);
 		if(dataSourceEle == null)
 		{
@@ -235,8 +281,17 @@ public class DefaultXmlDataSourceGenerator implements Generator
 		}
 		
 		//只更新第一个子标签
-		xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]");
-		xpath.setNamespaceContext(simpleNamespaceContext);
+		if(StringUtils.isNotBlank(pagePackage))
+		{
+			pagePackage = (pagePackage.trim());
+			xpath = new DefaultXPath("/ns:dataSources[@pagePackage='" + pagePackage + "']/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]");
+			xpath.setNamespaceContext(simpleNamespaceContext);
+		}
+		else
+		{
+			xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]");
+			xpath.setNamespaceContext(simpleNamespaceContext);
+		}
 		Element pageEle = (Element) xpath.selectSingleNode(dataSourceEle);
 		if(pageEle == null)
 		{
@@ -249,7 +304,7 @@ public class DefaultXmlDataSourceGenerator implements Generator
 			pageEle = dataSourceEle.addElement(prefix + "page");
 		}
 		
-		ele.accept(new PageFieldVisitor(pageEle, pageClsStr));
+		ele.accept(new PageFieldVisitor(pageEle, pagePackage, pageClsStr));
 	}
 	
 	/**
@@ -357,13 +412,19 @@ public class DefaultXmlDataSourceGenerator implements Generator
 			outputDirFile.mkdirs();
 		}
 		
-		try(OutputStream dsOutput = new FileOutputStream(new File(outputDirFile, outputFileName)))
+		File outputFile = new File(outputDirFile, outputFileName);
+		try(OutputStream dsOutput = new FileOutputStream(outputFile))
 		{
 			OutputFormat outputFormat = OutputFormat.createPrettyPrint();
 			outputFormat.setIndentSize(4);
 			XMLWriter xmlWriter = new XMLWriter(dsOutput, outputFormat);
 			
 			xmlWriter.write(doc);
+			
+			if(callback != null)
+			{
+				callback.callback(outputFile);
+			}
 		}
 		catch (FileNotFoundException e)
 		{
@@ -379,11 +440,13 @@ public class DefaultXmlDataSourceGenerator implements Generator
 	{
 		private SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 		private Element pageEle;
+		private String pagePackage;
 		private String pageClsStr;
 		
-		public PageFieldVisitor(Element pageEle, String pageClsStr)
+		public PageFieldVisitor(Element pageEle, String pagePackage, String pageClsStr)
 		{
 			this.pageEle = pageEle;
+			this.pagePackage = pagePackage;
 			this.pageClsStr = pageClsStr;
 			simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
 		}
@@ -405,9 +468,18 @@ public class DefaultXmlDataSourceGenerator implements Generator
 				return;
 			}
 			
-			XPath xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]/ns:field[@name='" + fieldName + "']");
-			xpath.setNamespaceContext(simpleNamespaceContext);
-			
+			XPath xpath;
+			if(StringUtils.isNotBlank(pagePackage))
+			{
+				pagePackage = (pagePackage.trim());
+				xpath = new DefaultXPath("/ns:dataSources[@pagePackage='" + pagePackage + "']/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]/ns:field[@name='" + fieldName + "']");
+				xpath.setNamespaceContext(simpleNamespaceContext);
+			}
+			else
+			{
+				xpath = new DefaultXPath("/ns:dataSources/ns:dataSource[@pageClass='" + pageClsStr + "']/ns:page[1]/ns:field[@name='" + fieldName + "']");
+				xpath.setNamespaceContext(simpleNamespaceContext);
+			}
 			Element fieldEle = (Element) xpath.selectSingleNode(pageEle);
 			if(fieldEle == null)
 			{

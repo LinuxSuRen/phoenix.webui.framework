@@ -1,6 +1,19 @@
-/**
-* Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
-*/
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.suren.autotest.web.framework.selenium;
 
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
@@ -43,10 +56,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 import org.suren.autotest.web.framework.util.PathUtil;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 浏览器引擎封装类
@@ -54,11 +70,12 @@ import org.suren.autotest.web.framework.util.PathUtil;
  * @since jdk1.6 2016年6月29日
  */
 @Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SeleniumEngine
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumEngine.class);
 
-	private Properties enginePro = new Properties(); //引擎参数集合
+	private final Properties enginePro = new Properties(); //引擎参数集合
 	
 	private Map<String, DesiredCapabilities> engineCapMap = new HashMap<String, DesiredCapabilities>();
 	
@@ -71,6 +88,11 @@ public class SeleniumEngine
 	private int			width;
 	private int			height;
 	private int			toolbarHeight;
+	
+	public SeleniumEngine()
+	{
+		System.out.println("engine 实例化");
+	}
 	
 	/**
 	 * 浏览器引擎初始化
@@ -100,7 +122,7 @@ public class SeleniumEngine
 			throw new RuntimeException(String.format("Unknow type driver [%s].", curDriverStr));
 		}
 		
-		if(getRemoteStr() != null)
+		if(StringUtils.isNotBlank(getRemoteStr()))
 		{
 			try
 			{
@@ -174,7 +196,7 @@ public class SeleniumEngine
 	 */
 	public final Map<Object, Object> getEngineConfig()
 	{
-		return Collections.unmodifiableMap(enginePro);
+		return Collections.unmodifiableMap(enginePro == null ? new Properties() : enginePro);
 	}
 	
 	/**

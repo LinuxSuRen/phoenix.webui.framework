@@ -1,9 +1,24 @@
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.suren.autotest.web.framework.selenium.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -14,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 根据查找元素的优先级（{@link PrioritySearchStrategy}）进行便历查找， 找不到返回null
@@ -40,7 +56,7 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 		{
 			byList.add(By.id(element.getId()));
 		}
-		else if (StringUtils.isNoneBlank(element.getCSS()))
+		else if (StringUtils.isNotBlank(element.getCSS()))
 		{
 			byList.add(By.className(element.getCSS()));
 		}
@@ -52,7 +68,7 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 		{
 			byList.add(By.linkText(element.getLinkText()));
 		}
-		else if (StringUtils.isNoneBlank(element.getPartialLinkText()))
+		else if (StringUtils.isNotBlank(element.getPartialLinkText()))
 		{
 			byList.add(By.partialLinkText(element.getPartialLinkText()));
 		}

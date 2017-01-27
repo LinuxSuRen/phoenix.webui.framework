@@ -2,7 +2,6 @@ package org.suren.autotest.web.framework.selenium.strategy;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,6 +18,7 @@ import org.suren.autotest.web.framework.core.LocatorNotFoundException;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 查找元素策略，找不到对应的元素会抛出异常</br>
@@ -92,7 +92,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			}
 			by = By.id(paramId);
 		}
-		else if (StringUtils.isNoneBlank(element.getCSS()))
+		else if (StringUtils.isNotBlank(element.getCSS()))
 		{
 			String css = element.getCSS();
 			if(element instanceof AbstractElement)
@@ -145,7 +145,7 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			}
 			by = By.linkText(paramLinkText);
 		}
-		else if (StringUtils.isNoneBlank(element.getPartialLinkText()))
+		else if (StringUtils.isNotBlank(element.getPartialLinkText()))
 		{
 			String orginPartialLinkText = element.getPartialLinkText();
 			String paramPartialLinkText = orginPartialLinkText;

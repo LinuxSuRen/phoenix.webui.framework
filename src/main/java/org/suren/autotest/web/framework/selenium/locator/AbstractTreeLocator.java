@@ -6,13 +6,13 @@ package org.suren.autotest.web.framework.selenium.locator;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.suren.autotest.web.framework.core.LocatorAware;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 通过属性结构来定位元素的抽象父类

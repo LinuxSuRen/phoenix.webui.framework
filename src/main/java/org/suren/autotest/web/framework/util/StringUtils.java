@@ -6,13 +6,11 @@ package org.suren.autotest.web.framework.util;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 /**
  * @author suren
  * @date 2016年11月26日 上午10:22:04
  */
-public class StringUtil
+public class StringUtils
 {
 	/**
 	 * 把参数型的值进行转换
@@ -69,4 +67,48 @@ public class StringUtil
 		
 		return email(server);
 	}
+	
+    public static boolean isNotBlank(CharSequence cs) {
+        return !StringUtils.isBlank(cs);
+    }
+    
+    public static boolean isBlank(CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (Character.isWhitespace(cs.charAt(i)) == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+	/**
+	 * @param hostType
+	 * @param hostValue
+	 * @return
+	 */
+	public static boolean isAnyBlank(String hostType, String hostValue)
+	{
+		return StringUtils.isBlank(hostValue) || StringUtils.isBlank(hostType);
+	}
+
+	/**
+	 * @param clsName
+	 * @return
+	 */
+    public static String uncapitalize(String str)
+    {
+        int strLen;
+        if (str == null || (strLen = str.length()) == 0) 
+        {
+            return str;
+        }
+        return new StringBuilder(strLen)
+            .append(Character.toLowerCase(str.charAt(0)))
+            .append(str.substring(1))
+            .toString();
+    }
 }

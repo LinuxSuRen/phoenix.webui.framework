@@ -5,8 +5,10 @@ package org.suren.autotest.web.framework.validation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import javax.xml.XMLConstants;
@@ -45,11 +47,15 @@ public class Validation
 		{
 			Schema schema = factory.newSchema(xsdURL);
 			Validator validator = schema.newValidator();
-			validator.setErrorHandler(new AutoErrorHandler());
+//			validator.setErrorHandler(new AutoErrorHandler());
 
 			Source source = new StreamSource(xmlInput);
-			Result result = new StreamResult(new File(PathUtil.getRootDir(), xsdFile + ".xml"));
-			validator.validate(source, result);
+			
+			try(OutputStream resultOut = new FileOutputStream(new File(PathUtil.getRootDir(), xsdFile + ".xml")))
+			{
+				Result result = new StreamResult(resultOut);
+				validator.validate(source, result);
+			}
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 	<xs:element name="suite">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="page" type="suren:pageType" maxOccurs="unbounded">
+				<xs:element name="page" type="suren:suitePageType" maxOccurs="unbounded">
 					<xs:annotation>
 						<xs:documentation>
 							<![CDATA[用于测试的Page类配置。]]>
@@ -59,7 +59,7 @@
 		</xs:complexType>
 	</xs:element>
 	
-	<xs:complexType name="pageType">
+	<xs:complexType name="suitePageType">
 		<xs:sequence>
 			<xs:element name="actions" type="suren:actionsType">
 				<xs:annotation>
@@ -99,7 +99,7 @@
 
 	<xs:complexType name="actionType">
 		<xs:sequence>
-			<xs:element name="param" type="suren:paramType" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="param" type="suren:suiteParamType" minOccurs="0" maxOccurs="unbounded">
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="field" type="xs:string">
@@ -127,7 +127,7 @@
 		</xs:attributeGroup>
 	</xs:complexType>
 	
-	<xs:complexType name="paramType">
+	<xs:complexType name="suiteParamType">
 		<xs:attribute name="value" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>参数值</xs:documentation>

@@ -52,15 +52,15 @@ public class Image4SearchLog
 	@Autowired
 	private SeleniumEngine engine;
 	
+	private Properties pro = new Properties();
+	
 	private File outputDir;
 	private List<File> elementSearchImageFileList = new ArrayList<File>();
 	
 	private AnimatedGifEncoder animatedGifEncoder;
 	
-	@PostConstruct
-	public void init()
+	public Image4SearchLog()
 	{
-		Properties pro = new Properties();
 		try
 		{
 			Enumeration<URL> urls = Image4SearchLog.class.getClassLoader().getResources(LoggerConstants.IMG_LOG_CONF_FILE_NAME);
@@ -78,14 +78,28 @@ public class Image4SearchLog
 		{
 			LOGGER.error("Image4Search config file finding error.", e);
 		}
-		
-		outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR, System.getProperty("java.io.tmpdir"))); 
-		if(!outputDir.isDirectory())
+	}
+	
+	public File getOutputFile()
+	{
+		if(outputDir == null)
 		{
-			if(!outputDir.mkdirs()) {
-				LOGGER.error(String.format("Can not create img dir [%s].", outputDir));
+			outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR, System.getProperty("java.io.tmpdir"))); 
+			if(!outputDir.isDirectory())
+			{
+				if(!outputDir.mkdirs()) {
+					LOGGER.error(String.format("Can not create img dir [%s].", outputDir));
+				}
 			}
 		}
+		
+		return outputDir;
+	}
+	
+	@PostConstruct
+	public void init()
+	{
+		outputDir = getOutputFile(); 
 		
 		animatedGifEncoder = new AnimatedGifEncoder();
 		animatedGifEncoder.start(new File(outputDir, System.currentTimeMillis() + ".gif").getAbsolutePath());

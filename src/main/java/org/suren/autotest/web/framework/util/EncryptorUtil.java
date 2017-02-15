@@ -24,18 +24,19 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class EncryptorUtil
 {
+	public static final String ENCRYPT_FILE = "encrypt.properties";
 	public static final String ENCRYPT_KEY = "encrypt.key";
 	
 	/**
 	 * @return 从配置文件中获取私钥
 	 */
-	private static String getSecretKey()
+	public static String getSecretKey()
 	{
 		ClassLoader clsLoader = EncryptorUtil.class.getClassLoader();
 		Enumeration<URL> urls = null;
 		try
 		{
-			urls = clsLoader.getResources("encrypt.properties");
+			urls = clsLoader.getResources(ENCRYPT_FILE);
 		}
 		catch (IOException e1)
 		{

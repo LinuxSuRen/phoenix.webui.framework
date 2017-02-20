@@ -34,6 +34,12 @@ public class PathUtil
 		return rootFile;
 	}
 	
+	/**
+	 * 如果存在，则跳过，不复制
+	 * @param input
+	 * @param fileName
+	 * @return
+	 */
 	public static File copyFileToRoot(InputStream input, String fileName)
 	{
 		File rootFile = PathUtil.getRootDir();

@@ -24,8 +24,11 @@ import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_S
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,7 +41,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
@@ -60,6 +62,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.AutoTestException;
+import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 import org.suren.autotest.web.framework.util.PathUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
@@ -89,17 +92,14 @@ public class SeleniumEngine
 	private int			height;
 	private int			toolbarHeight;
 	
-	public SeleniumEngine()
-	{
-		System.out.println("engine 实例化");
-	}
+	public SeleniumEngine(){}
 	
 	/**
-	 * 浏览器引擎初始化
+	 * 初始化配置文件
 	 */
-	public void init()
+	public void initConfig()
 	{
-		InputStream  inputStream = null;
+//		InputStream  inputStream = null;
 		try
 		{
 			ClassLoader classLoader = this.getClass().getClassLoader();
@@ -108,10 +108,22 @@ public class SeleniumEngine
 			
 			System.getProperties().putAll(enginePro);
 		}
-		finally
+		catch (MalformedURLException e)
 		{
-			IOUtils.closeQuietly(inputStream);
+			e.printStackTrace();
 		}
+//		finally
+//		{
+//			IOUtils.closeQuietly(inputStream);
+//		}
+	}
+	
+	/**
+	 * 浏览器引擎初始化
+	 */
+	public void init()
+	{
+		initConfig();
 		
 		initCapMap();
 		
@@ -194,9 +206,22 @@ public class SeleniumEngine
 	/**
 	 * @return 引擎中的配置参数
 	 */
-	public final Map<Object, Object> getEngineConfig()
+	public Map<Object, Object> getEngineConfig()
 	{
 		return Collections.unmodifiableMap(enginePro == null ? new Properties() : enginePro);
+	}
+	
+	/**
+	 * @return 谷歌浏览器版本
+	 */
+	public String getChromeVer()
+	{
+		return enginePro.getProperty(DriverConstants.DRIVER_CHROME + ".version");
+	}
+	
+	public void setChromeVer(String ver)
+	{
+		enginePro.setProperty(DriverConstants.DRIVER_CHROME + ".version", ver);
 	}
 	
 	/**
@@ -316,17 +341,10 @@ public class SeleniumEngine
 	/**
 	 * 加载默认的engine
 	 * @param enginePro
+	 * @throws MalformedURLException 
 	 */
-	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro)
+	private void loadDefaultEnginePath(ClassLoader classLoader, Properties enginePro) throws MalformedURLException
 	{
-//		String remoteHome = enginePro.getProperty("webdriver.remote.home", "http://surenpi.com/webdriver/");
-		
-		URL ieDriverURL = classLoader.getResource("IEDriverServer.exe");
-		URL chromeDrvierURL = classLoader.getResource("chromedriver.exe");
-		
-		enginePro.put("webdriver.ie.driver", getLocalFilePath(ieDriverURL));
-		enginePro.put("webdriver.chrome.driver", getLocalFilePath(chromeDrvierURL));
-		
 		Enumeration<URL> resurceUrls = null;
 		URL defaultResourceUrl = null;
 		try
@@ -343,23 +361,11 @@ public class SeleniumEngine
 		{
 			return;
 		}
-
-		try
-		{
-			loadFromURL(enginePro, defaultResourceUrl);
-		}
-		catch (IOException e)
-		{
-			logger.error("loading engine error.", e);
-		}
 		
+		//这里包含所有的，包括jar中的
 		while(resurceUrls.hasMoreElements())
 		{
 			URL url = resurceUrls.nextElement();
-			if(url.equals(defaultResourceUrl))
-			{
-				continue;
-			}
 
 			try
 			{
@@ -370,15 +376,48 @@ public class SeleniumEngine
 				logger.error("loading engine error.", e);
 			}
 		}
-		
-		// TODO 没有实现对多个操作系统的兼容性设置
-		String os = System.getProperty("os.name");
-		if(!"Linux".equals(os))
+
+		try
 		{
+			//这里是运行类路径下的
+			loadFromURL(enginePro, defaultResourceUrl);
+		}
+		catch (IOException e)
+		{
+			logger.error("loading engine error.", e);
+		}
+		
+		//实现对多个操作系统的兼容性设置
+		String os = System.getProperty("os.name");
+		String arch = System.getProperty("os.arch");
+		String curDriverStr = getDriverStr();
+		
+		os = enginePro.getProperty("os.map.name." + os);
+		arch = enginePro.getProperty("os.map.arch." + arch);
+		String ver = enginePro.getProperty(curDriverStr + ".version");
+		
+		DriverMapping driverMapping = new DriverMapping();
+		driverMapping.init();
+		
+		URL driverURL = null;
+		String remoteDriverUrl = driverMapping.getUrl(curDriverStr, ver, os, arch);
+		if(remoteDriverUrl == null)
+		{
+			if(DRIVER_IE.equals(curDriverStr))
+			{
+				driverURL = classLoader.getResource("IEDriverServer.exe");
+			}
+			else if(DRIVER_CHROME.equals(curDriverStr))
+			{
+				driverURL = classLoader.getResource("chromedriver.exe");
+			}
 		}
 		else
 		{
+			driverURL = new URL(remoteDriverUrl);
 		}
+		
+		enginePro.put(String.format("webdriver.%s.driver", curDriverStr), getLocalFilePath(driverURL));
 	}
 	
 	private void loadFromURL(Properties enginePro, URL url) throws IOException
@@ -430,6 +469,46 @@ public class SeleniumEngine
 		{
 			return "";
 		}
+	}
+	
+	/**
+	 * @return
+	 */
+	public boolean storePro()
+	{
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		
+		return storePro(classLoader);
+	}
+	
+	/**
+	 * @param classLoader
+	 * @return
+	 */
+	public boolean storePro(ClassLoader classLoader)
+	{
+		URL defaultResourceUrl = classLoader.getResource(ENGINE_CONFIG_FILE_NAME);
+		try(OutputStream out = new FileOutputStream(
+				new File(URLDecoder.decode(defaultResourceUrl.getFile(), "utf-8"))))
+		{
+			enginePro.store(out, "");
+			
+			return true;
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/**

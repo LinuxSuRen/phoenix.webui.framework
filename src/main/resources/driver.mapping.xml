@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drivers base="http://surenpi.com/webdriver/">
+	<driver type="chrome" version="2.27">
+		<items>
+			<item arch="64" os="linux" path="chromedriver_2.27_linux_64" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.27.440174.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.27.440174.exe" />
+		</items>
+		
+		<supports>
+			<browser version="54"/>
+			<browser version="55"/>
+			<browser version="56"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.26">
+		<items>
+			<item arch="64" os="linux" />
+			<item arch="64" os="win32" path="chromedriver.2.26.436362.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.26.436362.exe" />
+		</items>
+		
+		<supports>
+			<browser version="53"/>
+			<browser version="54"/>
+			<browser version="55"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.25">
+		<supports>
+			<browser version="53"/>
+			<browser version="54"/>
+			<browser version="55"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.24">
+		<supports>
+			<browser version="52"/>
+			<browser version="53"/>
+			<browser version="54"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.23">
+		<supports>
+			<browser version="51"/>
+			<browser version="52"/>
+			<browser version="53"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.22">
+		<supports>
+			<browser version="49"/>
+			<browser version="50"/>
+			<browser version="51"/>
+			<browser version="52"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.21">
+		<supports>
+			<browser version="46"/>
+			<browser version="47"/>
+			<browser version="48"/>
+			<browser version="49"/>
+			<browser version="50"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.20">
+		<supports>
+			<browser version="43"/>
+			<browser version="44"/>
+			<browser version="45"/>
+			<browser version="46"/>
+			<browser version="47"/>
+			<browser version="48"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.19">
+		<supports>
+			<browser version="43"/>
+			<browser version="44"/>
+			<browser version="45"/>
+			<browser version="46"/>
+			<browser version="47"/>
+		</supports>
+	</driver>
+	<driver type="chrome" version="2.18">
+		<supports>
+			<browser version="43"/>
+			<browser version="44"/>
+			<browser version="45"/>
+			<browser version="46"/>
+		</supports>
+	</driver>
+</drivers>

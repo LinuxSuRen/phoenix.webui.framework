@@ -30,6 +30,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.25">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.25.426923.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.25.426923.exe" />
+		</items>
+		
 		<supports>
 			<browser version="53"/>
 			<browser version="54"/>
@@ -37,6 +46,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.24">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.24.417431.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.24.417431.exe" />
+		</items>
+		
 		<supports>
 			<browser version="52"/>
 			<browser version="53"/>
@@ -44,6 +62,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.23">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.23.409699.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.23.409699.exe" />
+		</items>
+		
 		<supports>
 			<browser version="51"/>
 			<browser version="52"/>
@@ -51,6 +78,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.22">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.22.397933.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.22.397933.exe" />
+		</items>
+		
 		<supports>
 			<browser version="49"/>
 			<browser version="50"/>
@@ -59,6 +95,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.21">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.21.371459.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.21.371459.exe" />
+		</items>
+		
 		<supports>
 			<browser version="46"/>
 			<browser version="47"/>
@@ -68,6 +113,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.20">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.20.353145.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.20.353145.exe" />
+		</items>
+		
 		<supports>
 			<browser version="43"/>
 			<browser version="44"/>
@@ -78,6 +132,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.19">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.19.346078.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.19.346078.exe" />
+		</items>
+		
 		<supports>
 			<browser version="43"/>
 			<browser version="44"/>
@@ -87,6 +150,15 @@
 		</supports>
 	</driver>
 	<driver type="chrome" version="2.18">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.9.248315.exe" />
+			<item arch="32" os="win32" path="chromedriver.2.9.248315.exe" />
+		</items>
+		
 		<supports>
 			<browser version="43"/>
 			<browser version="44"/>

@@ -29,7 +29,6 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
 
 /**
- * 浏览器和驱动对应关系
  * @author suren
  * @date 2017年2月20日 下午3:52:07
  */
@@ -37,9 +36,6 @@ public class DriverMapping
 {
 	private Document document;
 
-	/**
-	 * 读取配置
-	 */
 	public void init()
 	{
 		try(InputStream input = this.getClass().getClassLoader().getResourceAsStream("driver.mapping.xml");
@@ -67,13 +63,6 @@ public class DriverMapping
 		return getUrl(browser, ver, "win32", "32");
 	}
 	
-	/**
-	 * @param browser 浏览器类型
-	 * @param ver 浏览器版本
-	 * @param os 操作系统
-	 * @param arch 系统架构
-	 * @return 对应的驱动远程下载地址
-	 */
 	public String getUrl(String browser, String ver, String os, String arch)
 	{
 		String xpathStr = String.format("//drivers/driver[@type='%s']/supports/browser[@version='%s']",
@@ -92,11 +81,6 @@ public class DriverMapping
 					path = item.attributeValue("path");
 					break;
 				}
-			}
-			
-			if(path != null)
-			{
-				break;
 			}
 		}
 		

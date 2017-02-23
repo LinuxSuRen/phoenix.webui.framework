@@ -83,7 +83,7 @@ public class SettingUtil implements Closeable
 		if(context == null)
 		{
 			context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
-			"classpath*:applicationContext.xml"});
+			"classpath*:applicationContext.xml", "classpath*:beanScope.xml"});
 		}
 		
 		try
@@ -447,7 +447,7 @@ public class SettingUtil implements Closeable
 				}
 				catch (NoSuchBeanDefinitionException e)
 				{
-					logger.error("Page element [{}] parse error, in document [{}].", "pageClsStr", doc);
+					logger.error("Page element [{}] parse error, in document [{}].", pageClsStr, doc);
 					throw e;
 				}
 				catch (Exception e)
@@ -485,9 +485,7 @@ public class SettingUtil implements Closeable
 	private void parse(final String pageClsStr, String dataSrcClsStr,
 			Element ele) throws Exception
 	{
-//		final Class<?> pageCls = Class.forName(pageClsStr);
-		System.out.println(context);
-		final Object pageInstance = context.getBean(pageClsStr);
+		final Object pageInstance = getBean(pageClsStr);
 		final Class<?> pageCls = pageInstance.getClass();
 
 		String url = ele.attributeValue("url");
@@ -590,10 +588,6 @@ public class SettingUtil implements Closeable
 					logger.error(String.format("fieldName [%s]", fieldName), e);
 				}
 
-				// Object fieldValue = excelData.getValue(fieldName);
-				//
-				// BeanUtil.set(pageInstance, fieldName, fieldValue);
-				
 				node.accept(new FieldLocatorsVisitor(ele));
 			}
 		});
@@ -601,6 +595,51 @@ public class SettingUtil implements Closeable
 		pageMap.put(pageClsStr, (Page) pageInstance);
 	}
 	
+	/**
+	 * 先使用类的缩写，再使用类全程来查找
+	 * @param pageClsStr
+	 * @return
+	 */
+	private Object getBean(String pageClsStr)
+	{
+		String beanName = convertBeanName(pageClsStr);
+		
+		Object obj = null;
+		
+		try
+		{
+			obj = context.getBean(beanName);
+		}
+		catch(NoSuchBeanDefinitionException e)
+		{
+			obj = context.getBean(pageClsStr);
+		}
+		
+		return obj;
+	}
+
+	/**
+	 * 把类名称转为默认的bean名称
+	 * @param pageClsStr
+	 * @return
+	 */
+	private String convertBeanName(final String pageClsStr)
+	{
+		String result = pageClsStr;
+		int index = pageClsStr.lastIndexOf(".");
+
+		if(index < 0)
+		{
+			result = pageClsStr;
+		}
+		else
+		{
+			result = pageClsStr.substring(index + 1);
+		}
+		
+		return StringUtils.uncapitalize(result);
+	}
+
 	/**
 	 * 元素定位器信息解析
 	 * @author suren

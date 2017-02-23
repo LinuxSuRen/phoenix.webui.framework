@@ -96,6 +96,7 @@ public class StringUtils
 	}
 
 	/**
+	 * 把字符串转化为首字母小写
 	 * @param clsName
 	 * @return
 	 */

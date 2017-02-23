@@ -26,7 +26,7 @@ public class JsInvoker
 		
 		StringBuffer scriptBuf = new StringBuffer("var evt = document.createEvent('MouseEvents');");
 		scriptBuf.append("evt.initEvent('click',true,true);");
-		scriptBuf.append(String.format("var ele = document.getElementsByClassName('%s');", className));
+		scriptBuf.append(String.format("var ele = document.getElementsByClassName('%s');if(ele.length == 0){alert('can not found by %s');}", className, className));
 		scriptBuf.append("ele[0].dispatchEvent(evt);");
 		
 		execute(util, new String[]{scriptBuf.toString()});

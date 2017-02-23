@@ -54,7 +54,7 @@ public class PathUtil
 	
 	/**
 	 * 把目标文件拷贝到框架的缓存根目录中
-	 * @param input
+	 * @param input 需要调用者自行调用该输入流的close方法
 	 * @param targetFile
 	 * @return
 	 */

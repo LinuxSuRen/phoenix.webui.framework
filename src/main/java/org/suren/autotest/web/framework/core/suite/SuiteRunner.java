@@ -190,6 +190,11 @@ public class SuiteRunner
 			SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException, SAXException
 	{
 		String xmlConfPath = suite.getXmlConfPath();
+		if(StringUtils.isBlank(xmlConfPath))
+		{
+			throw new RuntimeException("Suite xml config is emtpy!");
+		}
+		
 		URL suitePathUrl = suite.getPathUrl();
 		try(SettingUtil settingUtil = new SettingUtil())
 		{

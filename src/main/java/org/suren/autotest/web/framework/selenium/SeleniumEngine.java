@@ -24,6 +24,7 @@ import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_S
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,6 +41,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -73,7 +76,7 @@ import org.suren.autotest.web.framework.util.StringUtils;
  * @since jdk1.6 2016年6月29日
  */
 @Component
-@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "autotest", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SeleniumEngine
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumEngine.class);
@@ -390,11 +393,11 @@ public class SeleniumEngine
 		//实现对多个操作系统的兼容性设置
 		String os = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
-		String curDriverStr = getDriverStr();
+		final String curDriverStr = getDriverStr();
 		
 		os = enginePro.getProperty("os.map.name." + os);
 		arch = enginePro.getProperty("os.map.arch." + arch);
-		String ver = enginePro.getProperty(curDriverStr + ".version");
+		final String ver = enginePro.getProperty(curDriverStr + ".version");
 		
 		DriverMapping driverMapping = new DriverMapping();
 		driverMapping.init();
@@ -428,6 +431,11 @@ public class SeleniumEngine
 		}
 	}
 	
+	/**
+	 * 从指定地址中获取驱动文件，并拷贝到框架根目录中。如果是zip格式的话，会自动解压。
+	 * @param url
+	 * @return 获取到的驱动文件绝对路径，如果没有找到返回空字符串
+	 */
 	private String getLocalFilePath(URL url)
 	{
 		if(url == null)
@@ -435,11 +443,13 @@ public class SeleniumEngine
 			return "";
 		}
 		
+		final String driverPrefix = "surenpi.com."; 
+		
 		File driverFile = null;
 		String protocol = url.getProtocol();
 		if("jar".equals(protocol) || "http".equals(protocol))
 		{
-			String driverFileName = ("surenpi.com." + new File(url.getFile()).getName());
+			String driverFileName = (driverPrefix + new File(url.getFile()).getName());
 			try(InputStream inputStream = url.openStream())
 			{
 				driverFile = PathUtil.copyFileToRoot(inputStream, driverFileName);
@@ -461,8 +471,34 @@ public class SeleniumEngine
 			}
 		}
 		
-		if(driverFile != null)
+		if(driverFile != null && driverFile.isFile())
 		{
+			//如果是以.zip为后缀的文件，则自动解压
+			if(driverFile.getName().endsWith(".zip"))
+			{
+				try(ZipInputStream zipIn = new ZipInputStream(new FileInputStream(driverFile)))
+				{
+					ZipEntry entry = zipIn.getNextEntry();
+					if(entry != null)
+					{
+						driverFile = new File(driverFile.getParent(), driverPrefix + entry.getName());
+						
+						if(!driverFile.isFile() || driverFile.length() != entry.getSize())
+						{
+							PathUtil.copyFileToRoot(zipIn, driverFile);
+						}
+					}
+				}
+				catch(FileNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
 			return driverFile.getAbsolutePath();
 		}
 		else

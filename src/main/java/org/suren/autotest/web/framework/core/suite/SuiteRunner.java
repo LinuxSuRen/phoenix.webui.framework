@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Map;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.suren.autotest.web.framework.core.ProgressInfo;
 import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
@@ -56,10 +58,46 @@ public class SuiteRunner
 			System.out.println(Arrays.toString(args));
 		}
 		
+		SuiteRunner suiteRunner = new SuiteRunner();
 		for(String path : args)
 		{
-			runFromClasspathFile(path);
+			suiteRunner.runFromClasspathFile(path);
 		}
+	}
+	
+	private ProgressInfo<String> progressInfo;
+	
+	public SuiteRunner()
+	{
+		setEmptyProgress();
+	}
+	
+	/**
+	 * @param progressInfo 进度信息设置接口
+	 */
+	public SuiteRunner(ProgressInfo<String> progressInfo)
+	{
+		this.progressInfo = progressInfo;
+		if(progressInfo == null)
+		{
+			setEmptyProgress();
+		}
+	}
+	
+	/**
+	 * 添加空白的进度保存实现
+	 */
+	private void setEmptyProgress()
+	{
+		this.progressInfo = new ProgressInfo<String>()
+		{
+
+			@Override
+			public void setInfo(String data)
+			{
+				//空实现，为了能提高效率
+			}
+		};
 	}
 	
 	/**
@@ -74,7 +112,7 @@ public class SuiteRunner
 	 * @throws InterruptedException
 	 * @throws SAXException 
 	 */
-	public static void runFromClasspathFile(String filePath)
+	public void runFromClasspathFile(String filePath)
 			throws IOException, DocumentException, NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException,
 			InterruptedException, SAXException
@@ -101,36 +139,33 @@ public class SuiteRunner
 		}
 	}
 	
-	public static void runFromFile(File runnerFile)
+	/**
+	 * 不抛出编译时异常，简单地进行打印
+	 * @param runnerFile
+	 */
+	public void runFromFileQuietly(File runnerFile)
 	{
-		if(runnerFile == null || !runnerFile.isFile())
+		try
 		{
-			return;
+			runFromFile(runnerFile);
 		}
-		
-		SuiteParser suiteParser = new SuiteParser();
-		
-		try(InputStream input4Valid = new FileInputStream(runnerFile))
-		{
-//			Validation.validationSuite(input4Valid);
-		}
-		catch (IOException e)
+		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
-//		catch (SAXException e)
-//		{
-//			e.printStackTrace();
-//		}
-
-		try(InputStream input = new FileInputStream(runnerFile))
+		catch (NoSuchFieldException e)
 		{
-			Suite suite = suiteParser.parse(input);
-			suite.setPathUrl(runnerFile.toURI().toURL());
-			
-			runSuite(suite);
+			e.printStackTrace();
 		}
-		catch (FileNotFoundException e)
+		catch (SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -142,34 +177,67 @@ public class SuiteRunner
 		{
 			e.printStackTrace();
 		}
-		catch (NoSuchFieldException e)
-		{
-			e.printStackTrace();
-		}
-		catch (SecurityException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IllegalArgumentException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (SAXException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 抛出所有运行时异常，需要调用则自行处理
+	 * @param runnerFile
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws DocumentException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InterruptedException
+	 * @throws SAXException
+	 */
+	public void runFromFile(File runnerFile) throws FileNotFoundException, IOException, DocumentException,
+		NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException,
+		InterruptedException, SAXException
+	{
+		if(runnerFile == null)
+		{
+			new IllegalArgumentException("Runner file param is null.");
+			return;
+		}
+		
+		if(!runnerFile.isFile())
+		{
+			new IllegalArgumentException(String.format("File [%s] is not a file.", runnerFile.getAbsolutePath()));
+		}
+		
+		SuiteParser suiteParser = new SuiteParser();
+//		try(InputStream input4Valid = new FileInputStream(runnerFile))
+//		{
+//			Validation.validationSuite(input4Valid);
+//			
+//			this.progressInfo.setInfo("文件有效性校验通过！");
+//		}
+
+		try(InputStream input = new FileInputStream(runnerFile))
+		{
+			Suite suite = suiteParser.parse(input);
+			
+			this.progressInfo.setInfo("文件解析完成！");
+			
+			suite.setPathUrl(runnerFile.toURI().toURL());
+			
+			this.progressInfo.setInfo("准备运行套件！");
+			
+			runSuite(suite);
+		}
+		finally
+		{
+			this.progressInfo.setInfo("套件运行完毕！");
 		}
 	}
 
@@ -185,7 +253,7 @@ public class SuiteRunner
 	 * @throws InterruptedException 
 	 * @throws SAXException 
 	 */
-	private static void runSuite(Suite suite)
+	private void runSuite(Suite suite)
 			throws IOException, DocumentException, NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException, SAXException
 	{
@@ -201,6 +269,8 @@ public class SuiteRunner
 			String[] xmlConfArray = xmlConfPath.split(",");
 			for(String xmlConf : xmlConfArray)
 			{
+				this.progressInfo.setInfo(String.format("解析元素定位配置文件[%s]！", xmlConf));
+				
 				if(suite.getPathUrl() != null)
 				{
 					File patentFile = new File(URLDecoder.decode(suitePathUrl.getFile(), "utf-8"));
@@ -220,9 +290,13 @@ public class SuiteRunner
 			Integer[] rowsArray = suite.getRowsArray();
 			for(int row : rowsArray)
 			{
+				long afterSleep = suite.getAfterSleep();
+				
+				this.progressInfo.setInfo(String.format("准备使用第[%s]组数据运行套件，然后休眠时间[%s]毫秒！", row, afterSleep));
+				
 				runSuiteWithData(settingUtil, row, pageList);
 				
-				Thread.sleep(suite.getAfterSleep());
+				Thread.sleep(afterSleep);
 			}
 		}
 	}
@@ -237,10 +311,12 @@ public class SuiteRunner
 	 * @throws IllegalAccessException
 	 * @throws InterruptedException
 	 */
-	private static void runSuiteWithData(SettingUtil settingUtil, int row, List<SuitePage> pageList)
+	private void runSuiteWithData(SettingUtil settingUtil, int row, List<SuitePage> pageList)
 			throws SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException
 	{
 		settingUtil.initData(row);
+		
+		this.progressInfo.setInfo("数据初始化完毕！");
 		
 		for(SuitePage suitePage : pageList)
 		{
@@ -248,7 +324,7 @@ public class SuiteRunner
 			Page page = (Page) settingUtil.getPage(pageCls);
 			if(page == null)
 			{
-				System.err.println(String.format("the page[%s] is null.", pageCls));
+				this.progressInfo.setInfo(String.format("the page[%s] is null.", pageCls));
 				continue;
 			}
 			
@@ -259,6 +335,13 @@ public class SuiteRunner
 			}
 			
 			List<SuiteAction> actionList = suitePage.getActionList();
+			if(actionList == null)
+			{
+				actionList = new ArrayList<SuiteAction>();
+			}
+			
+			this.progressInfo.setInfo(String.format("一共有[%s]个测试动作！开始测试！", actionList.size()));
+			
 			int repeat = suitePage.getRepeat();
 			for(int i = 0; i < repeat; i++)
 			{
@@ -278,7 +361,7 @@ public class SuiteRunner
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private static void performActionList(Page page, List<SuiteAction> actionList, SettingUtil settingUtil)
+	private void performActionList(Page page, List<SuiteAction> actionList, SettingUtil settingUtil)
 			throws SecurityException, InterruptedException,
 			IllegalArgumentException, IllegalAccessException
 	{
@@ -296,12 +379,12 @@ public class SuiteRunner
 				Object pageObj = settingUtil.getPage(otherPageStr);
 				if(pageObj == null)
 				{
-					logger.error(String.format("Can not found page [%s].", otherPageStr));
+					progressInfo.setInfo(String.format("Can not found page [%s].", otherPageStr));
 					continue;
 				}
 				else if(!(pageObj instanceof Page))
 				{
-					logger.error(String.format("Not the page class [%s].", otherPageStr));
+					progressInfo.setInfo(String.format("Not the page class [%s].", otherPageStr));
 					continue;
 				}
 				else
@@ -330,7 +413,8 @@ public class SuiteRunner
 //				settingUtil.initPageData(targetPage, 1);
 				
 				String actionResult = performAction(action, pageField, targetPage, settingUtil);
-				logger.debug("Action result : ", actionResult);
+				
+				progressInfo.setInfo(String.format("Action result : %s.", actionResult));
 			}
 			
 			Thread.sleep(action.getAfterSleep());
@@ -347,7 +431,7 @@ public class SuiteRunner
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private static String performAction(SuiteAction action, Field pageField, 
+	private String performAction(SuiteAction action, Field pageField, 
 			Page page, SettingUtil settingUtil)
 			throws IllegalArgumentException, IllegalAccessException
 	{
@@ -560,7 +644,7 @@ public class SuiteRunner
 	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T> T getFieldObj(Class<T> type, Field pageField, Object instance)
+	private <T> T getFieldObj(Class<T> type, Field pageField, Object instance)
 			throws IllegalArgumentException, IllegalAccessException
 	{
 		Object fieldObj = pageField.get(instance);

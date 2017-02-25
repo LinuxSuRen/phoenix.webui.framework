@@ -20,8 +20,8 @@
 	<driver type="chrome" version="2.26">
 		<items>
 			<item arch="64" os="linux" />
-			<item arch="64" os="win32" path="chromedriver.2.26.436362.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.26.436362.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.26.436362.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.26.436362.zip" />
 		</items>
 		
 		<supports>
@@ -36,8 +36,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.25.426923.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.25.426923.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.25.426923.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.25.426923.zip" />
 		</items>
 		
 		<supports>
@@ -52,8 +52,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.24.417431.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.24.417431.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.24.417431.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.24.417431.zip" />
 		</items>
 		
 		<supports>
@@ -68,8 +68,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.23.409699.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.23.409699.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.23.409699.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.23.409699.zip" />
 		</items>
 		
 		<supports>
@@ -84,8 +84,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.22.397933.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.22.397933.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.22.397933.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.22.397933.zip" />
 		</items>
 		
 		<supports>
@@ -101,8 +101,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.21.371459.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.21.371459.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.21.371459.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.21.371459.zip" />
 		</items>
 		
 		<supports>
@@ -119,8 +119,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.20.353145.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.20.353145.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.20.353145.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.20.353145.zip" />
 		</items>
 		
 		<supports>
@@ -138,8 +138,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.19.346078.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.19.346078.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.19.346078.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.19.346078.zip" />
 		</items>
 		
 		<supports>
@@ -156,8 +156,8 @@
 			<item arch="32" os="linux" path="" />
 			<item arch="64" os="mac" path="" />
 			<item arch="32" os="mac" path="" />
-			<item arch="64" os="win32" path="chromedriver.2.9.248315.exe" />
-			<item arch="32" os="win32" path="chromedriver.2.9.248315.exe" />
+			<item arch="64" os="win32" path="chromedriver.2.9.248315.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.9.248315.zip" />
 		</items>
 		
 		<supports>

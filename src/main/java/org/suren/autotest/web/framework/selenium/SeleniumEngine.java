@@ -390,6 +390,18 @@ public class SeleniumEngine
 			logger.error("loading engine error.", e);
 		}
 		
+		loadDriverFromMapping(classLoader, enginePro);
+	}
+	
+	/**
+	 * 从映射文件中，动态获取当前需要加载的浏览器驱动
+	 * @param classLoader
+	 * @param enginePro
+	 * @throws MalformedURLException 
+	 */
+	private void loadDriverFromMapping(ClassLoader classLoader, Properties enginePro)
+			throws MalformedURLException
+	{
 		//实现对多个操作系统的兼容性设置
 		String os = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
@@ -420,9 +432,15 @@ public class SeleniumEngine
 			driverURL = new URL(remoteDriverUrl);
 		}
 		
-		enginePro.put(String.format("webdriver.%s.driver", curDriverStr), getLocalFilePath(driverURL));
+		String driverPath = getLocalFilePath(driverURL);
+		if(StringUtils.isBlank(driverPath))
+		{
+			throw new RuntimeException("Driver path is empty!");
+		}
+		
+		enginePro.put(String.format("webdriver.%s.driver", curDriverStr), driverPath);
 	}
-	
+
 	private void loadFromURL(Properties enginePro, URL url) throws IOException
 	{
 		try(InputStream inputStream = url.openStream())
@@ -443,7 +461,7 @@ public class SeleniumEngine
 			return "";
 		}
 		
-		final String driverPrefix = "surenpi.com."; 
+ 		final String driverPrefix = "surenpi.com."; 
 		
 		File driverFile = null;
 		String protocol = url.getProtocol();
@@ -471,6 +489,17 @@ public class SeleniumEngine
 			}
 		}
 		
+		return fileProcess(driverFile, driverPrefix);
+	}
+	
+	/**
+	 * 处理经过压缩和没有压缩的文件
+	 * @param driverFile
+	 * @param driverPrefix
+	 * @return 返回非压缩文件的绝对路径
+	 */
+	private String fileProcess(File driverFile, String driverPrefix)
+	{
 		if(driverFile != null && driverFile.isFile())
 		{
 			//如果是以.zip为后缀的文件，则自动解压
@@ -483,7 +512,7 @@ public class SeleniumEngine
 					{
 						driverFile = new File(driverFile.getParent(), driverPrefix + entry.getName());
 						
-						if(!driverFile.isFile() || driverFile.length() != entry.getSize())
+						if(needCopy(driverFile, entry.getSize()))
 						{
 							PathUtil.copyFileToRoot(zipIn, driverFile);
 						}
@@ -504,6 +533,34 @@ public class SeleniumEngine
 		else
 		{
 			return "";
+		}
+	}
+
+	/**
+	 * 是否需要拷贝
+	 * @param driverFile
+	 * @param orginalSize
+	 * @return
+	 */
+	private boolean needCopy(File driverFile, long orginalSize)
+	{
+		if(driverFile.isDirectory())
+		{
+			String[] childList = driverFile.list();
+			
+			if((childList != null && childList.length > 0) || !driverFile.delete())
+			{
+				throw new RuntimeException(String.format("Directory [%s] is not empty or can not bean delete.", driverFile.getAbsolutePath()));
+			}
+		}
+		
+		if(!driverFile.isFile() || driverFile.length() != orginalSize)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	

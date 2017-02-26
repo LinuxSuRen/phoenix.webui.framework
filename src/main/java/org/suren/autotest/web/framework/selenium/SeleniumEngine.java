@@ -214,6 +214,11 @@ public class SeleniumEngine
 		return Collections.unmodifiableMap(enginePro == null ? new Properties() : enginePro);
 	}
 	
+	public void setProgressId(String key, String identify)
+	{
+		enginePro.put(key, identify);
+	}
+	
 	/**
 	 * @return 谷歌浏览器版本
 	 */

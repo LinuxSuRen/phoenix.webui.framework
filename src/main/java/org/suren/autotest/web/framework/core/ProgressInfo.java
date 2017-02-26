@@ -23,4 +23,14 @@ package org.suren.autotest.web.framework.core;
 public interface ProgressInfo<T>
 {
 	void setInfo(T data);
+	
+	void setIdentify(String id);
+	String getIdentify();
+	
+	void setStatus(int status);
+	
+	int ST_START = 0X1;
+	int ST_PROGRESS = 0X2;
+	int ST_NORMAL_END = 0X3;
+	int ST_ERROR_END = 0X4;
 }

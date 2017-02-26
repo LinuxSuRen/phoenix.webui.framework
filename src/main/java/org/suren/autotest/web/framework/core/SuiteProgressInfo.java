@@ -23,11 +23,25 @@ package org.suren.autotest.web.framework.core;
 public class SuiteProgressInfo implements ProgressInfo<String>
 {
 	private String msg;
+	private int status;
+	private String identify;
 
 	@Override
 	public void setInfo(String data)
 	{
 		this.msg = data;
+	}
+
+	@Override
+	public void setIdentify(String id)
+	{
+		this.identify = id;
+	}
+
+	@Override
+	public void setStatus(int status)
+	{
+		this.status = status;
 	}
 
 	/**
@@ -38,4 +52,19 @@ public class SuiteProgressInfo implements ProgressInfo<String>
 		return msg;
 	}
 
+	/**
+	 * @return the status
+	 */
+	public int getStatus()
+	{
+		return status;
+	}
+
+	/**
+	 * @return the identify
+	 */
+	public String getIdentify()
+	{
+		return identify;
+	}
 }

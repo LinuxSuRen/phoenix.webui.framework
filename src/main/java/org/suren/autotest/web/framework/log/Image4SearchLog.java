@@ -57,6 +57,7 @@ public class Image4SearchLog
 	
 	private Properties pro = new Properties();
 	
+	private String progressIdentify;
 	private File outputDir;
 	private List<File> elementSearchImageFileList = new ArrayList<File>();
 	
@@ -105,8 +106,10 @@ public class Image4SearchLog
 	{
 		outputDir = getOutputFile(); 
 		
+		progressIdentify = (String) engine.getEngineConfig().get("progress_identify");
+		
 		animatedGifEncoder = new AnimatedGifEncoder();
-		animatedGifEncoder.start(new File(outputDir, System.currentTimeMillis() + ".gif").getAbsolutePath());
+		animatedGifEncoder.start(new File(outputDir, progressIdentify + ".gif").getAbsolutePath());
 		animatedGifEncoder.setDelay(800);
 		animatedGifEncoder.setRepeat(0);
 	}
@@ -140,7 +143,7 @@ public class Image4SearchLog
 				//
 			}
 			
-			File elementSearchImageFile = new File(outputDir, file.getName());
+			File elementSearchImageFile = new File(outputDir, progressIdentify + "_" + System.currentTimeMillis() + ".png");
 			try(OutputStream output = new FileOutputStream(elementSearchImageFile))
 			{
 				ImageIO.write(bufImg, "gif", output);

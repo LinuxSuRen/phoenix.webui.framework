@@ -91,12 +91,21 @@ public class SuiteRunner
 	{
 		this.progressInfo = new ProgressInfo<String>()
 		{
+			//空实现，为了能提高效率
+			@Override
+			public void setInfo(String data){}
 
 			@Override
-			public void setInfo(String data)
+			public void setIdentify(String id){}
+
+			@Override
+			public String getIdentify()
 			{
-				//空实现，为了能提高效率
+				return null;
 			}
+
+			@Override
+			public void setStatus(int status){}
 		};
 	}
 	
@@ -283,6 +292,8 @@ public class SuiteRunner
 					settingUtil.readFromClassPath(xmlConf);
 				}
 			}
+			
+			settingUtil.getEngine().setProgressId("progress_identify", progressInfo.getIdentify());
 			
 			List<SuitePage> pageList = suite.getPageList();
 			

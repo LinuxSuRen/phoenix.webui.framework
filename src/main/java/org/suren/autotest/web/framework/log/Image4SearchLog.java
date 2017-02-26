@@ -34,6 +34,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
@@ -45,6 +47,7 @@ import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
  */
 @Component
 @Aspect
+@Scope(value = "autotest", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Image4SearchLog
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Image4SearchLog.class);
@@ -63,7 +66,8 @@ public class Image4SearchLog
 	{
 		try
 		{
-			Enumeration<URL> urls = Image4SearchLog.class.getClassLoader().getResources(LoggerConstants.IMG_LOG_CONF_FILE_NAME);
+			Enumeration<URL> urls = Image4SearchLog.class.getClassLoader().getResources(
+					LoggerConstants.IMG_LOG_CONF_FILE_NAME);
 			while(urls.hasMoreElements())
 			{
 				URL url = urls.nextElement();

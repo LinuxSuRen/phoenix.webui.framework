@@ -316,7 +316,7 @@ public class SuiteRunner
 	{
 		settingUtil.initData(row);
 		
-		this.progressInfo.setInfo("数据初始化完毕！");
+		this.progressInfo.setInfo(String.format("数据初始化完毕！共有[%s]个测试页面！", pageList.size()));
 		
 		for(SuitePage suitePage : pageList)
 		{
@@ -340,7 +340,7 @@ public class SuiteRunner
 				actionList = new ArrayList<SuiteAction>();
 			}
 			
-			this.progressInfo.setInfo(String.format("一共有[%s]个测试动作！开始测试！", actionList.size()));
+			this.progressInfo.setInfo(String.format("页面[%s]一共有[%s]个测试动作！开始测试！", pageCls, actionList.size()));
 			
 			int repeat = suitePage.getRepeat();
 			for(int i = 0; i < repeat; i++)
@@ -437,6 +437,8 @@ public class SuiteRunner
 	{
 		String name = action.getName();
 		String invoker = action.getInvoker();
+		
+		progressInfo.setInfo(String.format("Field [%s] perform Action [%s].", pageField.getName(), name));
 		
 		String actionResult = "void";
 		

@@ -18,41 +18,51 @@ public class SuRenCompiler implements ICompilationUnit
     private File file;
     private String workDir;
 
-    public SuRenCompiler(File file, String workDir) {
+    public SuRenCompiler(File file, String workDir)
+    {
         this.file = file;
         this.workDir = workDir;
     }
 
-    public char[] getContents() {
-        try {
-            return FileUtils.readFileToString(file).toCharArray();
-        } catch (IOException e) {
+    public char[] getContents()
+    {
+        try
+        {
+            return FileUtils.readFileToString(file, "utf-8").toCharArray();
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    public char[] getMainTypeName() {
+    public char[] getMainTypeName()
+    {
         return file.getName().replace(".java", "").toCharArray();
     }
 
-    public char[][] getPackageName() {
+    public char[][] getPackageName()
+    {
         String fullPkgName = this.file.getParentFile().getAbsolutePath().replace(workDir, "");
         fullPkgName = fullPkgName.replace("/", ".").replace("\\", ".");
         if (fullPkgName.startsWith("."))
             fullPkgName = fullPkgName.substring(1);
         String[] items = fullPkgName.split("[.]");
         char[][] pkgName = new char[items.length][];
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++)
+        {
             pkgName[i] = items[i].toCharArray();
         }
         return pkgName;
     }
 
-    public boolean ignoreOptionalProblems() {
+    public boolean ignoreOptionalProblems()
+    {
         return false;
     }
 
-    public char[] getFileName() {
+    public char[] getFileName()
+    {
         return this.file.getName().toCharArray();
     }
 }

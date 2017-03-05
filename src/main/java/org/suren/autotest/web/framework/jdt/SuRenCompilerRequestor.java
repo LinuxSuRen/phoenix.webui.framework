@@ -25,26 +25,36 @@ public class SuRenCompilerRequestor implements ICompilerRequestor
 		this.workDir = workDir;
 	}
 	
-    public void acceptResult(CompilationResult result) {
-        if (result.hasErrors()) {
-            for (IProblem problem : result.getErrors()) {
+    public void acceptResult(CompilationResult result)
+    {
+        if(result.hasErrors())
+        {
+            for(IProblem problem : result.getErrors())
+            {
                 String className = new String(problem.getOriginatingFileName()).replace("/", ".");
                 className = className.substring(0, className.length() - 5);
                 String message = problem.getMessage();
-                if (problem.getID() == IProblem.CannotImportPackage) {
+                
+                if (problem.getID() == IProblem.CannotImportPackage)
+                {
                     message = problem.getArguments()[0] + " cannot be resolved";
                 }
+                
                 throw new RuntimeException(className + ":" + message);
             }
         }
 
         ClassFile[] clazzFiles = result.getClassFiles();
-        for (int i = 0; i < clazzFiles.length; i++) {
+        for (int i = 0; i < clazzFiles.length; i++)
+        {
             String clazzName = join(clazzFiles[i].getCompoundName());
             File target = new File(workDir, clazzName.replace(".", "/") + ".class");
-            try {
+            try
+            {
                 FileUtils.writeByteArrayToFile(target, clazzFiles[i].getBytes());
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 throw new RuntimeException(e);
             }
         }

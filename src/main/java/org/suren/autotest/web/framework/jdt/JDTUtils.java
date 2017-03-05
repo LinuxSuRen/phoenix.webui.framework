@@ -99,8 +99,10 @@ public class JDTUtils
         IProblemFactory problemFactory = new DefaultProblemFactory(Locale.ENGLISH);
         IErrorHandlingPolicy policy = DefaultErrorHandlingPolicies.exitOnFirstError();
  
+        CompilerOptions compilerOptions = getCompilerOptions();
+        
         org.eclipse.jdt.internal.compiler.Compiler jdtCompiler =
-                new org.eclipse.jdt.internal.compiler.Compiler(env, policy, getCompilerOptions(),
+                new org.eclipse.jdt.internal.compiler.Compiler(env, policy, compilerOptions,
                         compilerRequestor, problemFactory);
  
         ICompilationUnit[] unit = new ICompilationUnit[] {new SuRenCompiler(srcFile, workDir)};;
@@ -115,11 +117,16 @@ public class JDTUtils
 		compileFile(new File(workDir, srcCodeFile));
 	}
 	
-    private CompilerOptions getCompilerOptions() {
+    private CompilerOptions getCompilerOptions()
+    {
+    	String javaVersion = CompilerOptions.VERSION_1_7;
+    	
         Map<String, String> settings = new HashMap<String, String>();
-        String javaVersion = CompilerOptions.VERSION_1_7;
         settings.put(CompilerOptions.OPTION_Source, javaVersion);
+        settings.put( CompilerOptions.OPTION_TargetPlatform, javaVersion);
         settings.put(CompilerOptions.OPTION_Compliance, javaVersion);
+        settings.put(CompilerOptions.OPTION_Encoding, "utf-8");
+        
         return new CompilerOptions(settings);
     }
 }

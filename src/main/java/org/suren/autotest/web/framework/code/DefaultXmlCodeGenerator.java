@@ -77,7 +77,10 @@ public class DefaultXmlCodeGenerator implements Generator
 		{
 			try(InputStream inputStream = new FileInputStream(new File(srcCoding)))
 			{
-				Document document = new SAXReader().read(inputStream);
+				SAXReader saxReader = new SAXReader();
+				saxReader.setEncoding("utf-8");
+				
+				Document document = saxReader.read(inputStream);
 				
 				read(document);
 			}

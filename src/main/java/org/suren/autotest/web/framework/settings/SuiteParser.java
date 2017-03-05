@@ -36,7 +36,10 @@ public class SuiteParser
 	 */
 	public Suite parse(InputStream suiteInputStream) throws DocumentException
 	{
-		Document document = new SAXReader().read(suiteInputStream);
+		SAXReader reader = new SAXReader();
+		reader.setEncoding("utf-8");
+		
+		Document document = reader.read(suiteInputStream);
 		
 		simpleNamespaceContext.addNamespace("ns", "http://suite.surenpi.com");
 		

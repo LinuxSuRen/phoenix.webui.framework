@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.action.AdvanceValueEditor;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -31,6 +32,8 @@ public class Text extends AbstractElement
 
 	@Autowired
 	private ValueEditor	valueEditor;
+	@Autowired
+	private AdvanceValueEditor advanceValueEditor;
 	@Autowired
 	private ClickAble	clickAble;
 	@Autowired
@@ -65,7 +68,6 @@ public class Text extends AbstractElement
 		String val4Fill = value;
 		if(StringUtils.isNotBlank(callback))
 		{
-			System.out.println(Thread.currentThread().getName());;
 			String methodName = "execute";
 			String callbackClsName = callback;
 			
@@ -128,6 +130,148 @@ public class Text extends AbstractElement
 		}
 		
 		valueEditor.setValue(this, val4Fill);
+		
+		return this;
+	}
+	
+	public Text appendValue()
+	{
+		String val4Fill = value;
+		if(StringUtils.isNotBlank(callback))
+		{
+			String methodName = "execute";
+			String callbackClsName = callback;
+			
+			int methodIndex = callback.indexOf("!");
+			if(methodIndex != -1 && !callback.endsWith("!"))
+			{
+				methodName = callback.substring(methodIndex + 1);
+				callbackClsName = callback.substring(0, methodIndex);
+			}
+			
+			try
+			{
+				if(!callbackClsName.contains("."))
+				{
+					//这种情况下，就调用框架内部的类
+					Map<Object, Object> engineConfig = engine.getEngineConfig();
+					String pkg = (String) engineConfig.get("invoker.package");
+					if(StringUtils.isBlank(pkg))
+					{
+						pkg = "org.suren.autotest.web.framework.invoker";
+					}
+					
+					callbackClsName = (pkg + "." + callbackClsName);
+				}
+				
+				Class<?> callbackCls = Class.forName(callbackClsName);
+				Method callbackMethod = callbackCls.getMethod(methodName,
+						SeleniumEngine.class, String.class);
+				
+				Object result = callbackMethod.invoke(null, engine, value);
+				if(result != null)
+				{
+					val4Fill = result.toString();
+				}
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (NoSuchMethodException e)
+			{
+				e.printStackTrace();
+			}
+			catch (SecurityException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (InvocationTargetException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		advanceValueEditor.appendValue(this, val4Fill);
+		
+		return this;
+	}
+	
+	public Text fillNotBlankValue()
+	{
+		String val4Fill = value;
+		if(StringUtils.isNotBlank(callback))
+		{
+			String methodName = "execute";
+			String callbackClsName = callback;
+			
+			int methodIndex = callback.indexOf("!");
+			if(methodIndex != -1 && !callback.endsWith("!"))
+			{
+				methodName = callback.substring(methodIndex + 1);
+				callbackClsName = callback.substring(0, methodIndex);
+			}
+			
+			try
+			{
+				if(!callbackClsName.contains("."))
+				{
+					//这种情况下，就调用框架内部的类
+					Map<Object, Object> engineConfig = engine.getEngineConfig();
+					String pkg = (String) engineConfig.get("invoker.package");
+					if(StringUtils.isBlank(pkg))
+					{
+						pkg = "org.suren.autotest.web.framework.invoker";
+					}
+					
+					callbackClsName = (pkg + "." + callbackClsName);
+				}
+				
+				Class<?> callbackCls = Class.forName(callbackClsName);
+				Method callbackMethod = callbackCls.getMethod(methodName,
+						SeleniumEngine.class, String.class);
+				
+				Object result = callbackMethod.invoke(null, engine, value);
+				if(result != null)
+				{
+					val4Fill = result.toString();
+				}
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (NoSuchMethodException e)
+			{
+				e.printStackTrace();
+			}
+			catch (SecurityException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (InvocationTargetException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		advanceValueEditor.fillNotBlankValue(this, val4Fill);
 		
 		return this;
 	}

@@ -178,7 +178,21 @@
 			<xs:enumeration value="fillValue">
 				<xs:annotation>
 					<xs:documentation>
-						<![CDATA[填入文本。]]>
+						<![CDATA[清空后填入文本，适合文本框、文本域。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="appendValue">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[追加的方式填入文本，适合文本框、文本域。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fillNotBlankValue">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[清空后填入非空文本（不可以全部是空白字符），适合文本框、文本域。]]>
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>

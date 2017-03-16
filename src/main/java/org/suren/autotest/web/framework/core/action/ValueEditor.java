@@ -12,14 +12,12 @@ public interface ValueEditor extends Status
 {
 	/**
 	 * 获取值
-	 * 
 	 * @return
 	 */
 	Object getValue(Element ele);
 
 	/**
-	 * 设置值
-	 * 
+	 * 设置值（清空原有值）
 	 * @param value
 	 */
 	void setValue(Element ele, Object value);

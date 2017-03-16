@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.action.AdvanceValueEditor;
 import org.suren.autotest.web.framework.core.action.ValueEditor;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 给文本框中填入值
@@ -21,7 +23,7 @@ import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
  * @since jdk1.6 2016年6月29日
  */
 @Component
-public class SeleniumValueEditor implements ValueEditor
+public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumValueEditor.class);
 
@@ -41,6 +43,33 @@ public class SeleniumValueEditor implements ValueEditor
 	  */
 	@Override
 	public void setValue(Element ele, Object value)
+	{
+		fillValue(ele, value, false);
+	}
+
+	@Override
+	public void appendValue(Element ele, Object value)
+	{
+		fillValue(ele, value, true);
+	}
+
+	@Override
+	public void fillNotBlankValue(Element ele, Object value)
+	{
+		if(value == null || StringUtils.isBlank(value.toString()))
+		{
+			throw new RuntimeException("Can not allow null or empty value!");
+		}
+		
+		fillValue(ele, value, true);
+	}
+	
+	/**
+	 * @param ele
+	 * @param value
+	 * @param append 是否追加
+	 */
+	private void fillValue(Element ele, Object value, boolean append)
 	{
 		if(value == null)
 		{
@@ -62,7 +91,10 @@ public class SeleniumValueEditor implements ValueEditor
 				String valueStr = value.toString();
 				
 				webEle.click();
-				webEle.clear();
+				if(!append)
+				{
+					webEle.clear();
+				}
 				webEle.sendKeys(value.toString());
 				
 				if("input".equals(webEle.getTagName()))
@@ -70,7 +102,10 @@ public class SeleniumValueEditor implements ValueEditor
 					if(!valueStr.equals(webEle.getAttribute("value")))
 					{
 						webEle.click();
-						webEle.clear();
+						if(!append)
+						{
+							webEle.clear();
+						}
 						webEle.sendKeys(value.toString());
 					}
 				}
@@ -82,7 +117,10 @@ public class SeleniumValueEditor implements ValueEditor
 					((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
 
 					webEle.click();
-					webEle.clear();
+					if(!append)
+					{
+						webEle.clear();
+					}
 					webEle.sendKeys(value.toString());
 				}
 				else

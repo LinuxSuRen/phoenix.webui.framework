@@ -473,6 +473,20 @@ public class SuiteRunner
 					text.fillValue();
 				}
 				break;
+			case "appendValue":
+				Text textAppend = getFieldObj(Text.class, pageField, page);
+				if(textAppend != null)
+				{
+					textAppend.appendValue();
+				}
+				break;
+			case "fillNotBlankValue":
+				Text textNotBlank = getFieldObj(Text.class, pageField, page);
+				if(textNotBlank != null)
+				{
+					textNotBlank.fillNotBlankValue();
+				}
+				break;
 			case "upload":
 				FileUpload fileUpload = getFieldObj(FileUpload.class, pageField, page);
 				if(fileUpload != null)
@@ -642,6 +656,9 @@ public class SuiteRunner
 				}
 				
 				break;
+				
+				default:
+					throw new RuntimeException("未知的操作：" + name);
 		}
 		
 		return actionResult;

@@ -412,8 +412,14 @@ public class SeleniumEngine
 		String arch = System.getProperty("os.arch");
 		final String curDriverStr = getDriverStr();
 		
-		os = enginePro.getProperty("os.map.name." + os);
-		arch = enginePro.getProperty("os.map.arch." + arch);
+		String commonOs = enginePro.getProperty("os.map.name." + os);
+		String commonArch = enginePro.getProperty("os.map.arch." + arch);
+		
+		if(StringUtils.isAnyBlank(commonOs, commonArch))
+		{
+			throw new RuntimeException(String.format("unknow os [%s] and arch [%s].", os, arch));
+		}
+		
 		final String ver = enginePro.getProperty(curDriverStr + ".version");
 		
 		DriverMapping driverMapping = new DriverMapping();

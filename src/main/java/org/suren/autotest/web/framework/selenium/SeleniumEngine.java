@@ -426,7 +426,7 @@ public class SeleniumEngine
 		driverMapping.init();
 		
 		URL driverURL = null;
-		String remoteDriverUrl = driverMapping.getUrl(curDriverStr, ver, os, arch);
+		String remoteDriverUrl = driverMapping.getUrl(curDriverStr, ver, commonOs, commonArch);
 		if(remoteDriverUrl == null)
 		{
 			if(DRIVER_IE.equals(curDriverStr))

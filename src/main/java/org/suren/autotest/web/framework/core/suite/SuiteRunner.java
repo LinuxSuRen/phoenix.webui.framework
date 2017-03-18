@@ -557,9 +557,8 @@ public class SuiteRunner
 			case "invoke":
 				if(StringUtils.isBlank(invoker))
 				{
-					logger.error("The action in page [{}] is invoke, "
-							+ "but can not found invoker [{}].", page.getClass(), invoker);
-					break;
+					throw new RuntimeException(String.format("The action in page [%s] is invoke, "
+							+ "but can not found invoker [%s].", page.getClass(), invoker));
 				}
 				
 				String[] invokers = invoker.split("!");
@@ -588,10 +587,14 @@ public class SuiteRunner
 				catch (ClassNotFoundException e)
 				{
 					e.printStackTrace();
+					
+					throw new RuntimeException(String.format("Can not found invoker [%s].", invokeCls));
 				}
 				catch (SecurityException e)
 				{
 					e.printStackTrace();
+					
+					throw new RuntimeException(String.format("Execute invoker [%s] has security error.", invokeCls));
 				}
 				
 				List<String> paramList = action.getParamList();

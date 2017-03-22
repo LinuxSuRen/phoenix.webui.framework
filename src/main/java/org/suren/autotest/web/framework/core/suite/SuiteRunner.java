@@ -18,6 +18,12 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
@@ -32,6 +38,7 @@ import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 import org.suren.autotest.web.framework.settings.SuiteParser;
 import org.suren.autotest.web.framework.util.StringUtils;
+import org.suren.autotest.web.framework.util.ThreadUtil;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
@@ -66,6 +73,7 @@ public class SuiteRunner
 	}
 	
 	private ProgressInfo<String> progressInfo;
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
 	
 	public SuiteRunner()
 	{
@@ -413,22 +421,78 @@ public class SuiteRunner
 			catch (NoSuchFieldException e)
 			{
 				e.printStackTrace();
+				
+				throw new RuntimeException(String.format("Can not found field [%s] from class [%].", field, targetPage));
 			}
 			
-			Thread.sleep(action.getBeforeSleep());
+			//防止一个任务长期执行
+			PerformAction performAction = new PerformAction(action, pageField,
+					targetPage, settingUtil, progressInfo);
+			Future<?> future = executor.submit(performAction);
+			
+			try
+			{
+				future.get(1, TimeUnit.MINUTES);
+			}
+			catch (ExecutionException | TimeoutException e)
+			{
+				e.printStackTrace();
+				
+				future.cancel(true);
+			}
+		}
+	}
+	
+	private class PerformAction implements Runnable
+	{
+		private SuiteAction	action;
+		private Field	pageField;
+		private Page	targetPage;
+		private SettingUtil	settingUtil;
+		private ProgressInfo<String>	progressInfo;
+
+		private PerformAction(SuiteAction action, Field pageField, Page targetPage,
+				SettingUtil settingUtil, ProgressInfo<String> progressInfo)
+		{
+			this.action = action;
+			this.pageField = pageField;
+			this.targetPage = targetPage;
+			this.settingUtil = settingUtil;
+			this.progressInfo = progressInfo;
+		}
+
+		@Override
+		public void run()
+		{
+			if(action.getBeforeSleep() > 0)
+			{
+				ThreadUtil.silentSleep(action.getBeforeSleep());
+			}
 			
 			int repeat = action.getRepeat();
 
 			for(int i = 0; i < repeat; i++)
 			{
-//				settingUtil.initPageData(targetPage, 1);
+				String actionResult;
 				
-				String actionResult = performAction(action, pageField, targetPage, settingUtil);
+				try
+				{
+					actionResult = performAction(action, pageField, targetPage, settingUtil);
+				}
+				catch (IllegalArgumentException | IllegalAccessException e)
+				{
+					e.printStackTrace();
+					
+					actionResult = e.getLocalizedMessage();
+				}
 				
 				progressInfo.setInfo(String.format("Action result : %s.", actionResult));
 			}
 			
-			Thread.sleep(action.getAfterSleep());
+			if(action.getAfterSleep() > 0)
+			{
+				ThreadUtil.silentSleep(action.getAfterSleep());
+			}
 		}
 	}
 

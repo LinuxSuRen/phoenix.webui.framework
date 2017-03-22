@@ -14,4 +14,9 @@ public interface ElementSearchStrategy<T>
 	 * @return
 	 */
 	T search(Element element);
+	
+	/**
+	 * @return 当前策略的描述信息
+	 */
+	String description();
 }

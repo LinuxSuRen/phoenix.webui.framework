@@ -38,6 +38,7 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, Pa
 	
 	private int failedCount = 0;
 	private int maxFailed = 6;
+	private int timeout = 1500;
 	
 	private WebElement parentWebElement;
 
@@ -114,7 +115,6 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, Pa
 		}
 		else
 		{
-			int timeout = 1500;
 			logger.warn("Can not found element by locator {}, "
 					+ "will retry locate again {} millis later, failed times {}.",
 					absLocator, timeout, failedCount);
@@ -126,5 +126,12 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, Pa
 	@Override
 	public void setParent(WebElement parentWebElement) {
 		this.parentWebElement = parentWebElement;
+	}
+
+	@Override
+	public String description()
+	{
+		return String.format("区域搜索策略，按照元素的区域划分，分层次地进行多次定位搜索。每次元素查找失败，"
+				+ "都会进行重试（%s次），每次失败后的超时时间为%s毫秒。", maxFailed, timeout);
 	}
 }

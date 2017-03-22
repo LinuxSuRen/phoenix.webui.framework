@@ -224,4 +224,11 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 	{
 		this.parentElement = parentWebElement;
 	}
+
+	@Override
+	public String description()
+	{
+		return "根据预先给定的元素定位方法优先级进行搜索，直到找到元素或者定位方法穷举完毕。"
+				+ "如果元素指定了显式的查找超时时间，则采用可见性的超时等待。";
+	}
 }

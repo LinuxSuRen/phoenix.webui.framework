@@ -108,4 +108,10 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 		return engine.getDriver().findElement(by);
 	}
 
+	@Override
+	public String description()
+	{
+		return "循环元素定位搜索策略。";
+	}
+
 }

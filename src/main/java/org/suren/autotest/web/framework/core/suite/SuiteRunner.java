@@ -428,18 +428,19 @@ public class SuiteRunner
 			//防止一个任务长期执行
 			PerformAction performAction = new PerformAction(action, pageField,
 					targetPage, settingUtil, progressInfo);
-			Future<?> future = executor.submit(performAction);
-			
-			try
-			{
-				future.get(1, TimeUnit.MINUTES);
-			}
-			catch (ExecutionException | TimeoutException e)
-			{
-				e.printStackTrace();
-				
-				future.cancel(true);
-			}
+			performAction.run();
+//			Future<?> future = executor.submit(performAction);
+//			
+//			try
+//			{
+//				future.get(1, TimeUnit.MINUTES);
+//			}
+//			catch (ExecutionException | TimeoutException e)
+//			{
+//				e.printStackTrace();
+//				
+//				future.cancel(true);
+//			}
 		}
 	}
 	

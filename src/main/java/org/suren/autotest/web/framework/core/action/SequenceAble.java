@@ -25,4 +25,9 @@ public interface SequenceAble
 	 * @return 当前序列操作的名称
 	 */
 	String getName();
+	
+	/**
+	 * @return 描述信息
+	 */
+	String getDescription();
 }

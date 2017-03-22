@@ -113,4 +113,10 @@ public class SeleniumJqGridSequenceOperation implements SequenceAble
 		return "jqgrid";
 	}
 
+	@Override
+	public String getDescription()
+	{
+		return "基于jqgrid的连续操作";
+	}
+
 }

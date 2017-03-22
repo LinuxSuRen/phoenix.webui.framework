@@ -90,4 +90,10 @@ public class SeleniumZTreeSequenceOperation implements SequenceAble
 		return "ztree";
 	}
 
+	@Override
+	public String getDescription()
+	{
+		return "基于ztree实现的连续操作";
+	}
+
 }

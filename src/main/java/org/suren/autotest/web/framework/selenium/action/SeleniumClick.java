@@ -1,6 +1,19 @@
-/**
-* Copyright © 1998-2016, Glodon Inc. All Rights Reserved.
-*/
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.suren.autotest.web.framework.selenium.action;
 
 import java.awt.AWTException;
@@ -22,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.action.ClickAble;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
@@ -39,6 +53,10 @@ public class SeleniumClick implements ClickAble
 {
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumClick.class);
 	
+	/** 失败后重试的最大次数 */
+	private int maxRetry = 3;
+	private int errorTimes = 0;
+	
 	@Autowired
 	private SeleniumEngine			engine;
 	@Autowired
@@ -47,15 +65,23 @@ public class SeleniumClick implements ClickAble
 	@Override
 	public void click(Element ele)
 	{
-		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
+		if(errorTimes >= maxRetry)
+		{
+			return;
+		}
+		
+		ElementSearchStrategy<WebElement> searchStrategy =
+				searchStrategyUtils.findStrategy(WebElement.class, ele);
+		WebElement webEle = searchStrategy.search(ele);
 		if(webEle == null)
 		{
-			logger.warn("can not found element.");
-			return;
+			throw new RuntimeException(String.format("Element [%s] can not found "
+					+ "by strategy [%s]!", ele, searchStrategy));
 		}
 		
 		try
 		{
+			//对于远程服务的文件上传，不移动鼠标
 			if(!(ele instanceof FileUpload) && !(engine.getDriver() instanceof RemoteWebDriver))
 			{
 				Dimension size = webEle.getSize();
@@ -67,9 +93,11 @@ public class SeleniumClick implements ClickAble
 				new Robot().mouseMove(x, y);
 			}
 			
+			webEle.click();
+			
+			//如果是a标签锚点的话，根据target属性来决定是否要切换window句柄
 			String tagName = webEle.getTagName();
 			String targetAttr = webEle.getAttribute("target");
-			webEle.click();
 			if("a".equals(tagName) && "_blank".equals(targetAttr))
 			{
 				WebDriver driver = engine.getDriver();
@@ -82,27 +110,26 @@ public class SeleniumClick implements ClickAble
 					driver.switchTo().window(name);
 				}
 			}
+			
+			errorTimes = 0;
 		}
 		catch(WebDriverException e)
 		{
+			logger.error("元素点击操作发生错误。", e);
+			errorTimes++;
+			
+			//如果由于目标元素不在可见区域导致的异常，尝试滚动屏幕
 			if(e.getMessage().contains("is not clickable at point"))
 			{
+				logger.info("Will retry click operation, after element move.");
+				
 				new Actions(engine.getDriver()).moveToElement(webEle, -50, -50).perform();
 				
 				WebDriverWait wait = new WebDriverWait(engine.getDriver(), 30);
-				
 				((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle, -50, -50);
-
 				wait.until(ExpectedConditions.visibilityOf(webEle));
 				
-				try
-				{
-					webEle.click();
-				}
-				catch(WebDriverException innerE)
-				{
-					click(ele);
-				}
+				click(ele);
 			}
 		}
 		catch (AWTException e)
@@ -128,6 +155,22 @@ public class SeleniumClick implements ClickAble
 	public boolean isHidden(Element element)
 	{
 		return !searchStrategyUtils.findStrategy(WebElement.class, element).search(element).isDisplayed();
+	}
+
+	/**
+	 * @return 失败后重试的最大次数
+	 */
+	public int getMaxRetry()
+	{
+		return maxRetry;
+	}
+
+	/**
+	 * @param maxRetry 失败后重试的最大次数（默认为3）
+	 */
+	public void setMaxRetry(int maxRetry)
+	{
+		this.maxRetry = maxRetry;
 	}
 
 }

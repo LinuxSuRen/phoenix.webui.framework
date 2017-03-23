@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -39,8 +40,10 @@ public class AutoItCmd
 	private static final Logger logger = LoggerFactory.getLogger(AutoItCmd.class);
 	
 	public static String autoitExe = null;
-	private static final String AUTO_IT3_PATH = "autoit3.properties";
-	private static final String FILE_CHOOSE_SCRIPT = "file_choose.au3";
+	public static final String AUTO_IT3_PATH = "autoit3.properties";
+	public static final String FILE_CHOOSE_SCRIPT = "file_choose.au3";
+	
+	public static final String PRO_PATH = "path";
 	
 	private static Properties autoItPro = new Properties();
 	
@@ -48,16 +51,28 @@ public class AutoItCmd
 	
 	static
 	{
-		try(InputStream input = AutoItCmd.class.getClassLoader().getResourceAsStream(AUTO_IT3_PATH))
+		try
 		{
-			if(input == null)
+			Enumeration<URL> resources = AutoItCmd.class.getClassLoader().getResources(AUTO_IT3_PATH);
+			if(resources != null)
+			{
+				while(resources.hasMoreElements())
+				{
+					URL url = resources.nextElement();
+					
+					try(InputStream input = url.openStream())
+					{
+						
+						autoItPro.load(input);
+						
+						autoitExe = autoItPro.getProperty(PRO_PATH);
+					}
+				}
+			}
+			else
 			{
 				throw new RuntimeException("Can not found " + AUTO_IT3_PATH + " in class path.");
 			}
-			
-			autoItPro.load(input);
-			
-			autoitExe = autoItPro.getProperty("path");
 		}
 		catch (IOException e)
 		{

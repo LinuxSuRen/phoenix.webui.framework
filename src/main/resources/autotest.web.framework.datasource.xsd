@@ -143,6 +143,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="freemarker">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[Freemarker类型。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="page_ref">
 				<xs:annotation>
 					<xs:documentation>

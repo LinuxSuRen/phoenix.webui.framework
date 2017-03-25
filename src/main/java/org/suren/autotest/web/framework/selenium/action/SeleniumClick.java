@@ -115,7 +115,7 @@ public class SeleniumClick implements ClickAble
 		}
 		catch(WebDriverException e)
 		{
-			logger.error("元素点击操作发生错误。", e);
+			logger.error(String.format("元素[%s]点击操作发生错误。", webEle), e);
 			errorTimes++;
 			
 			//如果由于目标元素不在可见区域导致的异常，尝试滚动屏幕

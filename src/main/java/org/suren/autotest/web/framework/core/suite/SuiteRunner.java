@@ -28,15 +28,11 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
@@ -47,6 +43,7 @@ import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.core.ui.Selector;
 import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.data.DynamicDataSource;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 import org.suren.autotest.web.framework.settings.SuiteParser;
@@ -86,7 +83,11 @@ public class SuiteRunner
 	}
 	
 	private ProgressInfo<String> progressInfo;
-	private ExecutorService executor = Executors.newSingleThreadExecutor();
+//	private ExecutorService executor = Executors.newSingleThreadExecutor();
+	
+	/** 全局的参数配置 */
+	private Map<String, Object> globalData = new HashMap<String, Object>();
+	private static final String DATA_SOURCE_PARAM_KEY = "DATA_SOURCE_PARAM_KEY";
 	
 	public SuiteRunner()
 	{
@@ -106,7 +107,8 @@ public class SuiteRunner
 	}
 	
 	/**
-	 * 添加空白的进度保存实现
+	 * 添加空白的进度保存实现<br/>
+	 * 标识符为：emptyIdentify
 	 */
 	private void setEmptyProgress()
 	{
@@ -122,7 +124,7 @@ public class SuiteRunner
 			@Override
 			public String getIdentify()
 			{
-				return null;
+				return "emptyIdentify";
 			}
 
 			@Override
@@ -142,18 +144,44 @@ public class SuiteRunner
 	 * @throws InterruptedException
 	 * @throws SAXException 
 	 */
-	public void runFromClasspathFile(String filePath)
+	public void runFromClasspathFile(final String filePath)
 			throws IOException, DocumentException, NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException,
 			InterruptedException, SAXException
 	{
+		if(StringUtils.isBlank(filePath))
+		{
+			throw new IllegalArgumentException("File path can not be empty.");
+		}
+		
 		SuiteParser suiteParser = new SuiteParser();
 		ClassLoader classLoader = SuiteRunner.class.getClassLoader();
 		
+		String targetFilePath = filePath;
+		boolean suffixMatch = false;
+		for(String suffix : suiteParser.getSupport())
+		{
+			if(filePath.endsWith(suffix))
+			{
+				suffixMatch = true;
+				break;
+			}
+		}
+		
+		if(!suffixMatch)
+		{
+			// 没有从已经支持的文件后缀中找到对应的，指定为默认的类型
+			targetFilePath = (targetFilePath + suiteParser.getSupport().get(0));
+		}
+		
+		int resCount = 0;
 		Enumeration<URL> resources = classLoader.getResources(filePath);
 		while(resources.hasMoreElements())
 		{
 			URL url = resources.nextElement();
+			
+			resCount++;
+			progressInfo.setInfo(String.format("Prepare to run from file : [%s].", url));
 			
 			try(InputStream input4Valid = url.openStream())
 			{
@@ -164,9 +192,13 @@ public class SuiteRunner
 			{
 				Suite suite = suiteParser.parse(input);
 				
+				progressInfo.setInfo(String.format("Parse file [%s] complete.", url));
+				
 				runSuite(suite);
 			}
 		}
+
+		progressInfo.setInfo(String.format("All runner is done, total [%s].", resCount));
 	}
 	
 	/**
@@ -301,7 +333,7 @@ public class SuiteRunner
 			{
 				this.progressInfo.setInfo(String.format("解析元素定位配置文件[%s]！", xmlConf));
 				
-				if(suite.getPathUrl() != null)
+				if(suitePathUrl != null)
 				{
 					File patentFile = new File(URLDecoder.decode(suitePathUrl.getFile(), "utf-8"));
 					patentFile = patentFile.getParentFile();
@@ -328,7 +360,10 @@ public class SuiteRunner
 				
 				runSuiteWithData(settingUtil, row, pageList);
 				
-				Thread.sleep(afterSleep);
+				if(afterSleep > 0)
+				{
+					Thread.sleep(afterSleep);
+				}
 			}
 		}
 	}
@@ -346,6 +381,20 @@ public class SuiteRunner
 	private void runSuiteWithData(SettingUtil settingUtil, int row, List<SuitePage> pageList)
 			throws SecurityException, IllegalArgumentException, IllegalAccessException, InterruptedException
 	{
+		
+		Collection<DynamicDataSource> dynamicDataSourceList = settingUtil.getDynamicDataSources();
+		for(DynamicDataSource dynamicDataSource : dynamicDataSourceList)
+		{
+			Object dynamicParam = globalData.get(DATA_SOURCE_PARAM_KEY);
+			if(dynamicParam instanceof Map)
+			{
+				Map<String, Object> dataGlobalMap = dynamicDataSource.getGlobalMap();
+				if(dataGlobalMap != null)
+				{
+					dataGlobalMap.putAll((Map<? extends String, ? extends Object>) dynamicParam);
+				}
+			}
+		}
 		settingUtil.initData(row);
 		
 		this.progressInfo.setInfo(String.format("数据初始化完毕！共有[%s]个测试页面！", pageList.size()));
@@ -356,8 +405,15 @@ public class SuiteRunner
 			Page page = (Page) settingUtil.getPage(pageCls);
 			if(page == null)
 			{
-				this.progressInfo.setInfo(String.format("the page[%s] is null.", pageCls));
-				continue;
+				new RuntimeException(String.format("Can not found page [%s].", pageCls));
+			}
+			
+			Object pageData = globalData.get(pageCls);
+			if(pageData instanceof Map)
+			{
+				@SuppressWarnings("unchecked")
+				Map<String, Object> pageDataMap = (Map<String, Object>) pageData;
+				page.putAllData(pageDataMap);
 			}
 			
 			String url = page.getUrl();
@@ -393,7 +449,7 @@ public class SuiteRunner
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private void performActionList(Page page, List<SuiteAction> actionList, SettingUtil settingUtil)
+	private void performActionList(final Page page, List<SuiteAction> actionList, SettingUtil settingUtil)
 			throws SecurityException, InterruptedException,
 			IllegalArgumentException, IllegalAccessException
 	{
@@ -435,7 +491,7 @@ public class SuiteRunner
 			{
 				e.printStackTrace();
 				
-				throw new RuntimeException(String.format("Can not found field [%s] from class [%].", field, targetPage));
+				throw new RuntimeException(String.format("Can not found field [%s] from class [%s].", field, targetPage));
 			}
 			
 			//防止一个任务长期执行
@@ -767,5 +823,44 @@ public class SuiteRunner
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * 添加参数配置
+	 * @param key
+	 * @param value
+	 */
+	public void putData(String key, Object value)
+	{
+		globalData.put(key, value);
+	}
+	
+	/**
+	 * @see #putData(String, Object)
+	 * @param key
+	 * @param mapKey
+	 * @param mapValue
+	 */
+	@SuppressWarnings("unchecked")
+	public void putMapData(String key, String mapKey, Object mapValue)
+	{
+		Object mapObj = globalData.get(key);
+		if(!(mapObj instanceof Map))
+		{
+			mapObj = new HashMap<String, Object>();
+			globalData.put(key, mapObj);
+		}
+		
+		((Map<String, Object>) mapObj).put(mapKey, mapValue);
+	}
+	
+	/**
+	 * 全局的数据源参数
+	 * @param key
+	 * @param value
+	 */
+	public void putSourceData(String key, Object value)
+	{
+		putMapData(DATA_SOURCE_PARAM_KEY, key, value);
 	}
 }

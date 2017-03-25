@@ -47,6 +47,7 @@ public class SimpleDynamicData implements DynamicData, DynamicDateFormat
 		formatSet.add("yyyy");
 		formatSet.add("MM-dd");
 		formatSet.add("yyyy-MM-dd");
+		formatSet.add("MM-dd HH:mm");
 		formatSet.add("yyyy-MM-dd HH:mm:ss");
 	}
 

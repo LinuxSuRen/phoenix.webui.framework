@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.core.ConfigException;
 import org.suren.autotest.web.framework.core.ConfigNotFoundException;
@@ -829,7 +830,7 @@ public class SettingUtil implements Closeable
 		if(engine != null)
 		{
 			engine.close();
-//			context.destroy();
+			((AbstractApplicationContext) context).destroy();
 			closed = true;
 		}
 		else

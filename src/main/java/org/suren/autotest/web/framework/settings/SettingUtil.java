@@ -97,7 +97,7 @@ public class SettingUtil implements Closeable
 	public SettingUtil()
 	{
 		context = SpringUtils.getApplicationContext();
-		if(context == null)
+		if(context == null || !((AbstractApplicationContext) context).isActive())
 		{
 			context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
 			"classpath*:applicationContext.xml", "classpath*:beanScope.xml"});
@@ -831,6 +831,7 @@ public class SettingUtil implements Closeable
 		{
 			engine.close();
 			((AbstractApplicationContext) context).destroy();
+			((AbstractApplicationContext) context).close();
 			closed = true;
 		}
 		else

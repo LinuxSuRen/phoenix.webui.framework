@@ -1,14 +1,29 @@
-/**
- * http://surenpi.com
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.suren.autotest.web.framework.data;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +41,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Button;
@@ -42,11 +59,15 @@ import org.suren.autotest.web.framework.util.StringUtils;
  * @date Jul 17, 2016 8:56:51 AM
  */
 @Component("xml_data_source")
-public class XmlDataSource implements DataSource
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class XmlDataSource implements DataSource, DynamicDataSource
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlDataSource.class);
 	
+	public static final String NS_URI = "http://datasource.surenpi.com";
+	
 	private Page page;
+	private URL url;
 	private Map<String, Object> globalMap = new HashMap<String, Object>();
 	
 	@Autowired
@@ -87,7 +108,7 @@ public class XmlDataSource implements DataSource
 	{
 		String pageClass = page.getClass().getName();
 		SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
-		simpleNamespaceContext.addNamespace("ns", "http://datasource.surenpi.com");
+		simpleNamespaceContext.addNamespace("ns", NS_URI);
 		
 		XPath xpath = new DefaultXPath("/ns:dataSources");
 		xpath.setNamespaceContext(simpleNamespaceContext);
@@ -139,6 +160,7 @@ public class XmlDataSource implements DataSource
 				DynamicData dynamicData = getDynamicDataByType(type);
 				if(dynamicData != null)
 				{
+					dynamicData.setData(globalMap);
 					value = dynamicData.getValue(value);
 				}
 				else
@@ -259,10 +281,12 @@ public class XmlDataSource implements DataSource
 	public boolean loadData(DataResource resource, int row, Page page)
 	{
 		this.page = page;
-		URL url = null;
-		try {
+		try
+		{
 			url = resource.getUrl();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			LOGGER.error(e.getMessage(), e);
 		}
 		
@@ -288,6 +312,7 @@ public class XmlDataSource implements DataSource
 	/**
 	 * @return the globalMap
 	 */
+	@Override
 	public Map<String, Object> getGlobalMap()
 	{
 		return globalMap;
@@ -296,9 +321,27 @@ public class XmlDataSource implements DataSource
 	/**
 	 * @param globalMap the globalMap to set
 	 */
+	@Override
 	public void setGlobalMap(Map<String, Object> globalMap)
 	{
 		this.globalMap = globalMap;
+	}
+
+	@Override
+	public String getName()
+	{
+		try
+		{
+			File file = new File(URLDecoder.decode(this.url.getFile(), "utf-8"));
+			
+			return file.getName();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return this.url.getPath();
 	}
 
 }

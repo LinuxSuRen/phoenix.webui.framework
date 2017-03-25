@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,6 +20,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.page.Page;
 
@@ -28,7 +31,8 @@ import org.suren.autotest.web.framework.page.Page;
  * @date Jul 17, 2016 8:56:31 AM
  */
 @Component("excel_data_source")
-public class ExcelDataSource implements DataSource
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class ExcelDataSource implements DataSource, DynamicDataSource
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelDataSource.class);
 	
@@ -116,6 +120,27 @@ public class ExcelDataSource implements DataSource
 	{
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void setGlobalMap(Map<String, Object> globalMap)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, Object> getGlobalMap()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

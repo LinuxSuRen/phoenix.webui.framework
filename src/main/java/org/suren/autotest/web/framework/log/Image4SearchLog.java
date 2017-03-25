@@ -102,7 +102,7 @@ public class Image4SearchLog
 	{
 		if(outputDir == null)
 		{
-			outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR)); 
+			outputDir = new File(pro.getProperty(LoggerConstants.IMG_LOG_DIR, System.getProperty("java.io.tmpdir"))); 
 			if(!outputDir.isDirectory())
 			{
 				if(!outputDir.mkdirs())

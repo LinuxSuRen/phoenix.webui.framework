@@ -107,7 +107,7 @@ public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble
 				
 				if(!future.isDone())
 				{
-					future.get(10, TimeUnit.SECONDS);
+					future.get(30, TimeUnit.SECONDS);
 				}
 				
 				return true;

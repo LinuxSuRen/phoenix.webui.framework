@@ -29,8 +29,8 @@ public class SimpleDynamicData implements DynamicData
 	
 	public SimpleDynamicData()
 	{
-		formatList.add("yyyy-MM-DD");
-		formatList.add("yyyy-MM-DD HH:mm:ss");
+		formatList.add("yyyy-MM-dd");
+		formatList.add("yyyy-MM-dd HH:mm:ss");
 	}
 
 	@Override

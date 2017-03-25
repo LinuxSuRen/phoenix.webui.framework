@@ -116,18 +116,23 @@ public class AutoItCmd
 	 */
 	public void execFileChoose(String title, String filePath)
 	{
-		if(autoItNotExists())
-		{
-			throw new RuntimeException(
-					String.format("Can not found autoIt exe file in path %s, "
-							+ "please download then install it, and set it in file %s.",
-							autoitExe, AUTO_IT3_PATH));
-		}
-		
-		String au3ExePath = getFileChooseScriptPath();
-		
 		try
 		{
+			if(autoItNotExists())
+			{
+				synchronized (this)
+				{
+					notifyAll();
+				}
+				
+				throw new RuntimeException(
+						String.format("Can not found autoIt exe file in path %s, "
+								+ "please download then install it, and set it in file %s.",
+								autoitExe, AUTO_IT3_PATH));
+			}
+			
+			String au3ExePath = getFileChooseScriptPath();
+			
 			filePath = new File(filePath).getAbsolutePath();
 			String cmd = String.format("%s \"%s\" \"%s\" \"%s\"",
 					autoitExe, au3ExePath, title, filePath);

@@ -134,7 +134,7 @@ public class AutoItCmd
 			String au3ExePath = getFileChooseScriptPath();
 			
 			filePath = new File(filePath).getAbsolutePath();
-			String cmd = String.format("%s \"%s\" \"%s\" \"%s\"",
+			String cmd = String.format("\"%s\" \"%s\" \"%s\" \"%s\"",
 					autoitExe, au3ExePath, title, filePath);
 			cmd = URLDecoder.decode(cmd, "utf-8");
 			

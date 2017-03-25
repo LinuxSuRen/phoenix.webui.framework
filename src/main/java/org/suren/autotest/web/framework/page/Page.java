@@ -172,6 +172,11 @@ public class Page
 		data.put(key, value);
 	}
 	
+	public void putAllData(Map<String, Object> allData)
+	{
+		data.putAll(allData);
+	}
+	
 	/**
 	 * 移出数据
 	 * @param key

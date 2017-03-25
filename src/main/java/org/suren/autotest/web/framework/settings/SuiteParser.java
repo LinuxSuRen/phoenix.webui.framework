@@ -1,10 +1,24 @@
-/**
- * http://surenpi.com
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.suren.autotest.web.framework.settings;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -26,6 +40,11 @@ import org.suren.autotest.web.framework.util.StringUtils;
  */
 public class SuiteParser
 {
+	/** 命名空间地址 */
+	public static final String NS_URI = "http://suite.surenpi.com";
+	
+	/** 支持的文件后缀 */
+	private final List<String> supportList = new ArrayList<String>(1);
 	private SimpleNamespaceContext simpleNamespaceContext = new SimpleNamespaceContext();
 	
 	/**
@@ -41,14 +60,14 @@ public class SuiteParser
 		
 		Document document = reader.read(suiteInputStream);
 		
-		simpleNamespaceContext.addNamespace("ns", "http://suite.surenpi.com");
+		simpleNamespaceContext.addNamespace("ns", NS_URI);
 		
 		XPath xpath = new DefaultXPath("/ns:suite");
 		xpath.setNamespaceContext(simpleNamespaceContext);
 		Element suiteEle = (Element) xpath.selectSingleNode(document);
 		if (suiteEle == null)
 		{
-			throw new RuntimeException("can not found suite config.");
+			throw new RuntimeException("Can not found suite config.");
 		}
 		
 		Suite suite = new Suite();
@@ -69,6 +88,20 @@ public class SuiteParser
 		pagesParse(document, suite);
 		
 		return suite;
+	}
+	
+	/**
+	 * 返回结果不允许修改
+	 * @return 支持的文件后缀
+	 */
+	public List<String> getSupport()
+	{
+		if(supportList.size() == 0)
+		{
+			supportList.add(".xml");
+		}
+		
+		return Collections.unmodifiableList(supportList);
 	}
 
 	/**
@@ -93,7 +126,7 @@ public class SuiteParser
 		List<Element> pageNodes = xpath.selectNodes(document);
 		if(pageNodes == null || pageNodes.size() == 0)
 		{
-			throw new RuntimeException("can not found page config.");
+			throw new RuntimeException("Can not found page config.");
 		}
 		
 		for(Element pageEle : pageNodes)
@@ -106,7 +139,7 @@ public class SuiteParser
 			Element actionsEle = (Element) xpath.selectSingleNode(pageEle);
 			if(actionsEle == null)
 			{
-				throw new RuntimeException("can not found actions config.");
+				throw new RuntimeException("Can not found actions config.");
 			}
 			
 			String disable = actionsEle.attributeValue("disable", "false");

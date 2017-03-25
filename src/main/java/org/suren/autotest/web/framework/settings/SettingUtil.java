@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +58,7 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.ClasspathResource;
 import org.suren.autotest.web.framework.data.DataResource;
 import org.suren.autotest.web.framework.data.DataSource;
+import org.suren.autotest.web.framework.data.DynamicDataSource;
 import org.suren.autotest.web.framework.data.FileResource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
@@ -77,6 +79,7 @@ public class SettingUtil implements Closeable
 	
 	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
+	private Map<String, DynamicDataSource> dynamicDataSourceMap;
 	private ApplicationContext			context;
 	
 	/** 系统配置路径 */
@@ -241,9 +244,11 @@ public class SettingUtil implements Closeable
 	/**
 	 * 从数据源中加载指定的数据组，设置到所有page类中
 	 * @param 数据组序号（从1开始）
+	 * @return 如果没有数据源，则返回空列表
 	 */
-	public void initData(int row)
+	public List<DynamicDataSource> initData(int row)
 	{
+		List<DynamicDataSource> dynamicDataSourceList = new ArrayList<DynamicDataSource>();
 		Iterator<String> pageIterator = pageMap.keySet().iterator();
 		while(pageIterator.hasNext())
 		{
@@ -256,8 +261,15 @@ public class SettingUtil implements Closeable
 			}
 			
 			Page page = pageMap.get(pageKey);
-			initPageData(page, row);
+			
+			DynamicDataSource dynamicDataSource = initPageData(page, row);
+			if(dynamicDataSource != null)
+			{
+				dynamicDataSourceList.add(dynamicDataSource);
+			}
 		}
+		
+		return dynamicDataSourceList;
 	}
 	
 	/**
@@ -266,16 +278,17 @@ public class SettingUtil implements Closeable
 	 * @param row 数据组序号（从1开始）
 	 * @return
 	 */
-	public boolean initPageData(Page page, int row)
+	public DynamicDataSource initPageData(Page page, int row)
 	{
 		String dataSourceStr = page.getDataSource();
 		final DataSourceInfo dataSourceInfo = dataSourceMap.get(dataSourceStr);
 		if(dataSourceInfo == null)
 		{
-			return false;
+			return null;
 		}
 		
-		DataSource dataSource = context.getBean(dataSourceInfo.getType(), DataSource.class);
+		getDynamicDataSources();
+		DataSource dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());//context.getBean(dataSourceInfo.getType(), DataSource.class);
 		DataResource clzResource = new ClasspathResource(
 				SettingUtil.class, dataSourceInfo.getResource());
 		try
@@ -296,7 +309,26 @@ public class SettingUtil implements Closeable
 			e.printStackTrace();
 		}
 		
-		return dataSource.loadData(clzResource, row, page);
+		dataSource.loadData(clzResource, row, page);
+		
+		return dataSource;
+	}
+	
+	public Collection<DynamicDataSource> getDynamicDataSources()
+	{
+		if(dynamicDataSourceMap == null)
+		{
+			dynamicDataSourceMap = context.getBeansOfType(DynamicDataSource.class);
+		}
+		
+		if(dynamicDataSourceMap != null)
+		{
+			return dynamicDataSourceMap.values();
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	/**
@@ -356,7 +388,7 @@ public class SettingUtil implements Closeable
 		simpleNamespaceContext.addNamespace("ns", "http://surenpi.com");
 		
 		SeleniumEngine seleniumEngine = getEngine();
-		if(seleniumEngine.getDriverStr() == null || "".equals(seleniumEngine.getDriverStr()))
+		if(StringUtils.isBlank(seleniumEngine.getDriverStr()))
 		{
 			XPath xpath = new DefaultXPath("/ns:autotest/ns:engine");
 			xpath.setNamespaceContext(simpleNamespaceContext);
@@ -648,6 +680,11 @@ public class SettingUtil implements Closeable
 		else
 		{
 			result = pageClsStr.substring(index + 1);
+		}
+		
+		if(result.length() > 1 && result.charAt(1) >= 'A' && result.charAt(1) <= 'Z')
+		{
+			return result;
 		}
 		
 		return StringUtils.uncapitalize(result);

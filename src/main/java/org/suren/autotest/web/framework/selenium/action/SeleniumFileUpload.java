@@ -85,16 +85,23 @@ public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble
 		{
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			
+			final AutoItCmd autoItCmd = new AutoItCmd();
 			try
 			{
-				final AutoItCmd autoItCmd = new AutoItCmd();
 				Future<?> future = executor.submit(new Runnable()
 				{
 					
 					@Override
 					public void run()
 					{
-						autoItCmd.execFileChoose(file);
+						try
+						{
+							autoItCmd.execFileChoose(file);
+						}
+						catch(Exception e)
+						{
+							e.printStackTrace();
+						}
 					}
 				});
 				
@@ -119,6 +126,7 @@ public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble
 			}
 			finally
 			{
+				autoItCmd.close();
 				executor.shutdown();
 			}
 		}

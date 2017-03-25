@@ -48,6 +48,7 @@ public class AutoItCmd
 	private static Properties autoItPro = new Properties();
 	
 	private static boolean isRunning = false;
+	private Process process;
 	
 	static
 	{
@@ -140,7 +141,7 @@ public class AutoItCmd
 			
 			logger.debug(String.format("prepare to exec autoit cmd [%s]", cmd));
 			
-			Process process = Runtime.getRuntime().exec(cmd);
+			process = Runtime.getRuntime().exec(cmd);
 			
 			synchronized (this)
 			{
@@ -158,6 +159,14 @@ public class AutoItCmd
 		finally
 		{
 			isRunning = false;
+		}
+	}
+	
+	public void close()
+	{
+		if(process != null)
+		{
+			process.destroy();
 		}
 	}
 

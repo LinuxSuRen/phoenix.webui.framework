@@ -408,8 +408,8 @@ public class SeleniumEngine
 			throws MalformedURLException
 	{
 		//实现对多个操作系统的兼容性设置
-		String os = System.getProperty("os.name");
-		String arch = System.getProperty("os.arch");
+		final String os = System.getProperty("os.name");
+		final String arch = System.getProperty("os.arch");
 		final String curDriverStr = getDriverStr();
 		
 		String commonOs = enginePro.getProperty("os.map.name." + os);
@@ -429,27 +429,22 @@ public class SeleniumEngine
 		String remoteDriverUrl = driverMapping.getUrl(curDriverStr, ver, commonOs, commonArch);
 		if(remoteDriverUrl == null)
 		{
-			if(DRIVER_IE.equals(curDriverStr))
-			{
-				driverURL = classLoader.getResource("IEDriverServer.exe");
-			}
-			else if(DRIVER_CHROME.equals(curDriverStr))
-			{
-				driverURL = classLoader.getResource("chromedriver.exe");
-			}
+			logger.error(String.format("Can not found remote driver url, browser is"
+					+ " [%s], version is [%s], os is [%s], arch is [%s].",
+					curDriverStr, ver, commonOs, commonArch));
 		}
 		else
 		{
 			driverURL = new URL(remoteDriverUrl);
+			
+			String driverPath = getLocalFilePath(driverURL);
+			if(StringUtils.isBlank(driverPath))
+			{
+				throw new RuntimeException("Driver path is empty!");
+			}
+			
+			enginePro.put(String.format("webdriver.%s.driver", curDriverStr), driverPath);
 		}
-		
-		String driverPath = getLocalFilePath(driverURL);
-		if(StringUtils.isBlank(driverPath))
-		{
-			throw new RuntimeException("Driver path is empty!");
-		}
-		
-		enginePro.put(String.format("webdriver.%s.driver", curDriverStr), driverPath);
 	}
 
 	private void loadFromURL(Properties enginePro, URL url) throws IOException

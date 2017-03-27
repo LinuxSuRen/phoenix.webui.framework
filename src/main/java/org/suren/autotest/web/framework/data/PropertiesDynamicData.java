@@ -23,6 +23,8 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,6 +35,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertiesDynamicData implements DynamicData
 {
+	private static final Logger logger = LoggerFactory.getLogger(PropertiesDynamicData.class);
+	
 	private String path = "dynamic.data.properties";
 	private Properties pro = new Properties();
 
@@ -68,6 +72,12 @@ public class PropertiesDynamicData implements DynamicData
 		ClassLoader loader = PropertiesDynamicData.class.getClassLoader();
 		try(InputStream input = loader.getResourceAsStream(path))
 		{
+			if(input == null)
+			{
+				logger.warn(String.format("Can not found file [%s] is class path.", path));
+				return;
+			}
+			
 			pro.load(input);
 		}
 	}

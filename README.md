@@ -30,7 +30,7 @@ ie8
 firefox
 
 <h1>环境</h1>
-JDK1.7，Maven
+JDK1.8，Maven
 
 更多详细内容请访问下面的博客：
 http://surenpi.com/2016/07/18/autotest_web_framework_base_selenium/

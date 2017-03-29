@@ -53,6 +53,7 @@ import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
@@ -158,10 +159,19 @@ public class SeleniumEngine
 		}
 		else if(DRIVER_FIREFOX.equals(curDriverStr))
 		{
-			String proFile = System.getProperty("firefox.profile", null);
-			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
-			fireFoxPreSet(profile);
-			driver = new FirefoxDriver(null, profile, capability);
+//			String proFile = System.getProperty("firefox.profile", null);
+//			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
+//			fireFoxPreSet(profile);
+//			FirefoxOptions firefoxOptions = new FirefoxOptions();
+//			firefoxOptions.setProfile(new FirefoxProfile());
+//			driver = new FirefoxDriver(firefoxOptions);
+//			FirefoxProfile profile = new FirefoxProfile();
+//			profile.setPreference("browser.tabs.remote.autostart", false);
+//			profile.setPreference("browser.tabs.remote.autostart.1", false);
+//			profile.setPreference("browser.tabs.remote.autostart.2", false);
+//			profile.setPreference("browser.tabs.remote.force-enable", false);
+//			capability.setCapability(FirefoxDriver.PROFILE, profile);
+			driver = new FirefoxDriver(capability);
 		}
 		else if(DRIVER_SAFARI.equals(curDriverStr))
 		{

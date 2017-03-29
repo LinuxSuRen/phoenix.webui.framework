@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <drivers base="http://surenpi.com/webdriver/">
 	<!-- 谷歌（Chrome）浏览器 -->
+	<driver type="chrome" version="2.28">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="chromedriver.2.28.455520.zip" />
+			<item arch="32" os="win32" path="chromedriver.2.28.455520.zip" />
+		</items>
+		
+		<supports>
+			<browser version="55"/>
+			<browser version="56"/>
+			<browser version="57"/>
+		</supports>
+	</driver>
 	<driver type="chrome" version="2.27">
 		<items>
 			<item arch="64" os="linux" path="chromedriver_2.27_linux_64" />
@@ -170,6 +186,22 @@
 	
 	<!-- IE浏览器 -->
 	<driver type="ie" version="3.1.0">
+		<items>
+			<item arch="64" os="linux" path="" />
+			<item arch="32" os="linux" path="" />
+			<item arch="64" os="mac" path="" />
+			<item arch="32" os="mac" path="" />
+			<item arch="64" os="win32" path="IEDriverServer_x64_3.1.0.zip" />
+			<item arch="32" os="win32" path="IEDriverServer_Win32_3.1.0.zip" />
+		</items>
+		
+		<supports>
+			<browser version="8"/>
+		</supports>
+	</driver>
+	
+	<!-- IE浏览器 -->
+	<driver type="firefox" version="0.11.1">
 		<items>
 			<item arch="64" os="linux" path="" />
 			<item arch="32" os="linux" path="" />

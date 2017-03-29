@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.core.Keyboard;
 import org.suren.autotest.web.framework.core.Mouse;
+import org.suren.autotest.web.framework.core.ui.Button;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
 
@@ -51,6 +52,10 @@ public class Page
 	private Mouse mouse;
 	@Autowired
 	private Keyboard keyboard;
+	
+	/** 通用的按钮 */
+	@Autowired
+	private Button commonBut;
 
 	/**
 	 * 打开（进入）当前页面
@@ -229,6 +234,16 @@ public class Page
 	public Keyboard getKeyboard()
 	{
 		return keyboard;
+	}
+
+	public Button getCommonBut()
+	{
+		return commonBut;
+	}
+
+	public void setCommonBut(Button commonBut)
+	{
+		this.commonBut = commonBut;
 	}
 
 	public String getParamPrefix()

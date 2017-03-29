@@ -26,7 +26,7 @@ Github  https://github.com/LinuxSuRen/phoenix.framework
 
 <h1>浏览器兼容性</h1>
 chrome v53-55
-ie
+ie8
 firefox
 
 <h1>环境</h1>

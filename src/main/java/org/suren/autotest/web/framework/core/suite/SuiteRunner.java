@@ -392,6 +392,7 @@ public class SuiteRunner
 				if(dataGlobalMap != null)
 				{
 					dataGlobalMap.putAll((Map<? extends String, ? extends Object>) dynamicParam);
+					dataGlobalMap.putAll(settingUtil.getEngine().getDataMap());
 				}
 			}
 		}
@@ -484,8 +485,21 @@ public class SuiteRunner
 			
 			try
 			{
-				pageField = targetPage.getClass().getDeclaredField(field);
+				// 先加载父类的属性
+				pageField = targetPage.getClass().getSuperclass().getDeclaredField(field);
 				pageField.setAccessible(true);
+			}
+			catch (NoSuchFieldException e)
+			{
+			}
+			
+			try
+			{
+				if(pageField == null)
+				{
+					pageField = targetPage.getClass().getDeclaredField(field);
+					pageField.setAccessible(true);
+				}
 			}
 			catch (NoSuchFieldException e)
 			{

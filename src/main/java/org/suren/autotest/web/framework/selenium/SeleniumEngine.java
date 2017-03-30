@@ -83,6 +83,7 @@ public class SeleniumEngine
 	private static final Logger logger = LoggerFactory.getLogger(SeleniumEngine.class);
 
 	private final Properties enginePro = new Properties(); //引擎参数集合
+	private final Map<String, Object> dataMap = new HashMap<String, Object>();
 	
 	private Map<String, DesiredCapabilities> engineCapMap = new HashMap<String, DesiredCapabilities>();
 	
@@ -637,6 +638,16 @@ public class SeleniumEngine
 	public void openUrl(String url)
 	{
 		driver.get(url);
+		
+		dataMap.put("sys.startUrl", url);
+	}
+	
+	/**
+	 * @return 系统数据配置，不可修改
+	 */
+	public Map<String, Object> getDataMap()
+	{
+		return Collections.unmodifiableMap(dataMap);
 	}
 
 	/**

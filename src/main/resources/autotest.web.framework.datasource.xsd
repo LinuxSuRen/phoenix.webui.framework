@@ -157,6 +157,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="system">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[系统属性配置文件类型，文件名为system.data.properties，在类跟路径。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="page_ref">
 				<xs:annotation>
 					<xs:documentation>

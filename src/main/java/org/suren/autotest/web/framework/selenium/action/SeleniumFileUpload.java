@@ -83,6 +83,7 @@ public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble
 		WebElement webEle = findElement(element);
 		if(webEle != null)
 		{
+			logger.info("File upload, element is already found.");
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			
 			final AutoItCmd autoItCmd = new AutoItCmd();

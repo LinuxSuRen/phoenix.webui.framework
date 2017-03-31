@@ -17,6 +17,7 @@
 package org.suren.autotest.web.framework.page;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.Alert;
@@ -59,7 +60,7 @@ public class Page
 	private Button commonBut;
 	
 	@Autowired
-	private Map<String, DynamicData> dynamicDataMap;
+	private List<DynamicData> dynamicDataList;
 
 	/**
 	 * 打开（进入）当前页面
@@ -219,10 +220,13 @@ public class Page
 	public String paramTranslate(String value)
 	{
 		String result = value;
-		DynamicData dynamicData = dynamicDataMap.get("system");
-		if(dynamicData != null)
+		for(DynamicData dynamicData : dynamicDataList)
 		{
-			result = dynamicData.getValue(result);
+			if("system".equals(dynamicData.getType()))
+			{
+				result = dynamicData.getValue(result);
+				break;
+			}
 		}
 		
 		result = StringUtils.paramTranslate(data, getParamPrefix(), result);

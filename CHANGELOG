@@ -1,3 +1,4 @@
 # 1.0.2-20170325
 * Selenium的依赖版本升级到3.0
 * jre的依赖版本升级到1.8
+* 增加系统参数配置文件system.data.properties

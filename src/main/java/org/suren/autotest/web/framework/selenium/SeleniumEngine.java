@@ -29,6 +29,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -40,15 +42,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -192,6 +197,36 @@ public class SeleniumEngine
 			catch(UnsupportedCommandException e)
 			{
 				logger.error("Unsupported fullScreen command.", e);
+			}
+		}
+		
+		// 处理cookie
+		Options manage = driver.manage();
+		boolean cookieLoad = Boolean.parseBoolean(enginePro.getProperty("cookie.load", "false"));
+		File root = PathUtil.getRootDir();
+		File cookieFile = new File(root, enginePro.getProperty("cookie.save.path", "phoenix.autotest.cookie"));
+		
+		if(cookieLoad)
+		{
+			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
+			{
+				Object cookiesObj = input.readObject();
+				if(cookiesObj != null && cookiesObj instanceof Set<?>)
+				{
+					Set<Cookie> cookies =  (Set<Cookie>) cookiesObj;
+					for(Cookie cookie : cookies)
+					{
+						manage.addCookie(cookie);
+					}
+				}
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
 			}
 		}
 		
@@ -651,6 +686,24 @@ public class SeleniumEngine
 	{
 		if(driver != null)
 		{
+			Options manage = driver.manage();
+			boolean cookieSave = Boolean.parseBoolean(enginePro.getProperty("cookie.save", "false"));
+			File root = PathUtil.getRootDir();
+			File cookieFile = new File(root, enginePro.getProperty("cookie.save.path", "phoenix.autotest.cookie"));
+			
+			if(cookieSave)
+			{
+				Set<Cookie> cookies = manage.getCookies();
+				try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(cookieFile)))
+				{
+					output.writeObject(cookies);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
 			driver.quit();
 		}
 	}

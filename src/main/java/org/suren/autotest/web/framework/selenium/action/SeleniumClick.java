@@ -67,7 +67,13 @@ public class SeleniumClick implements ClickAble
 	{
 		if(errorTimes >= maxRetry)
 		{
+			errorTimes = 0;
 			return;
+		}
+		
+		if(errorTimes > 0)
+		{
+			logger.warn(String.format("Click operation retry times [%s].", errorTimes));
 		}
 		
 		ElementSearchStrategy<WebElement> searchStrategy =

@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.core.Keyboard;
 import org.suren.autotest.web.framework.core.Mouse;
 import org.suren.autotest.web.framework.core.ui.Button;
+import org.suren.autotest.web.framework.data.DynamicData;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
 
@@ -56,6 +57,9 @@ public class Page
 	/** 通用的按钮 */
 	@Autowired
 	private Button commonBut;
+	
+	@Autowired
+	private Map<String, DynamicData> dynamicDataMap;
 
 	/**
 	 * 打开（进入）当前页面
@@ -215,6 +219,12 @@ public class Page
 	public String paramTranslate(String value)
 	{
 		String result = value;
+		DynamicData dynamicData = dynamicDataMap.get("system");
+		if(dynamicData != null)
+		{
+			result = dynamicData.getValue(result);
+		}
+		
 		result = StringUtils.paramTranslate(data, getParamPrefix(), result);
 		
 		return result;

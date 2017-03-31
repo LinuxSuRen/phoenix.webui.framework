@@ -70,7 +70,7 @@ public class PropertiesDynamicData implements DynamicData
 	public void init() throws IOException
 	{
 		ClassLoader loader = PropertiesDynamicData.class.getClassLoader();
-		try(InputStream input = loader.getResourceAsStream(path))
+		try(InputStream input = loader.getResourceAsStream(getPath()))
 		{
 			if(input == null)
 			{

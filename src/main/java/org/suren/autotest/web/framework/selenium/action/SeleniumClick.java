@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.ElementSearchStrategy;
 import org.suren.autotest.web.framework.core.action.ClickAble;
+import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -55,7 +56,8 @@ public class SeleniumClick implements ClickAble
 	
 	/** 失败后重试的最大次数 */
 	private int maxRetry = 3;
-	private int errorTimes = 0;
+	
+	private static final String ERR_TIMES = "CLICK_ERR_TIMES";
 	
 	@Autowired
 	private SeleniumEngine			engine;
@@ -65,10 +67,19 @@ public class SeleniumClick implements ClickAble
 	@Override
 	public void click(Element ele)
 	{
-		if(errorTimes >= maxRetry)
+		int errorTimes = 0;
+		
+		if(ele instanceof AbstractElement)
 		{
-			errorTimes = 0;
-			return;
+			Object errObj = ((AbstractElement) ele).getData(ERR_TIMES);
+			if(errObj instanceof Integer)
+			{
+				errorTimes = (Integer) errObj;
+				if(errorTimes >= maxRetry)
+				{
+					return;
+				}
+			}
 		}
 		
 		if(errorTimes > 0)
@@ -116,13 +127,14 @@ public class SeleniumClick implements ClickAble
 					driver.switchTo().window(name);
 				}
 			}
-			
-			errorTimes = 0;
 		}
 		catch(WebDriverException e)
 		{
 			logger.error(String.format("元素[%s]点击操作发生错误。", webEle), e);
-			errorTimes++;
+			if(ele instanceof AbstractElement)
+			{
+				((AbstractElement) ele).putData(ERR_TIMES, ++errorTimes);
+			}
 			
 			//如果由于目标元素不在可见区域导致的异常，尝试滚动屏幕
 			if(e.getMessage().contains("is not clickable at point"))

@@ -154,19 +154,6 @@ public class XmlDataSource implements DataSource, DynamicDataSource
 				String type = node.attributeValue("type", "simple");
 				String field = node.attributeValue("field", "value");
 				String callback = node.attributeValue("callback", "");
-				
-				LOGGER.debug("Field [{}], value [{}], type [{}], field [{}].", fieldName, value, type, field);
-				
-				DynamicData dynamicData = getDynamicDataByType(type);
-				if(dynamicData != null)
-				{
-					dynamicData.setData(globalMap);
-					value = dynamicData.getValue(value);
-				}
-				else
-				{
-					throw new RuntimeException("Not support dynamic data type : " + type);
-				}
 
 				Method getterMethod = BeanUtils.findMethod(page.getClass(),
 						"get" + fieldName.substring(0, 1).toUpperCase()
@@ -187,8 +174,23 @@ public class XmlDataSource implements DataSource, DynamicDataSource
 					AbstractElement absEle = (AbstractElement) eleObj;
 					absEle.putData("DataType", type);
 					
-					//解析数据源中单个数据项的扩展参数
-					parseDataParamList(absEle, node);
+					LOGGER.debug("Field [{}], value [{}], type [{}], field [{}].", fieldName, value, type, field);
+					
+					DynamicData dynamicData = getDynamicDataByType(type);
+					if(dynamicData != null)
+					{
+						Map<String, Object> tmpMap = new HashMap<String, Object>(globalMap);
+						
+						//解析数据源中单个数据项的扩展参数
+						parseDataParamList(absEle, node, tmpMap);
+						
+						dynamicData.setData(tmpMap);
+						value = dynamicData.getValue(value);
+					}
+					else
+					{
+						throw new RuntimeException("Not support dynamic data type : " + type);
+					}
 					
 					if(eleObj instanceof Text)
 					{
@@ -242,7 +244,7 @@ public class XmlDataSource implements DataSource, DynamicDataSource
 	 * @param absEle
 	 * @param node
 	 */
-	private void parseDataParamList(AbstractElement absEle, Element node)
+	private void parseDataParamList(AbstractElement absEle, Element node, Map<String, Object> tmpMap)
 	{
 		@SuppressWarnings("unchecked")
 		List<Element> paramEleList = node.elements("param");
@@ -256,6 +258,7 @@ public class XmlDataSource implements DataSource, DynamicDataSource
 			String key = element.attributeValue("name");
 			String value = element.attributeValue("value");
 			absEle.putData(key, value);
+			tmpMap.put(key, value);
 		}
 	}
 	

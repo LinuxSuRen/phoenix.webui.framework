@@ -164,6 +164,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="random_text">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[从文本文件中随机获取一行文本。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="page_ref">
 				<xs:annotation>
 					<xs:documentation>

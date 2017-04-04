@@ -116,7 +116,7 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="invoker" type="xs:string">
+		<xs:attribute name="invoker" type="suren:invokerEnum">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[调用外部的静态类，方法名以英文感叹号（！）分割，方法参数类型为SettingUtil，例：org.suren.DemoInvoker!execute。]]>
@@ -172,6 +172,25 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:attributeGroup>
+	
+	<xs:simpleType name="invokerEnum">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="JsInvoker"></xs:enumeration>
+					<xs:enumeration value="EngineInvoker"></xs:enumeration>
+					<xs:enumeration value="KaptchaInvoker"></xs:enumeration>
+					<xs:enumeration value="OSInvoker"></xs:enumeration>
+					<xs:enumeration value="TestNGInvoker"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[a-z]Invoker"></xs:pattern>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
 		
 	<xs:simpleType name="actionEnum">
 		<xs:restriction base="xs:string">

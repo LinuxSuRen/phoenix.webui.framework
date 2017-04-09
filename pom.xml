@@ -35,7 +35,7 @@
 				<version>1.4</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<phase>all-in-one</phase>
 						<goals>
 							<goal>shade</goal>
 						</goals>

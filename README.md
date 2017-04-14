@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/LinuxSuRen/phoenix.interface.framework.svg?branch=master)](https://travis-ci.org/LinuxSuRen/phoenix.interface.framework)
+[![Build Status](https://travis-ci.org/LinuxSuRen/phoenix.webui.framework.svg?branch=master)](https://travis-ci.org/LinuxSuRen/phoenix.webui.framework)
 
 # AutoTest
 本项目是一个基于Selenium的Web自动测试框架，通过该框架可以简化测试人员的学习难度，只要编写少量的Java代码即可，大多数的工作都是编写页面元素的描述文件以及对应的数据源。以下是本框架的特色：

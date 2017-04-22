@@ -32,6 +32,8 @@
 		<spring.version>4.1.9.RELEASE</spring.version>
 		<aspectj.version>1.8.7</aspectj.version>
 		<groovy.version>2.4.4</groovy.version>
+		<docSkip>true</docSkip>
+		<signSkip>true</signSkip>
 	</properties>
 
 	<build>
@@ -79,6 +81,7 @@
 					<encoding>UTF-8</encoding>
 					<docencoding>UTF-8</docencoding>
 					<additionalparam>-Xdoclint:none</additionalparam>
+					<skip>${docSkip}</skip>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -100,6 +103,9 @@
 						<goals>
 							<goal>sign</goal>
 						</goals>
+						<configuration>
+							<skip>${signSkip}</skip>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

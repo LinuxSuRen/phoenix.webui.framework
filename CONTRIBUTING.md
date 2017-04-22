@@ -18,12 +18,12 @@
 编码规范：  
 所有public修饰的方法必须要有注释，大括号采用上下对齐的方式  
 属性注释格式  
-```java
+````java
 /** 状态 */
 public static final int FETCH_SUCCESS = 1;
-```
+````
 类注释格式（必须要有author标签）   
-```java
+````java
 /**
  * 用于回调的接口
  * @author suren
@@ -33,11 +33,11 @@ public interface Callback<T>
 {
 	void callback(T data);
 }
-```
+````
 赋值符号两边必须各有一个空格，例如：  
-```java
+````java
 String value = locatorMap.get(key);
-```
+````
 ## JavaScript
 JS的框架使用的是Bootstrap。  
 需要遵守的代码规范：  

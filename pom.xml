@@ -4,7 +4,7 @@
 
 	<groupId>com.surenpi.autotest</groupId>
 	<artifactId>autotest.web.framework</artifactId>
-	<version>1.0.2-20170325</version>
+	<version>1.0.2-20170422</version>
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
@@ -144,7 +144,7 @@
 		<dependency>
 			<groupId>com.surenpi.autotest</groupId>
 			<artifactId>autotest.interface.framework</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.1-20170422</version>
 		</dependency>
 
 		<!-- Selenium依赖 -->

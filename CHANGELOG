@@ -4,3 +4,8 @@
 * 增加系统参数配置文件system.data.properties
 * 增加cookie的保存和加载
 * 增强了callback类型的动态参数
+
+# 1.0.1-20170422
+* 把ui和接口框架都发布到了maven中央仓库
+* 增加了对chrome57的支持
+* 增加了对htmlunit的支持

@@ -21,6 +21,8 @@ import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_F
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_OPERA;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_PHANTOM_JS;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_HTML_UNIT;
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
 import java.io.File;
@@ -59,8 +61,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -133,10 +137,6 @@ public class SeleniumEngine
 		
 		String curDriverStr = getDriverStr();
 		DesiredCapabilities capability = engineCapMap.get(curDriverStr);
-		if(capability == null)
-		{
-			throw new RuntimeException(String.format("Unknow type driver [%s].", curDriverStr));
-		}
 		
 		if(StringUtils.isNotBlank(getRemoteStr()))
 		{
@@ -180,6 +180,18 @@ public class SeleniumEngine
 		else if(DRIVER_OPERA.equals(curDriverStr))
 		{
 			driver = new OperaDriver(capability);
+		}
+		else if(DRIVER_PHANTOM_JS.equals(curDriverStr))
+		{
+			driver = new PhantomJSDriver(capability);
+		}
+		else if(DRIVER_HTML_UNIT.equals(curDriverStr))
+		{
+			driver = new HtmlUnitDriver();
+		}
+		else
+		{
+			throw new RuntimeException(String.format("Unknow type driver [%s].", curDriverStr));
 		}
 		
 		if(timeout > 0)
@@ -348,6 +360,11 @@ public class SeleniumEngine
 		{
 			DesiredCapabilities capability = DesiredCapabilities.operaBlink();
 			engineCapMap.put(DRIVER_OPERA, capability);
+		}
+		
+		{
+			DesiredCapabilities capability = DesiredCapabilities.phantomjs();
+			engineCapMap.put(DRIVER_PHANTOM_JS, capability);
 		}
 	}
 

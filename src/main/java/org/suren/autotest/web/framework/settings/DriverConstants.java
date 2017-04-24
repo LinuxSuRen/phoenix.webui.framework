@@ -29,6 +29,8 @@ public interface DriverConstants
 	String	DRIVER_FIREFOX			= "firefox";
 	String	DRIVER_SAFARI			= "safari";
 	String	DRIVER_OPERA			= "opera";
+	String	DRIVER_PHANTOM_JS		= "phantomJs";
+	String	DRIVER_HTML_UNIT		= "htmlUnit";
 
 	String	ENGINE_CONFIG_FILE_NAME	= "engine.properties";
 }

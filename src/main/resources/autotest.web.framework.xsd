@@ -147,6 +147,20 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="phantomJs">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[PhantomJs浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="htmlUnit">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[HtmlUnit浏览器。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	

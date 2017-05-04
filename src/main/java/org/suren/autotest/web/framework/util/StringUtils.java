@@ -57,16 +57,68 @@ public class StringUtils
 		
 		return buf.toString();
 	}
+	/**
+	 * 
+	 * @param namesize 邮箱@之前的字符最长随机长度
+	 * @param servernamesize邮箱@之后的字符最长随机长度
+	 * @return 需要的随机Email地址
+	 */
+	
+	public static String email( int namesize, int servernamesize) 
+	{
+		String name = RandomStringUtils.randomAlphabetic(randomtest(servernamesize));
+		
+		String[] sa = new String[3];
+		sa[0]="com";
+		sa[1]="cn";
+		sa[2]="net";
+		
+		StringBuffer buf = new StringBuffer();
+		String server=name+"."+sa[randomtest(sa.length)];
+
+		buf.append(RandomStringUtils.randomAlphabetic(randomtest(namesize)));
+		buf.append("@");
+		buf.append(server);
+		
+		return buf.toString();
+		
+	}
 	
 	/**
-	 * @return 随机的email地址
+	 * @return 随机的email地址 最大长度10个字符 如果需要指定 可以使用重载方法email(int namesize, int servernamesize)
 	 */
 	public static String email()
 	{
-		String server = "qq.com";
+		String name = RandomStringUtils.randomAlphabetic(randomtest(10));
 		
-		return email(server);
+		String[] sa = new String[3];
+		sa[0]="com";
+		sa[1]="cn";
+		sa[2]="net";
+		StringBuffer buf = new StringBuffer();
+		String server=name+"."+sa[randomtest(sa.length)];
+
+		buf.append(RandomStringUtils.randomAlphabetic(randomtest(10)));
+		buf.append("@");
+		buf.append(server);
+
+		return buf.toString();
+				
 	}
+	
+	public static int randomtest(int max)
+	{
+		int x = 0;
+		
+		if (max > 0) 
+		{
+			x =  (int) (Math.random() * max);
+			return x;
+		}
+
+		return 0;
+	}
+
 	
     public static boolean isNotBlank(CharSequence cs) {
         return !StringUtils.isBlank(cs);

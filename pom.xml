@@ -1,39 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.surenpi.autotest</groupId>
+		<artifactId>autotest.parent</artifactId>
+		<version>1.0.0-20170504</version>
+	</parent>
 
-	<groupId>com.surenpi.autotest</groupId>
 	<artifactId>autotest.web.framework</artifactId>
 	<version>1.0.2-20170422</version>
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
 	<description>WebUI自动化测试框架</description>
-	<licenses>
-		<license>
-			<name>Apache2.0</name>
-			<url>http://surenpi.com</url>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<name>suren</name>
-		</developer>
-	</developers>
-	<organization>
-		<name>素人</name>
-		<url>http://surenpi.com</url>
-	</organization>
 
 	<properties>
-		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<selenium.version>3.3.1</selenium.version>
 		<spring.version>4.1.9.RELEASE</spring.version>
 		<aspectj.version>1.8.7</aspectj.version>
 		<groovy.version>2.4.4</groovy.version>
-		<docSkip>true</docSkip>
-		<signSkip>true</signSkip>
 	</properties>
 
 	<build>
@@ -111,34 +97,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>maven.surenpi.com</id>
-			<name>SuRen Maven Repositories</name>
-			<url>https://oss.sonatype.org/content/groups/public</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<name>PhoenixFramework</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-snapshots</id>
-			<name>PhoenixFramework</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>

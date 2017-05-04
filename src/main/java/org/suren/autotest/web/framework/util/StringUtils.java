@@ -103,8 +103,7 @@ public class StringUtils
 		buf.append(server);
 
 		return buf.toString();
-		
-		
+				
 	}
 	
 	public static int randomtest(int max)

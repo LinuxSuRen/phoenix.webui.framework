@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -45,23 +46,30 @@ import org.suren.autotest.web.framework.core.ui.Button;
  */
 
 public class ExcelData {
+	/**
+	 * @Workbook EXCEL工作簿对象
+	 */
+	public static Workbook Workbook;
 
 	/**
 	 * TODO
-	 * @param fieldName
+	 * @param fieldName 
 	 * @return
 	 */
-	public Object getValue(String fieldName) {
-		if("loginNameText".endsWith(fieldName)) {
+	public Object getValue(String fieldName) 
+	{
+		if("loginNameText".endsWith(fieldName)) 
+		{
 			return "testUser";
-		}else if("loginButton".equals(fieldName)){
+		}else if("loginButton".equals(fieldName))
+		{
 			return new Button();
-		}else{
+		}else
+		{
 			return "error";
 		}
 	}
 
-public static Workbook Workbook;
 
 	
 	
@@ -116,12 +124,23 @@ public static Workbook Workbook;
 	{
 		Sheet[] sheets = null;
 		Sheet st;
-		for (int i = 0; i < Workbook.getNumberOfSheets(); i++) {// 获取每个Sheet表
-			st = Workbook.getSheetAt(i);
-			sheets[i] = st;
+		if(Workbook!=null)
+		{
+			for (int i = 0; i < Workbook.getNumberOfSheets(); i++) 
+			{// 获取每个Sheet表
+				st = Workbook.getSheetAt(i);
+				sheets[i] = st;
+			}	
+			
 		}
+		else
+		{
+			
+		throw new RuntimeException("Excel工作簿对象为空请使用excel(String loaclpath)方法指定路径后调用该方法");
+				
+		}
+		
 		return sheets;
-
 	}
 
 	/**
@@ -191,9 +210,9 @@ public static Workbook Workbook;
 	 * @return 获取第指定行参数作为bean数据
 	 */
 
-	public ArrayList<String> getcolums(Sheet sheet, int row) {
+	public ArrayList<String> getcolums(Sheet sheet, int row) 
+	{
 		ArrayList<String> getcolumslist = new ArrayList<String>();
-
 		int a = getcolunNumnumber(sheet);
 		for (int i = 0; i < a; i++) {
 			Cell cell = sheet.getRow(row).getCell(i);
@@ -204,33 +223,8 @@ public static Workbook Workbook;
 
 		return getcolumslist;
 	}
-/**
- * 打印出数据
- * @throws Exception
- */
-	public void showExcel() throws Exception {
 
-		for (int i = 0; i < Workbook.getNumberOfSheets(); i++) {// 获取每个Sheet表
-			Sheet sheet = Workbook.getSheetAt(i);
-			for (int j = 0; j < sheet.getPhysicalNumberOfRows(); j++) {// 获取每行
-				Row row = sheet.getRow(j);
-				for (int k = 0; k < row.getPhysicalNumberOfCells(); k++) {// 获取每个单元格
 
-					if (k == row.getPhysicalNumberOfCells() - 1) {
-
-						System.out.print(row.getCell(k) + "\n");
-					} else {
-						System.out.print(row.getCell(k) + "\t");
-					}
-
-				}
-
-			}
-			System.out.println("---Sheet表" + sheet.getSheetName() + "处理完毕---");
-		}
-	}
-
-	@SuppressWarnings("deprecation")
 	/**
 	 * 
 	 * 
@@ -248,12 +242,12 @@ public static Workbook Workbook;
 			{
 
 				Sheet xssfSheet = Workbook.getSheetAt(numSheet);
-				String sheetname = xssfSheet.getSheetName();
-
 				if (xssfSheet == null) 
 				{
 					continue;
 				}
+				String sheetname = xssfSheet.getSheetName();
+				
 				List<String[]> list = new ArrayList<String[]>();
 
 				for (int row = 0; row <= xssfSheet.getLastRowNum(); row++) 
@@ -264,8 +258,9 @@ public static Workbook Workbook;
 						continue;
 					}
 					String[] singleRow = new String[xssfRow.getLastCellNum()];
-					for (int column = 0; column < xssfRow.getLastCellNum(); column++) 
-					{
+					
+				for (int column = 0; column < xssfRow.getLastCellNum(); column++) 
+				{
 						Cell cell = xssfRow.getCell(column,
 								Row.CREATE_NULL_AS_BLANK);
 						switch (cell.getCellType()) 
@@ -330,6 +325,7 @@ public static Workbook Workbook;
 		{
 			e.printStackTrace();
 		}
+		
 		return map;
 	}
 /**
@@ -350,9 +346,7 @@ public static Workbook Workbook;
 		{
 			return null;
 		}
-
 		Sheet sheet = Workbook.getSheetAt(sheetnumber);
-
 		for (int row = 0; row <= sheet.getLastRowNum(); row++) 
 		{
 			Row xssfRow = sheet.getRow(row);
@@ -418,14 +412,9 @@ public static Workbook Workbook;
 				}
 				
 			}
-			
 			data.put(row, singleRow);
 		}
-
 		return data;
-
 	}
-	
-	
 	
 }

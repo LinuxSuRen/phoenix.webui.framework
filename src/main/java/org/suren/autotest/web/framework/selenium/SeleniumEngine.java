@@ -18,11 +18,11 @@ package org.suren.autotest.web.framework.selenium;
 
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_FIREFOX;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_HTML_UNIT;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_OPERA;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_PHANTOM_JS;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_HTML_UNIT;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
 import java.io.File;
@@ -46,8 +46,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
@@ -76,8 +74,10 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.util.BrowserUtil;
-import org.suren.autotest.web.framework.util.PathUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
+import org.suren.autotest.webdriver.downloader.DriverDownloader;
+import org.suren.autotest.webdriver.downloader.DriverMapping;
+import org.suren.autotest.webdriver.downloader.PathUtil;
 
 /**
  * 浏览器引擎封装类
@@ -494,7 +494,20 @@ public class SeleniumEngine
 		{
 			driverURL = new URL(remoteDriverUrl);
 			
-			String driverPath = getLocalFilePath(driverURL);
+			String driverPath = null;
+			try
+			{
+				driverPath = new DriverDownloader().getLocalFilePath(driverURL);
+			}
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			
 			if(StringUtils.isBlank(driverPath))
 			{
 				throw new RuntimeException("Driver path is empty!");
@@ -509,121 +522,6 @@ public class SeleniumEngine
 		try(InputStream inputStream = url.openStream())
 		{
 			enginePro.load(inputStream);
-		}
-	}
-	
-	/**
-	 * 从指定地址中获取驱动文件，并拷贝到框架根目录中。如果是zip格式的话，会自动解压。
-	 * @param url
-	 * @return 获取到的驱动文件绝对路径，如果没有找到返回空字符串
-	 */
-	private String getLocalFilePath(URL url)
-	{
-		if(url == null)
-		{
-			return "";
-		}
-		
- 		final String driverPrefix = "surenpi.com."; 
-		
-		File driverFile = null;
-		String protocol = url.getProtocol();
-		if("jar".equals(protocol) || "http".equals(protocol))
-		{
-			String driverFileName = (driverPrefix + new File(url.getFile()).getName());
-			try(InputStream inputStream = url.openStream())
-			{
-				driverFile = PathUtil.copyFileToRoot(inputStream, driverFileName);
-			}
-			catch (IOException e)
-			{
-				logger.error("Driver file copy error.", e);
-			}
-		}
-		else
-		{
-			try
-			{
-				driverFile = new File(URLDecoder.decode(url.getFile(), "utf-8"));
-			}
-			catch (UnsupportedEncodingException e)
-			{
-				logger.error(e.getMessage(), e);
-			}
-		}
-		
-		return fileProcess(driverFile, driverPrefix);
-	}
-	
-	/**
-	 * 处理经过压缩和没有压缩的文件
-	 * @param driverFile
-	 * @param driverPrefix
-	 * @return 返回非压缩文件的绝对路径
-	 */
-	private String fileProcess(File driverFile, String driverPrefix)
-	{
-		if(driverFile != null && driverFile.isFile())
-		{
-			//如果是以.zip为后缀的文件，则自动解压
-			if(driverFile.getName().endsWith(".zip"))
-			{
-				try(ZipInputStream zipIn = new ZipInputStream(new FileInputStream(driverFile)))
-				{
-					ZipEntry entry = zipIn.getNextEntry();
-					if(entry != null)
-					{
-						driverFile = new File(driverFile.getParent(), driverPrefix + entry.getName());
-						
-						if(needCopy(driverFile, entry.getSize()))
-						{
-							PathUtil.copyFileToRoot(zipIn, driverFile);
-						}
-					}
-				}
-				catch(FileNotFoundException e)
-				{
-					e.printStackTrace();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			return driverFile.getAbsolutePath();
-		}
-		else
-		{
-			return "";
-		}
-	}
-
-	/**
-	 * 是否需要拷贝
-	 * @param driverFile
-	 * @param orginalSize
-	 * @return
-	 */
-	private boolean needCopy(File driverFile, long orginalSize)
-	{
-		if(driverFile.isDirectory())
-		{
-			String[] childList = driverFile.list();
-			
-			if((childList != null && childList.length > 0) || !driverFile.delete())
-			{
-				throw new RuntimeException(String.format("Directory [%s] is not empty or can not bean delete.", driverFile.getAbsolutePath()));
-			}
-		}
-		
-		if(!driverFile.isFile() || driverFile.length() != orginalSize)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 	

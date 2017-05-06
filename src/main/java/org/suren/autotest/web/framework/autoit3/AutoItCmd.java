@@ -26,8 +26,8 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.suren.autotest.web.framework.util.PathUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
+import org.suren.autotest.webdriver.downloader.PathUtil;
 
 /**
  * 使用autoid来实现文件上传

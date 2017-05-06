@@ -20,7 +20,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.suren.autotest.web.framework.util.PathUtil;
+import org.suren.autotest.webdriver.downloader.PathUtil;
 import org.xml.sax.SAXException;
 
 /**

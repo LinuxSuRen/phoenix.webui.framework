@@ -10,8 +10,8 @@ import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
-import org.suren.autotest.web.framework.util.PathUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
+import org.suren.autotest.webdriver.downloader.PathUtil;
 
 /**
  * 默认提供的随机文件生成类

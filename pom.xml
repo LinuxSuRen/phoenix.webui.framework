@@ -104,6 +104,11 @@
 			<artifactId>autotest.interface.framework</artifactId>
 			<version>1.0.1-20170422</version>
 		</dependency>
+		<dependency>
+			<groupId>com.surenpi.autotest</groupId>
+			<artifactId>autotest.webdriver.downloader</artifactId>
+			<version>1.0.2-20170422</version>
+		</dependency>
 
 		<!-- Selenium依赖 -->
 		<dependency>

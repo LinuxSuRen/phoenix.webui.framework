@@ -57,13 +57,13 @@ public class StringUtils
 		
 		return buf.toString();
 	}
+	
 	/**
 	 * 
 	 * @param namesize 邮箱@之前的字符最长随机长度
 	 * @param servernamesize邮箱@之后的字符最长随机长度
 	 * @return 需要的随机Email地址
 	 */
-	
 	public static String email( int namesize, int servernamesize) 
 	{
 		String name = RandomStringUtils.randomAlphabetic(randomtest(servernamesize));
@@ -81,7 +81,6 @@ public class StringUtils
 		buf.append(server);
 		
 		return buf.toString();
-		
 	}
 	
 	/**
@@ -119,21 +118,27 @@ public class StringUtils
 		return 0;
 	}
 
-	
-    public static boolean isNotBlank(CharSequence cs) {
+    public static boolean isNotBlank(CharSequence cs)
+    {
         return !StringUtils.isBlank(cs);
     }
     
-    public static boolean isBlank(CharSequence cs) {
+    public static boolean isBlank(CharSequence cs)
+    {
         int strLen;
-        if (cs == null || (strLen = cs.length()) == 0) {
+        if (cs == null || (strLen = cs.length()) == 0)
+        {
             return true;
         }
-        for (int i = 0; i < strLen; i++) {
-            if (Character.isWhitespace(cs.charAt(i)) == false) {
+        
+        for (int i = 0; i < strLen; i++)
+        {
+            if (Character.isWhitespace(cs.charAt(i)) == false)
+            {
                 return false;
             }
         }
+        
         return true;
     }
 

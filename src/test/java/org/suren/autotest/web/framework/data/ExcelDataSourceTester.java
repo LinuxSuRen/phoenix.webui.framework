@@ -31,7 +31,7 @@ public class ExcelDataSourceTester {
 		excelDataSource.readExcel("D:/2017-05-01桥梁数据汇总情况表.xlsx", 0);
 		
 		excelDataSource.readExcel("D:/2017-05-01桥梁数据汇总情况表.xlsx");
-		excelDataSource.showExcel();
+		
 	}
 	
 }

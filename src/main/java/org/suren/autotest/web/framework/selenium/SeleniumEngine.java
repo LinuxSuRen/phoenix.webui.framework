@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -68,10 +69,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.AutoTestException;
+import org.suren.autotest.web.framework.data.DynamicData;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
@@ -104,6 +107,9 @@ public class SeleniumEngine
 	private int			width;
 	private int			height;
 	private int			toolbarHeight;
+	
+	@Autowired
+	private List<DynamicData> dynamicDataList;
 	
 	public SeleniumEngine(){}
 	
@@ -656,6 +662,14 @@ public class SeleniumEngine
 	public void setRemoteStr(String remoteStr)
 	{
 		this.remoteStr = remoteStr;
+		for(DynamicData dynamicData : dynamicDataList)
+		{
+			if("system".equals(dynamicData.getType()))
+			{
+				this.remoteStr = dynamicData.getValue(remoteStr);
+				break;
+			}
+		}
 	}
 
 	/**

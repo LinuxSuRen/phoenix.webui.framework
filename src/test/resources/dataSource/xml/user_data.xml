@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Auto created by AutoTest, 17-1-1 下午8:48 -->
+<suren:dataSources xmlns:suren="http://datasource.surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://datasource.surenpi.com http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ">
+	<suren:dataSource pageClass="autotest.demo.maimai.page.LoginPage">
+		<suren:page>
+			<!-- 
+			<suren:field name="phone" data="${phone?default('18211191651')}" type="freemarker" />
+			<suren:field name="phone" data="${sys.startUrl}" type="freemarker" />
+			<suren:field name="phone" data="${phone}" type="properties" />
+			<suren:field name="phone" data="${phone}" type="callback">
+				<suren:param name="dynamic.data" value="simple"/>
+			</suren:field>
+			 -->
+			<suren:field name="phone" data="${phone}" type="callback">
+				<suren:param name="dynamic.data" value="properties"/>
+			</suren:field>
+			<suren:field name="password" data="UCKy2Ztu96zC/rhJbrI0pg=="
+				type="encrypt" />
+		</suren:page>
+	</suren:dataSource>
+</suren:dataSources>
+<!--Auto created by AutoTest, 17-1-1 下午9:21 -->

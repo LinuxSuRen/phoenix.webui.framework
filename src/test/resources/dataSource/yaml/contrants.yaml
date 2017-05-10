@@ -1,0 +1,26 @@
+locate:
+  - byId
+  - byName
+  - byTagName
+  - byXPath
+
+elementType:
+  - input:
+    zh: 文本框
+  - button:
+    zh: 按钮
+  - selector:
+    zh: 下拉列表
+  
+operation:
+  - fill:
+    zh: 填入
+  - click:
+    zh: 点击
+
+dynamicDataType:
+  - freemarker
+  - simple
+  - callback
+  - encrypt
+  - properties

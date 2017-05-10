@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Auto created by AutoTest, 17-1-1 下午8:47 -->
+<suren:suite xmlns:suren="http://suite.surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://suite.surenpi.com
+		http://surenpi.com/schema/suite/autotest.web.framework.suite.xsd "
+	pageConfig="maimai.xml" afterSleep="3000">
+	<suren:page class="autotest.demo.maimai.page.HomePage">
+		<suren:actions>
+			<suren:action field="toLoginBut" name="click" />
+		</suren:actions>
+	</suren:page>
+	<suren:page class="autotest.demo.maimai.page.LoginPage">
+		<suren:actions>
+			<suren:action field="commonBut" name="invoke" invoker="JsInvoker"
+				afterSleep="3000" disable="true">
+				<suren:param value="alert(1);" />
+				<suren:param value="window.location='http://surenpi.com';" />
+			</suren:action>
+			<suren:action field="phone" name="fillValue" />
+			<suren:action field="password" name="fillValue" />
+			<suren:action field="loginBut" name="click" />
+		</suren:actions>
+	</suren:page>
+	<suren:page class="autotest.demo.maimai.page.MenuPage">
+		<suren:actions>
+			<suren:action field="gossipBut" name="click" />
+		</suren:actions>
+	</suren:page>
+	<suren:page class="autotest.demo.maimai.page.SSIPPage">
+		<suren:actions>
+			<suren:action field="inputPanel" name="fillValue" />
+			<suren:action field="postBut" name="click" />
+		</suren:actions>
+	</suren:page>
+</suren:suite>

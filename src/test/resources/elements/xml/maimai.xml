@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suren:autotest xmlns:suren="http://surenpi.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://surenpi.com http://surenpi.com/schema/autotest/autotest.web.framework.xsd ">
+	<suren:engine driver="chrome" remote="${remote}"/>
+	<suren:pages pagePackage="autotest.demo.maimai.page">
+		<suren:page class="HomePage" url="${startUrl}">
+			<suren:field name="toLoginBut" type="button" byCss="login"/>
+		</suren:page>
+		
+		<suren:page class="LoginPage" dataSource="user_data">
+			<suren:field name="phone" type="input" byName="m" strategy="zone"
+				byXpath="//input[@placeholder='请输入手机号码/脉脉号']">
+				<suren:locators>
+					<suren:locator name="byId" value="form"/>
+					<suren:locator name="byXpath" value="//input[1]"/>
+				</suren:locators>
+			</suren:field>
+			<suren:field name="password" type="input" strategy="zone"
+				byXpath="//input[@placeholder='请输入密码']">
+				<suren:locators>
+					<suren:locator name="byId" value="form"/>
+					<suren:locator name="byXpath" value="//input[@type='password']"/>
+				</suren:locators>
+			</suren:field>
+			<suren:field name="loginBut" type="button" strategy="zone"
+				byXpath="//input[@value='登录']">
+				<suren:locators>
+					<suren:locator name="byId" value="form"/>
+					<suren:locator name="byXpath" value="//input[@value='登录']"/>
+				</suren:locators>
+			</suren:field>
+		</suren:page>
+		
+		<suren:page class="MenuPage">
+			<suren:field name="gossipBut" type="button" byPartialLinkText="匿名八卦" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="react_app"/>
+					<suren:locator name="byPartialLinkText" value="匿名八卦"/>
+				</suren:locators>
+			</suren:field>
+		</suren:page>
+		
+		<suren:page class="SSIPPage" dataSource="post_msg">
+			<suren:field name="inputPanel" type="input" byCss="inputPanel"></suren:field>
+			<suren:field name="postBut" type="button" byPartialLinkText="发布" strategy="zone">
+				<suren:locators>
+					<suren:locator name="byId" value="react_app"/>
+					<suren:locator name="byPartialLinkText" value="发布"/>
+				</suren:locators>
+			</suren:field>
+		</suren:page>
+	</suren:pages>
+	
+	<suren:dataSources>
+		<suren:dataSource name="user_data" type="xml_data_source" resource="user_data.xml"/>
+		<suren:dataSource name="post_msg" type="xml_data_source" resource="post_msg.xml"/>
+	</suren:dataSources>
+</suren:autotest>

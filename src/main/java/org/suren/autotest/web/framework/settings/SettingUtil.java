@@ -82,6 +82,7 @@ public class SettingUtil implements Closeable
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
 	private Map<String, DynamicDataSource> dynamicDataSourceMap;
 	private ApplicationContext			context;
+	private ShutdownHook shutdownHook;
 	
 	/** 系统配置路径 */
 	private File configFile;
@@ -129,7 +130,8 @@ public class SettingUtil implements Closeable
 			logger.error("jmx register process error.", e);
 		}
 		
-		Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
+		shutdownHook = new ShutdownHook(this);
+		Runtime.getRuntime().addShutdownHook(shutdownHook);
 		
 		logger.info("init process done.");
 	}
@@ -833,6 +835,8 @@ public class SettingUtil implements Closeable
 			((AbstractApplicationContext) context).destroy();
 			((AbstractApplicationContext) context).close();
 			closed = true;
+			
+			Runtime.getRuntime().removeShutdownHook(shutdownHook);
 		}
 		else
 		{

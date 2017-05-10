@@ -448,6 +448,7 @@
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="excel_data_source" />
+			<xs:enumeration value="yaml_data_source" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

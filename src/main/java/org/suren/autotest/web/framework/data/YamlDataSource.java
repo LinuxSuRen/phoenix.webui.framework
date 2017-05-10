@@ -24,6 +24,9 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Map;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.page.Page;
 import org.yaml.snakeyaml.Yaml;
 
@@ -32,6 +35,8 @@ import org.yaml.snakeyaml.Yaml;
  * @author suren
  * @date 2017年5月10日 下午2:22:30
  */
+@Component("yaml_data_source")
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class YamlDataSource implements DataSource
 {
 	private URL url;

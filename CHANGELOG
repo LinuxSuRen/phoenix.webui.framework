@@ -13,3 +13,4 @@
 * 增加对欧朋浏览器的支持
 * 增加对PhantomJs、HtmlUnit的支持
 * 增加yaml格式数据源
+* 增加excel格式数据源

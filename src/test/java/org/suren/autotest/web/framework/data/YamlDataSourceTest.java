@@ -16,8 +16,6 @@
 
 package org.suren.autotest.web.framework.data;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.suren.autotest.web.framework.core.ui.Text;

@@ -15,6 +15,8 @@
 - 支持纯XML编写完成自动化测试功能
 - 自带Windows版本的driver驱动
 
+Maven的依赖，[更多示例](https://github.com/LinuxSuRen/phoenix.autotest.demo)。
+
 # 远程的XSD地址
 - http://surenpi.com/schema/autotest/autotest.web.framework.xsd
 - http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd

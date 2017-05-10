@@ -1,15 +1,28 @@
-/**
- * http://surenpi.com
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.suren.autotest.web.framework.data;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,12 +51,133 @@ public class ExcelDataSource implements DataSource, DynamicDataSource
 	
 	/** 要填充的page对象 */
 	private Page targetPage;
+	private int maxRows = 100;
 	
-	private List<Page> pageCache = new LinkedList<Page>();
 	private Set<DataResource> dataResourceSet = new HashSet<DataResource>();
 
 	@Override
 	public boolean loadData(DataResource resource, Page page)
+	{
+		return loadData(resource, 0, page);
+	}
+
+	/**
+	 * 解析excel数据源文件
+	 * @param inputStream
+	 * @throws IOException 
+	 */
+	private void parse(InputStream inputStream) throws IOException
+	{
+		String name = targetPage.getClass().getName();
+		Workbook workbook = new XSSFWorkbook(inputStream);
+		
+		Sheet sheet = workbook.getSheet(name);
+		if(sheet == null)
+		{
+			int index = name.lastIndexOf(".");
+			if(index > 0)
+			{
+				name = name.substring(index + 1);
+				sheet = workbook.getSheet(name);
+			}
+		}
+		
+		sheetParse(sheet);
+	}
+
+	/**
+	 * 解析sheet内容
+	 * @param sheet
+	 */
+	private void sheetParse(Sheet sheet)
+	{
+		if(sheet == null)
+		{
+			return;
+		}
+
+		for(int i = 1; i < maxRows; i++)
+		{
+			Row row = sheet.getRow(i);
+			if(row == null)
+			{
+				break;
+			}
+			
+			cellParse(row);
+		}
+	}
+
+	/**
+	 * @param row
+	 */
+	private void cellParse(Row row)
+	{
+		Class<?> targetCls = targetPage.getClass();
+		
+		Cell nameCell = row.getCell(0);
+		Cell dataCell = row.getCell(1);
+		
+		try
+		{
+			Field field = targetCls.getDeclaredField(nameCell.getStringCellValue());
+			field.setAccessible(true);
+			
+			setValue(field, targetPage, dataCell.getStringCellValue());
+		}
+		catch (NoSuchFieldException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (NoSuchMethodException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (InvocationTargetException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param field
+	 * @param targetPage
+	 * @param data
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 */
+	private void setValue(Field field, Page targetPage, Object data) throws IllegalArgumentException,
+		IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException
+	{
+		field.setAccessible(true);
+		Object fieldObj = field.get(targetPage);
+		if(fieldObj == null)
+		{
+			return;
+		}
+		
+		Method method = fieldObj.getClass().getMethod("setValue", String.class);
+		
+		method.invoke(fieldObj, data.toString());
+	}
+
+	@Override
+	public boolean loadData(DataResource resource, int row, Page page)
 	{
 		this.targetPage = page;
 		
@@ -72,54 +206,7 @@ public class ExcelDataSource implements DataSource, DynamicDataSource
 			}
 		}
 		
-		return false;
-	}
-
-	/**
-	 * 解析excel数据源文件
-	 * @param inputStream
-	 * @throws IOException 
-	 */
-	private void parse(InputStream inputStream) throws IOException
-	{
-		Workbook workbook = new XSSFWorkbook(inputStream);
-		
-		Sheet sheet = workbook.getSheetAt(0);
-		
-		sheetParse(sheet);
-	}
-
-	/**
-	 * 解析sheet内容
-	 * @param sheet
-	 */
-	private void sheetParse(Sheet sheet)
-	{
-		Row headerRow = sheet.getRow(0);
-		
-		Iterator<Cell> cellIterator = headerRow.iterator();
-		while(cellIterator.hasNext())
-		{
-			Cell cell = cellIterator.next();
-			System.out.println(cell.getStringCellValue());
-		}
-		
-		rowParse(null);
-	}
-	
-	/**
-	 * 行解析
-	 * @param row
-	 */
-	private void rowParse(Row row)
-	{
-	}
-
-	@Override
-	public boolean loadData(DataResource resource, int row, Page page)
-	{
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

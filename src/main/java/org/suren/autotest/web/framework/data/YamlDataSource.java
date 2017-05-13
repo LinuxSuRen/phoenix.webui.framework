@@ -174,6 +174,11 @@ public class YamlDataSource implements DataSource
 	private void setValue(Field field, Page targetPage, Object data) throws IllegalArgumentException,
 		IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException
 	{
+		if(data == null)
+		{
+			return;
+		}
+		
 		field.setAccessible(true);
 		Object fieldObj = field.get(targetPage);
 		if(fieldObj == null)

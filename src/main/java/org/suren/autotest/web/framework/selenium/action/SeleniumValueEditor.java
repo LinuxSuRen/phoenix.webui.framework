@@ -16,6 +16,7 @@
 
 package org.suren.autotest.web.framework.selenium.action;
 
+import org.eclipse.jetty.util.StringUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -78,8 +79,9 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 	}
 	
 	/**
-	 * @param ele
-	 * @param value
+	 * 填入值，如果目标元素有readonly，则不做任何操作
+	 * @param ele 目标元素
+	 * @param value 要填入的值，null会当作空字符串
 	 * @param append 是否追加
 	 */
 	private void fillValue(Element ele, Object value, boolean append)
@@ -93,35 +95,16 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 		if(webEle != null)
 		{
 			String readonlyAttr = webEle.getAttribute("readonly");
-			if("true".equals(readonlyAttr))
+			if(StringUtil.isNotBlank(readonlyAttr))
 			{
 				logger.warn("{} is readonly, will do not call method setValue.", webEle.toString());
 				return;
 			}
 			
+			String valueStr = value.toString();
 			try
 			{
-				String valueStr = value.toString();
-				
-				webEle.click();
-				if(!append)
-				{
-					webEle.clear();
-				}
-				webEle.sendKeys(value.toString());
-				
-				if("input".equals(webEle.getTagName()))
-				{
-					if(!valueStr.equals(webEle.getAttribute("value")))
-					{
-						webEle.click();
-						if(!append)
-						{
-							webEle.clear();
-						}
-						webEle.sendKeys(value.toString());
-					}
-				}
+				fill(webEle, valueStr, append);
 			}
 			catch(WebDriverException e)
 			{
@@ -129,12 +112,7 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 				{
 					((JavascriptExecutor) engine.getDriver()).executeScript("arguments[0].scrollIntoView();", webEle);
 
-					webEle.click();
-					if(!append)
-					{
-						webEle.clear();
-					}
-					webEle.sendKeys(value.toString());
+					fill(webEle, valueStr, append);
 				}
 				else
 				{
@@ -146,6 +124,22 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 		{
 			logger.error(String.format("can not found element [%s].", ele));
 		}
+	}
+	
+	/**
+	 * 填入值
+	 * @param webEle
+	 * @param value
+	 * @param append
+	 */
+	private void fill(WebElement webEle, String value, boolean append)
+	{
+		webEle.click();
+		if(!append)
+		{
+			webEle.clear();
+		}
+		webEle.sendKeys(value);
 	}
 
 	@Override

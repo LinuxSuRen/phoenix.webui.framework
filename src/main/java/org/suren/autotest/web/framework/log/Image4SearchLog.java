@@ -137,9 +137,9 @@ public class Image4SearchLog
 		Object[] args = joinPoint.getArgs();
 		
 		Object res = joinPoint.proceed(args);
-		if(res instanceof WebElement)
+		WebDriver driver = engine.getDriver();
+		if(res instanceof WebElement && driver instanceof TakesScreenshot)
 		{
-			WebDriver driver = engine.getDriver();
 			TakesScreenshot shot = (TakesScreenshot) driver;
 			
 			File file = shot.getScreenshotAs(OutputType.FILE);

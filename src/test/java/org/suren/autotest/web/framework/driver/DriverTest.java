@@ -34,7 +34,6 @@ public class DriverTest
 	{
 		WebDriver driver = new HtmlUnitDriver();
 		driver.get("http://surenpi.com");
-		System.out.println(driver.getTitle());
 		driver.quit();
 	}
 	
@@ -43,7 +42,6 @@ public class DriverTest
 	{
 		WebDriver driver = new PhantomJSDriver();
 		driver.get("http://surenpi.com");
-		System.out.println(driver.getTitle());
 		driver.quit();
 	}
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Auto created by AutoTest, 17-1-1 下午9:21-->
+<suren:dataSources xmlns:suren="http://datasource.surenpi.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datasource.surenpi.com http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ">
+    <suren:dataSource pageClass="autotest.demo.maimai.page.SSIPPage">
+        <suren:page>
+        <!-- 
+            <suren:field name="inputPanel" data="来自PhoenixAutotest的消息,${startUrl}" type="system"/>
+             -->
+            <suren:field name="inputPanel" data="random_xing.txt" type="random_text"/>
+        </suren:page>
+    </suren:dataSource>
+</suren:dataSources>

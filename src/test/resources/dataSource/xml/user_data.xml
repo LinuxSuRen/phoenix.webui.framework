@@ -4,7 +4,7 @@
 <suren:dataSources xmlns:suren="http://datasource.surenpi.com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://datasource.surenpi.com http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ">
-	<suren:dataSource pageClass="autotest.demo.maimai.page.LoginPage">
+	<suren:dataSource pageClass="org.suren.autotest.web.framework.page.LoginPage">
 		<suren:page>
 			<!-- 
 			<suren:field name="phone" data="${phone?default('18211191651')}" type="freemarker" />

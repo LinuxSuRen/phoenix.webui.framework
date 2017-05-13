@@ -2,8 +2,8 @@
 <suren:autotest xmlns:suren="http://surenpi.com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://surenpi.com http://surenpi.com/schema/autotest/autotest.web.framework.xsd ">
-	<suren:engine driver="chrome" remote="${remote}"/>
-	<suren:pages pagePackage="autotest.demo.maimai.page">
+	<suren:engine driver="htmlUnit"/>
+	<suren:pages pagePackage="org.suren.autotest.web.framework.page">
 		<suren:page class="HomePage" url="${startUrl}">
 			<suren:field name="toLoginBut" type="button" byCss="login"/>
 		</suren:page>
@@ -53,7 +53,7 @@
 	</suren:pages>
 	
 	<suren:dataSources>
-		<suren:dataSource name="user_data" type="xml_data_source" resource="user_data.xml"/>
-		<suren:dataSource name="post_msg" type="xml_data_source" resource="post_msg.xml"/>
+		<suren:dataSource name="user_data" type="xml_data_source" resource="dataSource/xml/user_data.xml"/>
+		<suren:dataSource name="post_msg" type="xml_data_source" resource="dataSource/xml/post_msg.xml"/>
 	</suren:dataSources>
 </suren:autotest>

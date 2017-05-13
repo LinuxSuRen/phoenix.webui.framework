@@ -284,6 +284,11 @@ public class SettingUtil implements Closeable
 	public DynamicDataSource initPageData(Page page, int row)
 	{
 		String dataSourceStr = page.getDataSource();
+		if(StringUtils.isBlank(dataSourceStr))
+		{
+			return null;
+		}
+		
 		final DataSourceInfo dataSourceInfo = dataSourceMap.get(dataSourceStr);
 		if(dataSourceInfo == null)
 		{

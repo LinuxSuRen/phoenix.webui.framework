@@ -1,6 +1,19 @@
-/**
-* Copyright © 1998-2015, surenpi.com All Rights Reserved.
-*/
+/*
+ * Copyright 2002-2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.suren.autotest.web.framework.util;
 
 import java.io.ByteArrayOutputStream;
@@ -134,8 +147,10 @@ public class Encryptor
         cipherByte = null;
     }
     
-    public static SecretKey getSecretKey(String desKey, String algorithm) {
-        if(StringUtils.isBlank(desKey)) {
+    public static SecretKey getSecretKey(String desKey, String algorithm)
+    {
+        if(StringUtils.isBlank(desKey))
+        {
             throw new IllegalArgumentException("密钥不能为空。");
         }
         return getSecretKey(Base64.decodeBase64(desKey), algorithm);
@@ -149,15 +164,22 @@ public class Encryptor
      *            {@link #BLOWFISH}、{@link #RC2}、 {@link #RC4}
      * @return 密钥实例
      */  
-    public static SecretKey getSecretKey(byte[] desKey, String algorithm) {
-        if(ALG_DES.equalsIgnoreCase(algorithm)) {
-            try {
+    public static SecretKey getSecretKey(byte[] desKey, String algorithm)
+    {
+        if(ALG_DES.equalsIgnoreCase(algorithm))
+        {
+            try
+            {
                 SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);  
                 DESKeySpec dks = new DESKeySpec(desKey);  
                 return keyFactory.generateSecret(dks);
-            } catch (NoSuchAlgorithmException e) {
+            }
+            catch (NoSuchAlgorithmException e)
+            {
                 throw new RuntimeException(e.getCause());
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 throw new IllegalArgumentException("将密钥字符串转换为密钥实例对象失败。", e);
             }  
         }

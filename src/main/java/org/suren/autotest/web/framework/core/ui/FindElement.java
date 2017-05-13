@@ -17,6 +17,7 @@
 package org.suren.autotest.web.framework.core.ui;
 
 /**
+ * 查找元素接口
  * @author suren
  * @date Jul 16, 2016 7:47:19 PM
  */

@@ -17,20 +17,41 @@
 package org.suren.autotest.web.framework.core;
 
 /**
+ * 传递进度信息的接口
  * @author suren
  * @date 2017年2月24日 下午4:27:15
  */
 public interface ProgressInfo<T>
 {
+	/**
+	 * 设置信息
+	 * @param data
+	 */
 	void setInfo(T data);
 	
+	/**
+	 * 设置唯一表示符
+	 * @param id
+	 */
 	void setIdentify(String id);
+	
+	/**
+	 * @return 返回唯一标识符
+	 */
 	String getIdentify();
 	
+	/**
+	 * 设置状态
+	 * @param status
+	 */
 	void setStatus(int status);
 	
+	/** 开始 */
 	int ST_START = 0X1;
+	/** 进行中 */
 	int ST_PROGRESS = 0X2;
+	/** 正常结束 */
 	int ST_NORMAL_END = 0X3;
+	/** 异常结束 */
 	int ST_ERROR_END = 0X4;
 }

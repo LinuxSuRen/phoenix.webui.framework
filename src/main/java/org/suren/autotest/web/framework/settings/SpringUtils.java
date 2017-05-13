@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
+ * 用于获取spring上下文的工具类
  * @author suren
  * @date 2017年1月23日 下午9:02:06
  */

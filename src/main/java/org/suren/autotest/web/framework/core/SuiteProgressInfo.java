@@ -17,6 +17,7 @@
 package org.suren.autotest.web.framework.core;
 
 /**
+ * 套件的进度信息实现
  * @author suren
  * @date 2017年2月24日 下午4:27:57
  */

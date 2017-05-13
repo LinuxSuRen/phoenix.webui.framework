@@ -32,5 +32,6 @@ public interface DriverConstants
 	String	DRIVER_PHANTOM_JS		= "phantomJs";
 	String	DRIVER_HTML_UNIT		= "htmlUnit";
 
+	/** 引擎配置文件名称 */
 	String	ENGINE_CONFIG_FILE_NAME	= "engine.properties";
 }

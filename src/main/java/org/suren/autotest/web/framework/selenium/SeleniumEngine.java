@@ -193,7 +193,7 @@ public class SeleniumEngine
 		}
 		else if(DRIVER_HTML_UNIT.equals(curDriverStr))
 		{
-			driver = new HtmlUnitDriver();
+			driver = new HtmlUnitDriver(true);
 		}
 		else
 		{
@@ -662,6 +662,11 @@ public class SeleniumEngine
 	public void setRemoteStr(String remoteStr)
 	{
 		this.remoteStr = remoteStr;
+		if(remoteStr == null)
+		{
+			return;
+		}
+		
 		for(DynamicData dynamicData : dynamicDataList)
 		{
 			if("system".equals(dynamicData.getType()))

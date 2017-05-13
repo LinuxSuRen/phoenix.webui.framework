@@ -51,8 +51,6 @@ public class SettingUtilTest
 	public void before() throws IOException, DocumentException, SAXException
 	{
 		util = new SettingUtil();
-		util.readFromClassPath("elements/xml/maimai.xml");
-		util.initData();
 	}
 	
 	/**
@@ -67,10 +65,16 @@ public class SettingUtilTest
 
 	/**
 	 * 测试Page类加载
+	 * @throws SAXException 
+	 * @throws DocumentException 
+	 * @throws IOException 
 	 */
 	@Test
-	public void pageLoad()
+	public void pageLoad() throws IOException, DocumentException, SAXException
 	{
+		util.readFromClassPath("elements/xml/maimai.xml");
+		util.initData();
+		
 		Assert.assertNotNull(util.getPage(HomePage.class));
 		Assert.assertNotNull(util.getPage(LoginPage.class));
 		Assert.assertNotNull(util.getPage(MenuPage.class));
@@ -86,6 +90,9 @@ public class SettingUtilTest
 	@Test
 	public void simple() throws IOException, DocumentException, SAXException
 	{
+		util.readFromClassPath("elements/xml/maimai.xml");
+		util.initData();
+		
 		HomePage homePage = util.getPage(HomePage.class);
 		Assert.assertNotNull(homePage);
 
@@ -106,11 +113,49 @@ public class SettingUtilTest
 	}
 
 	/**
-	 * 测试简单流程，数据在数据源中
+	 * 测试简单流程，数据在数据源（xml格式）中
+	 * @throws SAXException 
+	 * @throws DocumentException 
+	 * @throws IOException 
 	 */
 	@Test
-	public void dataSource()
+	public void dataSource() throws IOException, DocumentException, SAXException
 	{
+		util.readFromClassPath("elements/xml/maimai.xml");
+		util.initData();
+		
+		HomePage homePage = util.getPage(HomePage.class);
+		Assert.assertNotNull(homePage);
+
+		Assert.assertNotNull(homePage.getUrl());
+		Assert.assertTrue("起始页地址不合法",
+				homePage.paramTranslate(homePage.getUrl()).startsWith("http"));
+		homePage.open();
+		Button toLoginBut = homePage.getToLoginBut();
+		Assert.assertNotNull(toLoginBut);
+		toLoginBut.click();
+		
+		LoginPage loginPage = util.getPage(LoginPage.class);
+		Assert.assertNotNull(loginPage);
+		
+		Text phone = loginPage.getPhone();
+		Assert.assertNotNull(phone);
+		Assert.assertNotNull("数据未从数据源中加载", phone.getValue());
+		phone.fillNotBlankValue();
+	}
+	
+	/**
+	 * 测试excel格式的数据源加载
+	 * @throws IOException
+	 * @throws DocumentException
+	 * @throws SAXException
+	 */
+	@Test
+	public void excelDataSource() throws IOException, DocumentException, SAXException
+	{
+		util.readFromClassPath("elements/xml/maimai_exceldata.xml");
+		util.initData();
+		
 		HomePage homePage = util.getPage(HomePage.class);
 		Assert.assertNotNull(homePage);
 

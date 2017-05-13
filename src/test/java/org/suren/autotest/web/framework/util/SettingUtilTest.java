@@ -175,4 +175,36 @@ public class SettingUtilTest
 		Assert.assertNotNull("数据未从数据源中加载", phone.getValue());
 		phone.fillNotBlankValue();
 	}
+	
+	/**
+	 * 测试yaml格式的数据源加载
+	 * @throws IOException
+	 * @throws DocumentException
+	 * @throws SAXException
+	 */
+	@Test
+	public void yamlDataSource() throws IOException, DocumentException, SAXException
+	{
+		util.readFromClassPath("elements/xml/maimai_yamldata.xml");
+		util.initData();
+		
+		HomePage homePage = util.getPage(HomePage.class);
+		Assert.assertNotNull(homePage);
+
+		Assert.assertNotNull(homePage.getUrl());
+		Assert.assertTrue("起始页地址不合法",
+				homePage.paramTranslate(homePage.getUrl()).startsWith("http"));
+		homePage.open();
+		Button toLoginBut = homePage.getToLoginBut();
+		Assert.assertNotNull(toLoginBut);
+		toLoginBut.click();
+		
+		LoginPage loginPage = util.getPage(LoginPage.class);
+		Assert.assertNotNull(loginPage);
+		
+		Text phone = loginPage.getPhone();
+		Assert.assertNotNull(phone);
+		Assert.assertNotNull("数据未从数据源中加载", phone.getValue());
+		phone.fillNotBlankValue();
+	}
 }

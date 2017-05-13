@@ -44,6 +44,11 @@ public class PropertiesDynamicData implements DynamicData
 	public String getValue(final String orginData)
 	{
 		String data = orginData;
+		if(data == null)
+		{
+			return data;
+		}
+		
 		for(Object key : pro.keySet())
 		{
 			String strKey = key.toString();

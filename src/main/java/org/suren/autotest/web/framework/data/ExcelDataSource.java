@@ -31,12 +31,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.eclipse.jetty.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.page.Page;
+import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * Excel格式的数据源实现类
@@ -109,6 +111,7 @@ public class ExcelDataSource implements DataSource, DynamicDataSource
 	}
 
 	/**
+	 * 解析一行数据
 	 * @param row
 	 */
 	private void cellParse(Row row)
@@ -118,12 +121,23 @@ public class ExcelDataSource implements DataSource, DynamicDataSource
 		Cell nameCell = row.getCell(0);
 		Cell dataCell = row.getCell(1);
 		
+		if(nameCell == null || dataCell == null)
+		{
+			return;
+		}
+		
 		try
 		{
-			Field field = targetCls.getDeclaredField(nameCell.getStringCellValue());
-			field.setAccessible(true);
+			String fieldName = getStrFromCell(nameCell);
+			if(StringUtils.isBlank(fieldName))
+			{
+				return;
+			}
 			
-			setValue(field, targetPage, dataCell.getStringCellValue());
+			Field field = targetCls.getDeclaredField(fieldName);
+			field.setAccessible(true);
+		
+			setValue(field, targetPage, getStrFromCell(dataCell));
 		}
 		catch (NoSuchFieldException | SecurityException e)
 		{
@@ -131,23 +145,40 @@ public class ExcelDataSource implements DataSource, DynamicDataSource
 		}
 		catch (IllegalArgumentException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IllegalAccessException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (NoSuchMethodException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (InvocationTargetException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 从单元格中获取字符串
+	 * @param dataCell
+	 * @return 支持字符串、布尔值、数字，其他情况返回null
+	 */
+	private String getStrFromCell(Cell dataCell)
+	{
+		int cellType = dataCell.getCellType();
+		switch(cellType)
+		{
+			case Cell.CELL_TYPE_STRING:
+				return dataCell.getStringCellValue();
+			case Cell.CELL_TYPE_BOOLEAN:
+				return String.valueOf(dataCell.getBooleanCellValue());
+			case Cell.CELL_TYPE_NUMERIC:
+				return String.valueOf(dataCell.getNumericCellValue());
+			default:
+				return null;
 		}
 	}
 
@@ -185,9 +216,12 @@ public class ExcelDataSource implements DataSource, DynamicDataSource
 		{
 			URL url = null;
 			
-			try {
+			try
+			{
 				url = resource.getUrl();
-			} catch (IOException e) {
+			}
+			catch(IOException e)
+			{
 				LOGGER.error(e.getMessage(), e);
 			}
 			

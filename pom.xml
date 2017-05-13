@@ -20,6 +20,7 @@
 		<spring.version>4.1.9.RELEASE</spring.version>
 		<aspectj.version>1.8.7</aspectj.version>
 		<groovy.version>2.4.4</groovy.version>
+		<testSkip>true</testSkip>
 	</properties>
 
 	<build>
@@ -75,7 +76,12 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
-					<skip>true</skip>
+					<skip>${testSkip}</skip>
+					<excludes>
+						<exclude>**/RealDriverTest.java</exclude>
+						<exclude>**/OSTest.java</exclude>
+						<exclude>**/OSInvokerTest.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>

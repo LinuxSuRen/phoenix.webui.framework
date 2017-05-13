@@ -18,24 +18,21 @@ package org.suren.autotest.web.framework.driver;
 
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 /**
- * 这里只是测试不会启动真正浏览器的驱动
+ * 需要真正浏览器的驱动单元测试
  * @author suren
- * @date 2017年4月20日 下午10:28:35
+ * @date 2017年5月13日 下午10:04:17
  */
-public class DriverTest
+public class RealDriverTest
 {
-
 	@Test
-	public void htmlUnit()
+	public void phantomJS()
 	{
-		WebDriver driver = new HtmlUnitDriver();
+		WebDriver driver = new PhantomJSDriver();
 		driver.get("http://surenpi.com");
 		driver.quit();
 	}
-	
 
 }

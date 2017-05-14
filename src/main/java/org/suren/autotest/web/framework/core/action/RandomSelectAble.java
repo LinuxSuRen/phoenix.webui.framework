@@ -28,7 +28,7 @@ public interface RandomSelectAble
 	/**
 	 * 随机选择
 	 * @param ele
-	 * @return 操作成功返回true，否则返回false
+	 * @return 选中的元素对象
 	 */
-	boolean randomSelect(Element ele);
+	Object randomSelect(Element ele);
 }

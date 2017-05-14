@@ -165,7 +165,7 @@ public class SeleniumSelect implements SelectAble, RandomSelectAble
 	}
 
 	@Override
-	public boolean randomSelect(Element ele)
+	public WebElement randomSelect(Element ele)
 	{
 		Select select = createSelect(ele);
 		if(select != null)
@@ -178,10 +178,12 @@ public class SeleniumSelect implements SelectAble, RandomSelectAble
 				index = (index == 0 ? 1 : index); //通常第一个选项都是无效的选项
 
 				select.selectByIndex(index);
+				
+				return options.get(index);
 			}
 		}
 		
-		return false;
+		return null;
 	}
 
 	@Override

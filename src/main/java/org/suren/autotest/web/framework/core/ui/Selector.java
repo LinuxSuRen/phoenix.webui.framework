@@ -28,7 +28,7 @@ import org.suren.autotest.web.framework.core.action.SelectAble;
  * 
  * @author suren
  * @since jdk1.6
- * @since 3.1.1-SNAPSHOT 2016年7月1日
+ * @since 2016年7月1日
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -97,9 +97,9 @@ public class Selector extends AbstractElement
 	
 	/**
 	 * 随机选择一个选项
-	 * @return
+	 * @return 选中的元素对象
 	 */
-	public boolean randomSelect()
+	public Object randomSelect()
 	{
 		return randomSelectAble.randomSelect(this);
 	}

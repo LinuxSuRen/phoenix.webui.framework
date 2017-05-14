@@ -34,4 +34,7 @@ public interface DriverConstants
 
 	/** 引擎配置文件名称 */
 	String	ENGINE_CONFIG_FILE_NAME	= "engine.properties";
+	
+	/** 浏览器初始化启动地址 */
+	String INITIAL_URL = "initialUrl";
 }

@@ -78,6 +78,7 @@ import org.suren.autotest.web.framework.data.DynamicData;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.util.BrowserUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
+import org.suren.autotest.web.framework.util.ThreadUtil;
 import org.suren.autotest.webdriver.downloader.DriverDownloader;
 import org.suren.autotest.webdriver.downloader.DriverMapping;
 import org.suren.autotest.webdriver.downloader.PathUtil;
@@ -132,12 +133,16 @@ public class SeleniumEngine
 		}
 	}
 	
+	public void beforeStart(Properties enginePro){};
+	
 	/**
 	 * 浏览器引擎初始化
 	 */
 	public void init()
 	{
 		initConfig();
+		
+		beforeStart(enginePro);
 		
 		initCapMap();
 		
@@ -344,10 +349,13 @@ public class SeleniumEngine
 		}
 		
 		{
+			String initialUrl = enginePro.getProperty(DriverConstants.INITIAL_URL,
+					"http://surenpi.com");
+			
 			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
 			capability.setCapability(
 					InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capability.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, "http://surenpi.com");
+			capability.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, initialUrl);
 			capability.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
 			engineCapMap.put(DRIVER_IE, capability);
 		}
@@ -598,6 +606,17 @@ public class SeleniumEngine
 	public Map<String, Object> getDataMap()
 	{
 		return Collections.unmodifiableMap(dataMap);
+	}
+	
+	/**
+	 * 延迟关闭
+	 * @param timeout 单位：毫秒
+	 */
+	public void delayClose(long timeout)
+	{
+		ThreadUtil.silentSleep(timeout);
+		
+		close();
 	}
 
 	/**

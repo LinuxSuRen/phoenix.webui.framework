@@ -18,9 +18,8 @@ package org.suren.autotest.web.framework.driver;
 
 import java.util.Properties;
 
+import org.junit.After;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 
@@ -32,19 +31,72 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
 public class RealDriverTest
 {
 	private String testUrl = "http://surenpi.com";
+	private SeleniumEngine engine;
 	
 	@Test
 	public void phantomJS()
 	{
-		WebDriver driver = new PhantomJSDriver();
-		driver.get(testUrl);
-		driver.quit();
+		engine = new SeleniumEngine();
+		engine.setDriverStr(DriverConstants.DRIVER_PHANTOM_JS);
+		engine.init();
+		
+		engine.openUrl(testUrl);
+	}
+	
+	@Test
+	public void chrome()
+	{
+		engine = new SeleniumEngine();
+		engine.setDriverStr(DriverConstants.DRIVER_CHROME);
+		engine.init();
+		
+		engine.openUrl(testUrl);
+	}
+	
+	@Test
+	public void htmlUnit()
+	{
+		engine = new SeleniumEngine();
+		engine.setDriverStr(DriverConstants.DRIVER_HTML_UNIT);
+		engine.init();
+		
+		engine.openUrl(testUrl);
+	}
+	
+	@Test
+	public void firefox()
+	{
+		engine = new SeleniumEngine();
+		engine.setDriverStr(DriverConstants.DRIVER_FIREFOX);
+		engine.init();
+		
+		engine.openUrl(testUrl);
+	}
+	
+	@Test
+	public void opera()
+	{
+		engine = new SeleniumEngine();
+		engine.setDriverStr(DriverConstants.DRIVER_OPERA);
+		engine.init();
+		
+		engine.openUrl(testUrl);
+	}
+	
+	@Test
+	public void safari()
+	{
+		engine = new SeleniumEngine();
+		engine.setDriverStr(DriverConstants.DRIVER_SAFARI);
+		engine.init();
+		
+		engine.openUrl(testUrl);
 	}
 	
 	@Test
 	public void internetExplorer()
 	{
-		SeleniumEngine engine = new SeleniumEngine(){
+		engine = new SeleniumEngine(){
 
 			@Override
 			public void beforeStart(Properties enginePro)
@@ -57,8 +109,12 @@ public class RealDriverTest
 		engine.setDriverStr(DriverConstants.DRIVER_IE);
 		engine.init();
 		
-		engine.openUrl("http://surenpi.com");
-		
+		engine.openUrl(testUrl);
+	}
+	
+	@After
+	public void close()
+	{
 		engine.delayClose(2000);
 	}
 

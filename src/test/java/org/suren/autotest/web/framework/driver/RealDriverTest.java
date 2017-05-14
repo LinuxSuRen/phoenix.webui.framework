@@ -16,9 +16,13 @@
 
 package org.suren.autotest.web.framework.driver;
 
+import java.util.Properties;
+
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.settings.DriverConstants;
 
 /**
  * 需要真正浏览器的驱动单元测试
@@ -27,12 +31,35 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
  */
 public class RealDriverTest
 {
+	private String testUrl = "http://surenpi.com";
+	
 	@Test
 	public void phantomJS()
 	{
 		WebDriver driver = new PhantomJSDriver();
-		driver.get("http://surenpi.com");
+		driver.get(testUrl);
 		driver.quit();
+	}
+	
+	@Test
+	public void internetExplorer()
+	{
+		SeleniumEngine engine = new SeleniumEngine(){
+
+			@Override
+			public void beforeStart(Properties enginePro)
+			{
+				super.beforeStart(enginePro);
+				
+				enginePro.put(DriverConstants.INITIAL_URL, "http://baidu.com");
+			}
+		};
+		engine.setDriverStr(DriverConstants.DRIVER_IE);
+		engine.init();
+		
+		engine.openUrl("http://surenpi.com");
+		
+		engine.delayClose(2000);
 	}
 
 }

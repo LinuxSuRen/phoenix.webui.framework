@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.suren.autotest.web.framework.core.Keyboard;
 import org.suren.autotest.web.framework.core.Mouse;
 import org.suren.autotest.web.framework.core.ui.Button;
+import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.DynamicData;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
@@ -58,6 +59,9 @@ public class Page
 	/** 通用的按钮 */
 	@Autowired
 	private Button commonBut;
+	/** 通用的文本框 */
+	@Autowired
+	private Text commonText;
 	
 	@Autowired
 	private List<DynamicData> dynamicDataList;
@@ -250,14 +254,24 @@ public class Page
 		return keyboard;
 	}
 
-	public Button getCommonBut()
+	public final Button getCommonBut()
 	{
 		return commonBut;
 	}
 
-	public void setCommonBut(Button commonBut)
+	public final void setCommonBut(Button commonBut)
 	{
 		this.commonBut = commonBut;
+	}
+
+	public final Text getCommonText()
+	{
+		return commonText;
+	}
+
+	public final void setCommonText(Text commonText)
+	{
+		this.commonText = commonText;
 	}
 
 	public String getParamPrefix()

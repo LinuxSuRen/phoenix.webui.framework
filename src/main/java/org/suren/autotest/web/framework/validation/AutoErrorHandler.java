@@ -34,7 +34,6 @@ public class AutoErrorHandler implements ErrorHandler
 	@Override
 	public void warning(SAXParseException exception) throws SAXException
 	{
-		System.out.println("sd");
 	}
 
 	@Override
@@ -60,7 +59,6 @@ public class AutoErrorHandler implements ErrorHandler
 	@Override
 	public void fatalError(SAXParseException exception) throws SAXException
 	{
-		System.out.println("sd");
 	}
 
 }

@@ -44,7 +44,8 @@ public abstract class AbstractElement implements Element
 	/** 用于保存元素对象相关的数据 */
 	private Map<String, Object>				data = new HashMap<String, Object>();
 	private String paramPrefix;
-	private long timeOut;
+	private long							timeOut;
+	private int								index;
 
 	@Override
 	public String getId()
@@ -251,6 +252,7 @@ public abstract class AbstractElement implements Element
 	/**
 	 * @return the timeOut
 	 */
+	@Override
 	public long getTimeOut()
 	{
 		return timeOut;
@@ -262,5 +264,16 @@ public abstract class AbstractElement implements Element
 	public void setTimeOut(long timeOut)
 	{
 		this.timeOut = timeOut;
+	}
+
+	@Override
+	public int getIndex()
+	{
+		return index;
+	}
+
+	public void setIndex(int index)
+	{
+		this.index = index;
 	}
 }

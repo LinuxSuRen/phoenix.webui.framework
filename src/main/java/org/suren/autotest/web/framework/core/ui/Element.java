@@ -75,4 +75,9 @@ public interface Element
 	 * @return 元素查找超时时间
 	 */
 	long getTimeOut();
+	
+	/**
+	 * @return 顺序
+	 */
+	int getIndex();
 }

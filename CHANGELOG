@@ -14,3 +14,5 @@
 * 增加对PhantomJs、HtmlUnit的支持
 * 增加yaml格式数据源
 * 增加excel格式数据源
+* 增加元素操作的顺序标识
+* 增加可以批量操作的工具类（ElementUtil），进一步简化了代码；示例可以参考单元测试类：ElementUtilTest

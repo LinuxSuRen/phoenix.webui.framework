@@ -239,6 +239,11 @@
 				<xs:documentation><![CDATA[显示地设置元素查找超时事件，单位为秒，可选。]]></xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="index" type="xs:integer" default="0">
+			<xs:annotation>
+				<xs:documentation><![CDATA[元素操作的顺序，数字小的先操作，数字相同的不能保证先后顺序，可选。]]></xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	
 	<xs:attributeGroup name="pageFieldLocatorAttrGroup">

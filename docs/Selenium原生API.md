@@ -1,0 +1,2 @@
+# 介绍
+PhoenixFramework框架在Selenium的基础上做了很多方便用户使用的API，但如果某些特定场景下必须使用Selenium的API，这也是框架所支持的。

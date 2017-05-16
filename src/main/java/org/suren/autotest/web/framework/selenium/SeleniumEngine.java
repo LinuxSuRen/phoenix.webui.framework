@@ -41,7 +41,6 @@ import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -51,15 +50,12 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
@@ -76,7 +72,6 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.data.DynamicData;
 import org.suren.autotest.web.framework.settings.DriverConstants;
-import org.suren.autotest.web.framework.util.BrowserUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.util.ThreadUtil;
 import org.suren.autotest.webdriver.downloader.DriverDownloader;
@@ -133,6 +128,10 @@ public class SeleniumEngine
 		}
 	}
 	
+	/**
+	 * 浏览器启动前的回调函数
+	 * @param enginePro
+	 */
 	public void beforeStart(Properties enginePro){};
 	
 	/**
@@ -144,7 +143,7 @@ public class SeleniumEngine
 		
 		beforeStart(enginePro);
 		
-		initCapMap();
+		new CapabilityConfig(engineCapMap, enginePro).config();
 		
 		String curDriverStr = getDriverStr();
 		DesiredCapabilities capability = engineCapMap.get(curDriverStr);
@@ -293,128 +292,6 @@ public class SeleniumEngine
 	public void setChromeVer(String ver)
 	{
 		enginePro.setProperty(DriverConstants.DRIVER_CHROME + ".version", ver);
-	}
-	
-	/**
-	 * 初始化所有浏览器的配置
-	 */
-	private void initCapMap()
-	{
-		{
-			DesiredCapabilities capability = DesiredCapabilities.firefox();
-			capability.setCapability("marionette", true);
-			engineCapMap.put(DRIVER_FIREFOX, capability);
-		}
-		
-		//chrome://version/
-		{
-			DesiredCapabilities capability = DesiredCapabilities.chrome();
-			
-			ChromeOptions options = new ChromeOptions();
-			Iterator<Object> chromeKeys = enginePro.keySet().iterator();
-			while(chromeKeys.hasNext())
-			{
-				String key = chromeKeys.next().toString();
-				if(!key.startsWith("chrome"))
-				{
-					continue;
-				}
-				
-				if(key.startsWith("chrome.args"))
-				{
-					String arg = key.replace("chrome.args.", "") + "=" + enginePro.getProperty(key);
-					if(arg.endsWith("="))
-					{
-						arg = arg.substring(0, arg.length() - 1);
-					}
-					options.addArguments(arg);
-					logger.info(String.format("chrome arguments : [%s]", arg));
-				}
-				else if(key.startsWith("chrome.cap.proxy.http"))
-				{
-					String val = enginePro.getProperty(key);
-					
-					Proxy proxy = new Proxy();
-					proxy.setHttpProxy(val);
-					capability.setCapability("proxy", proxy);
-				}
-				else if(key.startsWith("chrome.binary"))
-				{
-					options.setBinary(enginePro.getProperty(key));
-				}
-			}
-			capability.setCapability(ChromeOptions.CAPABILITY, options);
-		
-			engineCapMap.put(DRIVER_CHROME, capability);
-		}
-		
-		{
-			String initialUrl = enginePro.getProperty(DriverConstants.INITIAL_URL,
-					"http://surenpi.com");
-			
-			DesiredCapabilities capability = DesiredCapabilities.internetExplorer();
-			capability.setCapability(
-					InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capability.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, initialUrl);
-			capability.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
-			engineCapMap.put(DRIVER_IE, capability);
-		}
-		
-		{
-			String proFile = System.getProperty("firefox.profile", null);
-			FirefoxProfile profile = new FirefoxProfile(proFile != null ? new File(proFile) : null);
-			fireFoxPreSet(profile);
-		}
-		
-		{
-			DesiredCapabilities capability = DesiredCapabilities.safari();
-			engineCapMap.put(DRIVER_SAFARI, capability);
-		}
-		
-		{
-			DesiredCapabilities capability = DesiredCapabilities.operaBlink();
-			engineCapMap.put(DRIVER_OPERA, capability);
-		}
-		
-		{
-			DesiredCapabilities capability = DesiredCapabilities.phantomjs();
-			engineCapMap.put(DRIVER_PHANTOM_JS, capability);
-		}
-	}
-
-	/**
-	 * 设定firefox首选项
-	 * @param profile
-	 */
-	private void fireFoxPreSet(FirefoxProfile profile)
-	{
-		BrowserUtil browserUtil = new BrowserUtil();
-		Map<String, Boolean> boolMap = browserUtil.getFirefoxPreBoolMap();
-		Iterator<String> boolIt = boolMap.keySet().iterator();
-		while(boolIt.hasNext())
-		{
-			String key = boolIt.next();
-			
-			profile.setPreference(key, boolMap.get(key));
-		}
-		
-		Map<String, Integer> intMap = browserUtil.getFirefoxPreIntMap();
-		Iterator<String> intIt = intMap.keySet().iterator();
-		while(intIt.hasNext())
-		{
-			String key = intIt.next();
-			
-			profile.setPreference(key, intMap.get(key));
-		}
-		
-		Map<String, Integer> strMap = browserUtil.getFirefoxPreIntMap();
-		Iterator<String> strIt = intMap.keySet().iterator();
-		while(strIt.hasNext())
-		{
-			String key = strIt.next();
-			
-			profile.setPreference(key, strMap.get(key));
-		}
 	}
 
 	/**

@@ -168,7 +168,11 @@ public class CapabilityConfig
 				options.setBinary(enginePro.getProperty(key));
 			}
 		}
-		capability.setCapability("proxy", proxy);
+		
+		if("true".equals(enginePro.getProperty("chrome.cap.proxy.enable")))
+		{
+			capability.setCapability("proxy", proxy);
+		}
 		capability.setCapability(ChromeOptions.CAPABILITY, options);
 	
 		engineCapMap.put(DRIVER_CHROME, capability);

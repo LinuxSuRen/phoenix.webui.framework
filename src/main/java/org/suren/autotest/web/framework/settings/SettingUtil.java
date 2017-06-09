@@ -1,43 +1,24 @@
 /*
- * Copyright 2002-2007 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  * Copyright 2002-2007 the original author or authors.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package org.suren.autotest.web.framework.settings;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.VisitorSupport;
-import org.dom4j.XPath;
+import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
@@ -50,20 +31,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.AutoApplication;
+import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoPage;
-import org.suren.autotest.web.framework.core.ConfigException;
-import org.suren.autotest.web.framework.core.ConfigNotFoundException;
-import org.suren.autotest.web.framework.core.Locator;
-import org.suren.autotest.web.framework.core.LocatorAware;
-import org.suren.autotest.web.framework.core.PageContext;
-import org.suren.autotest.web.framework.core.PageContextAware;
+import org.suren.autotest.web.framework.core.*;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.data.ClasspathResource;
-import org.suren.autotest.web.framework.data.DataResource;
-import org.suren.autotest.web.framework.data.DataSource;
-import org.suren.autotest.web.framework.data.DynamicDataSource;
-import org.suren.autotest.web.framework.data.FileResource;
+import org.suren.autotest.web.framework.data.*;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -72,6 +45,12 @@ import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * 页面（page）以及数据配置加载
@@ -158,12 +137,19 @@ public class SettingUtil implements Closeable
 			if(!(bean instanceof Page)) {
 				return;
 			}
-			
-			String clsName = bean.getClass().getName();
+
+			Page pageBean = (Page) bean;
+			Class<?> beanCls = bean.getClass();
+			String clsName = beanCls.getName();
 			pageMap.put(clsName, (Page) bean);
+
+			//页面起始地址处理
+			AutoPage autoPageAnno = beanCls.getAnnotation(AutoPage.class);
+			String url = autoPageAnno.url();
+			pageBean.setUrl(url);
 			
 			//属性上的注解处理
-			fieldAnnotationProcess((Page) bean);
+			fieldAnnotationProcess(pageBean);
 		});
 	}
 
@@ -173,8 +159,53 @@ public class SettingUtil implements Closeable
 	 */
 	private void fieldAnnotationProcess(Page bean)
 	{
-		// TODO Auto-generated method stub
-		
+		Class<?> beanCls = bean.getClass();
+		Field[] fields = beanCls.getDeclaredFields();
+		for(Field field : fields)
+		{
+			AutoLocator autoLocator = field.getAnnotation(AutoLocator.class);
+			if(autoLocator != null)
+			{
+				LocatorType locatorType = autoLocator.locator();
+				String value = autoLocator.value();
+				long timeout = autoLocator.timeout();
+
+				field.setAccessible(true);
+				try {
+					Object fieldObj = field.get(bean);
+					if(!(fieldObj instanceof AbstractElement))
+					{
+						throw new ElementException(fieldObj.getClass());
+					}
+
+					AbstractElement element = (AbstractElement) fieldObj;
+					element.setTimeOut(timeout);
+					switch (locatorType)
+					{
+						case BY_ID:
+							element.setId(value);
+							break;
+						case BY_NAME:
+							element.setName(value);
+							break;
+						case BY_CSS:
+							element.setCSS(value);
+							break;
+						case BY_LINK_TEXT:
+							element.setLinkText(value);
+							break;
+						case BY_PARTIAL_LINK_TEXT:
+							element.setPartialLinkText(value);
+							break;
+						case BY_XPATH:
+							element.setXPath(value);
+							break;
+					}
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
@@ -248,7 +279,7 @@ public class SettingUtil implements Closeable
 		configFile = new File(filePath);
 		if(!configFile.isFile())
 		{
-			throw new ConfigException(String.format("Target file [%s] is not a file.", filePath));
+			throw new ConfigException(String.format("Target file [%s] is not a file.", filePath), "");
 		}
 		else if(!filePath.endsWith(".xml"))
 		{
@@ -287,7 +318,7 @@ public class SettingUtil implements Closeable
 	
 	/**
 	 * 从数据源中加载指定的数据组，设置到所有page类中
-	 * @param 数据组序号（从1开始）
+	 * @param row 数据组序号（从1开始）
 	 * @return 如果没有数据源，则返回空列表
 	 */
 	public List<DynamicDataSource> initData(int row)
@@ -426,7 +457,7 @@ public class SettingUtil implements Closeable
 
 	/**
 	 * 解析整个框架主配置文件
-	 * @param document
+	 * @param doc
 	 * @throws DocumentException 
 	 * @throws IOException 
 	 * @throws SAXException 配置文件格式错误 

@@ -1,57 +1,24 @@
 /*
- * Copyright 2002-2007 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  * Copyright 2002-2007 the original author or authors.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package org.suren.autotest.web.framework.selenium;
 
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_FIREFOX;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_HTML_UNIT;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_OPERA;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_PHANTOM_JS;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
-import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.UnsupportedCommandException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -77,6 +44,15 @@ import org.suren.autotest.web.framework.util.ThreadUtil;
 import org.suren.autotest.webdriver.downloader.DriverDownloader;
 import org.suren.autotest.webdriver.downloader.DriverMapping;
 import org.suren.autotest.webdriver.downloader.PathUtil;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static org.suren.autotest.web.framework.settings.DriverConstants.*;
 
 /**
  * 浏览器引擎封装类
@@ -156,7 +132,7 @@ public class SeleniumEngine
 			}
 			catch (MalformedURLException e)
 			{
-				throw new AutoTestException();
+				throw new AutoTestException(e.getMessage());
 			}
 		}
 		else if(DRIVER_CHROME.equals(curDriverStr))

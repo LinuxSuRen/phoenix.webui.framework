@@ -16,25 +16,29 @@
  *
  */
 
-package org.suren.autotest.web.framework.core;
+package org.suren.autotest.web.framework.page;
 
-import org.suren.autotest.web.framework.core.ui.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.core.ui.Button;
 
 /**
  * @author suren
- * @param <T> 元素选择策略
+ * 
  */
-public interface ElementSearchStrategy<T>
-{
+@Component
+public class HomePage extends Page {
+	@Autowired
+	private Button toLoginBut;
 	/**
-	 * 根据元素信息来定位元素
-	 * @param element
-	 * @return
-	 */
-	T search(Element element);
-	
-	/**
-	 * @return 当前策略的描述信息
-	 */
-	String description();
+	* getter and setter methods zone
+	*/
+	public Button getToLoginBut()
+	{
+		return toLoginBut;
+	}
+	public void setToLoginBut(Button toLoginBut)
+	{
+		this.toLoginBut = toLoginBut;
+	}
 }

@@ -19,7 +19,9 @@ package org.suren.autotest.web.framework.driver;
 import java.util.Properties;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.suren.autotest.web.framework.IgnoreReasonConstants;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 
@@ -28,6 +30,7 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
  * @author suren
  * @date 2017年5月13日 下午10:04:17
  */
+@Ignore(value = IgnoreReasonConstants.REAL_BROWSER)
 public class RealDriverTest
 {
 	private String testUrl = "http://surenpi.com";

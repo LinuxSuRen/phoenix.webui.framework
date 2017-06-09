@@ -18,19 +18,19 @@
 
 package org.suren.autotest.web.framework.util;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.suren.autotest.web.framework.IgnoreReasonConstants;
 import org.suren.autotest.web.framework.page.AnnotationPage;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 
 import java.io.IOException;
+import java.sql.Driver;
 
 /**
+ * 测试使用注解配置的方式
  * @author suren
  * @date 2017年6月7日 下午7:10:12
  */
@@ -47,7 +47,7 @@ public class AutoAnnotationTest
 	}
 	
 	@Test
-	public void test()
+	public void basicTest()
 	{
 		util.getEngine().setDriverStr(DriverConstants.DRIVER_HTML_UNIT);
 		util.getEngine().init();
@@ -61,6 +61,20 @@ public class AutoAnnotationTest
 
 		page.open();
 		page.getToLoginBut().click();
+	}
+
+	@Test
+	@Ignore(value = IgnoreReasonConstants.REAL_BROWSER)
+	public void realTest()
+	{
+		util.getEngine().setDriverStr(DriverConstants.DRIVER_CHROME);
+		util.getEngine().init();
+
+		AnnotationPage page = util.getPage(AnnotationPage.class);
+		page.open();
+		page.getToLoginBut().click();
+
+		ThreadUtil.silentSleep(3000);
 	}
 	
 	@After

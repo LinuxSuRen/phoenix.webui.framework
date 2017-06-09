@@ -75,7 +75,7 @@ public class SeleniumClick implements ClickAble
 			if(errObj instanceof Integer)
 			{
 				errorTimes = (Integer) errObj;
-				if(errorTimes >= maxRetry)
+				if(isReachMaxErr(errorTimes))
 				{
 					return;
 				}
@@ -130,12 +130,21 @@ public class SeleniumClick implements ClickAble
 		}
 		catch(WebDriverException e)
 		{
-			logger.error(String.format("元素[%s]点击操作发生错误。", webEle), e);
 			if(ele instanceof AbstractElement)
 			{
 				((AbstractElement) ele).putData(ERR_TIMES, ++errorTimes);
 			}
-			
+
+			String errLog = String.format("元素[%s]点击操作发生错误。", webEle);
+			if(isReachMaxErr(errorTimes))
+			{
+				logger.error(errLog, e);
+			}
+			else
+			{
+				logger.trace(errLog, e);
+			}
+
 			//如果由于目标元素不在可见区域导致的异常，尝试滚动屏幕
 			if(e.getMessage().contains("is not clickable at point"))
 			{
@@ -154,6 +163,15 @@ public class SeleniumClick implements ClickAble
 		{
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @param errorTimes 错误次数
+	 * @return 达到最大错误重试次数返回true，否则返回false
+     */
+	private boolean isReachMaxErr(int errorTimes)
+	{
+		return errorTimes >= maxRetry;
 	}
 
 	@Override

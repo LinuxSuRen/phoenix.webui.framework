@@ -40,4 +40,9 @@ public @interface AutoLocator
 	 * @return 定位的具体内容
 	 */
 	String value();
+	
+	/**
+	 * @return 显式的查找超时时间（单位：毫秒）
+	 */
+	long timeout() default 0;
 }

@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author suren
  * @date 2017年6月7日 下午6:57:34
  */
-@Target({ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Autowired

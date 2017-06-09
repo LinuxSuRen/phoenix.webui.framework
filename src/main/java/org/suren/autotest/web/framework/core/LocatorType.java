@@ -14,34 +14,16 @@
  * limitations under the License.
  */
 
-package org.suren.autotest.web.framework.annotation;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.stereotype.Component;
+package org.suren.autotest.web.framework.core;
 
 /**
- * 用于标记类为Page
+ * 定位方法枚举
  * @author suren
- * @date 2017年6月7日 下午6:53:43
+ * @date 2017年6月7日 下午7:00:15
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Component
-public @interface AutoPage
+public enum LocatorType
 {
-	/**
-	 * @return 关联配置路径
-	 */
-	String path() default "";
-	
-	/**
-	 * @return 当前页面的url地址
-	 */
-	String url() default "";
+	BY_ID, BY_NAME, BY_XPATH, BY_TAGNAME, BY_CSS,
+	BY_LINK_TEXT,
+	BY_PARTIAL_LINK_TEXT;
 }

@@ -14,34 +14,19 @@
  * limitations under the License.
  */
 
-package org.suren.autotest.web.framework.annotation;
+package org.suren.autotest.web.framework;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * 用于标记类为Page
+ * Spring零配置
  * @author suren
- * @date 2017年6月7日 下午6:53:43
+ * @date 2017年6月8日 上午8:21:10
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Component
-public @interface AutoPage
+@Configuration
+@ComponentScan
+public class AutoApplication
 {
-	/**
-	 * @return 关联配置路径
-	 */
-	String path() default "";
-	
-	/**
-	 * @return 当前页面的url地址
-	 */
-	String url() default "";
+
 }

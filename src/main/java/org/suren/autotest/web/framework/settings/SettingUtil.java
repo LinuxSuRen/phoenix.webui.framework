@@ -46,8 +46,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.suren.autotest.web.framework.AutoApplication;
+import org.suren.autotest.web.framework.annotation.AutoPage;
 import org.suren.autotest.web.framework.core.ConfigException;
 import org.suren.autotest.web.framework.core.ConfigNotFoundException;
 import org.suren.autotest.web.framework.core.Locator;
@@ -64,6 +67,7 @@ import org.suren.autotest.web.framework.data.FileResource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.spring.AutotestScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
@@ -100,9 +104,17 @@ public class SettingUtil implements Closeable
 		context = SpringUtils.getApplicationContext();
 		if(context == null || !((AbstractApplicationContext) context).isActive())
 		{
-			context = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
+			ClassPathXmlApplicationContext xmlContext = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
 			"classpath*:applicationContext.xml", "classpath*:beanScope.xml"});
+			
+			context = new AnnotationConfigApplicationContext(AutoApplication.class);
+			((AnnotationConfigApplicationContext) context).setParent(xmlContext);
+			
+			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
 		}
+		
+		//auto注解扫描
+		annotationScan();
 		
 		try
 		{
@@ -134,6 +146,35 @@ public class SettingUtil implements Closeable
 		Runtime.getRuntime().addShutdownHook(shutdownHook);
 		
 		logger.info("init process done.");
+	}
+
+	/**
+	 * auto注解扫描
+	 */
+	private void annotationScan()
+	{
+		Map<String, Object> beanMap = context.getBeansWithAnnotation(AutoPage.class);
+		beanMap.forEach((name, bean) -> {
+			if(!(bean instanceof Page)) {
+				return;
+			}
+			
+			String clsName = bean.getClass().getName();
+			pageMap.put(clsName, (Page) bean);
+			
+			//属性上的注解处理
+			fieldAnnotationProcess((Page) bean);
+		});
+	}
+
+	/**
+	 * 属性上的注解处理
+	 * @param bean Page类
+	 */
+	private void fieldAnnotationProcess(Page bean)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**

@@ -18,30 +18,19 @@ package org.suren.autotest.web.framework.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.stereotype.Component;
-
 /**
- * 用于标记类为Page
  * @author suren
- * @date 2017年6月7日 下午6:53:43
+ * @date 2017年6月8日 下午12:40:15
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 @Documented
-@Component
-public @interface AutoPage
+public @interface AutoData
 {
 	/**
-	 * @return 关联配置路径
+	 * 默认为空字符串
+	 * @return 数据
 	 */
-	String path() default "";
-	
-	/**
-	 * @return 当前页面的url地址
-	 */
-	String url() default "";
+	String value() default "";
 }

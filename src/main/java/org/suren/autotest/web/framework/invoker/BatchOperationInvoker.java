@@ -14,34 +14,25 @@
  * limitations under the License.
  */
 
-package org.suren.autotest.web.framework.annotation;
+package org.suren.autotest.web.framework.invoker;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.util.ElementUtil;
 
 /**
- * 用于标记类为Page
+ * 批量操作执行器
  * @author suren
- * @date 2017年6月7日 下午6:53:43
+ * @date 2017年5月15日 上午7:01:27
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Component
-public @interface AutoPage
+public class BatchOperationInvoker
 {
 	/**
-	 * @return 关联配置路径
+	 * 批量操作元素
+	 * @param util
+	 * @param params
 	 */
-	String path() default "";
-	
-	/**
-	 * @return 当前页面的url地址
-	 */
-	String url() default "";
+	public static void execute(SettingUtil util, String[] params)
+	{
+//		ElementUtil.click(buttons);
+	}
 }

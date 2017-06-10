@@ -31,6 +31,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.suren.autotest.web.framework.AutoApplication;
+import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoPage;
 import org.suren.autotest.web.framework.core.*;
@@ -147,6 +148,12 @@ public class SettingUtil implements Closeable
 			AutoPage autoPageAnno = beanCls.getAnnotation(AutoPage.class);
 			String url = autoPageAnno.url();
 			pageBean.setUrl(url);
+
+			//数据源处理
+			AutoDataSource autoDataSource = beanCls.getAnnotation(AutoDataSource.class);
+			pageBean.setDataSource(autoDataSource.name());
+			dataSourceMap.put(autoDataSource.name(),
+					new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
 			
 			//属性上的注解处理
 			fieldAnnotationProcess(pageBean);
@@ -179,6 +186,7 @@ public class SettingUtil implements Closeable
 					}
 
 					AbstractElement element = (AbstractElement) fieldObj;
+					element.setParamPrefix("param");
 					element.setTimeOut(timeout);
 					switch (locatorType)
 					{
@@ -349,7 +357,7 @@ public class SettingUtil implements Closeable
 	
 	/**
 	 * 从数据源中加载指定的数据组到指定的Page类中
-	 * @param page
+	 * @param page 页面对象
 	 * @param row 数据组序号（从1开始）
 	 * @return
 	 */

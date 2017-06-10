@@ -19,6 +19,7 @@ package org.suren.autotest.web.framework.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 单个元素上的数据
  * @author suren
  * @date 2017年6月8日 下午12:40:15
  */

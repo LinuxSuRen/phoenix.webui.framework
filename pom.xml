@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
-	<version>1.0.2-20170422</version>
+	<version>1.0.3-20170610</version>
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
@@ -287,4 +287,15 @@
 		<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
 		<developerConnection>https://github.com/LinuxSuRen/phoenix.webui.framework.git</developerConnection>
 	</scm>
+
+	<developers>
+		<developer>
+			<name>suren</name>
+			<id>suren</id>
+			<url>http://surenpi.com</url>
+			<roles>
+				<role>owner</role>
+			</roles>
+		</developer>
+	</developers>
 </project>

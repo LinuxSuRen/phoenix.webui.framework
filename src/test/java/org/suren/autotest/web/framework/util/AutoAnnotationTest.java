@@ -69,10 +69,13 @@ public class AutoAnnotationTest
 	{
 		util.getEngine().setDriverStr(DriverConstants.DRIVER_CHROME);
 		util.getEngine().init();
+		util.initData();
 
 		AnnotationPage page = util.getPage(AnnotationPage.class);
 		page.open();
 		page.getToLoginBut().click();
+
+		page.getPhoneText().fillNotBlankValue();
 
 		ThreadUtil.silentSleep(3000);
 	}

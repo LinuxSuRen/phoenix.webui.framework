@@ -135,7 +135,8 @@ public class SettingUtil implements Closeable
 	{
 		Map<String, Object> beanMap = context.getBeansWithAnnotation(AutoPage.class);
 		beanMap.forEach((name, bean) -> {
-			if(!(bean instanceof Page)) {
+			if(!(bean instanceof Page))
+			{
 				return;
 			}
 

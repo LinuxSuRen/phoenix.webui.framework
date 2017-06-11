@@ -151,9 +151,12 @@ public class SettingUtil implements Closeable
 
 			//数据源处理
 			AutoDataSource autoDataSource = beanCls.getAnnotation(AutoDataSource.class);
-			pageBean.setDataSource(autoDataSource.name());
-			dataSourceMap.put(autoDataSource.name(),
-					new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
+			if(autoDataSource != null)
+			{
+				pageBean.setDataSource(autoDataSource.name());
+				dataSourceMap.put(autoDataSource.name(),
+						new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
+			}
 			
 			//属性上的注解处理
 			fieldAnnotationProcess(pageBean);

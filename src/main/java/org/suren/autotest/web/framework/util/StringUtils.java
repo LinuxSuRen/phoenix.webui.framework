@@ -74,7 +74,7 @@ public class StringUtils
 	/**
 	 * 
 	 * @param namesize 邮箱@之前的字符最长随机长度
-	 * @param servernamesize邮箱@之后的字符最长随机长度
+	 * @param servernamesize 邮箱@之后的字符最长随机长度
 	 * @return 需要的随机Email地址
 	 */
 	public static String email( int namesize, int servernamesize) 
@@ -175,7 +175,7 @@ public class StringUtils
 
 	/**
 	 * 把字符串转化为首字母小写
-	 * @param clsName
+	 * @param str
 	 * @return
 	 */
     public static String uncapitalize(String str)
@@ -190,4 +190,45 @@ public class StringUtils
             .append(str.substring(1))
             .toString();
     }
+
+	/**
+	 * 如果text为空，则返回defText
+	 * @see #isBlank(CharSequence)
+	 * @param text 待测试文本字符串
+	 * @param defText 默认文本字符串
+     * @return 字符串
+     */
+	public static String defaultIfBlank(String text, String defText)
+	{
+		if(StringUtils.isBlank(text))
+		{
+			return defText;
+		}
+		else
+		{
+			return text;
+		}
+	}
+
+	/**
+	 * @see #defaultIfBlank(String, String)
+	 * @param text
+	 * @param numText 默认的数字文本
+     * @return
+     */
+	public static String defaultIfBlank(String text, int numText)
+	{
+		return defaultIfBlank(text, String.valueOf(numText));
+	}
+
+	/**
+	 * @see #defaultIfBlank(String, String)
+	 * @param text
+	 * @param numText 默认的数字文本
+	 * @return
+	 */
+	public static String defaultIfBlank(String text, long numText)
+	{
+		return defaultIfBlank(text, String.valueOf(numText));
+	}
 }

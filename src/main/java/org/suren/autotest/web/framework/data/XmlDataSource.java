@@ -58,7 +58,7 @@ import org.suren.autotest.web.framework.util.StringUtils;
  * @author suren
  * @date Jul 17, 2016 8:56:51 AM
  */
-@Component("xml_data_source")
+@Component(DataSourceConstants.DS_TYPE_XML)
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class XmlDataSource implements DataSource, DynamicDataSource
 {

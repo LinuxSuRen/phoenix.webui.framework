@@ -27,7 +27,6 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 
 import java.io.IOException;
-import java.sql.Driver;
 
 /**
  * 测试使用注解配置的方式
@@ -76,8 +75,15 @@ public class AutoAnnotationTest
 		page.getToLoginBut().click();
 
 		page.getPhoneText().fillNotBlankValue();
+		page.getPasswordText().fillNotBlankValue();
 
 		ThreadUtil.silentSleep(3000);
+	}
+
+	@Test
+	public void encrypt()
+	{
+		System.out.println(EncryptorUtil.encryptWithBase64("123456"));
 	}
 	
 	@After

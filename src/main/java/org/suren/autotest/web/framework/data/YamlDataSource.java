@@ -35,7 +35,7 @@ import org.yaml.snakeyaml.Yaml;
  * @author suren
  * @date 2017年5月10日 下午2:22:30
  */
-@Component("yaml_data_source")
+@Component(DataSourceConstants.DS_TYPE_YAML)
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class YamlDataSource implements DataSource
 {

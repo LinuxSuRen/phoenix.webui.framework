@@ -45,7 +45,7 @@ import org.suren.autotest.web.framework.util.StringUtils;
  * @author suren
  * @date Jul 17, 2016 8:56:31 AM
  */
-@Component("excel_data_source")
+@Component(DataSourceConstants.DS_TYPE_EXCEL)
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExcelDataSource implements DataSource, DynamicDataSource
 {

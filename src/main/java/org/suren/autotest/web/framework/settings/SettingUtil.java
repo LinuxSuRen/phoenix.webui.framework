@@ -151,17 +151,29 @@ public class SettingUtil implements Closeable
 			pageBean.setUrl(url);
 
 			//数据源处理
-			AutoDataSource autoDataSource = beanCls.getAnnotation(AutoDataSource.class);
-			if(autoDataSource != null)
-			{
-				pageBean.setDataSource(autoDataSource.name());
-				dataSourceMap.put(autoDataSource.name(),
-						new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
-			}
+			autoDataSourceProcess(beanCls, pageBean);
 			
 			//属性上的注解处理
 			fieldAnnotationProcess(pageBean);
 		});
+	}
+
+	/**
+	 * 数据源处理
+	 * @param beanCls Page类的class类型
+	 * @param pageBean Page类对象
+     */
+	private void autoDataSourceProcess(Class<?> beanCls, Page pageBean)
+	{
+		AutoDataSource autoDataSource = beanCls.getAnnotation(AutoDataSource.class);
+		if(autoDataSource != null)
+		{
+			String dsName = StringUtils.defaultIfBlank(autoDataSource.name(),
+					System.currentTimeMillis());
+			pageBean.setDataSource(dsName);
+			dataSourceMap.put(dsName,
+					new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
+		}
 	}
 
 	/**

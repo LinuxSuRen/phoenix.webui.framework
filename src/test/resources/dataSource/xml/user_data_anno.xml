@@ -17,8 +17,6 @@
   ~  * limitations under the License.
   ~  */
   -->
-
-<!--Auto created by AutoTest, 17-1-1 下午8:48 -->
 <suren:dataSources xmlns:suren="http://datasource.surenpi.com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://datasource.surenpi.com http://surenpi.com/schema/datasource/autotest.web.framework.datasource.xsd ">
@@ -27,6 +25,7 @@
 			<suren:field name="phoneText" data="${phone}" type="callback">
 				<suren:param name="dynamic.data" value="properties"/>
 			</suren:field>
+			<suren:field name="passwordText" data="xq9SXDY9Iy0=" type="encrypt"/>
 		</suren:page>
 	</suren:dataSource>
 </suren:dataSources>

@@ -43,6 +43,10 @@ public class AnnotationPage extends Page
 	@AutoLocator(locator = LocatorType.BY_XPATH, value = "//input[@placeholder='请输入手机号码/脉脉号']")
 	private Text phoneText;
 
+	@AutoLocator(locator = LocatorType.BY_XPATH, value = "//input[@placeholder='请输入密码']")
+	private Text passwordText;
+	/** getter and setter */
+
 	public Button getToLoginBut() {
 		return toLoginBut;
 	}
@@ -57,5 +61,13 @@ public class AnnotationPage extends Page
 
 	public void setPhoneText(Text phoneText) {
 		this.phoneText = phoneText;
+	}
+
+	public Text getPasswordText() {
+		return passwordText;
+	}
+
+	public void setPasswordText(Text passwordText) {
+		this.passwordText = passwordText;
 	}
 }

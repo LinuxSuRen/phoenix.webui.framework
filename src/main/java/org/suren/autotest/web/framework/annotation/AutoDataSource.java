@@ -18,6 +18,8 @@
 
 package org.suren.autotest.web.framework.annotation;
 
+import org.suren.autotest.web.framework.data.DataSourceConstants;
+
 import java.lang.annotation.*;
 
 /**
@@ -31,18 +33,21 @@ import java.lang.annotation.*;
 @AutoPage
 public @interface AutoDataSource {
     /**
-     * @return 数据呀un名称
+     * 数据源名称，必须保证系统中唯一不重复
+     * @return 数据源名称
      */
-    String name();
+    String name() default "";
 
     /**
+     * 数据源文件路径
      * @return 数据源文件
      */
     String resource();
 
     /**
      * 内置的类型包括：xml、yaml、excel
+     * @see DataSourceConstants
      * @return 数据源类型
      */
-    String type() default "xml_data_source";
+    String type() default DataSourceConstants.DS_TYPE_XML;
 }

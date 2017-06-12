@@ -79,17 +79,22 @@ public class SettingUtil implements Closeable
 	/**
 	 * 初始化bean容器，初始化上下文对象，增加JMX管理模块，增加程序关闭钩子。
 	 */
-	public SettingUtil()
+	public SettingUtil(Class<?> ... annotatedClasses)
 	{
 		context = SpringUtils.getApplicationContext();
 		if(context == null || !((AbstractApplicationContext) context).isActive())
 		{
-			ClassPathXmlApplicationContext xmlContext = new ClassPathXmlApplicationContext(new String[]{"classpath*:autoTestContext.xml",
-			"classpath*:applicationContext.xml", "classpath*:beanScope.xml"});
-			
-			context = new AnnotationConfigApplicationContext(AutoApplication.class);
-			((AnnotationConfigApplicationContext) context).setParent(xmlContext);
-			
+		    if(annotatedClasses == null)
+			{
+				annotatedClasses = new Class[]{AutoApplication.class};
+			}
+			else
+			{
+			    int len = annotatedClasses.length;
+				annotatedClasses = Arrays.copyOf(annotatedClasses, len + 1);
+				annotatedClasses[len] = AutoApplication.class;
+			}
+			context = new AnnotationConfigApplicationContext(annotatedClasses);
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
 		}
 		

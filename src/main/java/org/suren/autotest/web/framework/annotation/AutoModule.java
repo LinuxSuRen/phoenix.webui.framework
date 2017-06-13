@@ -18,6 +18,7 @@
 
 package org.suren.autotest.web.framework.annotation;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
@@ -29,6 +30,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
+@Scope()
 public @interface AutoModule {
     String name();
 

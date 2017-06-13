@@ -7,6 +7,7 @@ import org.springframework.core.annotation.AliasFor;
 import java.lang.annotation.*;
 
 /**
+ * 一个独立的测试用例
  * @author suren
  */
 @Target(ElementType.TYPE)
@@ -14,7 +15,8 @@ import java.lang.annotation.*;
 @Documented
 @Configuration
 @ComponentScan
-public @interface AutoApplication {
+public @interface AutoApplication
+{
     /**
      * 用例名称
      * @return
@@ -27,6 +29,15 @@ public @interface AutoApplication {
      */
     String description() default "";
 
+    /**
+     * @return 项目（模块）关注者的邮件列表
+     */
+    String[] concernMailList() default {};
+
+    /**
+     * Page子类所在的包（package）
+     * @return
+     */
     @AliasFor(
             annotation = ComponentScan.class,
             attribute = "basePackages"

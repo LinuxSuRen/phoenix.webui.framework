@@ -937,8 +937,6 @@ public class SettingUtil implements Closeable
 		if(engine != null)
 		{
 			engine.close();
-			((AbstractApplicationContext) context).destroy();
-			((AbstractApplicationContext) context).close();
 			closed = true;
 			
 			Runtime.getRuntime().removeShutdownHook(shutdownHook);
@@ -947,6 +945,15 @@ public class SettingUtil implements Closeable
 		{
 			logger.error("Can not fond seleniumEngine, resource close failed.");
 		}
+	}
+
+	/**
+	 * 关闭容器
+	 */
+	public void shutdown()
+	{
+		((AbstractApplicationContext) context).destroy();
+		((AbstractApplicationContext) context).close();
 	}
 
 	/**

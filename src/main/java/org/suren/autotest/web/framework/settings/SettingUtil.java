@@ -29,8 +29,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.suren.autotest.web.framework.AutoApplication;
+import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoPage;
@@ -86,13 +85,13 @@ public class SettingUtil implements Closeable
 		{
 		    if(annotatedClasses == null)
 			{
-				annotatedClasses = new Class[]{AutoApplication.class};
+				annotatedClasses = new Class[]{AutoApplicationConfig.class};
 			}
 			else
 			{
 			    int len = annotatedClasses.length;
 				annotatedClasses = Arrays.copyOf(annotatedClasses, len + 1);
-				annotatedClasses[len] = AutoApplication.class;
+				annotatedClasses[len] = AutoApplicationConfig.class;
 			}
 			context = new AnnotationConfigApplicationContext(annotatedClasses);
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());

@@ -24,14 +24,16 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.*;
 
 /**
+ * 标记为一个模块
  * @author suren
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-@Scope()
-public @interface AutoModule {
+@Scope("module")
+public @interface AutoModule
+{
     String name();
 
     String description() default "";

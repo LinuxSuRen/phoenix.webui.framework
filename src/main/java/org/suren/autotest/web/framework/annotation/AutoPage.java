@@ -19,6 +19,7 @@
 package org.suren.autotest.web.framework.annotation;
 
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.settings.DriverConstants;
 
 import java.lang.annotation.*;
 
@@ -42,4 +43,24 @@ public @interface AutoPage
 	 * @return 当前页面的url地址
 	 */
 	String url() default "";
+
+	/**
+	 * @return 浏览器类型
+	 */
+	String browser() default DriverConstants.DRIVER_CHROME;
+
+	/**
+	 * @return 是否最大化，默认将会最大化浏览器窗口
+	 */
+	boolean maximize() default true;
+
+    /**
+     * @return 浏览器宽度
+     */
+	int width() default -1;
+
+	/**
+	 * @return 浏览器高度
+	 */
+	int height() default -1;
 }

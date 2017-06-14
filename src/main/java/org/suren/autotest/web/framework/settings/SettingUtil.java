@@ -39,6 +39,7 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.*;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
+import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.spring.AutotestScope;
@@ -52,6 +53,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 页面（page）以及数据配置加载
@@ -95,8 +97,11 @@ public class SettingUtil implements Closeable
 				annotatedClasses[len] = AutoApplicationConfig.class;
 			}
 			context = new AnnotationConfigApplicationContext(annotatedClasses);
+			Map<String, RecordReportWriter> reportWriters = context.getBeansOfType(RecordReportWriter.class);
+
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
-			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module", new AutoModuleScope());
+			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
+					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList())));
 		}
 		
 		//auto注解扫描

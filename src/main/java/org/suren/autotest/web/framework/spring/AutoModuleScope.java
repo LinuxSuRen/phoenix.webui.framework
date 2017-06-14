@@ -21,11 +21,13 @@ package org.suren.autotest.web.framework.spring;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,7 +35,13 @@ import java.util.Map;
  */
 public class AutoModuleScope implements Scope
 {
-    private Map<String, Object> objMap = new HashMap<String, Object>();
+    private final List<RecordReportWriter> recordReportWriters;
+    private final Map<String, Object> objMap = new HashMap<String, Object>();
+
+    public AutoModuleScope(List<RecordReportWriter> recordReportWriters)
+    {
+        this.recordReportWriters = recordReportWriters;
+    }
 
     @Override
     public Object get(String name, ObjectFactory<?> objectFactory)
@@ -42,8 +50,8 @@ public class AutoModuleScope implements Scope
         if(object == null)
         {
             object = objectFactory.getObject();
-            AutoModuleProxy proxy = new AutoModuleProxy();
-            object = proxy.getProxy(object);
+            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters);
+            object = proxy.getProxy();
             objMap.put(name, object);
         }
 

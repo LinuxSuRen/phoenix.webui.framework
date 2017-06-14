@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
+import org.suren.autotest.web.framework.report.record.NormalRecord;
 
 /**
  * 采用日志的形式记录报告
@@ -35,7 +36,13 @@ public class LoggerRecordReport implements RecordReportWriter
 	@Override
 	public void write(ExceptionRecord record)
 	{
-		LOGGER.debug(record.getMessage());
+		LOGGER.error(record.getMessage());
+	}
+
+	@Override
+	public void write(NormalRecord normalRecord)
+	{
+		LOGGER.info(normalRecord.toString());
 	}
 
 }

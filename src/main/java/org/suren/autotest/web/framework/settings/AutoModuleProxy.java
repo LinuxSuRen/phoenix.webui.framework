@@ -24,20 +24,31 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.springframework.cglib.core.SpringNamingPolicy;
+import org.suren.autotest.web.framework.report.RecordReportWriter;
+import org.suren.autotest.web.framework.report.record.ExceptionRecord;
+import org.suren.autotest.web.framework.report.record.NormalRecord;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
+ * 模块代理类
  * @author suren
  */
 public class AutoModuleProxy implements MethodInterceptor
 {
     private Enhancer enhancer = new Enhancer();
     private Object target;
+    private List<RecordReportWriter> recordReportWriters;
 
-    public Object getProxy(Object target)
+    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters)
     {
         this.target = target;
+        this.recordReportWriters = recordReportWriters;
+    }
+
+    public Object getProxy()
+    {
         Class<?> clazz = target.getClass();
         enhancer.setSuperclass(clazz);
         enhancer.setCallback(this);
@@ -48,8 +59,41 @@ public class AutoModuleProxy implements MethodInterceptor
     public Object intercept(Object obj, Method method, Object[] args,
                             MethodProxy methodProxy) throws Throwable
     {
-        System.out.println("auto model pre method " + method.getName());
-        Object result = methodProxy.invokeSuper(obj, args);
+        long beginTime = System.currentTimeMillis();
+
+        Object result = null;
+        try
+        {
+            result = methodProxy.invokeSuper(obj, args);
+
+            NormalRecord normalRecord = new NormalRecord();
+            normalRecord.setBeginTime(beginTime);
+            normalRecord.setEndTime(System.currentTimeMillis());
+            write(normalRecord);
+        }
+        catch(Exception e)
+        {
+            write(new ExceptionRecord());
+
+            throw e;
+        }
+
         return result;
+    }
+
+    private void write(NormalRecord record)
+    {
+        for(RecordReportWriter writer : recordReportWriters)
+        {
+            writer.write(record);
+        }
+    }
+
+    private void write(ExceptionRecord record)
+    {
+        for(RecordReportWriter writer : recordReportWriters)
+        {
+            writer.write(record);
+        }
     }
 }

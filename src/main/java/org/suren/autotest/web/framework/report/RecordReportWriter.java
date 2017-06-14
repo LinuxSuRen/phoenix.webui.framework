@@ -17,6 +17,7 @@
 package org.suren.autotest.web.framework.report;
 
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
+import org.suren.autotest.web.framework.report.record.NormalRecord;
 
 /**
  * 记录报告写入
@@ -30,4 +31,9 @@ public interface RecordReportWriter
 	 * @param record
 	 */
 	void write(ExceptionRecord record);
+
+	/**
+	 * @param normalRecord
+     */
+	void write(NormalRecord normalRecord);
 }

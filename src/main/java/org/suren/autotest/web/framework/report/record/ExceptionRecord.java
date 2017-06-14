@@ -23,7 +23,7 @@ import java.util.Date;
  * @author suren
  * @date 2016年9月6日 下午8:36:15
  */
-public class ExceptionRecord
+public class ExceptionRecord extends Record
 {
 	private boolean exception;
 	private String message;

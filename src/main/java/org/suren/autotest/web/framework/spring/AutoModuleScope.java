@@ -43,21 +43,7 @@ public class AutoModuleScope implements Scope
         {
             object = objectFactory.getObject();
             AutoModuleProxy proxy = new AutoModuleProxy();
-            Object proxyObj = proxy.getProxy(object);
-            for(Field field : object.getClass().getDeclaredFields())
-            {
-                field.setAccessible(true);
-                try {
-                    Field proxyField = proxyObj.getClass().getDeclaredField(field.getName());
-                    proxyField.setAccessible(true);
-
-                    proxyField.set(proxyObj, field.get(object));
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            object = proxy.getProxy(object);
             objMap.put(name, object);
         }
 

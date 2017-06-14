@@ -901,6 +901,11 @@ public class SettingUtil implements Closeable
 	{
 		return (T) getPage(type.getName());
 	}
+
+	public <T> T getModule(Class<T> type)
+	{
+		return context.getBean(type);
+	}
 	
 	class DataSourceInfo
 	{

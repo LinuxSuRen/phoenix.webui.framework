@@ -18,6 +18,7 @@
 
 package org.suren.autotest.web.framework.settings;
 
+import net.sf.cglib.core.GeneratorStrategy;
 import net.sf.cglib.core.NamingPolicy;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -48,7 +49,7 @@ public class AutoModuleProxy implements MethodInterceptor
                             MethodProxy methodProxy) throws Throwable
     {
         System.out.println("auto model pre method " + method.getName());
-        Object result = methodProxy.invoke(target, args);// methodProxy.invokeSuper(target, args);
+        Object result = methodProxy.invokeSuper(obj, args);
         return result;
     }
 }

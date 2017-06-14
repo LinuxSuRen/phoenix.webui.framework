@@ -24,6 +24,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,21 @@ public class AutoModuleScope implements Scope
         {
             object = objectFactory.getObject();
             AutoModuleProxy proxy = new AutoModuleProxy();
-            object = proxy.getProxy(object.getClass());
+            Object proxyObj = proxy.getProxy(object);
+            for(Field field : object.getClass().getDeclaredFields())
+            {
+                field.setAccessible(true);
+                try {
+                    Field proxyField = proxyObj.getClass().getDeclaredField(field.getName());
+                    proxyField.setAccessible(true);
+
+                    proxyField.set(proxyObj, field.get(object));
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
             objMap.put(name, object);
         }
 

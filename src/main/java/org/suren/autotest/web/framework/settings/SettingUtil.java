@@ -40,6 +40,7 @@ import org.suren.autotest.web.framework.data.*;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.spring.AutotestScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
@@ -95,6 +96,7 @@ public class SettingUtil implements Closeable
 			}
 			context = new AnnotationConfigApplicationContext(annotatedClasses);
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
+			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module", new AutoModuleScope());
 		}
 		
 		//auto注解扫描
@@ -146,6 +148,11 @@ public class SettingUtil implements Closeable
 
 			Page pageBean = (Page) bean;
 			Class<?> beanCls = bean.getClass();
+			if(!beanCls.getSuperclass().equals(Page.class))
+			{
+				beanCls = beanCls.getSuperclass();
+			}
+
 			String clsName = beanCls.getName();
 			pageMap.put(clsName, (Page) bean);
 

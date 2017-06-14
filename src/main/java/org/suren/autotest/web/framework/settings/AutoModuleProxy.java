@@ -18,9 +18,11 @@
 
 package org.suren.autotest.web.framework.settings;
 
+import net.sf.cglib.core.NamingPolicy;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.springframework.cglib.core.SpringNamingPolicy;
 
 import java.lang.reflect.Method;
 
@@ -30,9 +32,12 @@ import java.lang.reflect.Method;
 public class AutoModuleProxy implements MethodInterceptor
 {
     private Enhancer enhancer = new Enhancer();
+    private Object target;
 
-    public Object getProxy(Class<?> clazz)
+    public Object getProxy(Object target)
     {
+        this.target = target;
+        Class<?> clazz = target.getClass();
         enhancer.setSuperclass(clazz);
         enhancer.setCallback(this);
         return enhancer.create();
@@ -42,8 +47,8 @@ public class AutoModuleProxy implements MethodInterceptor
     public Object intercept(Object obj, Method method, Object[] args,
                             MethodProxy methodProxy) throws Throwable
     {
-        System.out.println("auto model pre method");
-        Object result = methodProxy.invokeSuper(obj, args);
+        System.out.println("auto model pre method " + method.getName());
+        Object result = methodProxy.invoke(target, args);// methodProxy.invokeSuper(target, args);
         return result;
     }
 }

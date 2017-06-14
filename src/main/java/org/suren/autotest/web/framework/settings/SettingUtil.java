@@ -166,6 +166,13 @@ public class SettingUtil implements Closeable
 			String url = autoPageAnno.url();
 			pageBean.setUrl(url);
 
+			//设置浏览器信息
+			SeleniumEngine engine = getEngine();
+			engine.setWidth(autoPageAnno.width());
+			engine.setHeight(autoPageAnno.height());
+			engine.setMaximize(autoPageAnno.maximize());
+			engine.setDriverStr(autoPageAnno.browser());
+
 			//数据源处理
 			autoDataSourceProcess(beanCls, pageBean);
 			

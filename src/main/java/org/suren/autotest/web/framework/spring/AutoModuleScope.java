@@ -58,6 +58,7 @@ public class AutoModuleScope implements Scope
             object = objectFactory.getObject();
             AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters);
             object = proxy.getProxy();
+            putAware(object);
 
             objMap.put(name, object);
         }

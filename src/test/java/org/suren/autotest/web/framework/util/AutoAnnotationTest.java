@@ -19,9 +19,9 @@
 package org.suren.autotest.web.framework.util;
 
 import org.junit.*;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.suren.autotest.web.framework.IgnoreReasonConstants;
+import org.suren.autotest.web.framework.annotation.AutoApplication;
+import org.suren.autotest.web.framework.annotation.AutoReporter;
 import org.suren.autotest.web.framework.page.AnnotationPage;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.settings.SettingUtil;
@@ -33,8 +33,10 @@ import java.io.IOException;
  * @author suren
  * @date 2017年6月7日 下午7:10:12
  */
-@Configuration
-@ComponentScan(basePackages = "org.suren.autotest.web.webframework.page")
+@AutoApplication(concernMailList = "zxjlwt@126.com",
+		name = "注解测试用例",
+		description = "本用例是对注解方式的配置进行单元测试",
+		scanBasePackages = "org.suren.autotest.web.webframework.page")
 public class AutoAnnotationTest
 {
 	private SettingUtil util;
@@ -46,6 +48,7 @@ public class AutoAnnotationTest
 	}
 	
 	@Test
+	@AutoReporter(email = "zxjlwt@126.com")
 	public void basicTest()
 	{
 		util.getEngine().setDriverStr(DriverConstants.DRIVER_HTML_UNIT);

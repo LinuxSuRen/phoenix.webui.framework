@@ -19,7 +19,7 @@ package org.suren.autotest.web.framework;
 
 /**
  * 在单元测试中被忽略的原因
- * Created by glodon on 2017/6/10.
+ * @author suren
  */
 public interface IgnoreReasonConstants {
     String REAL_BROWSER = "会启动浏览器的单元测试";

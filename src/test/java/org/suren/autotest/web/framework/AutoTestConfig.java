@@ -1,21 +1,18 @@
 package org.suren.autotest.web.framework;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.util.Properties;
+
 /**
- * Created by zhaoxj on 2017/6/12.
+ * @author suren
  */
 @Configuration
-public class AutoTestConfig {
-
-    @Bean
-    public JavaMailSender mailBean() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setUsername("361981269");
-        mailSender.setPassword("walkMAN227");
-        return mailSender;
-    }
+public class AutoTestConfig
+{
 }

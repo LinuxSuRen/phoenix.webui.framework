@@ -26,5 +26,9 @@ import org.openqa.selenium.WebDriver;
  */
 public interface WebDriverAware
 {
+    /**
+     * 子类需要把该实例
+     * @param webDriver selenium驱动对象
+     */
     void setWebDriver(WebDriver webDriver);
 }

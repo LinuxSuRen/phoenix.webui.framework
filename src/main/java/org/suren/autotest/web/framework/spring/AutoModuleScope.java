@@ -23,6 +23,7 @@ import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.suren.autotest.web.framework.core.EngineAware;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
+import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 
@@ -57,14 +58,28 @@ public class AutoModuleScope implements Scope
             object = objectFactory.getObject();
             AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters);
             object = proxy.getProxy();
-            if(EngineAware.class.isAssignableFrom(object.getClass().getSuperclass()))
-            {
-                ((EngineAware) object).setEngine(util);
-            }
+
             objMap.put(name, object);
         }
 
         return object;
+    }
+
+    /**
+     * 向目标对象注入特定接口实例
+     * @param target
+     */
+    private void putAware(Object target)
+    {
+        if(EngineAware.class.isAssignableFrom(target.getClass().getSuperclass()))
+        {
+            ((EngineAware) target).setEngine(util);
+        }
+
+        if(WebDriverAware.class.isAssignableFrom(target.getClass().getSuperclass()))
+        {
+            ((WebDriverAware) target).setWebDriver(util.getEngine().getDriver());
+        }
     }
 
     @Override

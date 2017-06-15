@@ -8,5 +8,9 @@ import org.suren.autotest.web.framework.settings.SettingUtil;
  */
 public interface EngineAware
 {
+    /**
+     * 通过该接口能获取的selenium的原始api
+     * @param util
+     */
     void setEngine(SettingUtil util);
 }

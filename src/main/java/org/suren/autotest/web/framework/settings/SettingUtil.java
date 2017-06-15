@@ -101,7 +101,8 @@ public class SettingUtil implements Closeable
 
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
-					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList())));
+					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
+							this));
 		}
 		
 		//auto注解扫描

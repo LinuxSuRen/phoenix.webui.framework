@@ -61,9 +61,9 @@ public class InfoLog
 		long endTime = System.currentTimeMillis();
 		long cost = endTime - beginTime;
 		
-		ExceptionRecord exceptionRecord = new SearchRecord(cost);
-		exceptionRecord.setMessage(joinPoint.getSignature().toLongString());
-		recordReportWriter.write(exceptionRecord);
+//		ExceptionRecord exceptionRecord = new SearchRecord(cost);
+//		exceptionRecord.setMessage(joinPoint.getSignature().toLongString());
+//		recordReportWriter.write(exceptionRecord);
 		
 		return res;
 	}

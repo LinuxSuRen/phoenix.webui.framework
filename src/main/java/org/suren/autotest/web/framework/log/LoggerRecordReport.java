@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
 import org.suren.autotest.web.framework.report.record.NormalRecord;
+import org.suren.autotest.web.framework.report.record.ProjectRecord;
 
 /**
  * 采用日志的形式记录报告
@@ -43,6 +44,11 @@ public class LoggerRecordReport implements RecordReportWriter
 	public void write(NormalRecord normalRecord)
 	{
 		LOGGER.info(normalRecord.toString());
+	}
+
+	@Override
+	public void write(ProjectRecord projectRecord)
+	{
 	}
 
 }

@@ -18,6 +18,7 @@ package org.suren.autotest.web.framework.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
@@ -29,6 +30,7 @@ import org.suren.autotest.web.framework.report.record.ProjectRecord;
  * @author suren
  * @date 2016年9月6日 下午9:10:47
  */
+@Primary
 @Component
 public class LoggerRecordReport implements RecordReportWriter
 {

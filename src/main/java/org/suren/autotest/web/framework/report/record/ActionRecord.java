@@ -22,7 +22,7 @@ package org.suren.autotest.web.framework.report.record;
  * @author suren
  * @date 2016年9月6日 下午8:28:32
  */
-public class ActionRecord extends ExceptionRecord
+public class ActionRecord
 {
 	/** 动作名称 */
 	private String name;

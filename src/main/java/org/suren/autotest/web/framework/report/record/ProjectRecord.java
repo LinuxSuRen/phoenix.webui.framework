@@ -17,6 +17,7 @@
 package org.suren.autotest.web.framework.report.record;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目信息记录
@@ -25,7 +26,52 @@ import java.util.List;
  */
 public class ProjectRecord
 {
+    private String osInfo;
+    private String browserInfo;
+    private String addressInfo;
+    private Map<String, String> userInfo;
+
 	private List<SuiteRecord> suiteRecordList;
+
+	public String getOsInfo()
+	{
+		return osInfo;
+	}
+
+	public void setOsInfo(String osInfo)
+	{
+		this.osInfo = osInfo;
+	}
+
+	public String getBrowserInfo()
+	{
+		return browserInfo;
+	}
+
+	public void setBrowserInfo(String browserInfo)
+	{
+		this.browserInfo = browserInfo;
+	}
+
+	public String getAddressInfo()
+	{
+		return addressInfo;
+	}
+
+	public void setAddressInfo(String addressInfo)
+	{
+		this.addressInfo = addressInfo;
+	}
+
+	public Map<String, String> getUserInfo()
+	{
+		return userInfo;
+	}
+
+	public void setUserInfo(Map<String, String> userInfo)
+	{
+		this.userInfo = userInfo;
+	}
 
 	/**
 	 * @return the suiteRecordList

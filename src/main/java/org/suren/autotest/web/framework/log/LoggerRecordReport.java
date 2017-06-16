@@ -36,7 +36,7 @@ public class LoggerRecordReport implements RecordReportWriter
 	@Override
 	public void write(ExceptionRecord record)
 	{
-		LOGGER.error(record.getMessage());
+		LOGGER.error(record.getThrowable().getMessage());
 	}
 
 	@Override

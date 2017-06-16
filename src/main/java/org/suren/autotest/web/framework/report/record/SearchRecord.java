@@ -23,7 +23,7 @@ import java.util.List;
  * @author suren
  * @date 2016年9月6日 下午8:29:33
  */
-public class SearchRecord extends ExceptionRecord
+public class SearchRecord
 {
 	/** 搜索策略 */
 	private String strategy;

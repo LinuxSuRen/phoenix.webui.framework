@@ -27,19 +27,48 @@ public class NormalRecord extends Record
     private String moduleName;
     private String moduleDescription;
 
-    public String getModuleName() {
+    /** 模块所在的类名 */
+    private String clazzName;
+    /** 产生记录所在的方法名称 */
+    private String methodName;
+
+    public String getModuleName()
+    {
         return moduleName;
     }
 
-    public void setModuleName(String moduleName) {
+    public void setModuleName(String moduleName)
+    {
         this.moduleName = moduleName;
     }
 
-    public String getModuleDescription() {
+    public String getModuleDescription()
+    {
         return moduleDescription;
     }
 
-    public void setModuleDescription(String moduleDescription) {
+    public void setModuleDescription(String moduleDescription)
+    {
         this.moduleDescription = moduleDescription;
+    }
+
+    public String getClazzName()
+    {
+        return clazzName;
+    }
+
+    public void setClazzName(String clazzName)
+    {
+        this.clazzName = clazzName;
+    }
+
+    public String getMethodName()
+    {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName)
+    {
+        this.methodName = methodName;
     }
 }

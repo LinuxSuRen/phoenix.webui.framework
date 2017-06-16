@@ -24,6 +24,7 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.springframework.cglib.core.SpringNamingPolicy;
+import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
 import org.suren.autotest.web.framework.report.record.NormalRecord;
@@ -62,18 +63,27 @@ public class AutoModuleProxy implements MethodInterceptor
         long beginTime = System.currentTimeMillis();
 
         Object result = null;
+        Class<?> superCls = obj.getClass().getSuperclass();
+        AutoModule autoModule = superCls.getAnnotation(AutoModule.class);
+
+        NormalRecord normalRecord = new NormalRecord();
+        normalRecord.setBeginTime(beginTime);
+        normalRecord.setClazzName(superCls.getName());
+        normalRecord.setMethodName(method.getName());
+        normalRecord.setModuleName(autoModule.name());
+        normalRecord.setModuleDescription(autoModule.description());
+
         try
         {
             result = methodProxy.invokeSuper(obj, args);
 
-            NormalRecord normalRecord = new NormalRecord();
-            normalRecord.setBeginTime(beginTime);
             normalRecord.setEndTime(System.currentTimeMillis());
             write(normalRecord);
         }
         catch(Exception e)
         {
-            write(new ExceptionRecord());
+            normalRecord.setEndTime(System.currentTimeMillis());
+            write(new ExceptionRecord(e, normalRecord));
 
             throw e;
         }

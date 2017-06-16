@@ -37,4 +37,6 @@ public @interface AutoModule
     String name();
 
     String description() default "";
+
+    Class[] acceptException() default {};
 }

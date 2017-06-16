@@ -34,9 +34,18 @@ import java.lang.annotation.*;
 @Scope("module")
 public @interface AutoModule
 {
+    /**
+     * @return 模块名称
+     */
     String name();
 
+    /**
+     * @return 模块描述
+     */
     String description() default "";
 
+    /**
+     * @return 可以接受的异常类型列表
+     */
     Class[] acceptException() default {};
 }

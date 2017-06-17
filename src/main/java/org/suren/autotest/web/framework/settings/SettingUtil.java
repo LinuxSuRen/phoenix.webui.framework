@@ -18,6 +18,8 @@
 
 package org.suren.autotest.web.framework.settings;
 
+import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.report.record.ProjectRecord;
 import net.sf.json.util.JSONUtils;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
@@ -41,8 +43,6 @@ import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.data.*;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
-import org.suren.autotest.web.framework.report.record.ProjectRecord;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.spring.AutotestScope;

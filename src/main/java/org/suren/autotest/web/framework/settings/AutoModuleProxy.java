@@ -18,16 +18,13 @@
 
 package org.suren.autotest.web.framework.settings;
 
-import net.sf.cglib.core.GeneratorStrategy;
-import net.sf.cglib.core.NamingPolicy;
+import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.report.record.ExceptionRecord;
+import com.surenpi.autotest.report.record.NormalRecord;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.springframework.cglib.core.SpringNamingPolicy;
 import org.suren.autotest.web.framework.annotation.AutoModule;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
-import org.suren.autotest.web.framework.report.record.ExceptionRecord;
-import org.suren.autotest.web.framework.report.record.NormalRecord;
 
 import java.lang.reflect.Method;
 import java.util.List;

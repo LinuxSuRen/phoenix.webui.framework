@@ -18,11 +18,11 @@
 
 package org.suren.autotest.web.framework.spring;
 
+import com.surenpi.autotest.report.RecordReportWriter;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.suren.autotest.web.framework.core.EngineAware;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 import org.suren.autotest.web.framework.settings.SettingUtil;

@@ -78,7 +78,11 @@ public class AutoModuleProxy implements MethodInterceptor
             result = methodProxy.invokeSuper(obj, args);
 
             normalRecord.setEndTime(System.currentTimeMillis());
-            write(normalRecord);
+
+            if(isNotExcludeMethod(method))
+            {
+                write(normalRecord);
+            }
         }
         catch(Exception e)
         {
@@ -89,6 +93,22 @@ public class AutoModuleProxy implements MethodInterceptor
         }
 
         return result;
+    }
+
+    private boolean isNotExcludeMethod(Method method)
+    {
+        String name = method.getName();
+        if("setEngine".equals(name))
+        {
+            return false;
+        }
+
+        if("setWebDriver".equals(name))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private void write(NormalRecord record)

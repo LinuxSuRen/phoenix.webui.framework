@@ -26,21 +26,82 @@ import java.util.Map;
  */
 public class ProjectRecord
 {
-    private String osInfo;
+	private String name;
+	private String description;
+    private String osName;
+    private String osArch;
+    private String osVersion;
+    private String country;
+    private String language;
+    private String timezone;
     private String browserInfo;
     private String addressInfo;
     private Map<String, String> userInfo;
 
 	private List<SuiteRecord> suiteRecordList;
 
-	public String getOsInfo()
-	{
-		return osInfo;
+	public String getName() {
+		return name;
 	}
 
-	public void setOsInfo(String osInfo)
-	{
-		this.osInfo = osInfo;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getOsName() {
+		return osName;
+	}
+
+	public void setOsName(String osName) {
+		this.osName = osName;
+	}
+
+	public String getOsArch() {
+		return osArch;
+	}
+
+	public void setOsArch(String osArch) {
+		this.osArch = osArch;
+	}
+
+	public String getOsVersion() {
+		return osVersion;
+	}
+
+	public void setOsVersion(String osVersion) {
+		this.osVersion = osVersion;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 
 	public String getBrowserInfo()

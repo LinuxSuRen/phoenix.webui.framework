@@ -83,7 +83,7 @@ public class AutoModuleProxy implements MethodInterceptor
                 write(normalRecord);
             }
         }
-        catch(Exception e)
+        catch(Exception | AssertionError e)
         {
             boolean acceptException = exceptionHandle(autoExpect, e);
 

@@ -24,6 +24,7 @@ import com.surenpi.autotest.report.record.NormalRecord;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 
 import java.lang.reflect.Method;
@@ -62,6 +63,7 @@ public class AutoModuleProxy implements MethodInterceptor
         Object result = null;
         Class<?> superCls = obj.getClass().getSuperclass();
         AutoModule autoModule = superCls.getAnnotation(AutoModule.class);
+        AutoExpect autoExpect = method.getAnnotation(AutoExpect.class);
 
         NormalRecord normalRecord = new NormalRecord();
         normalRecord.setBeginTime(beginTime);
@@ -83,13 +85,47 @@ public class AutoModuleProxy implements MethodInterceptor
         }
         catch(Exception e)
         {
+            boolean acceptException = exceptionHandle(autoExpect, e);
+
             normalRecord.setEndTime(System.currentTimeMillis());
             write(new ExceptionRecord(e, normalRecord));
 
-            throw e;
+            if(acceptException)
+            {
+                e.printStackTrace();
+            }
+            else
+            {
+                throw e;
+            }
         }
 
         return result;
+    }
+
+    /**
+     * 根据注解配置，是否要对异常进行处理
+     * @param autoExpect
+     * @return
+     */
+    private boolean exceptionHandle(AutoExpect autoExpect, Throwable e)
+    {
+        if(autoExpect != null)
+        {
+            Class<?>[] acceptArray = autoExpect.accept();
+            if(acceptArray != null && acceptArray.length > 0)
+            {
+                for(Class<?> clz : acceptArray)
+                {
+                    if(clz.equals(e))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private boolean isNotExcludeMethod(Method method)

@@ -47,11 +47,10 @@ public class MailTest
     private MailSender mailSender;
 
     @Test
-    @Ignore
     public void simpleMail()
     {
         SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setFrom("361981269@qq.com");
+        msg.setFrom("zxjlwt@139.com");
         msg.setTo("361981269@qq.com");
         msg.setText("context");
         msg.setSubject("subject");
@@ -59,14 +58,13 @@ public class MailTest
     }
 
     @Test
-    @Ignore
     public void mimeMail() throws MessagingException
     {
         MimeMessage msg = ((JavaMailSenderImpl) mailSender).createMimeMessage();
         MimeMessageHelper mail = new MimeMessageHelper(msg, true);
-        mail.addAttachment("attach_for_test",
+        mail.addAttachment("attach_for_test.txt",
                 new ByteArrayResource("attach_for_test".getBytes()));
-        mail.setFrom("361981269@qq.com");
+        mail.setFrom("zxjlwt@139.com");
         mail.setTo("361981269@qq.com");
         mail.setText("context");
         mail.setSubject("subject");

@@ -43,6 +43,10 @@ public class AutoApplicationConfig
     private String mailUserName;
     @Value("${mail.password}")
     private String mailPassword;
+    @Value("${mail.protocol}")
+    private String mailProtocol;
+    @Value("${mail.port}")
+    private int mailPort;
 
     @Bean(autowire = Autowire.BY_TYPE)
     public MailSender mailBean()
@@ -51,6 +55,8 @@ public class AutoApplicationConfig
         mailSender.setHost(mailHost);
         mailSender.setUsername(mailUserName);
         mailSender.setPassword(mailPassword);
+        mailSender.setProtocol(mailProtocol);
+        mailSender.setPort(mailPort);
         setUpMailPro(mailSender);
 
         return mailSender;

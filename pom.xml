@@ -5,21 +5,17 @@
 	<parent>
 		<groupId>com.surenpi.autotest</groupId>
 		<artifactId>autotest.parent</artifactId>
-		<version>1.0.0-20170504</version>
+		<version>1.0.1-20170618</version>
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
-	<version>1.0.3-20170610</version>
+	<version>1.0.4-20170618</version>
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
 	<description>WebUI自动化测试框架</description>
 
 	<properties>
-		<selenium.version>3.3.1</selenium.version>
-		<spring.version>4.3.7.RELEASE</spring.version>
-		<aspectj.version>1.8.7</aspectj.version>
-		<groovy.version>2.4.4</groovy.version>
 		<testSkip>true</testSkip>
 	</properties>
 
@@ -125,57 +121,47 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-support</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-driver</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 
 		<!-- xml解析 -->
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
-			<version>1.4.01</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
-			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-			<version>1.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.xmlschema</groupId>
 			<artifactId>xmlschema-core</artifactId>
-			<version>2.1.0</version>
 		</dependency>
 
 		<!-- excel -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.10-FINAL</version>
 		</dependency>
 
 		<!-- spring -->
@@ -199,17 +185,12 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 
-		<!-- logging -->
-		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
-			<version>1.7.21</version> </dependency> -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -227,12 +208,10 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy</artifactId>
-			<version>${groovy.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-jsr223</artifactId>
-			<version>${groovy.version}</version>
 		</dependency>
 
 		<!-- 源码编译 -->
@@ -260,41 +239,25 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
-			<version>19.0</version> </dependency> -->
-
 		<!-- 模板引擎 -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.20</version>
 		</dependency>
-
-		<!-- 工具类 <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-lang3</artifactId> 
-			<version>3.4</version> </dependency> -->
 
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.yaml</groupId>
 		    <artifactId>snakeyaml</artifactId>
-		    <version>1.5</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.16</version>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
 		</dependency>
 	</dependencies>
 	

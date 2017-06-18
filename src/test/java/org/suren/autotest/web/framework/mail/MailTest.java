@@ -18,17 +18,23 @@
 
 package org.suren.autotest.web.framework.mail;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.AutoTestConfig;
-import org.suren.autotest.web.framework.util.EncryptorUtil;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 
 /**
  * @author suren
@@ -41,7 +47,8 @@ public class MailTest
     private MailSender mailSender;
 
     @Test
-    public void mailSend()
+    @Ignore
+    public void simpleMail()
     {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("361981269@qq.com");
@@ -49,5 +56,21 @@ public class MailTest
         msg.setText("context");
         msg.setSubject("subject");
         mailSender.send(msg);
+    }
+
+    @Test
+    @Ignore
+    public void mimeMail() throws MessagingException
+    {
+        MimeMessage msg = ((JavaMailSenderImpl) mailSender).createMimeMessage();
+        MimeMessageHelper mail = new MimeMessageHelper(msg, true);
+        mail.addAttachment("attach_for_test",
+                new ByteArrayResource("attach_for_test".getBytes()));
+        mail.setFrom("361981269@qq.com");
+        mail.setTo("361981269@qq.com");
+        mail.setText("context");
+        mail.setSubject("subject");
+
+        ((JavaMailSenderImpl) mailSender).send(msg);
     }
 }

@@ -109,12 +109,14 @@ public class SeleniumClick implements ClickAble
 				
 				new Robot().mouseMove(x, y);
 			}
-			
-			webEle.click();
-			
+
 			//如果是a标签锚点的话，根据target属性来决定是否要切换window句柄
 			String tagName = webEle.getTagName();
 			String targetAttr = webEle.getAttribute("target");
+
+			//元素点击操作
+			webEle.click();
+
 			if("a".equals(tagName) && "_blank".equals(targetAttr))
 			{
 				WebDriver driver = engine.getDriver();

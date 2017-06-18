@@ -139,6 +139,8 @@ public class SeleniumClick implements ClickAble
 			if(isReachMaxErr(errorTimes))
 			{
 				logger.error(errLog, e);
+
+				throw e;
 			}
 			else
 			{
@@ -157,6 +159,10 @@ public class SeleniumClick implements ClickAble
 				wait.until(ExpectedConditions.visibilityOf(webEle));
 				
 				click(ele);
+			}
+			else
+			{
+				throw e;
 			}
 		}
 		catch (AWTException e)

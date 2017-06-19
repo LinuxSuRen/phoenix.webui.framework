@@ -117,7 +117,7 @@ public class AutoModuleProxy implements MethodInterceptor
             {
                 for(Class<?> clz : acceptArray)
                 {
-                    if(clz.equals(e))
+                    if(clz.equals(e.getClass()))
                     {
                         return true;
                     }

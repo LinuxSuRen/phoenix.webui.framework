@@ -21,14 +21,12 @@ package org.suren.autotest.web.framework.mail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.AutoTestConfig;
-import org.suren.autotest.web.framework.util.EncryptorUtil;
 
 /**
  * @author suren
@@ -44,8 +42,8 @@ public class MailTest
     public void mailSend()
     {
         SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setFrom("361981269@qq.com");
-        msg.setTo("361981269@qq.com");
+        msg.setFrom("123456@qq.com");
+        msg.setTo("123456@qq.com");
         msg.setText("context");
         msg.setSubject("subject");
         mailSender.send(msg);

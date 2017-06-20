@@ -18,12 +18,10 @@
 
 package org.suren.autotest.web.framework.settings;
 
-import net.sf.cglib.core.GeneratorStrategy;
-import net.sf.cglib.core.NamingPolicy;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.springframework.cglib.core.SpringNamingPolicy;
+import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
@@ -65,6 +63,7 @@ public class AutoModuleProxy implements MethodInterceptor
         Object result = null;
         Class<?> superCls = obj.getClass().getSuperclass();
         AutoModule autoModule = superCls.getAnnotation(AutoModule.class);
+        AutoExpect autoExpect = method.getAnnotation(AutoExpect.class);
 
         NormalRecord normalRecord = new NormalRecord();
         normalRecord.setBeginTime(beginTime);
@@ -84,15 +83,49 @@ public class AutoModuleProxy implements MethodInterceptor
                 write(normalRecord);
             }
         }
-        catch(Exception e)
+        catch(Exception | AssertionError e)
         {
+            boolean acceptException = exceptionHandle(autoExpect, e);
+
             normalRecord.setEndTime(System.currentTimeMillis());
             write(new ExceptionRecord(e, normalRecord));
 
-            throw e;
+            if(acceptException)
+            {
+                e.printStackTrace();
+            }
+            else
+            {
+                throw e;
+            }
         }
 
         return result;
+    }
+
+    /**
+     * 根据注解配置，是否要对异常进行处理
+     * @param autoExpect
+     * @return
+     */
+    private boolean exceptionHandle(AutoExpect autoExpect, Throwable e)
+    {
+        if(autoExpect != null)
+        {
+            Class<?>[] acceptArray = autoExpect.accept();
+            if(acceptArray != null && acceptArray.length > 0)
+            {
+                for(Class<?> clz : acceptArray)
+                {
+                     if(clz.equals(e.getClass()))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private boolean isNotExcludeMethod(Method method)

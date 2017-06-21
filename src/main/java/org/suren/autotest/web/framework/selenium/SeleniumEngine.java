@@ -318,8 +318,16 @@ public class SeleniumEngine
 		{
 			logger.error("loading engine error.", e);
 		}
-		
-		loadDriverFromMapping(classLoader, enginePro);
+
+		String autoLoad = enginePro.getProperty("engine.autoLoad", "true");
+		if("true".equals(autoLoad))
+		{
+			loadDriverFromMapping(classLoader, enginePro);
+		}
+		else
+		{
+			logger.warn("You have turn engine.autoLoad off, you need set webdriver manual.");
+		}
 	}
 	
 	/**

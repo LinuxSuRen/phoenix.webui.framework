@@ -21,6 +21,9 @@ package org.suren.autotest.web.framework.settings;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.html5.SessionStorage;
+import org.openqa.selenium.html5.WebStorage;
 import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
@@ -30,10 +33,13 @@ import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
 import org.suren.autotest.web.framework.report.record.NormalRecord;
+import org.suren.autotest.web.framework.util.PathUtil;
 
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 模块代理类
@@ -82,8 +88,10 @@ public class AutoModuleProxy implements MethodInterceptor
 
         try
         {
+            SessionStorageConfig sessionStorageConfig = new SessionStorageConfig();
             if(autoSessionStorage != null)
             {
+                sessionStorageConfig.setAutoLoad(true);
                 Class<? extends Page> accountClz = autoSessionStorage.accountPage();
                 String accountNameField = autoSessionStorage.accountName();
 
@@ -96,10 +104,12 @@ public class AutoModuleProxy implements MethodInterceptor
                 if(value instanceof Text)
                 {
                     String accountNameValue = ((Text) value).getValue();
-
-                    System.out.println("accountNameValue:" + accountNameValue);
                     
-                    loadSessionStorage(accountNameValue);
+                    if(loadSessionStorage(accountNameValue))
+                    {
+                        sessionStorageConfig.setAccount(accountNameValue);
+                        sessionStorageConfig.setSkipLogin(true);
+                    }
                 }
                 else
                 {
@@ -108,7 +118,19 @@ public class AutoModuleProxy implements MethodInterceptor
                 }
             }
 
-            result = methodProxy.invokeSuper(obj, args);
+            if(sessionStorageConfig.isSkipLogin())
+            {
+                result = Void.TYPE;
+            }
+            else
+            {
+                result = methodProxy.invokeSuper(obj, args);
+
+                if(sessionStorageConfig.isAutoLoad())
+                {
+                    saveSessionStorage(sessionStorageConfig.getAccount());
+                }
+            }
 
             normalRecord.setEndTime(System.currentTimeMillis());
 
@@ -137,8 +159,58 @@ public class AutoModuleProxy implements MethodInterceptor
         return result;
     }
 
-    private void loadSessionStorage(String accountNameValue)
+    /**
+     * 保存sessionStorage信息
+     * @param account
+     */
+    private void saveSessionStorage(String account)
     {
+        WebDriver driver = util.getEngine().getDriver();
+        if(driver instanceof WebStorage)
+        {
+            WebStorage webStorage = (WebStorage) driver;
+            SessionStorage sessionStorage = webStorage.getSessionStorage();
+
+            Properties pro = new Properties();
+            for(String key : sessionStorage.keySet())
+            {
+                pro.setProperty(key, sessionStorage.getItem(key));
+            }
+
+            PathUtil.proStore(pro, "sessionStorage." + account);
+        }
+    }
+
+    /**
+     * 加载sessionStorage信息
+     * @param accountNameValue
+     * @return
+     */
+    private boolean loadSessionStorage(String accountNameValue)
+    {
+        WebDriver webDriver = util.getEngine().getDriver();
+        if(webDriver instanceof WebStorage)
+        {
+            WebStorage webStorage = (WebStorage) webDriver;
+            SessionStorage sessionStorage = webStorage.getSessionStorage();
+
+            Properties pro = new Properties();
+            if(PathUtil.proLoad(pro, "sessionStorage." + accountNameValue))
+            {
+                if(pro.isEmpty())
+                {
+                    return false;
+                }
+
+                pro.stringPropertyNames().parallelStream().forEach((key) -> {
+                    sessionStorage.setItem(key, pro.getProperty(key));
+                });
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -3,12 +3,8 @@
  */
 package org.suren.autotest.web.framework.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 
@@ -17,8 +13,11 @@ import org.apache.commons.io.IOUtils;
  * @author suren
  * @date 2016年12月27日 上午8:12:18
  */
-public class PathUtil
+public abstract class PathUtil
 {
+	/** properties文件后缀 */
+	public static final String PRO_SUFFIX = ".properties";
+
 	/**
 	 * @return 用于保存框架缓存数据的根目录，如果不存在会自动创建
 	 */
@@ -32,6 +31,65 @@ public class PathUtil
 		}
 		
 		return rootFile;
+	}
+
+    /**
+     * @see #proStore(Properties, String, String)
+     * @param pro
+     * @param fileName
+     */
+    public static void proStore(Properties pro, String fileName)
+    {
+        proStore(pro, fileName, "auto generate by phoenix framework, do not modify it.");
+    }
+
+	/**
+	 * 保存Properties文件到框架根目录中
+	 * @param pro 不能为空
+	 * @param fileName 无需带后缀，例如：demo的话，会保存到demo.properties中
+     * @param comment 注释
+     */
+	public static void proStore(Properties pro, String fileName, String comment)
+	{
+		try(OutputStream out = new FileOutputStream(
+				new File(PathUtil.getRootDir(), fileName + PRO_SUFFIX)))
+		{
+			pro.store(out, comment);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+     * @see #proStore(Properties, String, String)
+     * @param pro 不能为空
+	 * @param fileName
+     * @return 读取成功返回true，否则false
+     */
+	public static boolean proLoad(Properties pro, String fileName)
+	{
+		try(InputStream in = new FileInputStream(new File(PathUtil.getRootDir(), fileName + PRO_SUFFIX)))
+		{
+			pro.load(in);
+
+            return true;
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+        return false;
 	}
 	
 	/**

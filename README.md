@@ -15,6 +15,10 @@
 - 支持纯XML编写完成自动化测试功能
 - 自带Windows版本的driver驱动
 
+# 测试报告
+![Excel格式的测试报告](http://surenpi.com/wp-content/uploads/2017/06/autotest_report_excel_2.png)
+![数据库格式的测试报告](http://surenpi.com/wp-content/uploads/2017/06/report_database.png)
+
 Maven的依赖，[更多示例](https://github.com/LinuxSuRen/phoenix.autotest.demo)。
 
 # 远程的XSD地址

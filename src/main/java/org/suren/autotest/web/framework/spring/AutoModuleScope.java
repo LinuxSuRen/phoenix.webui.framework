@@ -21,7 +21,9 @@ package org.suren.autotest.web.framework.spring;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
 import org.suren.autotest.web.framework.core.EngineAware;
+import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
@@ -56,7 +58,7 @@ public class AutoModuleScope implements Scope
         if(object == null)
         {
             object = objectFactory.getObject();
-            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters);
+            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters, util);
             object = proxy.getProxy();
             putAware(object);
 

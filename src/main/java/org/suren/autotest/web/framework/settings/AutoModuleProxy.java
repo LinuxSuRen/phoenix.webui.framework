@@ -23,10 +23,15 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoModule;
+import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
+import org.suren.autotest.web.framework.core.AutoTestException;
+import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.report.record.ExceptionRecord;
 import org.suren.autotest.web.framework.report.record.NormalRecord;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -39,11 +44,13 @@ public class AutoModuleProxy implements MethodInterceptor
     private Enhancer enhancer = new Enhancer();
     private Object target;
     private List<RecordReportWriter> recordReportWriters;
+    private SettingUtil util;
 
-    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters)
+    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters, SettingUtil util)
     {
         this.target = target;
         this.recordReportWriters = recordReportWriters;
+        this.util = util;
     }
 
     public Object getProxy()
@@ -64,6 +71,7 @@ public class AutoModuleProxy implements MethodInterceptor
         Class<?> superCls = obj.getClass().getSuperclass();
         AutoModule autoModule = superCls.getAnnotation(AutoModule.class);
         AutoExpect autoExpect = method.getAnnotation(AutoExpect.class);
+        AutoSessionStorage autoSessionStorage = method.getAnnotation(AutoSessionStorage.class);
 
         NormalRecord normalRecord = new NormalRecord();
         normalRecord.setBeginTime(beginTime);
@@ -74,6 +82,32 @@ public class AutoModuleProxy implements MethodInterceptor
 
         try
         {
+            if(autoSessionStorage != null)
+            {
+                Class<? extends Page> accountClz = autoSessionStorage.accountPage();
+                String accountNameField = autoSessionStorage.accountName();
+
+                Page page = util.getPage(accountClz);
+                Field accountField = accountClz.getDeclaredField(accountNameField);
+
+                accountField.setAccessible(true);
+                Object value = accountField.get(page);
+
+                if(value instanceof Text)
+                {
+                    String accountNameValue = ((Text) value).getValue();
+
+                    System.out.println("accountNameValue:" + accountNameValue);
+                    
+                    loadSessionStorage(accountNameValue);
+                }
+                else
+                {
+                    throw new AutoTestException("Wrong account type in class: " + accountClz + ", and field : "
+                            + accountNameField + ". It should be Text type.");
+                }
+            }
+
             result = methodProxy.invokeSuper(obj, args);
 
             normalRecord.setEndTime(System.currentTimeMillis());
@@ -101,6 +135,10 @@ public class AutoModuleProxy implements MethodInterceptor
         }
 
         return result;
+    }
+
+    private void loadSessionStorage(String accountNameValue)
+    {
     }
 
     /**

@@ -74,7 +74,13 @@ public abstract class PathUtil
      */
 	public static boolean proLoad(Properties pro, String fileName)
 	{
-		try(InputStream in = new FileInputStream(new File(PathUtil.getRootDir(), fileName + PRO_SUFFIX)))
+        File targetFile = new File(PathUtil.getRootDir(), fileName + PRO_SUFFIX);
+        if(!targetFile.isFile())
+        {
+            return false;
+        }
+
+		try(InputStream in = new FileInputStream(targetFile))
 		{
 			pro.load(in);
 

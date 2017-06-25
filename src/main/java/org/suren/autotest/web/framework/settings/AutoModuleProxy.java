@@ -92,8 +92,8 @@ public class AutoModuleProxy implements MethodInterceptor
             if(autoSessionStorage != null)
             {
                 sessionStorageConfig.setAutoLoad(true);
-                Class<? extends Page> accountClz = autoSessionStorage.accountPage();
-                String accountNameField = autoSessionStorage.accountName();
+                Class<? extends Page> accountClz = autoSessionStorage.pageClazz();
+                String accountNameField = autoSessionStorage.sessionKey();
 
                 Page page = util.getPage(accountClz);
                 Field accountField = accountClz.getDeclaredField(accountNameField);
@@ -104,11 +104,16 @@ public class AutoModuleProxy implements MethodInterceptor
                 if(value instanceof Text)
                 {
                     String accountNameValue = ((Text) value).getValue();
-                    
+                    sessionStorageConfig.setAccount(accountNameValue);
+
                     if(loadSessionStorage(accountNameValue))
                     {
                         sessionStorageConfig.setAccount(accountNameValue);
-                        sessionStorageConfig.setSkipLogin(true);
+
+                        if(autoSessionStorage.skipMethod())
+                        {
+                            sessionStorageConfig.setSkipLogin(true);
+                        }
                     }
                 }
                 else

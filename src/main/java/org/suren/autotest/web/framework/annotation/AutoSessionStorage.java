@@ -23,7 +23,7 @@ import org.suren.autotest.web.framework.page.Page;
 import java.lang.annotation.*;
 
 /**
- * 用在登录方法上，第一次登录时，保存session信息；之后登录方法被调用时则会跳过
+ * 用在方法上，第一次执行时，保存session信息；之后方法被调用时则会跳过
  * @author suren
  */
 @Target(ElementType.METHOD)
@@ -32,12 +32,22 @@ import java.lang.annotation.*;
 public @interface AutoSessionStorage
 {
     /**
-     * @return 用户登录Page类
+     * @return Page类
      */
-    Class<? extends Page> accountPage();
+    Class<? extends Page> pageClazz();
 
     /**
-     * @return Page类中代表用户名的属性名称
+     * @return Page类中代表的属性名称
      */
-    String accountName() default "userName";
+    String sessionKey();
+
+    /**
+     * @return 是否跳过目标方法
+     */
+    boolean skipMethod() default true;
+
+    /**
+     * @return 是否要执行打开页面操作
+     */
+    boolean openInvoke() default false;
 }

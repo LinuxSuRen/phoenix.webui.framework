@@ -21,6 +21,7 @@ package org.suren.autotest.web.framework.settings;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.html5.SessionStorage;
 import org.openqa.selenium.html5.WebStorage;
@@ -106,6 +107,7 @@ public class AutoModuleProxy implements MethodInterceptor
                     String accountNameValue = ((Text) value).getValue();
                     sessionStorageConfig.setAccount(accountNameValue);
 
+                    page.open();
                     if(loadSessionStorage(accountNameValue))
                     {
                         sessionStorageConfig.setAccount(accountNameValue);

@@ -32,6 +32,16 @@ public abstract class PathUtil
 		
 		return rootFile;
 	}
+	
+	public static File getFile(String fileName)
+	{
+		return new File(PathUtil.getRootDir(), fileName);
+	}
+	
+	public static boolean isFile(String fileName)
+	{
+		return getFile(fileName).isFile();
+	}
 
     /**
      * @see #proStore(Properties, String, String)

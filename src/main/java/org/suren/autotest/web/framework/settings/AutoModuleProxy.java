@@ -21,10 +21,13 @@ package org.suren.autotest.web.framework.settings;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.openqa.selenium.JavascriptExecutor;
+
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.html5.SessionStorage;
 import org.openqa.selenium.html5.WebStorage;
+import org.suren.autotest.web.framework.annotation.AutoCookie;
 import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
@@ -36,11 +39,17 @@ import org.suren.autotest.web.framework.report.record.ExceptionRecord;
 import org.suren.autotest.web.framework.report.record.NormalRecord;
 import org.suren.autotest.web.framework.util.PathUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * 模块代理类
@@ -79,6 +88,7 @@ public class AutoModuleProxy implements MethodInterceptor
         AutoModule autoModule = superCls.getAnnotation(AutoModule.class);
         AutoExpect autoExpect = method.getAnnotation(AutoExpect.class);
         AutoSessionStorage autoSessionStorage = method.getAnnotation(AutoSessionStorage.class);
+        AutoCookie autoCookie = method.getAnnotation(AutoCookie.class);
 
         NormalRecord normalRecord = new NormalRecord();
         normalRecord.setBeginTime(beginTime);
@@ -124,19 +134,69 @@ public class AutoModuleProxy implements MethodInterceptor
                             + accountNameField + ". It should be Text type.");
                 }
             }
+            
+            //加载cookie信息
+            boolean skipForCookie = false;
+            if(autoCookie != null && PathUtil.isFile(autoCookie.fileName()))
+            {
+        		// 处理cookie
+        		Options manage = util.getEngine().getDriver().manage();
+        		File cookieFile = PathUtil.getFile(autoCookie.fileName());
+        		
+    			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
+    			{
+    				Object cookiesObj = input.readObject();
+    				if(cookiesObj != null && cookiesObj instanceof Set<?>)
+    				{
+    					@SuppressWarnings("unchecked")
+						Set<Cookie> cookies =  (Set<Cookie>) cookiesObj;
+    					cookies.parallelStream().forEach((cookie) -> {
+    						manage.addCookie(cookie);
+    					});
+    				}
+    				
+                	skipForCookie = autoCookie.skipMethod();
+    			}
+    			catch (IOException e)
+    			{
+    				e.printStackTrace();
+    			}
+    			catch (ClassNotFoundException e)
+    			{
+    				e.printStackTrace();
+    			}
+            }
 
-            if(sessionStorageConfig.isSkipLogin())
+            if(sessionStorageConfig.isSkipLogin() || skipForCookie)
             {
                 result = Void.TYPE;
             }
             else
             {
                 result = methodProxy.invokeSuper(obj, args);
+            }
 
-                if(sessionStorageConfig.isAutoLoad())
-                {
-                    saveSessionStorage(sessionStorageConfig.getAccount());
-                }
+            //保存sessionStorage
+            if(sessionStorageConfig.isAutoLoad())
+            {
+                saveSessionStorage(sessionStorageConfig.getAccount());
+            }
+            
+            //保存cookie信息
+            if(autoCookie != null)
+            {
+    			Options manage = util.getEngine().getDriver().manage();
+    			File cookieFile = PathUtil.getFile(autoCookie.fileName());
+    			
+				Set<Cookie> cookies = manage.getCookies();
+				try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(cookieFile)))
+				{
+					output.writeObject(cookies);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
             }
 
             normalRecord.setEndTime(System.currentTimeMillis());

@@ -197,36 +197,36 @@ public class SeleniumEngine
 				logger.error("Unsupported fullScreen command.", e);
 			}
 		}
-		
-		// 处理cookie
-		Options manage = driver.manage();
-		boolean cookieLoad = Boolean.parseBoolean(enginePro.getProperty("cookie.load", "false"));
-		File root = PathUtil.getRootDir();
-		File cookieFile = new File(root, enginePro.getProperty("cookie.save.path", "phoenix.autotest.cookie"));
-		
-		if(cookieLoad)
-		{
-			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
-			{
-				Object cookiesObj = input.readObject();
-				if(cookiesObj != null && cookiesObj instanceof Set<?>)
-				{
-					Set<Cookie> cookies =  (Set<Cookie>) cookiesObj;
-					for(Cookie cookie : cookies)
-					{
-						manage.addCookie(cookie);
-					}
-				}
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			catch (ClassNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-		}
+//		
+//		// 处理cookie
+//		Options manage = driver.manage();
+//		boolean cookieLoad = Boolean.parseBoolean(enginePro.getProperty("cookie.load", "false"));
+//		File root = PathUtil.getRootDir();
+//		File cookieFile = new File(root, enginePro.getProperty("cookie.save.path", "phoenix.autotest.cookie"));
+//		
+//		if(cookieLoad)
+//		{
+//			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
+//			{
+//				Object cookiesObj = input.readObject();
+//				if(cookiesObj != null && cookiesObj instanceof Set<?>)
+//				{
+//					Set<Cookie> cookies =  (Set<Cookie>) cookiesObj;
+//					for(Cookie cookie : cookies)
+//					{
+//						manage.addCookie(cookie);
+//					}
+//				}
+//			}
+//			catch (IOException e)
+//			{
+//				e.printStackTrace();
+//			}
+//			catch (ClassNotFoundException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
 		
 		if(maximize)
 		{

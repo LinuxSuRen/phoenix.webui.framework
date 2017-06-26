@@ -40,6 +40,11 @@ public @interface AutoSessionStorage
      * @return Page类中代表的属性名称
      */
     String sessionKey();
+    
+    /**
+     * @return 自定义选项，将会覆盖了sessionStorage中的选项
+     */
+    AutoItem[] overItems() default {};
 
     /**
      * @return 是否跳过目标方法

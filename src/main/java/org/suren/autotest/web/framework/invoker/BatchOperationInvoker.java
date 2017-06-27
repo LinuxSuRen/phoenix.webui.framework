@@ -17,7 +17,6 @@
 package org.suren.autotest.web.framework.invoker;
 
 import org.suren.autotest.web.framework.settings.SettingUtil;
-import org.suren.autotest.web.framework.util.ElementUtil;
 
 /**
  * 批量操作执行器

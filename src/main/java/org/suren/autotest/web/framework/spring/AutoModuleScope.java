@@ -18,22 +18,18 @@
 
 package org.suren.autotest.web.framework.spring;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
 import org.suren.autotest.web.framework.core.EngineAware;
-import org.suren.autotest.web.framework.page.Page;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
 import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 import org.suren.autotest.web.framework.settings.SettingUtil;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.surenpi.autotest.report.RecordReportWriter;
 
 /**
  * 用于辅助生成自动化测试报告的scope

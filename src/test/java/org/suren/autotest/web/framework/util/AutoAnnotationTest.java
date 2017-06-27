@@ -18,15 +18,19 @@
 
 package org.suren.autotest.web.framework.util;
 
-import org.junit.*;
+import java.io.IOException;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.suren.autotest.web.framework.IgnoreReasonConstants;
 import org.suren.autotest.web.framework.annotation.AutoApplication;
 import org.suren.autotest.web.framework.annotation.AutoReporter;
 import org.suren.autotest.web.framework.page.AnnotationPage;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.settings.SettingUtil;
-
-import java.io.IOException;
 
 /**
  * 测试使用注解配置的方式

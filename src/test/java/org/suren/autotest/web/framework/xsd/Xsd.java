@@ -18,18 +18,19 @@
 
 package org.suren.autotest.web.framework.xsd;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObject;
 import org.junit.Assert;
 import org.junit.Test;
-
-import javax.xml.transform.stream.StreamSource;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * @author suren

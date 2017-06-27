@@ -23,9 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
-import org.suren.autotest.web.framework.report.record.ExceptionRecord;
-import org.suren.autotest.web.framework.report.record.SearchRecord;
+
+import com.surenpi.autotest.report.RecordReportWriter;
 
 /**
  * 有关元素查找所需时间的日志输出

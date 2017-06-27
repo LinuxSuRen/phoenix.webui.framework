@@ -3,8 +3,6 @@ package org.suren.autotest.web.framework.data;
 import java.io.File;
 
 import org.junit.Test;
-import org.suren.autotest.web.framework.data.ExcelDataSource;
-import org.suren.autotest.web.framework.data.FileResource;
 
 /**
  * excel测试类

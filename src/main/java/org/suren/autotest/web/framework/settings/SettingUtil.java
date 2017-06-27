@@ -18,8 +18,31 @@
 
 package org.suren.autotest.web.framework.settings;
 
-import net.sf.json.util.JSONUtils;
-import org.dom4j.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.VisitorSupport;
+import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
@@ -35,14 +58,23 @@ import org.suren.autotest.web.framework.annotation.AutoApplication;
 import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoPage;
-import org.suren.autotest.web.framework.core.*;
+import org.suren.autotest.web.framework.core.ConfigException;
+import org.suren.autotest.web.framework.core.ConfigNotFoundException;
+import org.suren.autotest.web.framework.core.ElementException;
+import org.suren.autotest.web.framework.core.Locator;
+import org.suren.autotest.web.framework.core.LocatorAware;
+import org.suren.autotest.web.framework.core.LocatorType;
+import org.suren.autotest.web.framework.core.PageContext;
+import org.suren.autotest.web.framework.core.PageContextAware;
 import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.data.*;
+import org.suren.autotest.web.framework.data.ClasspathResource;
+import org.suren.autotest.web.framework.data.DataResource;
+import org.suren.autotest.web.framework.data.DataSource;
+import org.suren.autotest.web.framework.data.DynamicDataSource;
+import org.suren.autotest.web.framework.data.FileResource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
-import org.suren.autotest.web.framework.report.record.ProjectRecord;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.spring.AutotestScope;
@@ -52,12 +84,10 @@ import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.report.record.ProjectRecord;
+
+import net.sf.json.util.JSONUtils;
 
 /**
  * 页面（page）以及数据配置加载
@@ -197,10 +227,10 @@ public class SettingUtil implements Closeable
 
 			Page pageBean = (Page) bean;
 			Class<?> beanCls = bean.getClass();
-			if(!beanCls.getSuperclass().equals(Page.class))
-			{
-				beanCls = beanCls.getSuperclass();
-			}
+//			if(!beanCls.getSuperclass().equals(Page.class))
+//			{
+//				beanCls = beanCls.getSuperclass();
+//			}
 
 			String clsName = beanCls.getName();
 			pageMap.put(clsName, (Page) bean);
@@ -251,6 +281,19 @@ public class SettingUtil implements Closeable
 	{
 		Class<?> beanCls = bean.getClass();
 		Field[] fields = beanCls.getDeclaredFields();
+		if(!beanCls.getSuperclass().equals(Page.class))
+		{
+			Field[] superClsFields = beanCls.getSuperclass().getDeclaredFields();
+			int oldSize = fields.length;
+			int newSize = oldSize + superClsFields.length;
+			
+			fields = Arrays.copyOf(fields, newSize);
+			for(int i = oldSize; i < newSize; i++)
+			{
+				fields[i] = superClsFields[i - oldSize];
+			}
+		}
+		
 		for(Field field : fields)
 		{
 			AutoLocator autoLocator = field.getAnnotation(AutoLocator.class);

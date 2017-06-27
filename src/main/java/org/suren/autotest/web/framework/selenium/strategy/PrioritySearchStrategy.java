@@ -18,6 +18,8 @@
 
 package org.suren.autotest.web.framework.selenium.strategy;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,8 +38,6 @@ import org.suren.autotest.web.framework.core.ui.AbstractElement;
 import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
-
-import java.util.List;
 
 /**
  * 查找元素策略，找不到对应的元素会抛出异常</br>

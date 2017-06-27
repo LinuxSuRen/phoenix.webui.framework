@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -123,7 +124,7 @@ public class YamlDataSource implements DataSource
 		Object fieldsObj = map.get(pageName);
 		if(fieldsObj instanceof Map)
 		{
-			Map fieldMap = (Map) fieldsObj;
+			Map<?, ?> fieldMap = (Map<?, ?>) fieldsObj;
 			pageParse(fieldMap, targetPage);
 		}
 	}
@@ -132,10 +133,23 @@ public class YamlDataSource implements DataSource
 	 * @param fieldMap
 	 * @param targetPage
 	 */
-	private void pageParse(Map fieldMap, Page targetPage)
+	private void pageParse(Map<?, ?> fieldMap, Page targetPage)
 	{
 		Class<? extends Page> targetPageCls = targetPage.getClass();
 		Field[] decFields = targetPageCls.getDeclaredFields();
+		if(!targetPageCls.getSuperclass().equals(Page.class))
+		{
+			Field[] superClsFields = targetPageCls.getSuperclass().getDeclaredFields();
+			int oldSize = decFields.length;
+			int newSize = oldSize + superClsFields.length;
+			
+			decFields = Arrays.copyOf(decFields, newSize);
+			for(int i = oldSize; i < newSize; i++)
+			{
+				decFields[i] = superClsFields[i - oldSize];
+			}
+		}
+		
 		for(Field field : decFields)
 		{
 			String name = field.getName();

@@ -19,7 +19,6 @@ package org.suren.autotest.web.framework.driver;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 /**
  * 这里只是测试不会启动真正浏览器的驱动

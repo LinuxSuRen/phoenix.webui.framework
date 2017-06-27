@@ -20,10 +20,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
-import org.suren.autotest.web.framework.report.record.ExceptionRecord;
-import org.suren.autotest.web.framework.report.record.NormalRecord;
-import org.suren.autotest.web.framework.report.record.ProjectRecord;
+
+import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.report.record.ExceptionRecord;
+import com.surenpi.autotest.report.record.NormalRecord;
+import com.surenpi.autotest.report.record.ProjectRecord;
 
 /**
  * 采用日志的形式记录报告

@@ -18,9 +18,9 @@
 
 package org.suren.autotest.web.framework.core;
 
-import org.suren.autotest.web.framework.page.Page;
-
 import java.util.Map;
+
+import org.suren.autotest.web.framework.page.Page;
 
 /**
  * 页面上下文对象

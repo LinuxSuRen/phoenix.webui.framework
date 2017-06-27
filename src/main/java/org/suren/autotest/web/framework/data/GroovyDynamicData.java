@@ -16,15 +16,15 @@
 
 package org.suren.autotest.web.framework.data;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.springframework.stereotype.Component;
+
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 
 /**
  * Groovy脚本版本的动态数据实现

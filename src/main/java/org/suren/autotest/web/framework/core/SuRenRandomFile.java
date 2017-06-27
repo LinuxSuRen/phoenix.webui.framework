@@ -18,15 +18,15 @@
 
 package org.suren.autotest.web.framework.core;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.webdriver.downloader.PathUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * 默认提供的随机文件生成类

@@ -18,9 +18,17 @@
 
 package org.suren.autotest.web.framework.settings;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -34,22 +42,15 @@ import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
 import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.Page;
-import org.suren.autotest.web.framework.report.RecordReportWriter;
-import org.suren.autotest.web.framework.report.record.ExceptionRecord;
-import org.suren.autotest.web.framework.report.record.NormalRecord;
 import org.suren.autotest.web.framework.util.PathUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.report.record.ExceptionRecord;
+import com.surenpi.autotest.report.record.NormalRecord;
+
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * 模块代理类

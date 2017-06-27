@@ -18,9 +18,9 @@
 
 package org.suren.autotest.web.framework.core;
 
-import org.suren.autotest.web.framework.core.ui.AbstractElement;
-
 import java.util.Map;
+
+import org.suren.autotest.web.framework.core.ui.AbstractElement;
 
 /**
  * 定位信息设置工具类

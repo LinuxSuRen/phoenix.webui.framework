@@ -18,7 +18,40 @@
 
 package org.suren.autotest.web.framework.selenium;
 
-import org.openqa.selenium.*;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_FIREFOX;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_HTML_UNIT;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_OPERA;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_PHANTOM_JS;
+import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
+import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.UnsupportedCommandException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -44,15 +77,6 @@ import org.suren.autotest.web.framework.util.ThreadUtil;
 import org.suren.autotest.webdriver.downloader.DriverDownloader;
 import org.suren.autotest.webdriver.downloader.DriverMapping;
 import org.suren.autotest.webdriver.downloader.PathUtil;
-
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import static org.suren.autotest.web.framework.settings.DriverConstants.*;
 
 /**
  * 浏览器引擎封装类

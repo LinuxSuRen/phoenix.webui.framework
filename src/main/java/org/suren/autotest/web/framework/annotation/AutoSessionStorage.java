@@ -18,9 +18,13 @@
 
 package org.suren.autotest.web.framework.annotation;
 
-import org.suren.autotest.web.framework.page.Page;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.suren.autotest.web.framework.page.Page;
 
 /**
  * 用在方法上，第一次执行时，保存session信息；之后方法被调用时则会跳过

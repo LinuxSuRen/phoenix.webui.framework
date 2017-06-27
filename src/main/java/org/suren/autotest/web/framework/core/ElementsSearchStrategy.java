@@ -18,9 +18,9 @@
 
 package org.suren.autotest.web.framework.core;
 
-import org.suren.autotest.web.framework.core.ui.Element;
-
 import java.util.List;
+
+import org.suren.autotest.web.framework.core.ui.Element;
 
 /**
  * 元素查找策略

@@ -16,13 +16,13 @@
 
 package org.suren.autotest.web.framework.data;
 
+import java.io.InputStream;
+import java.net.URL;
+
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
-
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * @author suren

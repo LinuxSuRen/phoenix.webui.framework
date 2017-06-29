@@ -77,7 +77,6 @@ import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
-import org.suren.autotest.web.framework.spring.AutotestScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.util.NetUtil;
 import org.suren.autotest.web.framework.util.StringUtils;
@@ -131,9 +130,9 @@ public class SettingUtil implements Closeable
 				annotatedClasses[len] = AutoApplicationConfig.class;
 			}
 			context = new AnnotationConfigApplicationContext(annotatedClasses);
+//			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
 			Map<String, RecordReportWriter> reportWriters = context.getBeansOfType(RecordReportWriter.class);
 
-			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
 			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
 					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
 							this));

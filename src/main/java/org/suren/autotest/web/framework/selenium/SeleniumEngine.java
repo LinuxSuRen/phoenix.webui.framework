@@ -276,6 +276,10 @@ public class SeleniumEngine
 		return Collections.unmodifiableMap(enginePro == null ? new Properties() : enginePro);
 	}
 	
+	/**
+	 * @param key
+	 * @param identify
+	 */
 	public void setProgressId(String key, String identify)
 	{
 		enginePro.put(key, identify);

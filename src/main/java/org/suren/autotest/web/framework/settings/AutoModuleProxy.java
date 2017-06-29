@@ -26,7 +26,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -41,6 +43,7 @@ import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
 import org.suren.autotest.web.framework.core.AutoTestException;
 import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.log.LoggerConstants;
 import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.util.PathUtil;
 
@@ -306,6 +309,11 @@ public class AutoModuleProxy implements MethodInterceptor
         return false;
     }
 
+    /**
+     * 被排除的方法
+     * @param method
+     * @return
+     */
     private boolean isNotExcludeMethod(Method method)
     {
         String name = method.getName();
@@ -322,6 +330,10 @@ public class AutoModuleProxy implements MethodInterceptor
         return true;
     }
 
+    /**
+     * 写入报告
+     * @param record
+     */
     private void write(NormalRecord record)
     {
         for(RecordReportWriter writer : recordReportWriters)
@@ -330,8 +342,30 @@ public class AutoModuleProxy implements MethodInterceptor
         }
     }
 
+    /**
+     * 写入报告
+     * @param record
+     */
     private void write(ExceptionRecord record)
     {
+    	Map<Object, Object> config = util.getEngine().getEngineConfig();
+    	
+    	String root = (String) config.get(LoggerConstants.IMG_LOG_DIR);
+    	String appDir = (String) config.get(LoggerConstants.APP_IDENTIFY);
+    	String progressDir = (String) config.get(LoggerConstants.PROGRESS_IDENTIFY);
+    	
+    	File pngDir = new File(new File(root, appDir), progressDir);
+    	if(pngDir.isDirectory())
+    	{
+    		File[] files = pngDir.listFiles();
+    		if(files != null && files.length > 0)
+    		{
+        		List<File> attachFileList = new ArrayList<File>();
+        		attachFileList.add(files[files.length - 1]);
+        		record.setAttachFileList(attachFileList);
+    		}
+    	}
+    	
         for(RecordReportWriter writer : recordReportWriters)
         {
             writer.write(record);

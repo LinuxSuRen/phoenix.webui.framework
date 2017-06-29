@@ -16,16 +16,12 @@
 
 package org.suren.autotest.web.framework;
 
-import java.util.Properties;
-
-import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
+import org.suren.autotest.web.framework.log.Image4SearchLog;
+import org.suren.autotest.web.framework.mail.MailConfig;
 
 /**
  * Spring零配置
@@ -34,39 +30,11 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  */
 @Configuration
 @ComponentScan
-@PropertySource("classpath:application.properties")
+@ImportResource({"autoTestContext.xml", "beanScope.xml"})
+@Import({
+	Image4SearchLog.class,
+	MailConfig.class
+})
 public class AutoApplicationConfig
 {
-    @Value("${mail.host}")
-    private String mailHost;
-    @Value("${mail.username}")
-    private String mailUserName;
-    @Value("${mail.password}")
-    private String mailPassword;
-
-    @Bean(autowire = Autowire.BY_TYPE)
-    public MailSender mailBean()
-    {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(mailHost);
-        mailSender.setUsername(mailUserName);
-        mailSender.setPassword(mailPassword);
-        setUpMailPro(mailSender);
-
-        return mailSender;
-    }
-
-    /**
-     * 设置邮箱服务器配置
-     * @param mailSender
-     */
-    private void setUpMailPro(JavaMailSenderImpl mailSender)
-    {
-        Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail.smtp.auth", true);
-        javaMailProperties.put("mail.smtp.starttls.enable", true);
-        javaMailProperties.put("mail.smtp.timeout", 5000);
-
-        mailSender.setJavaMailProperties(javaMailProperties);
-    }
 }

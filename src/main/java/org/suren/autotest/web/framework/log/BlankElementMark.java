@@ -16,21 +16,22 @@
 
 package org.suren.autotest.web.framework.log;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.WebElement;
+
 /**
- * 日志相关的常量
  * @author suren
- * @date 2016年8月22日 上午8:39:31
+ * @date 2017年6月29日 下午3:55:04
  */
-public interface LoggerConstants
+public class BlankElementMark implements ElementMark
 {
-	String IMG_LOG_CONF_FILE_NAME = "image4Search.properties";
-	String IMG_LOG_DIR = "image4SearchDir";
-	
-	/** 当前测试流程的唯一标识 */
-	String PROGRESS_IDENTIFY = "progress_identify";
-	/** 区分同一流程多次测试的唯一标识 */
-	String APP_IDENTIFY = "application_identify";
-	
-	/** 当前测试流程中的gif图片路径 */
-	String GIF_CURRENT_PATH = "gif_file_current_path";
+
+	@Override
+	public void mark(WebElement ele, File file) throws IOException
+	{
+		//this is blank class, just for simple.
+	}
+
 }

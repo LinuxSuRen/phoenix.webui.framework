@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/LinuxSuRen/phoenix.webui.framework.svg?branch=master)](https://travis-ci.org/LinuxSuRen/phoenix.webui.framework)
 [![License](https://img.shields.io/github/license/LinuxSuRen/phoenix.webui.framework.svg)](https://github.com/LinuxSuRen/phoenix.webui.framework/master/LICENSE)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework)
+[![Coverage Status](https://coveralls.io/repos/com.surenpi.autotest/autotest.web.framework/badge.svg?branch=master&service=github)](https://coveralls.io/github/com.surenpi.autotest/autotest.web.framework?branch=master)
 [![Join the chat at https://gitter.im/phoenix-webui-framework/Lobby](https://badges.gitter.im/phoenix-webui-framework/Lobby.svg)](https://gitter.im/phoenix-webui-framework/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # AutoTest

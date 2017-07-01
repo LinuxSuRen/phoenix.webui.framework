@@ -54,9 +54,4 @@ public @interface AutoSessionStorage
      * @return 是否跳过目标方法
      */
     boolean skipMethod() default true;
-
-    /**
-     * @return 是否要执行打开页面操作
-     */
-    boolean openInvoke() default false;
 }

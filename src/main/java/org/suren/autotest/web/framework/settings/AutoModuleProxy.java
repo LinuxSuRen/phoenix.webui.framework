@@ -27,6 +27,8 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -35,10 +37,13 @@ import java.util.Set;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
+import org.openqa.selenium.html5.LocalStorage;
 import org.openqa.selenium.html5.SessionStorage;
 import org.openqa.selenium.html5.WebStorage;
 import org.suren.autotest.web.framework.annotation.AutoCookie;
 import org.suren.autotest.web.framework.annotation.AutoExpect;
+import org.suren.autotest.web.framework.annotation.AutoItem;
+import org.suren.autotest.web.framework.annotation.AutoLocalStorage;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
 import org.suren.autotest.web.framework.core.AutoTestException;
@@ -92,6 +97,7 @@ public class AutoModuleProxy implements MethodInterceptor
         AutoModule autoModule = superCls.getAnnotation(AutoModule.class);
         AutoExpect autoExpect = method.getAnnotation(AutoExpect.class);
         AutoSessionStorage autoSessionStorage = method.getAnnotation(AutoSessionStorage.class);
+        AutoLocalStorage autoLocalStorage = method.getAnnotation(AutoLocalStorage.class);
         AutoCookie autoCookie = method.getAnnotation(AutoCookie.class);
 
         NormalRecord normalRecord = new NormalRecord();
@@ -120,15 +126,69 @@ public class AutoModuleProxy implements MethodInterceptor
                 {
                     String accountNameValue = ((Text) value).getValue();
                     sessionStorageConfig.setAccount(accountNameValue);
+                    
+                    Map<String, String> customMap = new HashMap<String, String>();
+                    AutoItem[] overItems = autoSessionStorage.overItems();
+                    if(overItems != null && overItems.length > 0)
+                    {
+                    	Arrays.asList(overItems).forEach((item) -> {
+                    		customMap.put(item.key(), item.value());
+                    	});
+                    }
 
                     page.open();
-                    if(loadSessionStorage(accountNameValue))
+                    if(loadSessionStorage(accountNameValue, customMap))
                     {
                         sessionStorageConfig.setAccount(accountNameValue);
 
                         if(autoSessionStorage.skipMethod())
                         {
                             sessionStorageConfig.setSkipLogin(true);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new AutoTestException("Wrong account type in class: " + accountClz + ", and field : "
+                            + accountNameField + ". It should be Text type.");
+                }
+            }
+            
+            LocalStorageConfig localStorageConfig = new LocalStorageConfig();
+            if(autoLocalStorage != null)
+            {
+            	localStorageConfig.setAutoLoad(true);
+                Class<? extends Page> accountClz = autoLocalStorage.pageClazz();
+                String accountNameField = autoLocalStorage.sessionKey();
+
+                Page page = util.getPage(accountClz);
+                Field accountField = accountClz.getDeclaredField(accountNameField);
+
+                accountField.setAccessible(true);
+                Object value = accountField.get(page);
+
+                if(value instanceof Text)
+                {
+                    String accountNameValue = ((Text) value).getValue();
+                    localStorageConfig.setAccount(accountNameValue);
+                    
+                    Map<String, String> customMap = new HashMap<String, String>();
+                    AutoItem[] overItems = autoLocalStorage.overItems();
+                    if(overItems != null && overItems.length > 0)
+                    {
+                    	Arrays.asList(overItems).forEach((item) -> {
+                    		customMap.put(item.key(), item.value());
+                    	});
+                    }
+
+                    page.open();
+                    if(loadLocalStorage(accountNameValue, customMap))
+                    {
+                    	localStorageConfig.setAccount(accountNameValue);
+
+                        if(autoLocalStorage.skipMethod())
+                        {
+                        	localStorageConfig.setSkipLogin(true);
                         }
                     }
                 }
@@ -146,6 +206,19 @@ public class AutoModuleProxy implements MethodInterceptor
         		// 处理cookie
         		Options manage = util.getEngine().getDriver().manage();
         		File cookieFile = PathUtil.getFile(autoCookie.fileName());
+        		
+                Class<? extends Page> accountClz = autoCookie.pageClazz();
+                String accountNameField = autoCookie.sessionKey();
+
+                Page page = util.getPage(accountClz);
+                Field accountField = accountClz.getDeclaredField(accountNameField);
+
+                accountField.setAccessible(true);
+                Object value = accountField.get(page);
+                if(value instanceof Text)
+                {
+                    page.open();
+                }
         		
     			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
     			{
@@ -171,7 +244,7 @@ public class AutoModuleProxy implements MethodInterceptor
     			}
             }
 
-            if(sessionStorageConfig.isSkipLogin() || skipForCookie)
+            if(sessionStorageConfig.isSkipLogin() || localStorageConfig.isSkipLogin() || skipForCookie)
             {
                 result = Void.TYPE;
             }
@@ -184,6 +257,11 @@ public class AutoModuleProxy implements MethodInterceptor
             if(sessionStorageConfig.isAutoLoad())
             {
                 saveSessionStorage(sessionStorageConfig.getAccount());
+            }
+
+            if(localStorageConfig.isAutoLoad())
+            {
+                saveLocalStorage(localStorageConfig.getAccount());
             }
             
             //保存cookie信息
@@ -251,13 +329,31 @@ public class AutoModuleProxy implements MethodInterceptor
             PathUtil.proStore(pro, "sessionStorage." + account);
         }
     }
+    
+    private void saveLocalStorage(String account)
+    {
+        WebDriver driver = util.getEngine().getDriver();
+        if(driver instanceof WebStorage)
+        {
+            WebStorage webStorage = (WebStorage) driver;
+            LocalStorage localStorage = webStorage.getLocalStorage();
+
+            Properties pro = new Properties();
+            for(String key : localStorage.keySet())
+            {
+                pro.setProperty(key, localStorage.getItem(key));
+            }
+
+            PathUtil.proStore(pro, "localStorage." + account);
+        }
+    }
 
     /**
      * 加载sessionStorage信息
      * @param accountNameValue
      * @return
      */
-    private boolean loadSessionStorage(String accountNameValue)
+    private boolean loadSessionStorage(String accountNameValue, Map<String, String> customMap)
     {
         WebDriver webDriver = util.getEngine().getDriver();
         if(webDriver instanceof WebStorage)
@@ -272,9 +368,40 @@ public class AutoModuleProxy implements MethodInterceptor
                 {
                     return false;
                 }
+                
+                pro.putAll(customMap);
 
                 pro.stringPropertyNames().parallelStream().forEach((key) -> {
                     sessionStorage.setItem(key, pro.getProperty(key));
+                });
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    private boolean loadLocalStorage(String accountNameValue, Map<String, String> customMap)
+    {
+        WebDriver webDriver = util.getEngine().getDriver();
+        if(webDriver instanceof WebStorage)
+        {
+            WebStorage webStorage = (WebStorage) webDriver;
+            LocalStorage localStorage = webStorage.getLocalStorage();
+
+            Properties pro = new Properties();
+            if(PathUtil.proLoad(pro, "localStorage." + accountNameValue))
+            {
+                if(pro.isEmpty())
+                {
+                    return false;
+                }
+                
+                pro.putAll(customMap);
+
+                pro.stringPropertyNames().parallelStream().forEach((key) -> {
+                	localStorage.setItem(key, pro.getProperty(key));
                 });
 
                 return true;

@@ -22,7 +22,7 @@
 ![Excel格式的测试报告](http://surenpi.com/wp-content/uploads/2017/06/autotest_report_excel_2.png)
 ![数据库格式的测试报告](http://surenpi.com/wp-content/uploads/2017/06/report_database.png)
 
-为了方便喜欢PhoenixAutotest框架的朋友们能尽快上手，这里提供了[http://surenpi.com/2016/07/18/phoenix_autotest_tutorial/](一系列教程)。
+为了方便喜欢PhoenixAutotest框架的朋友们能尽快上手，这里提供了![一系列教程](http://surenpi.com/2016/07/18/phoenix_autotest_tutorial)。
 
 # 备注
 由于本项目没有提交任何工程、IDE相关的文件（这样，您就可以任选Eclipse、IntelliJ IDEA或者是NetBeans作为您的开发工具了），所以check出来以后还需要一些步骤。  

@@ -34,9 +34,11 @@ import org.suren.autotest.web.framework.util.StringUtils;
 
 /**
  * 对HTML页面的逻辑封装，不一定是一一对应
+ * @deprecated 建议使用WebPage类来代替
  * @author suren
  * @date Jul 17, 2016 9:06:52 AM
  */
+@Deprecated
 public class Page
 {
 	/** 页面唯一标示 */

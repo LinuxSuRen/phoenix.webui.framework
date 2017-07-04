@@ -37,7 +37,8 @@ public class ConfigException extends AutoTestException
 		this.message = "Config exception.";
 	}
 
-	public ConfigException(String message, String message1) {
+	public ConfigException(String message, String message1)
+	{
 		super(message);
 		this.message = message1;
 	}

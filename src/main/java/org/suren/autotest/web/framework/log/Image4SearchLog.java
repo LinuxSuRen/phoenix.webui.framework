@@ -147,13 +147,13 @@ public class Image4SearchLog
 		animatedGifEncoder.setRepeat(0);
 	}
 	
-	@Before("within(org.suren.autotest.web.framework.core.ElementSearchStrategy)")
+	@Before("within(com.surenpi.autotest.webui.core.ElementSearchStrategy)")
 	public void search()
 	{
 		System.out.println("sdds");
 	}
 
-	@Around("execution(* org.suren.autotest.web.framework.core.ElementSearchStrategy.search*(..))")
+	@Around("execution(* com.surenpi.autotest.webui.core.ElementSearchStrategy.search*(..))")
 	public Object imageLog(ProceedingJoinPoint joinPoint) throws Throwable
 	{
 		Object[] args = joinPoint.getArgs();

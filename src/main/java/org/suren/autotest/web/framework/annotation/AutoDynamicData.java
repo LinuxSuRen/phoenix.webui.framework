@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.suren.autotest.web.framework.data.DynamicDataConstants;
+import com.surenpi.autotest.datasource.DynamicDataConstants;
 
 /**
  * @author suren

@@ -24,8 +24,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.suren.autotest.web.framework.core.Locator;
-import org.suren.autotest.web.framework.core.LocatorAware;
+
+import com.surenpi.autotest.webui.core.Locator;
+import com.surenpi.autotest.webui.core.LocatorAware;
 
 /**
  * 元素定位器的抽象父类，实现了部分通用方法

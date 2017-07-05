@@ -30,7 +30,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 引擎相关的操作
@@ -43,7 +43,7 @@ public class EngineInvoker
 	 * 关闭当前窗口
 	 * @param util
 	 */
-	public static void closeWin(SettingUtil util)
+	public static void closeWin(Phoenix util)
 	{
 		util.getEngine().getDriver().close();
 	}
@@ -53,7 +53,7 @@ public class EngineInvoker
 	 * @param util
 	 * @param startWith
 	 */
-	public static void closeWinByUrlStartWith(SettingUtil util, String[] params)
+	public static void closeWinByUrlStartWith(Phoenix util, String[] params)
 	{
 		String startWith = params[0];
 		WebDriver driver = util.getEngine().getDriver();
@@ -82,7 +82,7 @@ public class EngineInvoker
 	 * @param util
 	 * @param params
 	 */
-	public static void frameSwitchByIndex(SettingUtil util, String[] params)
+	public static void frameSwitchByIndex(Phoenix util, String[] params)
 	{
 		String indexStr = params[0];
 		int index = Integer.parseInt(indexStr);
@@ -94,7 +94,7 @@ public class EngineInvoker
 	 * @param util
 	 * @param params
 	 */
-	public static void frameSwitchByNameOrId(SettingUtil util, String[] params)
+	public static void frameSwitchByNameOrId(Phoenix util, String[] params)
 	{
 		String nameOrId = params[0];
 		util.getEngine().getDriver().switchTo().frame(nameOrId);
@@ -104,7 +104,7 @@ public class EngineInvoker
 	 * window窗口切换
 	 * @param util
 	 */
-	public static void windowSwitch(SettingUtil util)
+	public static void windowSwitch(Phoenix util)
 	{
 		SeleniumEngine engine = util.getEngine();
 		WebDriver driver = engine.getDriver();
@@ -123,7 +123,7 @@ public class EngineInvoker
 	 * @param util
 	 * @param params
 	 */
-	public static void takeShot(SettingUtil util, String[] params)
+	public static void takeShot(Phoenix util, String[] params)
 	{
 		SeleniumEngine engine = util.getEngine();
 		WebDriver driver = engine.getDriver();

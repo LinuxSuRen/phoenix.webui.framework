@@ -24,7 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.suren.autotest.web.framework.core.StrategyType;
+import com.surenpi.autotest.webui.core.StrategyType;
 
 /**
  * 定位策略

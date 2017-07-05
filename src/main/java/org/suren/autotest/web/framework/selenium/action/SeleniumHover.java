@@ -26,11 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.action.HoverAble;
-import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+
+import com.surenpi.autotest.webui.action.HoverAble;
+import com.surenpi.autotest.webui.ui.Element;
+import com.surenpi.autotest.webui.ui.FileUpload;
 
 /**
  * @author suren

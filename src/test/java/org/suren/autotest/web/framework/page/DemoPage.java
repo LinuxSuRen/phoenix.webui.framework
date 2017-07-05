@@ -18,14 +18,16 @@
 
 package org.suren.autotest.web.framework.page;
 
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.selenium.WebPage;
+
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * @author suren
  * @date 2017年5月10日 下午8:10:06
  */
-public class DemoPage extends Page
+public class DemoPage extends WebPage
 {
 	private Text userName;
 	private Text password;

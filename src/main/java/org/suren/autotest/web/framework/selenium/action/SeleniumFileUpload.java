@@ -31,13 +31,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.autoit3.AutoItCmd;
-import org.suren.autotest.web.framework.core.RandomFile;
-import org.suren.autotest.web.framework.core.action.ClickAble;
-import org.suren.autotest.web.framework.core.action.FileUploadAble;
-import org.suren.autotest.web.framework.core.action.RandomFileUploadAble;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+
+import com.surenpi.autotest.webui.action.ClickAble;
+import com.surenpi.autotest.webui.action.FileUploadAble;
+import com.surenpi.autotest.webui.action.RandomFileUploadAble;
+import com.surenpi.autotest.webui.core.RandomFile;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 利用Selenium实现文件上传

@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.suren.autotest.web.framework.page.HomePage;
 import org.suren.autotest.web.framework.page.LoginPage;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 import org.xml.sax.SAXException;
 
 /**
@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class ElementUtilTest
 {
-	private SettingUtil util;
+	private Phoenix util;
 	
 	/**
 	 * 加载元素定位信息，初始化数据源
@@ -45,7 +45,7 @@ public class ElementUtilTest
 	@Before
 	public void before() throws IOException, DocumentException, SAXException
 	{
-		util = new SettingUtil();
+		util = new Phoenix();
 		util.readFromClassPath("elements/xml/maimai_chrome.xml");
 		util.initData();
 	}

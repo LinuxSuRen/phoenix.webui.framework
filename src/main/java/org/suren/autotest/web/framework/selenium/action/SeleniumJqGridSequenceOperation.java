@@ -23,12 +23,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.LocatorUtil;
-import org.suren.autotest.web.framework.core.action.SequenceAble;
-import org.suren.autotest.web.framework.core.ui.AbstractElement;
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.core.ui.Text;
+
+import com.surenpi.autotest.webui.action.SequenceAble;
+import com.surenpi.autotest.webui.core.LocatorUtil;
+import com.surenpi.autotest.webui.ui.AbstractElement;
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.Element;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * jqGrid组件的选择

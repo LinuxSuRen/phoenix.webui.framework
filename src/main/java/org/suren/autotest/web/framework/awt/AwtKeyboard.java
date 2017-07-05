@@ -21,7 +21,8 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.Keyboard;
+
+import com.surenpi.autotest.webui.core.Keyboard;
 
 /**
  * @author suren

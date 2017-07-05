@@ -35,13 +35,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ElementSearchStrategy;
-import org.suren.autotest.web.framework.core.action.ClickAble;
-import org.suren.autotest.web.framework.core.ui.AbstractElement;
-import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.core.ui.FileUpload;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+
+import com.surenpi.autotest.webui.action.ClickAble;
+import com.surenpi.autotest.webui.core.ElementSearchStrategy;
+import com.surenpi.autotest.webui.ui.AbstractElement;
+import com.surenpi.autotest.webui.ui.Element;
+import com.surenpi.autotest.webui.ui.FileUpload;
 
 /**
  * 通过Selenium实现点击（单击、双击）

@@ -16,7 +16,7 @@
 
 package org.suren.autotest.web.framework.invoker;
 
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 批量操作执行器
@@ -30,7 +30,7 @@ public class BatchOperationInvoker
 	 * @param util
 	 * @param params
 	 */
-	public static void execute(SettingUtil util, String[] params)
+	public static void execute(Phoenix util, String[] params)
 	{
 //		ElementUtil.click(buttons);
 	}

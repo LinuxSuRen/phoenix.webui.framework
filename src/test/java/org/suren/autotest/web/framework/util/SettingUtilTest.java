@@ -23,14 +23,15 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.page.HomePage;
 import org.suren.autotest.web.framework.page.LoginPage;
 import org.suren.autotest.web.framework.page.MenuPage;
 import org.suren.autotest.web.framework.page.SSIPPage;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 import org.xml.sax.SAXException;
+
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * 关于框架加载元素定位和数据部分的单元测试
@@ -39,7 +40,7 @@ import org.xml.sax.SAXException;
  */
 public class SettingUtilTest
 {
-	private SettingUtil util;
+	private Phoenix util;
 	
 	/**
 	 * 加载元素定位信息，初始化数据源
@@ -50,7 +51,7 @@ public class SettingUtilTest
 	@Before
 	public void before() throws IOException, DocumentException, SAXException
 	{
-		util = new SettingUtil();
+		util = new Phoenix();
 	}
 	
 	/**

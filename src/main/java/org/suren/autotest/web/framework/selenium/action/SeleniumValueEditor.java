@@ -24,12 +24,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.action.AdvanceValueEditor;
-import org.suren.autotest.web.framework.core.action.ValueEditor;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 import org.suren.autotest.web.framework.util.StringUtils;
+
+import com.surenpi.autotest.webui.action.AdvanceValueEditor;
+import com.surenpi.autotest.webui.action.ValueEditor;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 给文本框中填入值

@@ -24,12 +24,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
-import org.suren.autotest.web.framework.core.EngineAware;
 import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 
 import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.webui.core.EngineAware;
 
 /**
  * 用于辅助生成自动化测试报告的scope
@@ -39,9 +39,9 @@ public class AutoModuleScope implements Scope
 {
     private final List<RecordReportWriter> recordReportWriters;
     private final Map<String, Object> objMap = new HashMap<String, Object>();
-    private SettingUtil util;
+    private Phoenix util;
 
-    public AutoModuleScope(List<RecordReportWriter> recordReportWriters, SettingUtil util)
+    public AutoModuleScope(List<RecordReportWriter> recordReportWriters, Phoenix util)
     {
         this.recordReportWriters = recordReportWriters;
         this.util = util;

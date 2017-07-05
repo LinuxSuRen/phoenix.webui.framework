@@ -26,10 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ElementSearchStrategy;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
+
+import com.surenpi.autotest.webui.core.ElementSearchStrategy;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 根据查找元素的优先级（{@link PrioritySearchStrategy}）进行便历查找， 找不到返回null

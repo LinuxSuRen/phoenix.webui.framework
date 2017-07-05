@@ -125,62 +125,57 @@
 		    <artifactId>autotest.webui</artifactId>
 		    <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+		    <groupId>com.surenpi.autotest</groupId>
+		    <artifactId>autotest.datasource</artifactId>
+		    <version>1.0-SNAPSHOT</version>
+        </dependency>
 
 		<!-- Selenium依赖 -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-support</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-driver</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 
 		<!-- xml解析 -->
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
-			<version>1.4.01</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
-			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-			<version>1.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.xmlschema</groupId>
 			<artifactId>xmlschema-core</artifactId>
-			<version>2.1.0</version>
 		</dependency>
 
 		<!-- excel -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.10-FINAL</version>
 		</dependency>
 
 		<!-- spring -->
@@ -204,12 +199,10 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 
 		<!-- logging -->
@@ -232,37 +225,10 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy</artifactId>
-			<version>${groovy.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-jsr223</artifactId>
-			<version>${groovy.version}</version>
-		</dependency>
-
-		<!-- 源码编译 -->
-		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>core</artifactId>
-			<version>3.3.0-v_771</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>common</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse</groupId>
-					<artifactId>osgi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>app</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>jobs</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
@@ -272,7 +238,6 @@
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.20</version>
 		</dependency>
 
 		<!-- 工具类 <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-lang3</artifactId> 

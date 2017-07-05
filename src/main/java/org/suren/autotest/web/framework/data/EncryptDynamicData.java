@@ -21,6 +21,8 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.EncryptorUtil;
 
+import com.surenpi.autotest.datasource.DynamicData;
+
 /**
  * 密文版本的动态数据实现
  * @author suren

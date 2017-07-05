@@ -29,7 +29,10 @@ import org.suren.autotest.web.framework.mail.MailConfig;
  * @date 2017年6月8日 上午8:21:10
  */
 @Configuration
-@ComponentScan
+@ComponentScan({"com.surenpi.autotest.webui",
+	"org.suren.autotest.web.framework",
+	"com.surenpi.autotest.datasource"
+})
 @ImportResource({"autoTestContext.xml", "beanScope.xml"})
 @Import({
 	Image4SearchLog.class,

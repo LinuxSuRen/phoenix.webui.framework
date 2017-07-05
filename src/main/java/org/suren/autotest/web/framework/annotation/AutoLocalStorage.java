@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.suren.autotest.web.framework.page.Page;
+import com.surenpi.autotest.webui.Page;
 
 /**
  * @author suren

@@ -44,14 +44,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ui.AbstractElement;
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.CheckBoxGroup;
-import org.suren.autotest.web.framework.core.ui.FileUpload;
-import org.suren.autotest.web.framework.core.ui.Selector;
-import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.page.Page;
+import org.suren.autotest.web.framework.selenium.WebPage;
 import org.suren.autotest.web.framework.util.StringUtils;
+
+import com.surenpi.autotest.datasource.DataResource;
+import com.surenpi.autotest.datasource.DataSource;
+import com.surenpi.autotest.datasource.DataSourceConstants;
+import com.surenpi.autotest.datasource.DynamicData;
+import com.surenpi.autotest.datasource.DynamicDataSource;
+import com.surenpi.autotest.webui.ui.AbstractElement;
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.CheckBoxGroup;
+import com.surenpi.autotest.webui.ui.FileUpload;
+import com.surenpi.autotest.webui.ui.Selector;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * xml格式的数据源实现
@@ -60,13 +66,13 @@ import org.suren.autotest.web.framework.util.StringUtils;
  */
 @Component(DataSourceConstants.DS_TYPE_XML)
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class XmlDataSource implements DataSource, DynamicDataSource
+public class XmlDataSource implements DataSource<WebPage>, DynamicDataSource
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlDataSource.class);
 	
 	public static final String NS_URI = "http://datasource.surenpi.com";
 	
-	private Page page;
+	private WebPage page;
 	private URL url;
 	private Map<String, Object> globalMap = new HashMap<String, Object>();
 	
@@ -81,7 +87,7 @@ public class XmlDataSource implements DataSource, DynamicDataSource
 	 * 加载xml格式的数据到page对象中
 	 */
 	@Override
-	public boolean loadData(DataResource resource, Page page)
+	public boolean loadData(DataResource resource, WebPage page)
 	{
 		return loadData(resource, 0, page);
 	}
@@ -281,7 +287,7 @@ public class XmlDataSource implements DataSource, DynamicDataSource
 	}
 
 	@Override
-	public boolean loadData(DataResource resource, int row, Page page)
+	public boolean loadData(DataResource resource, int row, WebPage page)
 	{
 		this.page = page;
 		try

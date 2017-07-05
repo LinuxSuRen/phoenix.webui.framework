@@ -30,10 +30,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ui.AbstractElement;
-import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.util.StringUtils;
+
+import com.surenpi.autotest.datasource.DynamicData;
+import com.surenpi.autotest.webui.Page;
+import com.surenpi.autotest.webui.ui.AbstractElement;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * Page对象之间的属性数据引用

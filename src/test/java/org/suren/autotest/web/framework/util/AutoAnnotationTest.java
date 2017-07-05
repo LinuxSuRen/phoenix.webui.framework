@@ -30,7 +30,7 @@ import org.suren.autotest.web.framework.annotation.AutoApplication;
 import org.suren.autotest.web.framework.annotation.AutoReporter;
 import org.suren.autotest.web.framework.page.AnnotationPage;
 import org.suren.autotest.web.framework.settings.DriverConstants;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 测试使用注解配置的方式
@@ -43,12 +43,12 @@ import org.suren.autotest.web.framework.settings.SettingUtil;
 		scanBasePackages = "org.suren.autotest.web.webframework.page")
 public class AutoAnnotationTest
 {
-	private SettingUtil util;
+	private Phoenix util;
 	
 	@Before
 	public void setUp()
 	{
-		util = new SettingUtil();
+		util = new Phoenix();
 	}
 	
 	@Test

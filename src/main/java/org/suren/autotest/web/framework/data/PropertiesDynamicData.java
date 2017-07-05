@@ -27,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.surenpi.autotest.datasource.DynamicData;
+
 /**
  * 属性文件动态数据
  * @author suren

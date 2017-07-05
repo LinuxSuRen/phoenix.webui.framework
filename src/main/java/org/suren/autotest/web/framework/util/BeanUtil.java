@@ -19,7 +19,7 @@ package org.suren.autotest.web.framework.util;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.suren.autotest.web.framework.core.ui.Button;
+import com.surenpi.autotest.webui.ui.Button;
 
 /**
  * 反射工具类

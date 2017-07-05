@@ -28,13 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ElementSearchStrategy;
-import org.suren.autotest.web.framework.core.Locator;
-import org.suren.autotest.web.framework.core.action.CheckAble;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumValueLocator;
 import org.suren.autotest.web.framework.selenium.strategy.ParentElement;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+
+import com.surenpi.autotest.webui.action.CheckAble;
+import com.surenpi.autotest.webui.core.ElementSearchStrategy;
+import com.surenpi.autotest.webui.core.Locator;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 复选框选择

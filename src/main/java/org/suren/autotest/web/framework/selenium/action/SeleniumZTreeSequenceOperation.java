@@ -28,11 +28,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.suren.autotest.web.framework.core.action.SequenceAble;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.util.ThreadUtil;
+
+import com.surenpi.autotest.webui.action.SequenceAble;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 利用Selenium来实现序列操作

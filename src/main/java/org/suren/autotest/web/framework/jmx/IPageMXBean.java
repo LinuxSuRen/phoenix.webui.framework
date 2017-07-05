@@ -18,7 +18,7 @@ package org.suren.autotest.web.framework.jmx;
 
 import java.util.List;
 
-import org.suren.autotest.web.framework.page.Page;
+import com.surenpi.autotest.webui.Page;
 
 /**
  * Page信息管理

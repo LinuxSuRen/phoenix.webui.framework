@@ -46,15 +46,15 @@ import org.suren.autotest.web.framework.annotation.AutoItem;
 import org.suren.autotest.web.framework.annotation.AutoLocalStorage;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
-import org.suren.autotest.web.framework.core.AutoTestException;
-import org.suren.autotest.web.framework.core.ui.Text;
 import org.suren.autotest.web.framework.log.LoggerConstants;
-import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.util.PathUtil;
 
 import com.surenpi.autotest.report.RecordReportWriter;
 import com.surenpi.autotest.report.record.ExceptionRecord;
 import com.surenpi.autotest.report.record.NormalRecord;
+import com.surenpi.autotest.webui.Page;
+import com.surenpi.autotest.webui.core.AutoTestException;
+import com.surenpi.autotest.webui.ui.Text;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -69,9 +69,9 @@ public class AutoModuleProxy implements MethodInterceptor
     private Enhancer enhancer = new Enhancer();
     private Object target;
     private List<RecordReportWriter> recordReportWriters;
-    private SettingUtil util;
+    private Phoenix util;
 
-    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters, SettingUtil util)
+    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters, Phoenix util)
     {
         this.target = target;
         this.recordReportWriters = recordReportWriters;

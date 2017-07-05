@@ -18,7 +18,7 @@ package org.suren.autotest.web.framework.invoker;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 用于执行js方法的外部调用
@@ -31,9 +31,9 @@ public class JsInvoker
 	 * 根据元素的class属性定位并触发单击事件
 	 * @param util
 	 * @param params class属性
-	 * @see #execute(SettingUtil, String[])
+	 * @see #execute(Phoenix, String[])
 	 */
-	public static void clickByClassName(SettingUtil util, String[] params)
+	public static void clickByClassName(Phoenix util, String[] params)
 	{
 		String className = params[0];
 		
@@ -49,9 +49,9 @@ public class JsInvoker
 	 * 根据元素id定位并触发单击事件
 	 * @param util
 	 * @param params
-	 * @see #clickByClassName(SettingUtil, String[])
+	 * @see #clickByClassName(Phoenix, String[])
 	 */
-	public static void clickById(SettingUtil util, String[] params)
+	public static void clickById(Phoenix util, String[] params)
 	{
 		String id = params[0];
 		
@@ -67,9 +67,9 @@ public class JsInvoker
 	 * 根据元素name定位并触发单击事件
 	 * @param util
 	 * @param params
-	 * @see #clickByClassName(SettingUtil, String[])
+	 * @see #clickByClassName(Phoenix, String[])
 	 */
-	public static void clickByName(SettingUtil util, String[] params)
+	public static void clickByName(Phoenix util, String[] params)
 	{
 		String name = params[0];
 		
@@ -85,9 +85,9 @@ public class JsInvoker
 	 * 根据元素tagName定位并触发单击事件
 	 * @param util
 	 * @param params
-	 * @see #clickByClassName(SettingUtil, String[])
+	 * @see #clickByClassName(Phoenix, String[])
 	 */
-	public static void clickByTagName(SettingUtil util, String[] params)
+	public static void clickByTagName(Phoenix util, String[] params)
 	{
 		String tagName = params[0];
 		
@@ -105,7 +105,7 @@ public class JsInvoker
 	 * @param params 需要两个元素，第一个是定位的方式（ById、ByName、ByClassName、ByTagName），第二个是值</br>
 	 * 		例如：new String[]{"ById", "userName"}
 	 */
-	public static void scrollIntoView(SettingUtil util, String[] params)
+	public static void scrollIntoView(Phoenix util, String[] params)
 	{
 		if(params == null || params.length < 2)
 		{
@@ -123,7 +123,7 @@ public class JsInvoker
 	 * @param util 框架默认提供的参数
 	 * @param params 要执行的js代码，如果有多个的话，将会顺序执行
 	 */
-	public static void execute(SettingUtil util, String[] params)
+	public static void execute(Phoenix util, String[] params)
 	{
 		WebDriver driver = util.getEngine().getDriver();
 		JavascriptExecutor jsDriver = (JavascriptExecutor) driver;

@@ -22,10 +22,12 @@ import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoPage;
 import org.suren.autotest.web.framework.annotation.AutoStrategy;
-import org.suren.autotest.web.framework.core.LocatorType;
-import org.suren.autotest.web.framework.core.StrategyType;
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.selenium.WebPage;
+
+import com.surenpi.autotest.webui.core.LocatorType;
+import com.surenpi.autotest.webui.core.StrategyType;
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * 使用注解的示例Page类
@@ -34,7 +36,7 @@ import org.suren.autotest.web.framework.core.ui.Text;
  */
 @AutoPage(url = "http://maimai.cn/")
 @AutoDataSource(name = "data", resource = "dataSource/xml/user_data_anno.xml")
-public class AnnotationPage extends Page
+public class AnnotationPage extends WebPage
 {
 	@AutoStrategy(type = StrategyType.PRIORITY)
 	@AutoLocator(locator = LocatorType.BY_PARTIAL_LINK_TEXT, value = "实名动态")

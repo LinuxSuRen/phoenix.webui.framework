@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.PageContext;
-import org.suren.autotest.web.framework.core.PageContextAware;
-import org.suren.autotest.web.framework.page.Page;
+
+import com.surenpi.autotest.webui.Page;
+import com.surenpi.autotest.webui.core.PageContext;
+import com.surenpi.autotest.webui.core.PageContextAware;
 
 /**
  * @author suren

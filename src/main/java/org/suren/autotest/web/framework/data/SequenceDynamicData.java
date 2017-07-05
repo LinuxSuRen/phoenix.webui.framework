@@ -18,6 +18,8 @@ package org.suren.autotest.web.framework.data;
 
 import org.springframework.stereotype.Component;
 
+import com.surenpi.autotest.datasource.DynamicData;
+
 /**
  * @author suren
  * @date 2017年1月11日 下午8:40:18

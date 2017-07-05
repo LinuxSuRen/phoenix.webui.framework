@@ -21,7 +21,8 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.Mouse;
+
+import com.surenpi.autotest.webui.core.Mouse;
 
 /**
  * 使用JRE提供的AWT库来实现鼠标动作

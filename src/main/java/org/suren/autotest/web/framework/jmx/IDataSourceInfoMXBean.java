@@ -18,7 +18,7 @@ package org.suren.autotest.web.framework.jmx;
 
 import java.util.List;
 
-import org.suren.autotest.web.framework.data.DataSource;
+import com.surenpi.autotest.datasource.DataSource;
 
 /**
  * @author suren

@@ -22,10 +22,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Element;
-import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.page.Page;
+import com.surenpi.autotest.webui.Page;
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.Element;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * 元素操作工具类，可以批量地操作元素

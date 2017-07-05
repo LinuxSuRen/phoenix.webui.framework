@@ -24,7 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.suren.autotest.web.framework.data.DataSourceConstants;
+import com.surenpi.autotest.datasource.DataSourceConstants;
 
 /**
  * 数据源注解类

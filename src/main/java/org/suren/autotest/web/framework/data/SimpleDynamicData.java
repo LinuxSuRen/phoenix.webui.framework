@@ -29,6 +29,9 @@ import org.suren.autotest.web.framework.util.IDCardUtil;
 import org.suren.autotest.web.framework.util.RandomUtils;
 import org.suren.autotest.web.framework.util.StringUtils;
 
+import com.surenpi.autotest.datasource.DynamicData;
+import com.surenpi.autotest.datasource.DynamicDateFormat;
+
 /**
  * 简单的动态数据实现
  * @author suren

@@ -20,15 +20,18 @@ package org.suren.autotest.web.framework.page;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ui.Button;
-import org.suren.autotest.web.framework.core.ui.Text;
+import org.suren.autotest.web.framework.selenium.WebPage;
+
+import com.surenpi.autotest.webui.ui.Button;
+import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * @author suren
  * 
  */
 @Component
-public class LoginPage extends Page {
+public class LoginPage extends WebPage
+{
 	@Autowired
 	private Button loginBut;
 	@Autowired

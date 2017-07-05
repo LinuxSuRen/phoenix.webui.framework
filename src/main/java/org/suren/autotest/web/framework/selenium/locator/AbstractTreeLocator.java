@@ -24,8 +24,9 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.suren.autotest.web.framework.core.LocatorAware;
 import org.suren.autotest.web.framework.util.StringUtils;
+
+import com.surenpi.autotest.webui.core.LocatorAware;
 
 /**
  * 通过属性结构来定位元素的抽象父类

@@ -24,10 +24,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.action.RandomSelectAble;
-import org.suren.autotest.web.framework.core.action.SelectAble;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
+
+import com.surenpi.autotest.webui.action.RandomSelectAble;
+import com.surenpi.autotest.webui.action.SelectAble;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 下拉列表实现

@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.suren.autotest.web.framework.settings.SettingUtil;
+import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 为了防止在程序意外关闭或者是用户没有显示地调用关闭浏览器的api导致的资源没有释放
@@ -31,12 +31,12 @@ public class ShutdownHook extends Thread
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownHook.class);
 	
-	private SettingUtil settingUtil;
+	private Phoenix settingUtil;
 	
 	/**
 	 * @param context
 	 */
-	public ShutdownHook(SettingUtil settingUtil)
+	public ShutdownHook(Phoenix settingUtil)
 	{
 		this.settingUtil = settingUtil;
 		LOGGER.info("egnine close hook already regist.");

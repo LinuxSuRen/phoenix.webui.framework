@@ -58,23 +58,7 @@ import org.suren.autotest.web.framework.annotation.AutoApplication;
 import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoPage;
-import org.suren.autotest.web.framework.core.ConfigException;
-import org.suren.autotest.web.framework.core.ConfigNotFoundException;
-import org.suren.autotest.web.framework.core.ElementException;
-import org.suren.autotest.web.framework.core.Locator;
-import org.suren.autotest.web.framework.core.LocatorAware;
-import org.suren.autotest.web.framework.core.LocatorType;
-import org.suren.autotest.web.framework.core.PageContext;
-import org.suren.autotest.web.framework.core.PageContextAware;
-import org.suren.autotest.web.framework.core.ui.AbstractElement;
-import org.suren.autotest.web.framework.core.ui.Text;
-import org.suren.autotest.web.framework.data.ClasspathResource;
-import org.suren.autotest.web.framework.data.DataResource;
-import org.suren.autotest.web.framework.data.DataSource;
-import org.suren.autotest.web.framework.data.DynamicDataSource;
-import org.suren.autotest.web.framework.data.FileResource;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
-import org.suren.autotest.web.framework.page.Page;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -83,8 +67,25 @@ import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
+import com.surenpi.autotest.datasource.ClasspathResource;
+import com.surenpi.autotest.datasource.DataResource;
+import com.surenpi.autotest.datasource.DataSource;
+import com.surenpi.autotest.datasource.DynamicDataSource;
+import com.surenpi.autotest.datasource.FileResource;
 import com.surenpi.autotest.report.RecordReportWriter;
 import com.surenpi.autotest.report.record.ProjectRecord;
+import com.surenpi.autotest.webui.Page;
+import com.surenpi.autotest.webui.core.ConfigException;
+import com.surenpi.autotest.webui.core.ConfigNotFoundException;
+import com.surenpi.autotest.webui.core.ElementException;
+import com.surenpi.autotest.webui.core.Locator;
+import com.surenpi.autotest.webui.core.LocatorAware;
+import com.surenpi.autotest.webui.core.LocatorType;
+import com.surenpi.autotest.webui.core.PageContext;
+import com.surenpi.autotest.webui.core.PageContextAware;
+import com.surenpi.autotest.webui.core.WebUIEngine;
+import com.surenpi.autotest.webui.ui.AbstractElement;
+import com.surenpi.autotest.webui.ui.Text;
 
 import net.sf.json.util.JSONUtils;
 
@@ -93,9 +94,9 @@ import net.sf.json.util.JSONUtils;
  * @author suren
  * @date Jul 17, 2016 9:01:51 AM
  */
-public class SettingUtil implements Closeable
+public class Phoenix implements Closeable, WebUIEngine
 {
-	private static final Logger logger = LoggerFactory.getLogger(SettingUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(Phoenix.class);
 	
 	private Map<String, Page>			pageMap	= new HashMap<String, Page>();
 	private Map<String, DataSourceInfo>	dataSourceMap = new HashMap<String, DataSourceInfo>();
@@ -114,7 +115,7 @@ public class SettingUtil implements Closeable
 	/**
 	 * 初始化bean容器，初始化上下文对象，增加JMX管理模块，增加程序关闭钩子。
 	 */
-	public SettingUtil(Class<?> ... annotatedClasses)
+	public Phoenix(Class<?> ... annotatedClasses)
 	{
 		context = SpringUtils.getApplicationContext();
 		if(context == null || !((AbstractApplicationContext) context).isActive())
@@ -503,7 +504,7 @@ public class SettingUtil implements Closeable
 		getDynamicDataSources();
 		DataSource dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());//context.getBean(dataSourceInfo.getType(), DataSource.class);
 		DataResource clzResource = new ClasspathResource(
-				SettingUtil.class, dataSourceInfo.getResource());
+				Phoenix.class, dataSourceInfo.getResource());
 		try
 		{
 			if(clzResource.getUrl() == null)
@@ -969,6 +970,13 @@ public class SettingUtil implements Closeable
 			}
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getDriver()
+	{
+		return (T) getEngine().getDriver();
+	}
 
 	/**
 	 * @param name
@@ -995,11 +1003,13 @@ public class SettingUtil implements Closeable
 	 * @return 给定类型的Page对象
 	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	public <T> T getPage(Class<T> type)
 	{
 		return (T) getPage(type.getName());
 	}
 
+	@Override
 	public <T> T getModule(Class<T> type)
 	{
 		return context.getBean(type);
@@ -1030,6 +1040,12 @@ public class SettingUtil implements Closeable
 		{
 			this.resource = resource;
 		}
+	}
+	
+	@Override
+	public void open(String url)
+	{
+		getEngine().getDriver().get(url);
 	}
 
 	/**

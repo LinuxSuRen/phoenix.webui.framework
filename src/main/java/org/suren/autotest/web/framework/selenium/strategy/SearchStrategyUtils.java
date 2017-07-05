@@ -24,9 +24,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.ElementSearchStrategy;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.util.StringUtils;
+
+import com.surenpi.autotest.webui.core.ElementSearchStrategy;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 元素查找策略规则

@@ -21,9 +21,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.core.action.KeyBoardAble;
-import org.suren.autotest.web.framework.core.ui.Element;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+
+import com.surenpi.autotest.webui.action.KeyBoardAble;
+import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 键盘动作实现

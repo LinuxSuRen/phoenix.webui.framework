@@ -27,6 +27,8 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
+import com.surenpi.autotest.datasource.DynamicData;
+
 /**
  * 从文本文件中随机获取一个字符串
  * @author suren

@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.data.DataSource;
+
+import com.surenpi.autotest.datasource.DataSource;
 
 /**
  * @author suren

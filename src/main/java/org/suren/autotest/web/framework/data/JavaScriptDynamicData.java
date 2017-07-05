@@ -24,6 +24,8 @@ import javax.script.ScriptException;
 
 import org.springframework.stereotype.Component;
 
+import com.surenpi.autotest.datasource.DynamicData;
+
 /**
  * JavaScript版本的动态数据实现
  * @author suren

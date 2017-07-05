@@ -24,6 +24,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import com.surenpi.autotest.datasource.DynamicData;
+
 /**
  * @author suren
  * @date 2017年1月11日 下午1:32:02

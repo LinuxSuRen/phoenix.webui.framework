@@ -96,5 +96,4 @@ public class WebPage extends Page
 	{
 		return engine.getDriver().getTitle();
 	}
-
 }

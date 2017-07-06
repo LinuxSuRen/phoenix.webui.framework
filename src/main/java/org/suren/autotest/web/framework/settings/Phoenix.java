@@ -50,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -87,6 +88,7 @@ import com.surenpi.autotest.webui.core.WebUIEngine;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Text;
 
+import net.sf.cglib.proxy.Proxy;
 import net.sf.json.util.JSONUtils;
 
 /**
@@ -227,11 +229,11 @@ public class Phoenix implements Closeable, WebUIEngine
 
 			Page pageBean = (Page) bean;
 			Class<?> beanCls = bean.getClass();
-//			if(!beanCls.getSuperclass().equals(Page.class))
-//			{
-//				beanCls = beanCls.getSuperclass();
-//			}
-
+			if(Enhancer.isEnhanced(beanCls))
+			{
+				beanCls = beanCls.getSuperclass();
+			}
+			
 			String clsName = beanCls.getName();
 			pageMap.put(clsName, (Page) bean);
 
@@ -439,6 +441,20 @@ public class Phoenix implements Closeable, WebUIEngine
 		Document document = new SAXReader().read(inputStream);
 
 		parse(document);
+	}
+	
+	public SeleniumEngine init()
+	{
+		SeleniumEngine engine = getEngine();
+		engine.init();
+		
+		return engine;
+	}
+	
+	public void initWithData()
+	{
+		init();
+		initData();
 	}
 
 	/**

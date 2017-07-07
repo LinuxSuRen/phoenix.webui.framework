@@ -25,6 +25,7 @@ public @interface AutoApplication
      * 用例名称
      * @return
      */
+	@AliasFor("value")
     String name() default "";
 
     /**
@@ -32,6 +33,9 @@ public @interface AutoApplication
       * @return
      */
     String description() default "";
+
+	@AliasFor("name")
+    String value() default "";
 
     /**
      * 该信息会在测试报告中体现。支持的文件格式为：.yml、.properties、.txt等。</br>

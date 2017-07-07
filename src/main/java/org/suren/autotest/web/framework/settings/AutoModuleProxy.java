@@ -40,6 +40,9 @@ import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.html5.LocalStorage;
 import org.openqa.selenium.html5.SessionStorage;
 import org.openqa.selenium.html5.WebStorage;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.suren.autotest.web.framework.annotation.AutoCookie;
 import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoItem;
@@ -55,10 +58,6 @@ import com.surenpi.autotest.report.record.NormalRecord;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.ui.Text;
-
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * 模块代理类
@@ -78,11 +77,12 @@ public class AutoModuleProxy implements MethodInterceptor
         this.util = util;
     }
 
-    public Object getProxy()
+	public Object getProxy()
     {
         Class<?> clazz = target.getClass();
         enhancer.setSuperclass(clazz);
         enhancer.setCallback(this);
+        enhancer.setClassLoader(target.getClass().getClassLoader());
         return enhancer.create();
     }
 

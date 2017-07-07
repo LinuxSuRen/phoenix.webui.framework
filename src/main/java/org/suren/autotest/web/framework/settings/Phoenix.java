@@ -88,7 +88,6 @@ import com.surenpi.autotest.webui.core.WebUIEngine;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Text;
 
-import net.sf.cglib.proxy.Proxy;
 import net.sf.json.util.JSONUtils;
 
 /**

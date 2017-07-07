@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
+import org.springframework.cglib.beans.BeanCopier;
 import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 import org.suren.autotest.web.framework.settings.Phoenix;
@@ -55,9 +56,14 @@ public class AutoModuleScope implements Scope
         {
             object = objectFactory.getObject();
             AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters, util);
-            object = proxy.getProxy();
-            putAware(object);
+            Object proxyObject = proxy.getProxy();
+            
+            BeanCopier beanCopier = BeanCopier.create(object.getClass(), proxyObject.getClass(), false);
+            beanCopier.copy(object, proxyObject, null);
+            
+            putAware(proxyObject);
 
+            object = proxyObject;
             objMap.put(name, object);
         }
 

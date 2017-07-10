@@ -58,6 +58,7 @@ import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.annotation.AutoApplication;
 import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
+import org.suren.autotest.web.framework.annotation.AutoLocators;
 import org.suren.autotest.web.framework.annotation.AutoPage;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
@@ -297,6 +298,24 @@ public class Phoenix implements Closeable, WebUIEngine
 		
 		for(Field field : fields)
 		{
+			AbstractElement element = null;
+			
+			field.setAccessible(true);
+			try
+			{
+				Object fieldObj = field.get(bean);
+				if(!(fieldObj instanceof AbstractElement))
+				{
+					continue;
+				}
+				
+				element = (AbstractElement) fieldObj;
+			}
+			catch (IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+			
 			AutoLocator autoLocator = field.getAnnotation(AutoLocator.class);
 			if(autoLocator != null)
 			{
@@ -304,40 +323,58 @@ public class Phoenix implements Closeable, WebUIEngine
 				String value = autoLocator.value();
 				long timeout = autoLocator.timeout();
 
-				field.setAccessible(true);
-				try {
-					Object fieldObj = field.get(bean);
-					if(!(fieldObj instanceof AbstractElement))
-					{
-						throw new ElementException(fieldObj.getClass());
-					}
+				element.setParamPrefix("param");
+				element.setTimeOut(timeout);
+				switch (locatorType)
+				{
+					case BY_ID:
+						element.setId(value);
+						break;
+					case BY_NAME:
+						element.setName(value);
+						break;
+					case BY_CSS:
+						element.setCSS(value);
+						break;
+					case BY_LINK_TEXT:
+						element.setLinkText(value);
+						break;
+					case BY_PARTIAL_LINK_TEXT:
+						element.setPartialLinkText(value);
+						break;
+					case BY_XPATH:
+						element.setXPath(value);
+						break;
+				}
+			}
 
-					AbstractElement element = (AbstractElement) fieldObj;
-					element.setParamPrefix("param");
-					element.setTimeOut(timeout);
-					switch (locatorType)
+			AutoLocators autoLocators = field.getAnnotation(AutoLocators.class);
+			if(autoLocators != null)
+			{
+				element.setStrategy(autoLocators.strategy().getName());
+				for(AutoLocator locator : autoLocators.locators())
+				{
+					Map<String, Locator> beans = context.getBeansOfType(Locator.class);
+					Collection<Locator> locatorList = beans.values();
+					for(Locator locatorItem : locatorList)
 					{
-						case BY_ID:
-							element.setId(value);
+						if(!locator.locator().getName().equals(locatorItem.getType()))
+						{
+							continue;
+						}
+						
+						if(locatorItem instanceof LocatorAware)
+						{
+							LocatorAware locatorAware = (LocatorAware) locatorItem;
+							locatorAware.setValue(locator.value());
+							locatorAware.setTimeout(locator.timeout());
+							locatorAware.setExtend("");
+							
+							element.getLocatorList().add(locatorItem);
+							
 							break;
-						case BY_NAME:
-							element.setName(value);
-							break;
-						case BY_CSS:
-							element.setCSS(value);
-							break;
-						case BY_LINK_TEXT:
-							element.setLinkText(value);
-							break;
-						case BY_PARTIAL_LINK_TEXT:
-							element.setPartialLinkText(value);
-							break;
-						case BY_XPATH:
-							element.setXPath(value);
-							break;
+						}
 					}
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
 				}
 			}
 		}

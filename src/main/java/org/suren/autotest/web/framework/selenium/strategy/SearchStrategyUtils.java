@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.StringUtils;
 
 import com.surenpi.autotest.webui.core.ElementSearchStrategy;
+import com.surenpi.autotest.webui.core.StrategyType;
 import com.surenpi.autotest.webui.ui.Element;
 
 /**
@@ -42,9 +43,9 @@ public class SearchStrategyUtils implements ApplicationContextAware
 	
 	public SearchStrategyUtils()
 	{
-		strategyMap.put("priority", "prioritySearchStrategy");
-		strategyMap.put("cyle", "cyleSearchStrategy");
-		strategyMap.put("zone", "zoneSearchStrategy");
+		strategyMap.put(StrategyType.PRIORITY.getName(), "prioritySearchStrategy");
+		strategyMap.put(StrategyType.CYLE.getName(), "cyleSearchStrategy");
+		strategyMap.put(StrategyType.ZONE.getName(), "zoneSearchStrategy");
 	}
 	
 	@SuppressWarnings("unchecked")

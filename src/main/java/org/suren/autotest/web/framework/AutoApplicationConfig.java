@@ -33,7 +33,7 @@ import org.suren.autotest.web.framework.mail.MailConfig;
 	"org.suren.autotest.web.framework",
 	"com.surenpi.autotest.datasource"
 })
-@ImportResource({"autoTestContext.xml", "beanScope.xml"})
+@ImportResource({"classpath:autoTestContext.xml", "classpath:beanScope.xml"})
 @Import({
 	Image4SearchLog.class,
 	MailConfig.class

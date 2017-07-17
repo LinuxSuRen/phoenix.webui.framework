@@ -1,9 +1,12 @@
+pipeline {
+  agent any
+  triggers {
+    cron('* 1 * * *')
+  }
+}
+
 node {
   def mvnHome
-  
-  triggers {
-      cron('* 1 * * *')
-  }
   
   stage('Preparation') {
     git 'https://github.com/LinuxSuRen/autotest.report.jira.git'

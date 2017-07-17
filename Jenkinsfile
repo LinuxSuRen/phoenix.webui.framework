@@ -1,5 +1,10 @@
 node {
   def mvnHome
+  
+  triggers {
+      cron('* 1 * * *')
+  }
+  
   stage('Preparation') {
     git 'https://github.com/LinuxSuRen/autotest.report.jira.git'
     mvnHome = tool 'M3'

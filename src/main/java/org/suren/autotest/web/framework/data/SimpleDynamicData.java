@@ -40,6 +40,8 @@ import com.surenpi.autotest.datasource.DynamicDateFormat;
 @Component
 public class SimpleDynamicData implements DynamicData, DynamicDateFormat
 {
+	private Map<String, Object> globalData;
+	
 	private Set<String> formatSet = new HashSet<String>();
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -97,6 +99,11 @@ public class SimpleDynamicData implements DynamicData, DynamicDateFormat
 			value = parseRandomParam(value);
 		}
 		
+		for(String key : globalData.keySet())
+		{
+			value = value.replace("${" + key + "}", globalData.get(key).toString());
+		}
+		
 		return value;
 	}
 	
@@ -130,6 +137,7 @@ public class SimpleDynamicData implements DynamicData, DynamicDateFormat
 	@Override
 	public void setData(Map<String, Object> data)
 	{
+		this.globalData = data;
 	}
 
 	@Override

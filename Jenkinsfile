@@ -28,4 +28,12 @@ node {
       bat(/"${mvnHome}\bin\mvn" clean package/)
     }
   }
+  
+  stage('Deploy') {
+    if(isUnix()){
+      sh "'${mvnHome}/bin/mvn' deploy -DsignSkip=false -DdocSkip=false"
+    }else{
+      bat(/"${mvnHome}\bin\mvn" deploy -DsignSkip=false -DdocSkip=false/)
+    }
+  }
 }

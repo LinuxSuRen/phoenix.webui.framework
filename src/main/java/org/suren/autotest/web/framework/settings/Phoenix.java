@@ -79,7 +79,6 @@ import com.surenpi.autotest.report.record.ProjectRecord;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.ConfigException;
 import com.surenpi.autotest.webui.core.ConfigNotFoundException;
-import com.surenpi.autotest.webui.core.ElementException;
 import com.surenpi.autotest.webui.core.Locator;
 import com.surenpi.autotest.webui.core.LocatorAware;
 import com.surenpi.autotest.webui.core.LocatorType;

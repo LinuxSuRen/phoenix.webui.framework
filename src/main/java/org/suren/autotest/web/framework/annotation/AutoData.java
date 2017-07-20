@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * 单个元素上的数据
  * @author suren
- * @date 2017年6月8日 下午12:40:15
+ * @since 2017年6月8日 下午12:40:15
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

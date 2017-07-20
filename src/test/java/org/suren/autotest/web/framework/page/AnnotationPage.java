@@ -32,7 +32,7 @@ import com.surenpi.autotest.webui.ui.Text;
 /**
  * 使用注解的示例Page类
  * @author suren
- * @date 2017年6月7日 下午7:10:40
+ * @since 2017年6月7日 下午7:10:40
  */
 @AutoPage(url = "http://maimai.cn/")
 @AutoDataSource(name = "data", resource = "dataSource/xml/user_data_anno.xml")

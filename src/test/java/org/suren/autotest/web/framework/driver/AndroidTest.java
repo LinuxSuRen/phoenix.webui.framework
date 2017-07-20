@@ -28,7 +28,7 @@
 //
 ///**
 // * @author suren
-// * @date 2017年5月20日 下午5:42:00
+// * @since 2017年5月20日 下午5:42:00
 // */
 //public class AndroidTest
 //{

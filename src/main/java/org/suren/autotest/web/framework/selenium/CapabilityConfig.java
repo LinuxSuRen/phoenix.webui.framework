@@ -41,7 +41,7 @@ import org.suren.autotest.web.framework.util.BrowserUtil;
 /**
  * 浏览器配置
  * @author suren
- * @date 2017年5月16日 下午9:18:03
+ * @since 2017年5月16日 下午9:18:03
  */
 public class CapabilityConfig
 {

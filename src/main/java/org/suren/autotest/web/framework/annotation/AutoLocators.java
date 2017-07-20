@@ -27,7 +27,7 @@ import com.surenpi.autotest.webui.core.StrategyType;
 
 /**
  * @author suren
- * @date 2017年7月10日 上午9:59:03
+ * @since 2017年7月10日 上午9:59:03
  */
 @Documented
 @Retention(RUNTIME)

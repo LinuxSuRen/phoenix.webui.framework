@@ -41,7 +41,7 @@ import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Element;
 
 /**
- * 查找元素策略，找不到对应的元素会抛出异常</br>
+ * 查找元素策略，找不到对应的元素会抛出异常
  * <ul>
  * <li>通过id查找</li>
  * <li>通过css样式查找</li>
@@ -54,7 +54,7 @@ import com.surenpi.autotest.webui.ui.Element;
  * @see CyleSearchStrategy
  * @see ZoneSearchStrategy
  * @author suren
- * @date Jul 16, 2016 6:45:44 PM
+ * @since Jul 16, 2016 6:45:44 PM
  */
 @Component("prioritySearchStrategy")
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

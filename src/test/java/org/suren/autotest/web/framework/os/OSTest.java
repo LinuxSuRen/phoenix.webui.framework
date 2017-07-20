@@ -17,7 +17,7 @@ import org.suren.autotest.web.framework.util.OSUtil;
 
 /**
  * @author suren
- * @date 2016年12月13日 下午9:49:49
+ * @since 2016年12月13日 下午9:49:49
  */
 public class OSTest
 {

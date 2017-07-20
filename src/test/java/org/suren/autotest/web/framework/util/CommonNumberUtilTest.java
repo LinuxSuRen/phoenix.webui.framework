@@ -21,7 +21,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2017年1月7日 下午6:12:45
+ * @since 2017年1月7日 下午6:12:45
  */
 public class CommonNumberUtilTest
 {

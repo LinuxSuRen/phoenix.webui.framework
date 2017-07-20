@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 /**
  * 元素批量操作的工具类单元测试
  * @author suren
- * @date 2017年5月14日 下午9:43:38
+ * @since 2017年5月14日 下午9:43:38
  */
 public class ElementUtilTest
 {

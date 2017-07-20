@@ -22,7 +22,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 
 /**
  * @author suren
- * @date 2017年1月11日 下午8:40:18
+ * @since 2017年1月11日 下午8:40:18
  */
 @Component
 public class SequenceDynamicData extends CallbackDynamicData implements DynamicData

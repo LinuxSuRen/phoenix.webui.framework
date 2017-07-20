@@ -23,7 +23,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 /**
  * 这里只是测试不会启动真正浏览器的驱动
  * @author suren
- * @date 2017年4月20日 下午10:28:35
+ * @since 2017年4月20日 下午10:28:35
  */
 public class DriverTest
 {

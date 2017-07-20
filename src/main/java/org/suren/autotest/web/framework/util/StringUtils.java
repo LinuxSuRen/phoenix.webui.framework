@@ -21,16 +21,16 @@ import java.util.Map;
 
 /**
  * @author suren
- * @date 2016年11月26日 上午10:22:04
+ * @since 2016年11月26日 上午10:22:04
  */
 public class StringUtils
 {
 	/**
 	 * 把参数型的值进行转换
-	 * @param data
-	 * @param paramPrefix
-	 * @param value
-	 * @return
+	 * @param data data
+	 * @param paramPrefix paramPrefix
+	 * @param value value
+	 * @return value
 	 */
 	public static String paramTranslate(Map<String, Object> data,
 			String paramPrefix, String value)
@@ -132,7 +132,7 @@ public class StringUtils
 	}
 
     /**
-     * @param cs
+     * @param cs cs
      * @return 字符非空返回true
      */
     public static boolean isNotBlank(CharSequence cs)
@@ -141,7 +141,7 @@ public class StringUtils
     }
     
     /**
-     * @param cs
+     * @param cs cs
      * @return 空字符返回true
      */
     public static boolean isBlank(CharSequence cs)
@@ -164,9 +164,9 @@ public class StringUtils
     }
 
 	/**
-	 * @param hostType
-	 * @param hostValue
-	 * @return
+	 * @param hostType hostType
+	 * @param hostValue hostValue
+	 * @return hostValue
 	 */
 	public static boolean isAnyBlank(String hostType, String hostValue)
 	{
@@ -175,8 +175,8 @@ public class StringUtils
 
 	/**
 	 * 把字符串转化为首字母小写
-	 * @param str
-	 * @return
+	 * @param str str
+	 * @return str
 	 */
     public static String uncapitalize(String str)
     {
@@ -212,9 +212,9 @@ public class StringUtils
 
 	/**
 	 * @see #defaultIfBlank(String, String)
-	 * @param text
+	 * @param text text
 	 * @param numText 默认的数字文本
-     * @return
+     * @return text
      */
 	public static String defaultIfBlank(String text, int numText)
 	{
@@ -223,9 +223,9 @@ public class StringUtils
 
 	/**
 	 * @see #defaultIfBlank(String, String)
-	 * @param text
+	 * @param text text
 	 * @param numText 默认的数字文本
-	 * @return
+	 * @return text
 	 */
 	public static String defaultIfBlank(String text, long numText)
 	{

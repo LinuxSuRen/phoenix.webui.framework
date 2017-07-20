@@ -25,7 +25,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * @author suren
- * @date 2017年7月4日 下午7:51:57
+ * @since 2017年7月4日 下午7:51:57
  */
 public class WebPage extends Page
 {

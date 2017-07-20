@@ -26,7 +26,7 @@ import com.surenpi.autotest.webui.core.Keyboard;
 
 /**
  * @author suren
- * @date 2016年11月25日 上午8:13:40
+ * @since 2016年11月25日 上午8:13:40
  */
 @Component
 public class AwtKeyboard implements Keyboard

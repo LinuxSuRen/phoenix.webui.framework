@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * 键值对注解
  * @author suren
- * @date 2017年6月26日 上午10:35:20
+ * @since 2017年6月26日 上午10:35:20
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

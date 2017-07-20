@@ -31,7 +31,7 @@ import groovy.lang.GroovyShell;
 /**
  * Groovy脚本版本的动态数据实现
  * @author suren
- * @date 2017年1月11日 下午12:47:43
+ * @since 2017年1月11日 下午12:47:43
  */
 @Component
 public class GroovyDynamicData implements DynamicData

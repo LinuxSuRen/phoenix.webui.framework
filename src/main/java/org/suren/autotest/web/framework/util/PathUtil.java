@@ -17,7 +17,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * 用于获取全局的文件根目录的工具类
  * @author suren
- * @date 2016年12月27日 上午8:12:18
+ * @since 2016年12月27日 上午8:12:18
  */
 public abstract class PathUtil
 {
@@ -51,8 +51,8 @@ public abstract class PathUtil
 
     /**
      * @see #proStore(Properties, String, String)
-     * @param pro
-     * @param fileName
+     * @param pro pro
+     * @param fileName fileName
      */
     public static void proStore(Properties pro, String fileName)
     {
@@ -85,7 +85,7 @@ public abstract class PathUtil
 	/**
      * @see #proStore(Properties, String, String)
      * @param pro 不能为空
-	 * @param fileName
+	 * @param fileName fileName
      * @return 读取成功返回true，否则false
      */
 	public static boolean proLoad(Properties pro, String fileName)
@@ -116,9 +116,9 @@ public abstract class PathUtil
 	
 	/**
 	 * 如果存在，则跳过，不复制
-	 * @param input
-	 * @param fileName
-	 * @return
+	 * @param input input
+	 * @param fileName fileName
+	 * @return fileName
 	 */
 	public static File copyFileToRoot(InputStream input, String fileName)
 	{
@@ -135,8 +135,8 @@ public abstract class PathUtil
 	/**
 	 * 把目标文件拷贝到框架的缓存根目录中
 	 * @param input 需要调用者自行调用该输入流的close方法
-	 * @param targetFile
-	 * @return
+	 * @param targetFile targetFile
+	 * @return targetFile
 	 */
 	public static boolean copyFileToRoot(InputStream input, File targetFile)
 	{

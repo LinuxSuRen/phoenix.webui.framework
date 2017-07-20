@@ -26,7 +26,7 @@ import org.xml.sax.SAXParseException;
 /**
  * 把和本框架没关系的异常信息移出
  * @author suren
- * @date 2016年9月14日 下午9:57:09
+ * @since 2016年9月14日 下午9:57:09
  */
 public class AutoErrorHandler implements ErrorHandler
 {

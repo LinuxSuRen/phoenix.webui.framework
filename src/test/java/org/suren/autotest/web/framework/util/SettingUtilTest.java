@@ -36,7 +36,7 @@ import com.surenpi.autotest.webui.ui.Text;
 /**
  * 关于框架加载元素定位和数据部分的单元测试
  * @author suren
- * @date 2017年5月13日 下午12:06:10
+ * @since 2017年5月13日 下午12:06:10
  */
 public class SettingUtilTest
 {

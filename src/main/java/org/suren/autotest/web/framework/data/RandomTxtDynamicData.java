@@ -32,7 +32,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 /**
  * 从文本文件中随机获取一个字符串
  * @author suren
- * @date 2017年4月4日 下午12:17:36
+ * @since 2017年4月4日 下午12:17:36
  */
 @Component
 public class RandomTxtDynamicData implements DynamicData

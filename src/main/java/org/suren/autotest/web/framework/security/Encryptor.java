@@ -30,7 +30,7 @@ import javax.crypto.SecretKey;
 /**
  * 加密类
  * @author suren
- * @date 2016年12月11日 下午9:02:54
+ * @since 2016年12月11日 下午9:02:54
  */
 public class Encryptor
 {
@@ -98,11 +98,11 @@ public class Encryptor
     /**
      * decrypt string
      * @see #encryptStr(String)
-     * @param encryptStr
-     * @return
-     * @throws InvalidKeyException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @param encryptStr 1
+     * @return 1
+     * @throws InvalidKeyException 1
+     * @throws IllegalBlockSizeException 1
+     * @throws BadPaddingException 1
      * @throws NullPointerException if encryptStr is null
      */
     public String decryptStr(String encryptStr) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException

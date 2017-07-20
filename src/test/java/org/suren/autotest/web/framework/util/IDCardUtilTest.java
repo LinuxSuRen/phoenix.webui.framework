@@ -8,7 +8,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2017年1月4日 上午10:25:36
+ * @since 2017年1月4日 上午10:25:36
  */
 public class IDCardUtilTest
 {

@@ -35,7 +35,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 /**
  * 测试使用注解配置的方式
  * @author suren
- * @date 2017年6月7日 下午7:10:12
+ * @since 2017年6月7日 下午7:10:12
  */
 @AutoApplication(concernMailList = "zxjlwt@126.com",
 		name = "注解测试用例",

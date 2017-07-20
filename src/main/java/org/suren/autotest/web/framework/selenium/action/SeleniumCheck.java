@@ -40,7 +40,7 @@ import com.surenpi.autotest.webui.ui.Element;
 /**
  * 复选框选择
  * @author suren
- * @date Jul 27, 2016 1:00:30 PM
+ * @since Jul 27, 2016 1:00:30 PM
  */
 @Component
 public class SeleniumCheck implements CheckAble, ApplicationContextAware

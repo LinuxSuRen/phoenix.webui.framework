@@ -30,9 +30,9 @@ import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.webdriver.downloader.PathUtil;
 
 /**
- * 使用autoid来实现文件上传
+ * 使用autoid来实现文件上传。
  * @author suren
- * @date 2016年7月19日 上午8:13:28
+ * @since 2016年7月19日 上午8:13:28
  */
 public class AutoItCmd
 {
@@ -83,17 +83,17 @@ public class AutoItCmd
 	
 	/**
 	 * @see #execFileChoose(String, File)
-	 * @param file
+	 * @param file 文件
 	 */
-	public void execFileChoose(File file)
+    public void execFileChoose(File file)
 	{
 		execFileChoose(null, file);
 	}
 	
 	/**
 	 * 执行文件选择
-	 * @param title
-	 * @param file
+	 * @param title 标题
+	 * @param file 文件
 	 */
 	public void execFileChoose(String title, File file)
 	{
@@ -112,8 +112,8 @@ public class AutoItCmd
 	
 	/**
 	 * 执行文件选择
-	 * @param title
-	 * @param filePath
+	 * @param title 标题
+	 * @param filePath 文件路径
 	 */
 	public void execFileChoose(String title, String filePath)
 	{

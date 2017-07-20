@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+          "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+          "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+	<property name="severity" value="error" />
+	
+	<module name="FileLength">
+		<property name="max" value="400" />
+	</module>
+	
+	<module name="TreeWalker">
+		<module name="PackageName">
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$" />
+		</module>
+		<module name="TypeName">    
+	        <property name="format" value="(^[A-Z][a-zA-Z0-9]{0,30}$)"/>    
+	    </module>  
+	      
+	    <module name="MethodName">            
+	      <property name="format" value="(^[a-z][a-zA-Z0-9]{0,19}$)"/>           
+	    </module>   
+	      
+	    <module name="MemberName">    
+	        <property name="format" value="(^[a-z][a-z0-9][a-zA-Z0-9]{0,19}$)"/>           
+	    </module>  
+	      
+	    <module name="ParameterName">  
+	        <property name="format" value="(^[a-z][a-zA-Z0-9_]{0,19}$)"/>           
+	    </module>
+		
+		<module name="JavadocType">    
+			<property name="authorFormat" value="\S"/>    
+			<property name="scope" value="public"/>          
+			<property name="tokens" value="CLASS_DEF,INTERFACE_DEF"/>    
+		</module>
+    
+	    <module name="JavadocMethod">    
+	        <property name="scope" value="public"/>  
+            <property name="tokens" value="METHOD_DEF"/>    
+	        <property name="allowMissingParamTags" value="false"/>    
+	        <property name="allowMissingThrowsTags" value="false"/>    
+	        <property name="allowMissingReturnTag" value="false"/> 
+	        <property name="allowUndeclaredRTE" value="true"/>    
+	        <property name="allowThrowsTagsForSubclasses" value="true"/>    
+	        <property name="allowMissingPropertyJavadoc" value="true"/>  
+	    </module> 
+	    
+		<module name="UnusedImports" />
+		<module name="LineLength">
+			<property name="max" value="200" />
+		</module>
+		<module name="ParameterNumber">
+			<property name="max" value="5" />
+			<property name="tokens" value="METHOD_DEF" />
+		</module>
+
+		<module name="NeedBraces" />
+		<module name="StringLiteralEquality" />
+		<module name="NestedIfDepth">
+			<property name="max" value="3" />
+		</module>
+		<module name="NestedTryDepth">
+			<property name="max" value="2" />
+		</module>
+		<module name="PackageDeclaration" />
+		<module name="ReturnCount">
+			<property name="max" value="3" />
+			<property name="format" value="^$" />
+		</module>
+        
+        <module name="LeftCurly">
+            <property name="option" value="nl"/>
+            <property name="tokens" value="CLASS_DEF,INTERFACE_DEF,ANNOTATION_DEF"/> 
+        </module>
+		
+		<module name="RightCurly">
+            <property name="option" value="alone"/>
+        </module>
+	</module>
+</module>

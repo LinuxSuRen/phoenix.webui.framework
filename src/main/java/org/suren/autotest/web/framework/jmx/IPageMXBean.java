@@ -23,7 +23,7 @@ import com.surenpi.autotest.webui.Page;
 /**
  * Page信息管理
  * @author suren
- * @date 2016年7月21日 下午6:48:53
+ * @since 2016年7月21日 下午6:48:53
  */
 public interface IPageMXBean
 {

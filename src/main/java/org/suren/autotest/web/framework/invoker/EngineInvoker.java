@@ -35,13 +35,13 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 /**
  * 引擎相关的操作
  * @author suren
- * @date 2016年12月23日 下午10:46:18
+ * @since 2016年12月23日 下午10:46:18
  */
 public class EngineInvoker
 {
 	/**
 	 * 关闭当前窗口
-	 * @param util
+	 * @param util 引擎
 	 */
 	public static void closeWin(Phoenix util)
 	{
@@ -50,8 +50,8 @@ public class EngineInvoker
 	
 	/**
 	 * 关闭url以指定字符串开头的window
-	 * @param util
-	 * @param startWith
+	 * @param util 引擎
+	 * @param params 参数
 	 */
 	public static void closeWinByUrlStartWith(Phoenix util, String[] params)
 	{
@@ -79,8 +79,8 @@ public class EngineInvoker
 	
 	/**
 	 * 根据index来切换iframe
-	 * @param util
-	 * @param params
+	 * @param util 引擎
+	 * @param params 参数
 	 */
 	public static void frameSwitchByIndex(Phoenix util, String[] params)
 	{
@@ -91,8 +91,8 @@ public class EngineInvoker
 	
 	/**
 	 * 根据name或者id来切换iframe
-	 * @param util
-	 * @param params
+	 * @param util 引擎
+	 * @param params 参数
 	 */
 	public static void frameSwitchByNameOrId(Phoenix util, String[] params)
 	{
@@ -102,7 +102,7 @@ public class EngineInvoker
 	
 	/**
 	 * window窗口切换
-	 * @param util
+	 * @param util 引擎
 	 */
 	public static void windowSwitch(Phoenix util)
 	{
@@ -120,8 +120,8 @@ public class EngineInvoker
 	
 	/**
 	 * 截屏
-	 * @param util
-	 * @param params
+	 * @param util 引擎
+	 * @param params 参数
 	 */
 	public static void takeShot(Phoenix util, String[] params)
 	{

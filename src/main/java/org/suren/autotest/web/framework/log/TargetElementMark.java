@@ -31,7 +31,7 @@ import org.openqa.selenium.WebElement;
 
 /**
  * @author suren
- * @date 2017年6月29日 下午3:53:51
+ * @since 2017年6月29日 下午3:53:51
  */
 public class TargetElementMark implements ElementMark
 {

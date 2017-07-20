@@ -23,7 +23,7 @@ import org.openqa.selenium.WebElement;
 
 /**
  * @author suren
- * @date 2017年6月29日 下午3:55:04
+ * @since 2017年6月29日 下午3:55:04
  */
 public class BlankElementMark implements ElementMark
 {

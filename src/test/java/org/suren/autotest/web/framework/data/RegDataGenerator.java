@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2016年9月24日 下午12:01:47
+ * @since 2016年9月24日 下午12:01:47
  */
 public class RegDataGenerator
 {

@@ -26,7 +26,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * @author suren
- * @date 2017年6月30日 下午2:51:25
+ * @since 2017年6月30日 下午2:51:25
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

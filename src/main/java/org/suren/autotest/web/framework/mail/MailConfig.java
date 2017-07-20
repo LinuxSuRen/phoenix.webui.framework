@@ -29,7 +29,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * @author suren
- * @date 2017年6月29日 下午4:26:20
+ * @since 2017年6月29日 下午4:26:20
  */
 @PropertySource("classpath:application.properties")
 @Conditional(MailCondition.class)

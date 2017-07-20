@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 用于在Page子类的属性上添加
  * @author suren
- * @date 2017年6月7日 下午6:57:34
+ * @since 2017年6月7日 下午6:57:34
  */
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

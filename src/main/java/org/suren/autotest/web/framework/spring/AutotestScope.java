@@ -24,7 +24,7 @@ import org.springframework.beans.factory.config.Scope;
 
 /**
  * @author suren
- * @date 2017年1月24日 上午9:26:26
+ * @since 2017年1月24日 上午9:26:26
  */
 public class AutotestScope implements Scope
 {

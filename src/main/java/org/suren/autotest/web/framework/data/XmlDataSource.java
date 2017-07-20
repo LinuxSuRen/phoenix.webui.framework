@@ -62,7 +62,7 @@ import com.surenpi.autotest.webui.ui.Text;
 /**
  * xml格式的数据源实现
  * @author suren
- * @date Jul 17, 2016 8:56:51 AM
+ * @since Jul 17, 2016 8:56:51 AM
  */
 @Component(DataSourceConstants.DS_TYPE_XML)
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

@@ -18,7 +18,7 @@ package org.suren.autotest.web.framework.util;
 
 /**
  * @author suren
- * @date 2016年8月4日 下午12:30:02
+ * @since 2016年8月4日 下午12:30:02
  */
 public class NeuQuant
 {

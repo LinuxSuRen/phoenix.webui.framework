@@ -31,7 +31,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 /**
  * iframe下标定位器
  * @author suren
- * @date 2016年7月27日 下午4:43:27
+ * @since 2016年7月27日 下午4:43:27
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

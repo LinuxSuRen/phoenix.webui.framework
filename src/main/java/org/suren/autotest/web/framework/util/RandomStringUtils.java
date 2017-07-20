@@ -18,7 +18,7 @@ package org.suren.autotest.web.framework.util;
 
 /**
  * @author suren
- * @date 2017年1月23日 下午3:04:44
+ * @since 2017年1月23日 下午3:04:44
  */
 
 import java.util.Random;

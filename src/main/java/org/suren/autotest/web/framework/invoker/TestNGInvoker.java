@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 /**
  * 调用外部的TestNG脚本
  * @author suren
- * @date 2016年12月12日 下午12:30:01
+ * @since 2016年12月12日 下午12:30:01
  */
 public class TestNGInvoker
 {

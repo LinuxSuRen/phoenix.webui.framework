@@ -35,7 +35,7 @@ import com.surenpi.autotest.datasource.DynamicDateFormat;
 /**
  * 简单的动态数据实现
  * @author suren
- * @date 2017年1月4日 下午12:33:01
+ * @since 2017年1月4日 下午12:33:01
  */
 @Component
 public class SimpleDynamicData implements DynamicData, DynamicDateFormat

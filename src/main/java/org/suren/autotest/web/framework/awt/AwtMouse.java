@@ -27,7 +27,7 @@ import com.surenpi.autotest.webui.core.Mouse;
 /**
  * 使用JRE提供的AWT库来实现鼠标动作
  * @author suren
- * @date 2016年11月25日 上午8:10:36
+ * @since 2016年11月25日 上午8:10:36
  */
 @Component
 public class AwtMouse implements Mouse

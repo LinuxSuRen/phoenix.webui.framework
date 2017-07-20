@@ -27,7 +27,7 @@ import com.surenpi.autotest.webui.core.PageContextAware;
 
 /**
  * @author suren
- * @date 2016年7月21日 下午6:50:35
+ * @since 2016年7月21日 下午6:50:35
  */
 @Component
 public class PageManager implements IPageMXBean, PageContextAware

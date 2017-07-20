@@ -31,7 +31,7 @@ import com.surenpi.autotest.webui.core.LocatorAware;
 /**
  * 通过属性结构来定位元素的抽象父类
  * @author suren
- * @date Jul 30, 2016 7:47:18 PM
+ * @since Jul 30, 2016 7:47:18 PM
  */
 public abstract class AbstractTreeLocator extends AbstractLocator<WebElement>
 	implements ApplicationContextAware

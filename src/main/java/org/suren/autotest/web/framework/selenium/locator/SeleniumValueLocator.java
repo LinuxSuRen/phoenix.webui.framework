@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 /**
  * 元素值定位器
  * @author suren
- * @date 2016年7月27日 下午4:23:21
+ * @since 2016年7月27日 下午4:23:21
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

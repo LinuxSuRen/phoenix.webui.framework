@@ -21,13 +21,13 @@ import org.openqa.selenium.WebElement;
 /**
  * 设置父元素的接口
  * @author suren
- * @date 2016年12月30日 下午7:48:26
+ * @since 2016年12月30日 下午7:48:26
  */
 public interface ParentElement
 {
 	/**
 	 * 设置父元素
-	 * @param parentWebElement
+	 * @param parentWebElement parentWebElement
 	 */
 	void setParent(WebElement parentWebElement);
 }

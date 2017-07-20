@@ -8,7 +8,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2017年1月7日 下午6:59:15
+ * @since 2017年1月7日 下午6:59:15
  */
 public class StringUtilTest
 {

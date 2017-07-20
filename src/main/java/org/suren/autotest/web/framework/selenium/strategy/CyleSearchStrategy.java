@@ -38,7 +38,7 @@ import com.surenpi.autotest.webui.ui.Element;
  * @see PrioritySearchStrategy
  * @see ZoneSearchStrategy
  * @author suren
- * @date Jul 16, 2016 7:20:54 PM
+ * @since Jul 16, 2016 7:20:54 PM
  */
 @Component("cyleSearchStrategy")
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

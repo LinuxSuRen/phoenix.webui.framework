@@ -19,7 +19,7 @@ package org.suren.autotest.web.framework.util;
 /**
  * 有关操作系统的一些工具方法
  * @author suren
- * @date 2016年12月13日 下午9:55:37
+ * @since 2016年12月13日 下午9:55:37
  */
 public class OSUtil
 {

@@ -24,7 +24,7 @@ import com.surenpi.autotest.webui.ui.Button;
 /**
  * 反射工具类
  * @author suren
- * @date 2016年8月24日 下午3:05:12
+ * @since 2016年8月24日 下午3:05:12
  */
 public class BeanUtil
 {
@@ -32,9 +32,9 @@ public class BeanUtil
 	
 	/**
 	 * 根据属性名称设置值
-	 * @param instance
-	 * @param name
-	 * @param value
+	 * @param instance instance
+	 * @param name name
+	 * @param value value
 	 */
 	public static void set(Object instance, String name, Object value)
 	{

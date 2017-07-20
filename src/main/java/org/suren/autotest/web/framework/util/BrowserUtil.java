@@ -24,7 +24,7 @@ import java.util.Properties;
 /**
  * 读取浏览器配置的工具类
  * @author suren
- * @date 2016年9月13日 下午8:16:08
+ * @since 2016年9月13日 下午8:16:08
  */
 public class BrowserUtil
 {

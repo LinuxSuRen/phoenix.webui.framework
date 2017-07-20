@@ -26,7 +26,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 /**
  * 密文版本的动态数据实现
  * @author suren
- * @date 2017年1月11日 下午12:50:46
+ * @since 2017年1月11日 下午12:50:46
  */
 @Component
 public class EncryptDynamicData implements DynamicData

@@ -33,7 +33,7 @@ import com.surenpi.autotest.webui.ui.Element;
 /**
  * 元素查找策略规则
  * @author suren
- * @date Jul 17, 2016 8:04:51 AM
+ * @since Jul 17, 2016 8:04:51 AM
  */
 @Component
 public class SearchStrategyUtils implements ApplicationContextAware

@@ -30,13 +30,13 @@ import com.surenpi.autotest.webui.ui.Text;
 /**
  * 元素操作工具类，可以批量地操作元素
  * @author suren
- * @date 2017年5月14日 下午9:10:29
+ * @since 2017年5月14日 下午9:10:29
  */
 public class ElementUtil
 {
 	/**
 	 * 批量点击按钮
-	 * @param buttons
+	 * @param buttons buttons
 	 */
 	public static void click(Button ...buttons)
 	{
@@ -53,7 +53,7 @@ public class ElementUtil
 	
 	/**
 	 * 批量填充文本
-	 * @param texts
+	 * @param texts texts
 	 */
 	public static void fillValue(Text ...texts)
 	{
@@ -69,7 +69,7 @@ public class ElementUtil
 	
 	/**
 	 * 批量对页面中的按钮进行点击操作
-	 * @param pages
+	 * @param pages pages
 	 */
 	public static void click(Page ...pages)
 	{
@@ -108,7 +108,7 @@ public class ElementUtil
 	
 	/**
 	 * 批量对页面中的文本进行填入值操作
-	 * @param pages
+	 * @param pages pages
 	 */
 	public static void fillValue(Page ...pages)
 	{

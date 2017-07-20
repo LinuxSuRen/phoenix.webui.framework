@@ -28,7 +28,7 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
 /**
  * 需要真正浏览器的驱动单元测试
  * @author suren
- * @date 2017年5月13日 下午10:04:17
+ * @since 2017年5月13日 下午10:04:17
  */
 @Ignore(value = IgnoreReasonConstants.REAL_BROWSER)
 public class RealDriverTest

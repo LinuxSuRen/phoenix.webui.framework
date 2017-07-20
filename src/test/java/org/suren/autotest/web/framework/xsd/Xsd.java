@@ -34,7 +34,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2017年1月2日 下午8:25:39
+ * @since 2017年1月2日 下午8:25:39
  */
 public class Xsd
 {

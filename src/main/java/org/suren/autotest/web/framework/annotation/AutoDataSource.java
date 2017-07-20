@@ -30,7 +30,7 @@ import com.surenpi.autotest.datasource.DataSourceConstants;
 /**
  * 数据源注解类
  * @author suren
- * @date 2017年6月10日
+ * @since 2017年6月10日
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

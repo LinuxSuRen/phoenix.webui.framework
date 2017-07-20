@@ -26,7 +26,7 @@ import com.surenpi.autotest.datasource.DataSource;
 
 /**
  * @author suren
- * @date 2016年7月21日 下午7:18:42
+ * @since 2016年7月21日 下午7:18:42
  */
 @Component
 public class DataSourceInfoManager implements IDataSourceInfoMXBean

@@ -53,7 +53,7 @@ import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
 /**
  * 添加搜索时的图片记录
  * @author suren
- * @date 2016年8月4日 上午8:13:56
+ * @since 2016年8月4日 上午8:13:56
  */
 @Component
 @Aspect

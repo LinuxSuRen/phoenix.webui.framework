@@ -21,7 +21,7 @@ import java.io.OutputStream;
 
 /**
  * @author suren
- * @date 2016年8月4日 下午12:30:41
+ * @since 2016年8月4日 下午12:30:41
  */
 public class LZWEncoder
 {

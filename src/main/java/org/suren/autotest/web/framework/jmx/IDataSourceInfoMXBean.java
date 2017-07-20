@@ -22,7 +22,7 @@ import com.surenpi.autotest.datasource.DataSource;
 
 /**
  * @author suren
- * @date 2016年7月21日 下午7:17:30
+ * @since 2016年7月21日 下午7:17:30
  */
 public interface IDataSourceInfoMXBean
 {

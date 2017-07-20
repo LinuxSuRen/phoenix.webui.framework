@@ -31,7 +31,7 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
 /**
  * 用于标记类为Page
  * @author suren
- * @date 2017年6月7日 下午6:53:43
+ * @since 2017年6月7日 下午6:53:43
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

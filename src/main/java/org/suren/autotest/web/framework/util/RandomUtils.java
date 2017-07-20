@@ -20,7 +20,7 @@ import java.util.Random;
 
 /**
  * @author suren
- * @date 2017年1月23日 下午3:08:45
+ * @since 2017年1月23日 下午3:08:45
  */
 public class RandomUtils
 {

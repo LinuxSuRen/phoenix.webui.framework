@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * 网络相关的工具类
  * @author suren
- * @date 2017年5月7日 下午4:33:43
+ * @since 2017年5月7日 下午4:33:43
  */
 public class NetUtil
 {

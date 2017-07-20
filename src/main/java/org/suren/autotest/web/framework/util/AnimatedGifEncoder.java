@@ -15,7 +15,7 @@ import java.io.OutputStream;
 /**
  * Gif图片编码器
  * @author suren
- * @date 2016年8月4日 下午12:31:31
+ * @since 2016年8月4日 下午12:31:31
  */
 public class AnimatedGifEncoder
 {
@@ -90,9 +90,7 @@ public class AnimatedGifEncoder
 	 * is 1; 0 means play indefinitely. Must be invoked before the first image
 	 * is added.
 	 *
-	 * @param iter
-	 *            int number of iterations.
-	 * @return
+	 * @param iter int number of iterations.
 	 */
 	public void setRepeat(int iter)
 	{
@@ -109,8 +107,7 @@ public class AnimatedGifEncoder
 	 * given color becomes the transparent color for that frame. May be set to
 	 * null to indicate no transparent color.
 	 *
-	 * @param c
-	 *            Color to be treated as transparent on display.
+	 * @param c Color to be treated as transparent on display.
 	 */
 	public void setTransparent(Color c)
 	{
@@ -124,8 +121,7 @@ public class AnimatedGifEncoder
 	 * <code>setSize</code> was not invoked, the size of the first image is used
 	 * for all subsequent frames.
 	 *
-	 * @param im
-	 *            BufferedImage containing frame to write.
+	 * @param im BufferedImage containing frame to write.
 	 * @return true if successful.
 	 */
 	public boolean addFrame(BufferedImage im)
@@ -174,6 +170,7 @@ public class AnimatedGifEncoder
 	/**
 	 * Flushes any pending data and closes output file. If writing to an
 	 * OutputStream, the stream is not closed.
+	 * @return the
 	 */
 	public boolean finish()
 	{
@@ -210,8 +207,7 @@ public class AnimatedGifEncoder
 	 * Sets frame rate in frames per second. Equivalent to
 	 * <code>setDelay(1000/fps)</code>.
 	 *
-	 * @param fps
-	 *            float frame rate (frames per second)
+	 * @param fps float frame rate (frames per second)
 	 */
 	public void setFrameRate(float fps)
 	{
@@ -228,9 +224,7 @@ public class AnimatedGifEncoder
 	 * default, and produces good color mapping at reasonable speeds. Values
 	 * greater than 20 do not yield significant improvements in speed.
 	 *
-	 * @param quality
-	 *            int greater than 0.
-	 * @return
+	 * @param quality int greater than 0.
 	 */
 	public void setQuality(int quality)
 	{
@@ -243,10 +237,8 @@ public class AnimatedGifEncoder
 	 * Sets the GIF frame size. The default size is the size of the first frame
 	 * added if this method is not invoked.
 	 *
-	 * @param w
-	 *            int frame width.
-	 * @param h
-	 *            int frame width.
+	 * @param w int frame width.
+	 * @param h int frame width.
 	 */
 	public void setSize(int w, int h)
 	{
@@ -265,8 +257,7 @@ public class AnimatedGifEncoder
 	 * Initiates GIF file creation on the given stream. The stream is not closed
 	 * automatically.
 	 *
-	 * @param os
-	 *            OutputStream on which GIF images are written.
+	 * @param os  OutputStream on which GIF images are written.
 	 * @return false if initial write failed.
 	 */
 	public boolean start(OutputStream os)
@@ -290,8 +281,7 @@ public class AnimatedGifEncoder
 	/**
 	 * Initiates writing of a GIF file with the specified name.
 	 *
-	 * @param file
-	 *            String containing output file name.
+	 * @param file String containing output file name.
 	 * @return false if open or initial write failed.
 	 */
 	public boolean start(String file)
@@ -350,7 +340,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Returns index of palette color closest to c
-	 *
+	 * @return sd
 	 */
 	protected int findClosest(Color c)
 	{
@@ -402,6 +392,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Writes Graphic Control Extension
+	 * @throws IOException IOException
 	 */
 	protected void writeGraphicCtrlExt() throws IOException
 	{
@@ -436,6 +427,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Writes Image Descriptor
+	 * @throws IOException IOException
 	 */
 	protected void writeImageDesc() throws IOException
 	{
@@ -463,6 +455,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Writes Logical Screen Descriptor
+	 * @throws IOException IOException
 	 */
 	protected void writeLSD() throws IOException
 	{
@@ -480,6 +473,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Writes Netscape application extension to define repeat count.
+	 * @throws IOException IOException
 	 */
 	protected void writeNetscapeExt() throws IOException
 	{
@@ -495,6 +489,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Writes color table
+	 * @throws IOException IOException
 	 */
 	protected void writePalette() throws IOException
 	{
@@ -508,6 +503,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Encodes and writes pixel data
+	 * @throws IOException IOException
 	 */
 	protected void writePixels() throws IOException
 	{
@@ -518,6 +514,7 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Write 16-bit value to output stream, LSB first
+	 * @throws IOException IOException
 	 */
 	protected void writeShort(int value) throws IOException
 	{
@@ -527,6 +524,8 @@ public class AnimatedGifEncoder
 
 	/**
 	 * Writes string to output stream
+	 * @param s s
+	 * @throws IOException IOException
 	 */
 	protected void writeString(String s) throws IOException
 	{

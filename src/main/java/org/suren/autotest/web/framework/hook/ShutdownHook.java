@@ -25,7 +25,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 /**
  * 为了防止在程序意外关闭或者是用户没有显示地调用关闭浏览器的api导致的资源没有释放
  * @author suren
- * @date 2016年7月27日 下午3:49:12
+ * @since 2016年7月27日 下午3:49:12
  */
 public class ShutdownHook extends Thread
 {
@@ -34,11 +34,11 @@ public class ShutdownHook extends Thread
 	private Phoenix settingUtil;
 	
 	/**
-	 * @param context
+	 * @param context 上下文
 	 */
-	public ShutdownHook(Phoenix settingUtil)
+	public ShutdownHook(Phoenix context)
 	{
-		this.settingUtil = settingUtil;
+		this.settingUtil = context;
 		LOGGER.info("egnine close hook already regist.");
 	}
 

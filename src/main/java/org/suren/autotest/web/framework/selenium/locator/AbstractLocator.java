@@ -31,7 +31,7 @@ import com.surenpi.autotest.webui.core.LocatorAware;
 /**
  * 元素定位器的抽象父类，实现了部分通用方法
  * @author suren
- * @date 2016年7月25日 下午12:43:15
+ * @since 2016年7月25日 下午12:43:15
  */
 public abstract class AbstractLocator<E> implements Locator, LocatorAware
 {
@@ -95,8 +95,10 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 
 	/**
 	 * 根据超时时间来等待元素
-	 * @param locator
-	 * @param by
+	 * @param driver locator
+	 * @param driver driver
+	 * @param by by
+	 * @return sdf
 	 */
 	@SuppressWarnings("unchecked")
 	protected boolean elementWait(WebDriver driver, long timeout, By by)

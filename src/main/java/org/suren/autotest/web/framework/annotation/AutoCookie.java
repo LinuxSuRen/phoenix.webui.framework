@@ -10,7 +10,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * @author suren
- * @date 2017年6月26日 上午10:17:00
+ * @since 2017年6月26日 上午10:17:00
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

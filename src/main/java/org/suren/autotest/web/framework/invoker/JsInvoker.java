@@ -23,13 +23,13 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 /**
  * 用于执行js方法的外部调用
  * @author suren
- * @date 2016年12月23日 上午8:29:53
+ * @since 2016年12月23日 上午8:29:53
  */
 public class JsInvoker
 {
 	/**
 	 * 根据元素的class属性定位并触发单击事件
-	 * @param util
+	 * @param util 引擎
 	 * @param params class属性
 	 * @see #execute(Phoenix, String[])
 	 */
@@ -47,8 +47,8 @@ public class JsInvoker
 	
 	/**
 	 * 根据元素id定位并触发单击事件
-	 * @param util
-	 * @param params
+	 * @param util 引擎
+	 * @param params 参数
 	 * @see #clickByClassName(Phoenix, String[])
 	 */
 	public static void clickById(Phoenix util, String[] params)
@@ -65,8 +65,8 @@ public class JsInvoker
 	
 	/**
 	 * 根据元素name定位并触发单击事件
-	 * @param util
-	 * @param params
+	 * @param util 引擎
+	 * @param params 参数
 	 * @see #clickByClassName(Phoenix, String[])
 	 */
 	public static void clickByName(Phoenix util, String[] params)
@@ -83,8 +83,8 @@ public class JsInvoker
 	
 	/**
 	 * 根据元素tagName定位并触发单击事件
-	 * @param util
-	 * @param params
+	 * @param util 引擎
+	 * @param params 参数
 	 * @see #clickByClassName(Phoenix, String[])
 	 */
 	public static void clickByTagName(Phoenix util, String[] params)
@@ -101,8 +101,8 @@ public class JsInvoker
 	
 	/**
 	 * 定位元素，并让元素显示在屏幕的最上方
-	 * @param util
-	 * @param params 需要两个元素，第一个是定位的方式（ById、ByName、ByClassName、ByTagName），第二个是值</br>
+	 * @param util 引擎
+	 * @param params 需要两个元素，第一个是定位的方式（ById、ByName、ByClassName、ByTagName），第二个是值
 	 * 		例如：new String[]{"ById", "userName"}
 	 */
 	public static void scrollIntoView(Phoenix util, String[] params)

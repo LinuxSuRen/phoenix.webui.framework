@@ -21,7 +21,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2016年12月24日 下午3:59:03
+ * @since 2016年12月24日 下午3:59:03
  */
 public class EncryptUtilTest
 {

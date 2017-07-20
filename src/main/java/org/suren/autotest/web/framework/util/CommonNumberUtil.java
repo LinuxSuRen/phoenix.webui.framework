@@ -19,7 +19,7 @@ package org.suren.autotest.web.framework.util;
 /**
  * 常见数字类型生成工具类
  * @author suren
- * @date 2017年1月7日 下午6:09:13
+ * @since 2017年1月7日 下午6:09:13
  */
 public class CommonNumberUtil
 {

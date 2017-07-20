@@ -21,13 +21,13 @@ import java.io.IOException;
 /**
  * 执行本地命令的外部执行类
  * @author suren
- * @date 2016年12月12日 下午12:17:25
+ * @since 2016年12月12日 下午12:17:25
  */
 public class OSInvoker
 {
 	/**
 	 * 执行本地操作系统命令
-	 * @param cmd
+	 * @param cmd 系统命令
 	 */
 	public static void exec(String cmd)
 	{

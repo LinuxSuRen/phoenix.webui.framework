@@ -19,7 +19,7 @@ package org.suren.autotest.web.framework.log;
 /**
  * 日志相关的常量
  * @author suren
- * @date 2016年8月22日 上午8:39:31
+ * @since 2016年8月22日 上午8:39:31
  */
 public interface LoggerConstants
 {

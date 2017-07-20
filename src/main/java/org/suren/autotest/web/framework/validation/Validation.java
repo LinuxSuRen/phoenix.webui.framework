@@ -39,7 +39,7 @@ import org.xml.sax.SAXException;
 /**
  * xsd验证工具类
  * @author suren
- * @date 2016年7月19日 下午7:05:12
+ * @since 2016年7月19日 下午7:05:12
  */
 public class Validation
 {
@@ -47,10 +47,10 @@ public class Validation
 	
 	/**
 	 * 利用xsd验证xml
-	 * @param xsdFile
-	 * @param xmlInput
-	 * @throws SAXException 
-	 * @throws IOException 
+	 * @param xsdFile xsdFile
+	 * @param xmlInput xmlInput
+	 * @throws SAXException  SAXException
+	 * @throws IOException IOException
 	 */
 	public static void validation(String xsdFile, InputStream xmlInput) throws SAXException, IOException
 	{
@@ -78,9 +78,9 @@ public class Validation
 	
 	/**
 	 * 对框架的xml进行验证
-	 * @param xmlInput
-	 * @throws IOException 
-	 * @throws SAXException 
+	 * @param xmlInput xmlInput
+	 * @throws IOException IOException
+	 * @throws SAXException SAXException
 	 */
 	public static void validationFramework(InputStream xmlInput) throws SAXException, IOException
 	{
@@ -89,9 +89,9 @@ public class Validation
 	
 	/**
 	 * 对数据源的xml进行验证
-	 * @param dataSourceInput
-	 * @throws IOException 
-	 * @throws SAXException 
+	 * @param dataSourceInput dataSourceInput
+	 * @throws IOException  IOException
+	 * @throws SAXException SAXException
 	 */
 	public static void validationDataSource(InputStream dataSourceInput) throws SAXException, IOException
 	{
@@ -100,10 +100,9 @@ public class Validation
 	
 	/**
 	 * 验证测试套件的配置文件
-	 * @param suiteInput
-	 * @throws IOException 
-	 * @throws SAXException 
-
+	 * @param suiteInput suiteInput
+	 * @throws IOException IOException
+	 * @throws SAXException SAXException
 	 */
 	public static void validationSuite(InputStream suiteInput) throws SAXException, IOException
 	{

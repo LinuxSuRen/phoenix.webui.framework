@@ -35,7 +35,7 @@ import freemarker.template.TemplateException;
 
 /**
  * @author suren
- * @date 2017年3月25日 上午9:28:47
+ * @since 2017年3月25日 上午9:28:47
  */
 @Component
 public class FreemarkerDynamicData implements DynamicData

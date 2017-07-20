@@ -26,7 +26,7 @@ import groovy.util.GroovyScriptEngine;
 
 /**
  * @author suren
- * @date 2016年9月24日 下午3:51:14
+ * @since 2016年9月24日 下午3:51:14
  */
 public class GroovyTest
 {

@@ -131,7 +131,7 @@ public class SeleniumEngine
 	
 	/**
 	 * 浏览器启动前的回调函数
-	 * @param enginePro
+	 * @param enginePro 回调函数
 	 */
 	public void beforeStart(Properties enginePro){};
 	
@@ -248,8 +248,8 @@ public class SeleniumEngine
 	}
 	
 	/**
-	 * @param key
-	 * @param identify
+	 * @param key key
+	 * @param identify identify
 	 */
 	public void setProgressId(String key, String identify)
 	{
@@ -400,7 +400,7 @@ public class SeleniumEngine
 	}
 	
 	/**
-	 * @return
+	 * @return 结果
 	 */
 	public boolean storePro()
 	{
@@ -410,8 +410,8 @@ public class SeleniumEngine
 	}
 	
 	/**
-	 * @param classLoader
-	 * @return
+	 * @param classLoader classLoader
+	 * @return classLoader
 	 */
 	public boolean storePro(ClassLoader classLoader)
 	{
@@ -441,8 +441,8 @@ public class SeleniumEngine
 	
 	/**
 	 * 转为为初始化的驱动
-	 * @param driver
-	 * @return
+	 * @param driver driver
+	 * @return driver
 	 */
 	public WebDriver turnToRootDriver(WebDriver driver)
 	{
@@ -451,7 +451,7 @@ public class SeleniumEngine
 
 	/**
 	 * 打开指定地址
-	 * @param url
+	 * @param url url
 	 */
 	public void openUrl(String url)
 	{
@@ -526,7 +526,7 @@ public class SeleniumEngine
 
 	/**
 	 * 设置引擎名称
-	 * @param driverStr
+	 * @param driverStr driverStr
 	 */
 	public void setDriverStr(String driverStr)
 	{
@@ -566,7 +566,7 @@ public class SeleniumEngine
 
 	/**
 	 * 设定超时时间
-	 * @param timeout
+	 * @param timeout timeout
 	 */
 	public void setTimeout(long timeout)
 	{
@@ -583,7 +583,7 @@ public class SeleniumEngine
 
 	/**
 	 * 设置是否要全屏
-	 * @param fullScreen
+	 * @param fullScreen fullScreen
 	 */
 	public void setFullScreen(boolean fullScreen)
 	{
@@ -600,7 +600,7 @@ public class SeleniumEngine
 
 	/**
 	 * 设置浏览器宽度
-	 * @param width
+	 * @param width width
 	 */
 	public void setWidth(int width)
 	{
@@ -617,7 +617,7 @@ public class SeleniumEngine
 
 	/**
 	 * 设置浏览器高度
-	 * @param height
+	 * @param height height
 	 */
 	public void setHeight(int height)
 	{
@@ -642,7 +642,7 @@ public class SeleniumEngine
 	
 	/**
 	 * 计算工具栏高度
-	 * @return
+	 * @return 高度
 	 */
 	public int computeToolbarHeight()
 	{

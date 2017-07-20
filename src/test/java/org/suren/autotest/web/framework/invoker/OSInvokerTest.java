@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * @author suren
- * @date 2016年12月12日 下午4:00:22
+ * @since 2016年12月12日 下午4:00:22
  */
 public class OSInvokerTest
 {

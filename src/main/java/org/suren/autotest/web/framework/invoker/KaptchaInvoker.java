@@ -30,14 +30,14 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 /**
  * 验证码外部执行器
  * @author suren
- * @date 2017年1月7日 下午9:21:14
+ * @since 2017年1月7日 下午9:21:14
  */
 public class KaptchaInvoker {
 	/**
 	 * 获取验证码
-	 * @param engine
+	 * @param engine 引擎
 	 * @param param 例如：data,http://localhost:8080/G2/captcha!getLastCode.do
-	 * @return
+	 * @return 验证码
 	 */
 	public static String execute(SeleniumEngine engine, String param)
 	{

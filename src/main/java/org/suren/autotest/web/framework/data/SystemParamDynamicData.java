@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 /**
  * 系统参数配置
  * @author suren
- * @date 2017年3月31日 下午9:51:54
+ * @since 2017年3月31日 下午9:51:54
  */
 @Component
 public class SystemParamDynamicData extends PropertiesDynamicData

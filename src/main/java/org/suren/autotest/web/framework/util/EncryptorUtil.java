@@ -33,7 +33,7 @@ import org.apache.commons.codec.binary.Base64;
 /**
  * 加解密工具类
  * @author suren
- * @date 2016年12月24日 下午3:45:52
+ * @since 2016年12月24日 下午3:45:52
  */
 public class EncryptorUtil
 {
@@ -88,8 +88,8 @@ public class EncryptorUtil
 
 	/**
 	 * 加密字符串
-	 * @param plainText
-	 * @return
+	 * @param plainText plainText
+	 * @return plainText
 	 */
 	public static String encrypt(String plainText)
 	{
@@ -123,8 +123,8 @@ public class EncryptorUtil
 	
 	/**
 	 * 解密字符串
-	 * @param encryptText
-	 * @return
+	 * @param encryptText encryptText
+	 * @return encryptText
 	 */
 	public static String decrypt(String encryptText)
 	{
@@ -158,8 +158,8 @@ public class EncryptorUtil
 	
 	/**
 	 * 先加密后再进行Base64编码
-	 * @param plainText
-	 * @return
+	 * @param plainText plainText
+	 * @return plainText
 	 */
 	public static String encryptWithBase64(String plainText)
 	{
@@ -193,8 +193,8 @@ public class EncryptorUtil
 	
 	/**
 	 * 先使用Base64解码然后解密
-	 * @param base64Text
-	 * @return
+	 * @param base64Text base64Text
+	 * @return base64Text
 	 */
 	public static String decryptWithBase64(String base64Text)
 	{

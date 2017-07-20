@@ -21,7 +21,7 @@ import org.suren.autotest.web.framework.selenium.WebPage;
 /**
  * 代表一个iFrame
  * @author suren
- * @date Jul 24, 2016 5:39:54 PM
+ * @since Jul 24, 2016 5:39:54 PM
  */
 public class IFramePage extends WebPage
 {

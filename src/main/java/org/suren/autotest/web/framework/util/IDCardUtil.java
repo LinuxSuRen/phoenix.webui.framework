@@ -50,7 +50,7 @@ import java.util.Properties;
  *   校验码: 1 0 X 9 8 7 6 5 4 3 2 
  * 
  * @author suren
- * @date 2017年1月4日 上午8:49:49
+ * @since 2017年1月4日 上午8:49:49
  */
 public class IDCardUtil
 {

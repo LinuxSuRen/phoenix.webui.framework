@@ -93,7 +93,7 @@ import net.sf.json.util.JSONUtils;
 /**
  * 页面（page）以及数据配置加载
  * @author suren
- * @date Jul 17, 2016 9:01:51 AM
+ * @since Jul 17, 2016 9:01:51 AM
  */
 public class Phoenix implements Closeable, WebUIEngine
 {
@@ -382,10 +382,10 @@ public class Phoenix implements Closeable, WebUIEngine
 	/**
 	 * 从本地文件中读取
 	 * 
-	 * @param filePath
-	 * @throws DocumentException
-	 * @throws IOException
-	 * @throws SAXException 
+	 * @param filePath filePath
+	 * @throws DocumentException DocumentException
+	 * @throws IOException IOException
+	 * @throws SAXException SAXException
 	 */
 	public void read(String filePath) throws DocumentException, IOException, SAXException
 	{
@@ -399,8 +399,8 @@ public class Phoenix implements Closeable, WebUIEngine
 	/**
 	 * 从类路径下读取配置文件
 	 * 
-	 * @param fileName
-	 * @throws IOException
+	 * @param fileName fileName
+	 * @throws IOException IOException
 	 * @throws DocumentException xml文件解析错误
 	 * @throws SAXException xml文件格式校验错误
 	 */
@@ -438,11 +438,11 @@ public class Phoenix implements Closeable, WebUIEngine
 	
 	/**
 	 * 从操作系统路径中加载配置文件
-	 * @param filePath
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 * @throws DocumentException 
-	 * @throws SAXException 
+	 * @param filePath filePath
+	 * @throws IOException  IOException
+	 * @throws FileNotFoundException  FileNotFoundException
+	 * @throws DocumentException  DocumentException
+	 * @throws SAXException SAXException
 	 */
 	public void readFromSystemPath(String filePath) throws FileNotFoundException, 
 		IOException, DocumentException, SAXException
@@ -466,10 +466,10 @@ public class Phoenix implements Closeable, WebUIEngine
 	/**
 	 * 从流中读取配置文件
 	 * 
-	 * @param inputStream
-	 * @throws DocumentException
-	 * @throws IOException 
-	 * @throws SAXException 
+	 * @param inputStream inputStream
+	 * @throws DocumentException DocumentException
+	 * @throws IOException IOException
+	 * @throws SAXException SAXException
 	 */
 	public void read(InputStream inputStream) throws DocumentException, IOException, SAXException
 	{
@@ -494,7 +494,6 @@ public class Phoenix implements Closeable, WebUIEngine
 
 	/**
 	 * 从数据源中加载第一组数据，设置到所有page类中
-	 * @see {@link #initData(int)}
 	 */
 	public void initData()
 	{
@@ -536,7 +535,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	 * 从数据源中加载指定的数据组到指定的Page类中
 	 * @param page 页面对象
 	 * @param row 数据组序号（从1开始）
-	 * @return
+	 * @return 数据源
 	 */
 	public DynamicDataSource initPageData(Page page, int row)
 	{
@@ -598,7 +597,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	
 	/**
 	 * 添加Page到要排除的集合中
-	 * @param pageCls
+	 * @param pageCls pageCls
 	 */
 	public void addExcludePage(String pageCls)
 	{
@@ -607,7 +606,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	
 	/**
 	 * 从要排除的Page集合中移除
-	 * @param pageCls
+	 * @param pageCls pageCls
 	 */
 	public void removeExcludePage(String pageCls)
 	{
@@ -616,8 +615,8 @@ public class Phoenix implements Closeable, WebUIEngine
 	
 	/**
 	 * 是否包含在要排除的Page集合中
-	 * @param pageCls
-	 * @return
+	 * @param pageCls pageCls
+	 * @return pageCls
 	 */
 	public boolean containExcludePage(String pageCls)
 	{
@@ -642,9 +641,9 @@ public class Phoenix implements Closeable, WebUIEngine
 
 	/**
 	 * 解析整个框架主配置文件
-	 * @param doc
-	 * @throws DocumentException 
-	 * @throws IOException 
+	 * @param doc doc
+	 * @throws DocumentException  DocumentException
+	 * @throws IOException IOException
 	 * @throws SAXException 配置文件格式错误 
 	 */
 	private void parse(Document doc) throws IOException, DocumentException, SAXException
@@ -788,9 +787,9 @@ public class Phoenix implements Closeable, WebUIEngine
 	/**
 	 * 解析页面Page对象
 	 * 
-	 * @param pageClsStr
-	 * @param dataSrcClsStr
-	 * @param ele
+	 * @param pageClsStr pageClsStr
+	 * @param dataSrcClsStr dataSrcClsStr
+	 * @param ele ele
 	 */
 	private void parse(final String pageClsStr, String dataSrcClsStr,
 			Element ele) throws Exception
@@ -907,8 +906,8 @@ public class Phoenix implements Closeable, WebUIEngine
 	
 	/**
 	 * 先使用类的缩写，再使用类全程来查找
-	 * @param pageClsStr
-	 * @return
+	 * @param pageClsStr pageClsStr
+	 * @return pageClsStr
 	 */
 	private Object getBean(String pageClsStr)
 	{
@@ -930,8 +929,8 @@ public class Phoenix implements Closeable, WebUIEngine
 
 	/**
 	 * 把类名称转为默认的bean名称
-	 * @param pageClsStr
-	 * @return
+	 * @param pageClsStr pageClsStr
+	 * @return pageClsStr
 	 */
 	private String convertBeanName(final String pageClsStr)
 	{
@@ -958,7 +957,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	/**
 	 * 元素定位器信息解析
 	 * @author suren
-	 * @date 2016年7月28日 上午8:18:01
+	 * @since 2016年7月28日 上午8:18:01
 	 */
 	class FieldLocatorsVisitor extends VisitorSupport
 	{
@@ -1030,7 +1029,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	}
 
 	/**
-	 * @param name
+	 * @param name name
 	 * @return 给定名称的Page对象
 	 */
 	public Object getPage(String name)
@@ -1039,7 +1038,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	}
 
 	/**
-	 * @param type
+	 * @param type type
 	 * @return 给定类型的Page对象
 	 */
 	@SuppressWarnings("unchecked")
@@ -1050,7 +1049,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	}
 
 	/**
-	 * @param type
+	 * @param type type
 	 * @return 给定类型的Page对象
 	 */
 	@SuppressWarnings("unchecked")

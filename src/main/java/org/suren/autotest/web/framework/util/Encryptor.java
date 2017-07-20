@@ -34,7 +34,7 @@ import org.apache.commons.codec.binary.Base64;
 /**
  * 实现加解密
  * @author suren
- * @date 2015年11月24日 下午5:04:05
+ * @since 2015年11月24日 下午5:04:05
  */
 public class Encryptor
 {
@@ -105,11 +105,11 @@ public class Encryptor
     /**
      * decrypt string
      * @see #encryptStr(String)
-     * @param encryptStr
-     * @return
-     * @throws InvalidKeyException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @param encryptStr encryptStr
+     * @return encryptStr
+     * @throws InvalidKeyException InvalidKeyException
+     * @throws IllegalBlockSizeException IllegalBlockSizeException
+     * @throws BadPaddingException BadPaddingException
      * @throws NullPointerException if encryptStr is null
      */
     public String decryptStr(String encryptStr) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException
@@ -160,8 +160,7 @@ public class Encryptor
      * 将密钥字符串转换为密钥实例对象
      *  
      * @param desKey 密钥
-     * @param algorithm 加密算法名称，支持的算法： {@link #DES}、 {@link #DESEDE}、{@link #AES}、
-     *            {@link #BLOWFISH}、{@link #RC2}、 {@link #RC4}
+     * @param algorithm 加密算法名称，支持的算法
      * @return 密钥实例
      */  
     public static SecretKey getSecretKey(byte[] desKey, String algorithm)

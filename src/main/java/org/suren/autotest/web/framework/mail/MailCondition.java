@@ -22,7 +22,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 
 /**
  * @author suren
- * @date 2017年6月29日 下午4:28:45
+ * @since 2017年6月29日 下午4:28:45
  */
 public class MailCondition implements Condition
 {

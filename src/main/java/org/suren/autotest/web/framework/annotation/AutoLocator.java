@@ -29,7 +29,7 @@ import com.surenpi.autotest.webui.core.LocatorType;
 /**
  * 元素定位符
  * @author suren
- * @date 2017年6月7日 下午6:58:44
+ * @since 2017年6月7日 下午6:58:44
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

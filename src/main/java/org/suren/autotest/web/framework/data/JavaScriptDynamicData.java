@@ -29,7 +29,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 /**
  * JavaScript版本的动态数据实现
  * @author suren
- * @date 2017年1月11日 下午12:49:42
+ * @since 2017年1月11日 下午12:49:42
  */
 @Component
 public class JavaScriptDynamicData implements DynamicData

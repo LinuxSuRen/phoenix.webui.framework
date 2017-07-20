@@ -34,7 +34,7 @@ import com.surenpi.autotest.webui.ui.Text;
 /**
  * jqGrid组件的选择
  * @author suren
- * @date 2017年1月16日 上午9:54:37
+ * @since 2017年1月16日 上午9:54:37
  */
 @Component
 public class SeleniumJqGridSequenceOperation implements SequenceAble

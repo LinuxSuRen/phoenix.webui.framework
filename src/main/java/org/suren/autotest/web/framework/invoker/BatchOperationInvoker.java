@@ -21,16 +21,16 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 /**
  * 批量操作执行器
  * @author suren
- * @date 2017年5月15日 上午7:01:27
+ * @since 2017年5月15日 上午7:01:27
  */
 public class BatchOperationInvoker
 {
 	/**
 	 * 批量操作元素
-	 * @param util
-	 * @param params
+	 * @param phoenix 引擎
+	 * @param params 参数
 	 */
-	public static void execute(Phoenix util, String[] params)
+	public static void execute(Phoenix phoenix, String[] params)
 	{
 //		ElementUtil.click(buttons);
 	}

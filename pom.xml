@@ -296,4 +296,8 @@
 			</roles>
 		</developer>
 	</developers>
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/LinuxSuRen/autotest.parent/issues</url>
+	</issueManagement>
 </project>

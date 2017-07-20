@@ -21,12 +21,41 @@ node {
     mvnHome = tool 'M3'
   }
   
-  stage('Build') {
+  stage('Clean') {
     if(isUnix()){
-      sh "'${mvnHome}/bin/mvn' clean package"
+      sh "'${mvnHome}/bin/mvn' clean"
     }else{
-      bat(/"${mvnHome}\bin\mvn" clean package/)
+      bat(/"${mvnHome}\bin\mvn" clean/)
     }
+  }
+  
+  stage('JavaDoc') {
+    if(isUnix()){
+      sh "'${mvnHome}/bin/mvn' javadoc:jar -DdocSkip=false"
+    }else{
+      bat(/"${mvnHome}\bin\mvn" javadoc:jar -DdocSkip=false/)
+    }
+  }
+  
+  stage('Site') {
+    if(isUnix()){
+      sh "'${mvnHome}/bin/mvn' site"
+    }else{
+      bat(/"${mvnHome}\bin\mvn" site/)
+    }
+  }
+  
+  stage('Package') {
+    if(isUnix()){
+      sh "'${mvnHome}/bin/mvn' package"
+    }else{
+      bat(/"${mvnHome}\bin\mvn" package/)
+    }
+  }
+  
+  stage('Archive Site') {
+    sh "tar -czvf target/site.tar.gz -C target site"
+    archiveArtifacts 'target/site.tar.gz'
   }
   
   stage('Deploy') {

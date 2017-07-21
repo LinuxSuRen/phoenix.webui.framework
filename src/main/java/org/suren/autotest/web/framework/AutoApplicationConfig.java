@@ -30,13 +30,13 @@ import org.suren.autotest.web.framework.mail.MailConfig;
  */
 @Configuration
 @ComponentScan({"com.surenpi.autotest.webui",
-	"org.suren.autotest.web.framework",
-	"com.surenpi.autotest.datasource"
+    "org.suren.autotest.web.framework",
+    "com.surenpi.autotest.datasource"
 })
 @ImportResource({"classpath:autoTestContext.xml", "classpath:beanScope.xml"})
 @Import({
-	Image4SearchLog.class,
-	MailConfig.class
+    Image4SearchLog.class,
+    MailConfig.class
 })
 public class AutoApplicationConfig
 {

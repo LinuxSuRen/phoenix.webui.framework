@@ -13,7 +13,6 @@
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
-	<description>WebUI自动化测试框架</description>
 
 	<properties>
 		<selenium.version>3.3.1</selenium.version>
@@ -276,7 +275,6 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
 		</dependency>
 	</dependencies>
 	
@@ -296,8 +294,18 @@
 			</roles>
 		</developer>
 	</developers>
+	
 	<issueManagement>
-		<system>github</system>
+		<system>GitHub Issues</system>
 		<url>https://github.com/LinuxSuRen/autotest.parent/issues</url>
 	</issueManagement>
+	
+	<description>基于Selenium的自动化测试框架Phoenix，采用Java语言编写的。到目前为止，已经覆盖了WebUI自动化测试过程中需要的大部分功能封装。</description>
+	
+	<ciManagement>
+		<url>https://travis-ci.org/LinuxSuRen/phoenix.webui.framework</url>
+		<system>travis-ci</system>
+	</ciManagement>
+	
+	<inceptionYear>2016</inceptionYear>
 </project>

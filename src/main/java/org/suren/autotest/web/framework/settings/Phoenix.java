@@ -77,6 +77,7 @@ import com.surenpi.autotest.datasource.FileResource;
 import com.surenpi.autotest.report.RecordReportWriter;
 import com.surenpi.autotest.report.record.ProjectRecord;
 import com.surenpi.autotest.webui.Page;
+import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.core.ConfigException;
 import com.surenpi.autotest.webui.core.ConfigNotFoundException;
 import com.surenpi.autotest.webui.core.Locator;
@@ -256,30 +257,30 @@ public class Phoenix implements Closeable, WebUIEngine
 		});
 	}
 
-	/**
-	 * 数据源处理
-	 * @param beanCls Page类的class类型
-	 * @param pageBean Page类对象
+    /**
+     * 数据源处理
+     * @param beanCls Page类的class类型
+     * @param pageBean Page类对象
      */
-	private void autoDataSourceProcess(Class<?> beanCls, Page pageBean)
-	{
-		AutoDataSource autoDataSource = beanCls.getAnnotation(AutoDataSource.class);
-		if(autoDataSource != null)
-		{
-			String dsName = StringUtils.defaultIfBlank(autoDataSource.name(),
-					System.currentTimeMillis());
-			pageBean.setDataSource(dsName);
-			dataSourceMap.put(dsName,
-					new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
-		}
-	}
+    private void autoDataSourceProcess(Class<?> beanCls, Page pageBean)
+    {
+        AutoDataSource autoDataSource = beanCls.getAnnotation(AutoDataSource.class);
+        if(autoDataSource != null)
+        {
+            String dsName = StringUtils.defaultIfBlank(autoDataSource.name(),
+            		System.currentTimeMillis());
+            pageBean.setDataSource(dsName);
+            dataSourceMap.put(dsName,
+            		new DataSourceInfo(autoDataSource.type(), autoDataSource.resource()));
+        }
+    }
 
-	/**
-	 * 属性上的注解处理
-	 * @param bean Page类
-	 */
-	private void fieldAnnotationProcess(Page bean)
-	{
+    /**
+     * 属性上的注解处理
+     * @param bean Page类
+    */
+    private void fieldAnnotationProcess(Page bean)
+    {
 		Class<?> beanCls = bean.getClass();
 		Field[] fields = beanCls.getDeclaredFields();
 		if(!beanCls.getSuperclass().equals(Page.class))
@@ -553,6 +554,11 @@ public class Phoenix implements Closeable, WebUIEngine
 		
 		getDynamicDataSources();
 		DataSource dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());//context.getBean(dataSourceInfo.getType(), DataSource.class);
+		if(dataSource == null)
+		{
+			throw new AutoTestException("Can not found dataSource by type : " + dataSourceInfo.getType());
+		}
+		
 		DataResource clzResource = new ClasspathResource(
 				Phoenix.class, dataSourceInfo.getResource());
 		try

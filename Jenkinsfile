@@ -1,18 +1,3 @@
-pipeline {
-  agent any
-  triggers {
-    pollSCM('H/5 * * * *')
-  }
-  
-  stages {
-    stage('Example') {
-      steps {
-        echo 'hello jenkins'
-      }
-    }
-  }
-}
-
 node {
   def mvnHome
   
@@ -81,5 +66,7 @@ properties([
             numToKeepStr: '14'
         )
     ),
-    pipelineTriggers([])
+    pipelineTriggers([
+        pollSCM('H/15 * * * *')
+    ])
 ])

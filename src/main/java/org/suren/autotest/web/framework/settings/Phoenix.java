@@ -140,10 +140,10 @@ public class Phoenix implements Closeable, WebUIEngine
 					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
 							this));
 		}
-		
-		//auto注解扫描
-		annotationScan();
-		
+
+        //auto注解扫描
+	    annotationScan();
+
 		try
 		{
 			//设置页面上下文对象
@@ -156,7 +156,7 @@ public class Phoenix implements Closeable, WebUIEngine
 					ware.setPageContext(new PageContext(pageMap));
 				}
 			}
-			
+
 			//提供运行时管理功能
 //			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
 //			
@@ -169,7 +169,7 @@ public class Phoenix implements Closeable, WebUIEngine
 		{
 			logger.error("jmx register process error.", e);
 		}
-		
+
 		shutdownHook = new ShutdownHook(this);
 		Runtime.getRuntime().addShutdownHook(shutdownHook);
 
@@ -211,7 +211,7 @@ public class Phoenix implements Closeable, WebUIEngine
 		    	writer.write(projectRecord);
 			});
 		}
-		
+
 		logger.info("init process done.");
 	}
 
@@ -242,12 +242,16 @@ public class Phoenix implements Closeable, WebUIEngine
 			String url = autoPageAnno.url();
 			pageBean.setUrl(url);
 
-			//设置浏览器信息
-			SeleniumEngine engine = getEngine();
-			engine.setWidth(autoPageAnno.width());
-			engine.setHeight(autoPageAnno.height());
-			engine.setMaximize(autoPageAnno.maximize());
-			engine.setDriverStr(autoPageAnno.browser());
+			if(autoPageAnno.startPage())
+			{
+	            //设置浏览器信息
+	            SeleniumEngine engine = getEngine();
+	            engine.setWidth(autoPageAnno.width());
+	            engine.setHeight(autoPageAnno.height());
+	            engine.setMaximize(autoPageAnno.maximize());
+	            engine.setDriverStr(autoPageAnno.browser());
+                engine.setRemoteStr(autoPageAnno.remote());
+			}
 
 			//数据源处理
 			autoDataSourceProcess(beanCls, pageBean);

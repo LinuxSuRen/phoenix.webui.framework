@@ -538,23 +538,23 @@ public class SeleniumEngine
 		return remoteStr;
 	}
 
-	public void setRemoteStr(String remoteStr)
-	{
-		this.remoteStr = remoteStr;
-		if(remoteStr == null)
-		{
-			return;
-		}
-		
-		for(DynamicData dynamicData : dynamicDataList)
-		{
-			if("system".equals(dynamicData.getType()))
-			{
-				this.remoteStr = dynamicData.getValue(remoteStr);
-				break;
-			}
-		}
-	}
+    public void setRemoteStr(String remoteStr)
+    {
+        this.remoteStr = remoteStr;
+        if(remoteStr == null)
+        {
+            return;
+        }
+        
+        for(DynamicData dynamicData : dynamicDataList)
+        {
+            if("system".equals(dynamicData.getType()))
+            {
+                this.remoteStr = dynamicData.getValue(remoteStr);
+                break;
+            }
+        }
+    }
 
 	/**
 	 * @return 超时时间

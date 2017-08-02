@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 
 /**
- * 用于标记类为Page
+ * 用于标记类为Page.
  * @author suren
  * @since 2017年6月7日 下午6:53:43
  */

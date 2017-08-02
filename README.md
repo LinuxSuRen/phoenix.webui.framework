@@ -3,7 +3,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework)
 [![Join the chat at https://gitter.im/phoenix-webui-framework/Lobby](https://badges.gitter.im/phoenix-webui-framework/Lobby.svg)](https://gitter.im/phoenix-webui-framework/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# AutoTest
+# PhoenixAutoTest
 本项目是一个基于Selenium的Web自动测试框架，通过该框架可以简化测试人员的学习难度，只要编写少量的Java代码即可，大多数的工作都是编写页面元素的描述文件以及对应的数据源。以下是本框架的特色：
 - 支持多种元素选择策略（优先级、循环、区域）
 - 支持多种数据源（xml、excel）

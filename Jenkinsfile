@@ -14,6 +14,14 @@ node {
     }
   }
   
+  stage('Test') {
+    if(isUnix()){
+      sh "'${mvnHome}/bin/mvn' test"
+    }else{
+      bat(/"${mvnHome}\bin\mvn" test/)
+    }
+  }
+  
   stage('JavaDoc') {
     if(isUnix()){
       sh "'${mvnHome}/bin/mvn' javadoc:jar -DdocSkip=false"

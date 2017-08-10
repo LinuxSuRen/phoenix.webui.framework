@@ -122,7 +122,7 @@
 		<dependency>
 			<groupId>com.surenpi.autotest</groupId>
 			<artifactId>autotest.webdriver.downloader</artifactId>
-			<version>1.0.2-20170422</version>
+			<version>1.0.2-20170810-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.surenpi.autotest</groupId>

@@ -31,11 +31,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
 import org.suren.autotest.web.framework.util.StringUtils;
 
 import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.core.ElementSearchStrategy;
 import com.surenpi.autotest.webui.core.ElementsSearchStrategy;
+import com.surenpi.autotest.webui.core.Locator;
 import com.surenpi.autotest.webui.core.LocatorNotFoundException;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Element;
@@ -102,6 +104,22 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		By by = null;
 
 		this.element = element;
+		
+		for(Locator locator : element.getLocatorList())
+		{
+		    if(!locator.getClass().equals(SeleniumXAttrLocator.class))
+		    {
+		        break;
+		    }
+		    
+		    String value = ((SeleniumXAttrLocator) locator).getValue();
+		    String attrName = ((SeleniumXAttrLocator) locator).getAttrName();
+		    String tagName = ((SeleniumXAttrLocator) locator).getTagName();
+		    
+		    return By.xpath(String.format("//%s[@%s='%s']",
+		            tagName, attrName, value));
+		}
+		
 		if (StringUtils.isNotBlank(element.getId()))
 		{
 			String orginId = element.getId();

@@ -56,12 +56,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.annotation.AutoApplication;
+import org.suren.autotest.web.framework.annotation.AutoAttrLocator;
 import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoLocators;
 import org.suren.autotest.web.framework.annotation.AutoPage;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.util.NetUtil;
@@ -349,7 +351,26 @@ public class Phoenix implements Closeable, WebUIEngine
 					case BY_XPATH:
 						element.setXPath(value);
 						break;
+					case BY_TAGNAME:
+					    element.setTagName(value);
+					    break;
+					case BY_X_ATTR:
+					case BY_FRAME_NAME:
+					case BY_FRAME_INDEX:
+					    logger.error("Not support locator by frame.");
+					    break;
 				}
+			}
+
+			AutoAttrLocator autoAttrLocator = field.getAnnotation(AutoAttrLocator.class);
+			if(autoAttrLocator != null)
+			{
+                SeleniumXAttrLocator xAttrLocator = context.getBean(SeleniumXAttrLocator.class);
+                xAttrLocator.setValue(autoAttrLocator.value());
+                xAttrLocator.setExtend(autoAttrLocator.name());
+                xAttrLocator.setTagName(autoAttrLocator.tagName());
+                xAttrLocator.setTimeout(autoAttrLocator.timeout());
+                element.getLocatorList().add(xAttrLocator);
 			}
 
 			AutoLocators autoLocators = field.getAnnotation(AutoLocators.class);
@@ -557,7 +578,7 @@ public class Phoenix implements Closeable, WebUIEngine
 		}
 		
 		getDynamicDataSources();
-		DataSource dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());//context.getBean(dataSourceInfo.getType(), DataSource.class);
+		DataSource<Page> dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());//context.getBean(dataSourceInfo.getType(), DataSource.class);
 		if(dataSource == null)
 		{
 			throw new AutoTestException("Can not found dataSource by type : " + dataSourceInfo.getType());

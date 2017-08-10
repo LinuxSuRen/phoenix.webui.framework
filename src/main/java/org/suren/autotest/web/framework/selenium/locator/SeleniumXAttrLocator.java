@@ -16,6 +16,8 @@
 
 package org.suren.autotest.web.framework.selenium.locator;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -27,9 +29,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SeleniumXAttrLocator extends AbstractSeleniumAttrLocator
+public class SeleniumXAttrLocator extends AbstractLocator<WebElement>
 {
 	private String xAttr;
+	private String tagName;
 
 	@Override
 	public String getType()
@@ -37,7 +40,9 @@ public class SeleniumXAttrLocator extends AbstractSeleniumAttrLocator
 		return "byXAttr";
 	}
 
-	@Override
+	/**
+	 * @return 属性名称
+	 */
 	public String getAttrName()
 	{
 		return this.xAttr;
@@ -48,5 +53,22 @@ public class SeleniumXAttrLocator extends AbstractSeleniumAttrLocator
 	{
 		this.xAttr = extend;
 	}
+
+    public String getTagName()
+    {
+        return tagName;
+    }
+
+    public void setTagName(String tagName)
+    {
+        this.tagName = tagName;
+    }
+
+    @Override
+    protected By getBy()
+    {
+        return By.xpath(String.format("//%s[@%s='%s']",
+                tagName, this.getAttrName(), this.getValue()));
+    }
 
 }

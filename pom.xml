@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
-	<version>2.0.0-20170722-SNAPSHOT</version>
+	<version>2.0.0-20170810-SNAPSHOT</version>
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>

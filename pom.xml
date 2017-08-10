@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
-	<version>2.0.0-20170722</version>
+	<version>2.0.0-20170722-SNAPSHOT</version>
 
 	<name>phoenix.webui.framework</name>
 	<url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
@@ -132,7 +132,7 @@
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
 		    <artifactId>autotest.webui</artifactId>
-		    <version>1.0.0-20170722</version>
+		    <version>1.0.0-20170722-SNAPSHOT</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>

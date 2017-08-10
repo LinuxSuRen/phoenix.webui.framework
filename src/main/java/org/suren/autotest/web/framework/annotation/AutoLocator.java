@@ -38,14 +38,20 @@ import com.surenpi.autotest.webui.core.LocatorType;
 public @interface AutoLocator
 {
 	/**
+	 * 默认为根据标签名称定位
 	 * @return 定位方法
 	 */
-	LocatorType locator();
+	LocatorType locator() default LocatorType.BY_NAME;
 	
 	/**
 	 * @return 定位的具体内容
 	 */
 	String value();
+	
+	/**
+	 * @return 扩展字段
+	 */
+	String extend() default "";
 	
 	/**
 	 * @return 显式的查找超时时间（单位：毫秒）

@@ -40,9 +40,9 @@ node {
   
   stage('Package') {
     if(isUnix()){
-      sh "'${mvnHome}/bin/mvn' package"
+      sh "'${mvnHome}/bin/mvn' --update-snapshots package"
     }else{
-      bat(/"${mvnHome}\bin\mvn" package/)
+      bat(/"${mvnHome}\bin\mvn" --update-snapshots package/)
     }
   }
   

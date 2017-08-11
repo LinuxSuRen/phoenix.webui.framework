@@ -33,9 +33,6 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SeleniumIDLocator extends AbstractLocator<WebElement>
 {
-	@Autowired
-	private SeleniumEngine engine;
-	
 	@Override
 	public String getType()
 	{
@@ -43,7 +40,7 @@ public class SeleniumIDLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return By.id(getValue());
 	}

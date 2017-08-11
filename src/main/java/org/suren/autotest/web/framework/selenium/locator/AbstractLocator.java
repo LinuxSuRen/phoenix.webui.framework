@@ -91,7 +91,10 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 		return (List<E>) driver.findElements(by);
 	}
 	
-	protected abstract By getBy();
+	/**
+	 * @return Selenium封装的元素定位符号类
+	 */
+	public abstract By getBy();
 
 	/**
 	 * 根据超时时间来等待元素

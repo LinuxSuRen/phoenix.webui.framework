@@ -22,6 +22,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.surenpi.autotest.webui.core.Locator;
+
 /**
  * 元素扩展属性定位器
  * @author suren
@@ -33,6 +35,7 @@ public class SeleniumXAttrLocator extends AbstractLocator<WebElement>
 {
 	private String xAttr;
 	private String tagName;
+    private int condition = Locator.EQUAL;
 
 	@Override
 	public String getType()
@@ -64,11 +67,27 @@ public class SeleniumXAttrLocator extends AbstractLocator<WebElement>
         this.tagName = tagName;
     }
 
-    @Override
-    protected By getBy()
+    public void setCondition(int condition)
     {
-        return By.xpath(String.format("//%s[@%s='%s']",
-                tagName, this.getAttrName(), this.getValue()));
+        this.condition = condition;
+    }
+
+    @Override
+    public By getBy()
+    {
+        By by = null;
+        if(condition == Locator.EQUAL)
+        {
+            by = By.xpath(String.format("//%s[@%s='%s']",
+                    this.tagName, this.getAttrName(), this.getValue()));
+        }
+        else if(condition == Locator.LIKE)
+        {
+            by = By.xpath(String.format("//%s[contains(@%s,'%s')]",
+                    this.tagName, this.getAttrName(), this.getValue()));
+        }
+        
+        return by;
     }
 
 }

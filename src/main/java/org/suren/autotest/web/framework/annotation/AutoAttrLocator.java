@@ -23,7 +23,23 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.surenpi.autotest.webui.core.Locator;
+
 /**
+ * 根据标签属性来定位。例如下面的标签：
+ * <pre>{@code
+ * <button data="simple" data-color="red">按钮</button>
+ * }</pre>
+ * 标签使用方法为：
+ * <pre>
+ * &#064;AutoAttrLocator(tagName = "button", name = "data-color", value = "red")
+ * private Button But;
+ * </pre>
+ * 或者：
+ * <pre>
+ * &#064;AutoAttrLocator(tagName = "button", name = "data", value = "simple")
+ * private Button But;
+ * </pre>
  * @author suren
  * @since Aug 10, 2017 10:11:10 PM
  */
@@ -34,13 +50,36 @@ import java.lang.annotation.Target;
 public @interface AutoAttrLocator 
 {
     /**
-     * @return
+     * 例如下面的标签名称为button
+     * <pre>{@code
+     * <button data="simple" data-color="red">按钮</button>
+     * }</pre>
+     * @return 标签名称
      */
     String tagName() default "input";
     
+    /**
+     * 例如下面标签的属性名称有：data、
+     * <pre>{@code
+     * <button data="simple" data-color="red">按钮</button>
+     * }</pre>
+     * @return 属性名称
+     */
     String name();
     
+    /**
+     * 例如下面标签属性data-color的值为red
+     * <pre>{@code
+     * <button data="simple" data-color="red">按钮</button>
+     * }</pre>
+     * @return 属性值
+     */
     String value();
+    
+    /**
+     * @return 条件
+     */
+    int condition() default Locator.EQUAL;
     
     /**
      * @return 显式的查找超时时间（单位：毫秒）

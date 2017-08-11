@@ -39,7 +39,7 @@ public class SeleniumLinkTextLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return By.linkText(getValue());
 	}

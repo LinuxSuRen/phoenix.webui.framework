@@ -61,8 +61,10 @@ import org.suren.autotest.web.framework.annotation.AutoDataSource;
 import org.suren.autotest.web.framework.annotation.AutoLocator;
 import org.suren.autotest.web.framework.annotation.AutoLocators;
 import org.suren.autotest.web.framework.annotation.AutoPage;
+import org.suren.autotest.web.framework.annotation.AutoTextLocator;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.selenium.locator.SeleniumTextLocator;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
@@ -355,6 +357,7 @@ public class Phoenix implements Closeable, WebUIEngine
 					    element.setTagName(value);
 					    break;
 					case BY_X_ATTR:
+					case BY_X_TEXT:
 					case BY_FRAME_NAME:
 					case BY_FRAME_INDEX:
 					    logger.error("Not support locator by frame.");
@@ -369,8 +372,22 @@ public class Phoenix implements Closeable, WebUIEngine
                 xAttrLocator.setValue(autoAttrLocator.value());
                 xAttrLocator.setExtend(autoAttrLocator.name());
                 xAttrLocator.setTagName(autoAttrLocator.tagName());
+                xAttrLocator.setCondition(autoAttrLocator.condition());
                 xAttrLocator.setTimeout(autoAttrLocator.timeout());
+                
                 element.getLocatorList().add(xAttrLocator);
+			}
+			
+			AutoTextLocator autoTextLocator = field.getAnnotation(AutoTextLocator.class);
+			if(autoTextLocator != null)
+			{
+			    SeleniumTextLocator textLocator = context.getBean(SeleniumTextLocator.class);
+			    textLocator.setCondition(autoTextLocator.condition());
+			    textLocator.setExtend(autoTextLocator.tagName());
+			    textLocator.setValue(autoTextLocator.text());
+			    textLocator.setTimeout(autoTextLocator.timeout());
+			    
+			    element.getLocatorList().add(textLocator);
 			}
 
 			AutoLocators autoLocators = field.getAnnotation(AutoLocators.class);

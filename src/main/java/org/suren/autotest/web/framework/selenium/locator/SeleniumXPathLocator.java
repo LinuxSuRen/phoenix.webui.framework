@@ -39,7 +39,7 @@ public class SeleniumXPathLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return By.xpath(getValue());
 	}

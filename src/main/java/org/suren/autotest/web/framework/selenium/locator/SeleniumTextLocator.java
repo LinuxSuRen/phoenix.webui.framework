@@ -16,16 +16,13 @@
 
 package org.suren.autotest.web.framework.selenium.locator;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.surenpi.autotest.webui.core.Locator;
 
 /**
  * 元素文本定位器
@@ -34,8 +31,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SeleniumTextLocator extends AbstractTreeLocator
+public class SeleniumTextLocator extends AbstractLocator<WebElement>
 {
+    private String tagName;
+    private String text;
+    private int condition = Locator.EQUAL;
 
 	@Override
 	public String getType()
@@ -43,28 +43,37 @@ public class SeleniumTextLocator extends AbstractTreeLocator
 		return "byText";
 	}
 
-	@Override
-	public WebElement findElement(SearchContext driver)
-	{
-		String text = getValue();
-		
-		By by = getBy();
+    @Override
+    public void setValue(String value)
+    {
+        this.text = value;
+    }
 
-		List<WebElement> elementList = driver.findElements(by);
-		for(WebElement ele : elementList)
-		{
-			if(driver instanceof WebDriver)
-			{
-				new Actions((WebDriver) driver).moveToElement(ele);
-			}
-			
-			if(text.equals(ele.getText()))
-			{
-				return ele;
-			}
-		}
-		
-		return null;
-	}
+    @Override
+    public void setExtend(String extend)
+    {
+        this.tagName = extend;
+    }
+
+    public void setCondition(int condition)
+    {
+        this.condition = condition;
+    }
+
+    @Override
+    public By getBy()
+    {
+        By by = null;
+        if(condition == Locator.EQUAL)
+        {
+            by = By.xpath(String.format("//%s[text()='%s']", this.tagName, this.text));
+        }
+        else if(condition == Locator.LIKE)
+        {
+            by = By.xpath(String.format("//%s[contains(text(),'%s')]", this.tagName, this.text));
+        }
+        
+        return by;
+    }
 
 }

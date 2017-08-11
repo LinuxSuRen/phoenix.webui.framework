@@ -49,7 +49,7 @@ public class SeleniumIFrameIndexLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return null;
 	}

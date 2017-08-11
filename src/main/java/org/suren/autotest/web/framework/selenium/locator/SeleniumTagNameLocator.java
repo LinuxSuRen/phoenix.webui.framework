@@ -39,7 +39,7 @@ public class SeleniumTagNameLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return By.tagName(getValue());
 	}

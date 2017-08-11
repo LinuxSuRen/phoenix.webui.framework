@@ -43,7 +43,7 @@ public class SeleniumCssLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return By.className(getValue());
 	}

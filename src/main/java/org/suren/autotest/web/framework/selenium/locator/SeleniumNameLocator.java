@@ -39,7 +39,7 @@ public class SeleniumNameLocator extends AbstractLocator<WebElement>
 	}
 
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		return By.name(getValue());
 	}

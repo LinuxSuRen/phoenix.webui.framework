@@ -43,7 +43,7 @@ public abstract class AbstractTreeLocator extends AbstractLocator<WebElement>
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	protected By getBy()
+	public By getBy()
 	{
 		if(StringUtils.isAnyBlank(getHostType(), getHostValue()))
 		{

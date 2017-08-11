@@ -31,6 +31,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
+import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
+import org.suren.autotest.web.framework.selenium.locator.SeleniumTextLocator;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
 import org.suren.autotest.web.framework.util.StringUtils;
 
@@ -104,21 +106,6 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		By by = null;
 
 		this.element = element;
-		
-		for(Locator locator : element.getLocatorList())
-		{
-		    if(!locator.getClass().equals(SeleniumXAttrLocator.class))
-		    {
-		        break;
-		    }
-		    
-		    String value = ((SeleniumXAttrLocator) locator).getValue();
-		    String attrName = ((SeleniumXAttrLocator) locator).getAttrName();
-		    String tagName = ((SeleniumXAttrLocator) locator).getTagName();
-		    
-		    return By.xpath(String.format("//%s[@%s='%s']",
-		            tagName, attrName, value));
-		}
 		
 		if (StringUtils.isNotBlank(element.getId()))
 		{
@@ -204,10 +191,23 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 			}
 			by = By.tagName(paramTagName);
 		}
-		else
-		{
-			throw new LocatorNotFoundException("");
-		}
+		
+        for(Locator locator : element.getLocatorList())
+        {
+            Class<?> locatorClz = locator.getClass();
+            if(locatorClz.equals(SeleniumXAttrLocator.class)
+                    || locatorClz.equals(SeleniumTextLocator.class))
+            {
+                by = ((AbstractLocator<?>) locator).getBy();
+                
+                break;
+            }
+        }
+        
+        if(by == null)
+        {
+            throw new LocatorNotFoundException("PrioritySearchStrategy");
+        }
 		
 		return by;
 	}

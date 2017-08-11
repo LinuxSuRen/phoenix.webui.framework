@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.StringUtils;
 
 import com.surenpi.autotest.webui.core.ElementSearchStrategy;
+import com.surenpi.autotest.webui.core.ElementsSearchStrategy;
 import com.surenpi.autotest.webui.core.StrategyType;
 import com.surenpi.autotest.webui.ui.Element;
 
@@ -56,6 +57,15 @@ public class SearchStrategyUtils implements ApplicationContextAware
 		
 		return (ElementSearchStrategy<T>) context.getBean(strategy, ElementSearchStrategy.class);
 	}
+    
+    @SuppressWarnings("unchecked")
+    public <T> ElementsSearchStrategy<T> findElementsStrategy(Class<T> type, Element element)
+    {
+        String strategy = element.getStrategy();
+        strategy = StringUtils.isBlank(strategy) ? "prioritySearchStrategy" : strategyMap.get(strategy);
+        
+        return (ElementsSearchStrategy<T>) context.getBean(strategy, ElementsSearchStrategy.class);
+    }
 
 	@Override
 	public void setApplicationContext(ApplicationContext context)

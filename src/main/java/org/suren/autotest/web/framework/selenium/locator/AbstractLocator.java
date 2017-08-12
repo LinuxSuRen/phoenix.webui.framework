@@ -37,6 +37,7 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 {
 	private String value;
 	private long timeout;
+    private int order;
 
 	@Override
 	public String getValue()
@@ -63,6 +64,18 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 	}
 
 	@Override
+    public int getOrder()
+    {
+        return this.order;
+    }
+
+    @Override
+    public void setOrder(int order)
+    {
+        this.order = order;
+    }
+
+    @Override
 	public void setExtend(String extend){}
 	
 	@SuppressWarnings("unchecked")
@@ -98,15 +111,16 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 
 	/**
 	 * 根据超时时间来等待元素
-	 * @param driver locator
-	 * @param driver driver
-	 * @param by by
+	 * @param driver 驱动
+	 * @param timeout 超时时间
+	 * @param by 定位方法
 	 * @return sdf
 	 */
 	@SuppressWarnings("unchecked")
 	protected boolean elementWait(WebDriver driver, long timeout, By by)
 	{
-		return eleWait(driver, timeout, ExpectedConditions.visibilityOfElementLocated(by));
+		return eleWait(driver, timeout, ExpectedConditions.presenceOfElementLocated(by),
+		        ExpectedConditions.visibilityOfElementLocated(by));
 	}
 
 	@SuppressWarnings("unchecked")

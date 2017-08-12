@@ -18,11 +18,9 @@ package org.suren.autotest.web.framework.selenium.locator;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * id定位器

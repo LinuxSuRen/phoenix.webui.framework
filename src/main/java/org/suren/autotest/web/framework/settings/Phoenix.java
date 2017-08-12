@@ -393,11 +393,12 @@ public class Phoenix implements Closeable, WebUIEngine
 			AutoLocators autoLocators = field.getAnnotation(AutoLocators.class);
 			if(autoLocators != null)
 			{
-				element.setStrategy(autoLocators.strategy().getName());
+			    element.setStrategy(autoLocators.strategy().getName());
+			    
 				for(AutoLocator locator : autoLocators.locators())
 				{
-					Map<String, Locator> beans = context.getBeansOfType(Locator.class);
-					Collection<Locator> locatorList = beans.values();
+	                Map<String, Locator> beans = context.getBeansOfType(Locator.class);
+	                Collection<Locator> locatorList = beans.values();
 					for(Locator locatorItem : locatorList)
 					{
 						if(!locator.locator().getName().equals(locatorItem.getType()))
@@ -410,13 +411,39 @@ public class Phoenix implements Closeable, WebUIEngine
 							LocatorAware locatorAware = (LocatorAware) locatorItem;
 							locatorAware.setValue(locator.value());
 							locatorAware.setTimeout(locator.timeout());
-							locatorAware.setExtend("");
+							locatorAware.setExtend(locator.extend());
+							locatorAware.setOrder(locator.order());
 							
 							element.getLocatorList().add(locatorItem);
 							
 							break;
 						}
 					}
+				}
+				
+				for(AutoAttrLocator locator : autoLocators.attrLocators())
+				{
+				    SeleniumXAttrLocator seleniumXAttrLocator = context.getBean(SeleniumXAttrLocator.class);
+				    seleniumXAttrLocator.setTagName(locator.tagName());
+				    seleniumXAttrLocator.setExtend(locator.name());
+				    seleniumXAttrLocator.setValue(locator.value());
+				    seleniumXAttrLocator.setTimeout(locator.timeout());
+				    seleniumXAttrLocator.setOrder(locator.order());
+				    seleniumXAttrLocator.setCondition(locator.condition());
+				    
+                    element.getLocatorList().add(seleniumXAttrLocator);
+				}
+				
+				for(AutoTextLocator locator : autoLocators.textLocators())
+				{
+				    SeleniumTextLocator seleniumTextLocator = context.getBean(SeleniumTextLocator.class);
+				    seleniumTextLocator.setExtend(locator.tagName());
+				    seleniumTextLocator.setValue(locator.text());
+				    seleniumTextLocator.setTimeout(locator.timeout());
+				    seleniumTextLocator.setOrder(locator.order());
+				    seleniumTextLocator.setCondition(locator.condition());
+                    
+                    element.getLocatorList().add(seleniumTextLocator);
 				}
 			}
 		}

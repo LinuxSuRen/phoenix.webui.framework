@@ -16,6 +16,7 @@
 
 package org.suren.autotest.web.framework.selenium.strategy;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.openqa.selenium.SearchContext;
@@ -78,6 +79,15 @@ public class ZoneSearchStrategy implements ElementSearchStrategy<WebElement>, Pa
 		}
 		
 		WebDriver driver = engine.getDriver();
+		locators.sort(new Comparator<Locator>(){
+
+            @Override
+            public int compare(Locator o1, Locator o2)
+            {
+                return o1.getOrder() - o2.getOrder();
+            }
+        });
+		
 		for(Locator locator : locators)
 		{
 			if(!(locator instanceof AbstractLocator<?>))

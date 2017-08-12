@@ -40,20 +40,13 @@ public class SeleniumMultiValueEditor implements MultiValueEditor
     private ElementFilter filter;
 
     @Override
-    public Object getValue(Element ele)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void setValue(Element ele, Object value)
     {
         ElementsSearchStrategy<WebElement> strategy = searchStrategyUtils.findElementsStrategy(WebElement.class, ele);
         
         List<WebElement> eleList = strategy.searchAll(ele);
         
-        for(int i = 0; i < eleList.size();)
+        for(int i = 0; i < eleList.size(); i++)
         {
             WebElement webEle = eleList.get(i);
             String tagName = webEle.getTagName();
@@ -62,37 +55,23 @@ public class SeleniumMultiValueEditor implements MultiValueEditor
             String attrName = null;
             String attrValue = null;
             
+            if(!webEle.isDisplayed())
+            {
+                continue;
+            }
+            
             if(filter.filter(tagName, attrName, attrValue, text))
             {
+                webEle.sendKeys(value.toString());
             }
         }
     }
 
     @Override
-    public void submit(Element ele)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public boolean isEnabled(Element element)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean isHidden(Element element)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setFilter(ElementFilter filter)
+    public MultiValueEditor setFilter(ElementFilter filter)
     {
         this.filter = filter;
+        
+        return this;
     }
-
 }

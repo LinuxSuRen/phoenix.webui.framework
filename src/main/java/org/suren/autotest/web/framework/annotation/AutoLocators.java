@@ -37,5 +37,9 @@ public @interface AutoLocators
 {
 	AutoLocator[] locators();
 	
+	AutoTextLocator[] textLocators() default {};
+    
+	AutoAttrLocator[] attrLocators() default {};
+	
 	StrategyType strategy() default StrategyType.PRIORITY;
 }

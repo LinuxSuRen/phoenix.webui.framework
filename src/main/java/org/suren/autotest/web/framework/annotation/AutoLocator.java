@@ -56,7 +56,13 @@ public @interface AutoLocator
 	String extend() default "";
 	
 	/**
+	 * 当通过当期定位方法可以定位到，并且元素是可见的超时时间
 	 * @return 显式的查找超时时间（单位：毫秒）
 	 */
 	long timeout() default 0;
+	
+	/**
+	 * @return 定位方法的优先级
+	 */
+	int order() default 0;
 }

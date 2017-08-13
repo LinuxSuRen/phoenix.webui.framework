@@ -24,8 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,21 +38,18 @@ import java.util.stream.Collectors;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.VisitorSupport;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.dom4j.xpath.DefaultXPath;
 import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.annotation.AutoApplication;
-import org.suren.autotest.web.framework.annotation.AutoPage;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
@@ -75,13 +70,9 @@ import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.core.ConfigException;
 import com.surenpi.autotest.webui.core.ConfigNotFoundException;
-import com.surenpi.autotest.webui.core.Locator;
-import com.surenpi.autotest.webui.core.LocatorAware;
 import com.surenpi.autotest.webui.core.PageContext;
 import com.surenpi.autotest.webui.core.PageContextAware;
 import com.surenpi.autotest.webui.core.WebUIEngine;
-import com.surenpi.autotest.webui.ui.AbstractElement;
-import com.surenpi.autotest.webui.ui.Text;
 
 import net.sf.json.util.JSONUtils;
 
@@ -641,7 +632,6 @@ public class Phoenix implements Closeable, WebUIEngine
 			Element ele) throws Exception
 	{
 		final Object pageInstance = getBean(pageClsStr);
-		final Class<?> pageCls = pageInstance.getClass();
 
 		String url = ele.attributeValue("url");
 		if (url != null)
@@ -653,99 +643,8 @@ public class Phoenix implements Closeable, WebUIEngine
 
 		BeanUtil.set(pageInstance, "dataSource", dataSrcClsStr);
 
-		ele.accept(new VisitorSupport()
-		{
-
-			@Override
-			public void visit(Element node)
-			{
-				if (!"field".equals(node.getName()))
-				{
-					return;
-				}
-
-				String fieldName = node.attributeValue("name");
-				String byId = node.attributeValue("byId");
-				String byCss = node.attributeValue("byCss");
-				String byName = node.attributeValue("byName");
-				String byXpath = node.attributeValue("byXpath");
-				String byLinkText = node.attributeValue("byLinkText");
-				String byPartialLinkText = node.attributeValue("byPartialLinkText");
-				String byTagName = node.attributeValue("byTagName");
-				String data = node.attributeValue("data");
-				String type = node.attributeValue("type");
-				String strategy = node.attributeValue("strategy");
-				String paramPrefix = node.attributeValue("paramPrefix", "param");
-				String timeOut = node.attributeValue("timeout", "0");
-				if (fieldName == null || "".equals(fieldName))
-				{
-					return;
-				}
-
-				AbstractElement ele = null;
-				try
-				{
-					Method getterMethod = BeanUtils.findMethod(pageCls,
-							"get" + fieldName.substring(0, 1).toUpperCase()
-									+ fieldName.substring(1));
-					if (getterMethod != null)
-					{
-						ele = (AbstractElement) getterMethod
-								.invoke(pageInstance);
-
-						if (ele == null)
-						{
-							logger.error(String.format(
-									"element [%s] is null, maybe you not set autowired.",
-									fieldName));
-							return;
-						}
-
-						if ("input".equals(type))
-						{
-							Text text = (Text) ele;
-							text.setValue(data);
-
-							ele = text;
-						}
-
-						ele.setId(byId);
-						ele.setName(byName);
-						ele.setTagName(byTagName);
-						ele.setXPath(byXpath);
-						ele.setCSS(byCss);
-						ele.setLinkText(byLinkText);
-						ele.setPartialLinkText(byPartialLinkText);
-						ele.setStrategy(strategy);
-						ele.setParamPrefix(paramPrefix);
-						ele.setTimeOut(Long.parseLong(timeOut));
-					}
-					else
-					{
-						logger.error(String.format("page cls [%s], field [%s]",
-										pageClsStr, fieldName));
-					}
-				}
-				catch (IllegalAccessException e)
-				{
-					logger.error(e.getMessage(), e);
-				}
-				catch (IllegalArgumentException e)
-				{
-					logger.error(e.getMessage(), e);
-				}
-				catch (InvocationTargetException e)
-				{
-					logger.error(e.getMessage(), e);
-				}
-				catch (ClassCastException e)
-				{
-					logger.error(String.format("fieldName [%s]", fieldName), e);
-				}
-
-				node.accept(new FieldLocatorsVisitor(ele));
-			}
-		});
+		FieldVisitor fieldVisitor = new FieldVisitor(pageInstance, pageClsStr, context);
+		ele.accept(fieldVisitor);
 
 		pageMap.put(pageClsStr, (Page) pageInstance);
 	}
@@ -798,73 +697,6 @@ public class Phoenix implements Closeable, WebUIEngine
 		}
 		
 		return StringUtils.uncapitalize(result);
-	}
-
-	/**
-	 * 元素定位器信息解析
-	 * @author suren
-	 * @since 2016年7月28日 上午8:18:01
-	 */
-	class FieldLocatorsVisitor extends VisitorSupport
-	{
-
-		private AbstractElement absEle;
-		
-		public FieldLocatorsVisitor(AbstractElement element)
-		{
-			this.absEle = element;
-		}
-		
-		@Override
-		public void visit(Element node)
-		{
-			if (!"locator".equals(node.getName()))
-			{
-				return;
-			}
-			
-			String name = node.attributeValue("name");
-			String value = node.attributeValue("value");
-			String timeoutStr = node.attributeValue("timeout");
-			String extend = node.attributeValue("extend");
-			
-			if(StringUtils.isBlank(name) || StringUtils.isBlank(value))
-			{
-				logger.error("locator has empty name or value.");
-			}
-			
-			long timeout = 0;
-			if(StringUtils.isNotBlank(timeoutStr))
-			{
-				try
-				{
-					timeout = Long.parseLong(timeoutStr);
-				}
-				catch(NumberFormatException e){}
-			}
-			
-			Map<String, Locator> beans = context.getBeansOfType(Locator.class);
-			Collection<Locator> locatorList = beans.values();
-			for(Locator locator : locatorList)
-			{
-				if(!name.equals(locator.getType()))
-				{
-					continue;
-				}
-				
-				if(locator instanceof LocatorAware)
-				{
-					LocatorAware locatorAware = (LocatorAware) locator;
-					locatorAware.setValue(value);
-					locatorAware.setTimeout(timeout);
-					locatorAware.setExtend(extend);
-					
-					absEle.getLocatorList().add(locator);
-					
-					break;
-				}
-			}
-		}
 	}
 	
 	@SuppressWarnings("unchecked")

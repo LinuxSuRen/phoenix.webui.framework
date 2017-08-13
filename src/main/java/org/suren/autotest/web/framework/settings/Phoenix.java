@@ -214,12 +214,10 @@ public class Phoenix implements Closeable, WebUIEngine
 	 */
 	private void annotationScan()
 	{
-		Map<String, Object> beanMap = context.getBeansWithAnnotation(AutoPage.class);
-
         SeleniumEngine engine = getEngine();
         
 		AnnotationProcess annotationProcess = new AnnotationProcess(this.context);
-		annotationProcess.scan(beanMap, pageMap, engine);
+		annotationProcess.scan(pageMap, engine);
 	}
 
 	/**

@@ -125,7 +125,7 @@ public class SeleniumEngine
 		}
 		catch (MalformedURLException e)
 		{
-			e.printStackTrace();
+		    logger.error("初始化配置文件发生错误！", e);
 		}
 	}
 	
@@ -415,9 +415,10 @@ public class SeleniumEngine
 	 */
 	public boolean storePro(ClassLoader classLoader)
 	{
+	    String encoding = "utf-8";
 		URL defaultResourceUrl = classLoader.getResource(ENGINE_CONFIG_FILE_NAME);
 		try(OutputStream out = new FileOutputStream(
-				new File(URLDecoder.decode(defaultResourceUrl.getFile(), "utf-8"))))
+				new File(URLDecoder.decode(defaultResourceUrl.getFile(), encoding))))
 		{
 			enginePro.store(out, "");
 			
@@ -425,15 +426,15 @@ public class SeleniumEngine
 		}
 		catch (UnsupportedEncodingException e)
 		{
-			e.printStackTrace();
+		    logger.error("不支持的字符集" + encoding, e);
 		}
 		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+            logger.error("", e);
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+            logger.error("", e);
 		}
 		
 		return false;
@@ -500,7 +501,7 @@ public class SeleniumEngine
 				}
 				catch (IOException e)
 				{
-					e.printStackTrace();
+				    logger.error("", e);
 				}
 			}
 			

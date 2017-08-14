@@ -57,16 +57,17 @@ public class AnnotationProcess
 {
     private static final Logger logger = LoggerFactory.getLogger(AnnotationProcess.class);
     
-    private Map<String, DataSourceInfo> dataSourceMap = new HashMap<String, DataSourceInfo>();
     private ApplicationContext context;
+    private Map<String, DataSourceInfo> dataSourceMap;
     
     /**
      * 构造一个注解处理类
      * @param context spring上下文实例
      */
-    public AnnotationProcess(ApplicationContext context)
+    public AnnotationProcess(ApplicationContext context, Map<String, DataSourceInfo> dataSourceMap)
     {
         this.context = context;
+        this.dataSourceMap = dataSourceMap;
     }
     
     /**

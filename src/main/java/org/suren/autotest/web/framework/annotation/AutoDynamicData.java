@@ -25,13 +25,18 @@ import java.lang.annotation.Target;
 import com.surenpi.autotest.datasource.DynamicDataConstants;
 
 /**
- * @author suren
- * @since 2017年6月26日 上午11:07:01
+ * 动态数据
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.1.0
  */
 @Target({ElementType.METHOD, ElementType.TYPE_PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AutoDynamicData
 {
+	/**
+	 * 默认为简单类型
+	 * @return 数据类型
+	 */
 	String type() default DynamicDataConstants.DDC_SIMPLE;
 }

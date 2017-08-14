@@ -207,7 +207,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	{
         SeleniumEngine engine = getEngine();
         
-		AnnotationProcess annotationProcess = new AnnotationProcess(this.context);
+		AnnotationProcess annotationProcess = new AnnotationProcess(this.context, this.dataSourceMap);
 		annotationProcess.scan(pageMap, engine);
 	}
 

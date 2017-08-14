@@ -9,8 +9,9 @@ import java.lang.annotation.Target;
 import com.surenpi.autotest.webui.Page;
 
 /**
- * @author suren
- * @since 2017年6月26日 上午10:17:00
+ * 用户自动处理cookie
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.0.0
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

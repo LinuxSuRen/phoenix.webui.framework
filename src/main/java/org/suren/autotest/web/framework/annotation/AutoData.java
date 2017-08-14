@@ -24,8 +24,8 @@ import java.lang.annotation.Target;
 
 /**
  * 单个元素上的数据
- * @author suren
- * @since 2017年6月8日 下午12:40:15
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.0.0
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

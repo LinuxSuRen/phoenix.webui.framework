@@ -12,7 +12,8 @@ import org.springframework.core.annotation.AliasFor;
 
 /**
  * 一个独立的测试用例
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.0.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

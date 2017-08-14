@@ -26,8 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 用于在Page子类的属性上添加
- * @author suren
- * @since 2017年6月7日 下午6:57:34
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.1.0
  */
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -26,8 +26,10 @@ import java.lang.annotation.Target;
 import org.springframework.stereotype.Component;
 
 /**
- * @author suren
- * @date Aug 12, 2017 7:54:59 PM
+ * 用在Form表单上的定位描述，只能用在类上.
+ * @see com.surenpi.autotest.webui.Form
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.1.0
  */
 @Documented
 @Retention(RUNTIME)
@@ -35,9 +37,18 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface AutoForm
 {
-    AutoLocator[] locators();
+    /**
+     * @return 普通定位集合
+     */
+    AutoLocator[] locators() default {};
     
+    /**
+     * @return 根据标签文本定位的集合
+     */
     AutoTextLocator[] textLocators() default {};
     
+    /**
+     * @return 根据标签属性定位的集合
+     */
     AutoAttrLocator[] attrLocators() default {};
 }

@@ -49,8 +49,9 @@ import com.surenpi.autotest.webui.core.StrategyType;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 
 /**
- * @author suren
- * @date Aug 12, 2017 8:12:49 PM
+ * 注解处理类
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.1.0
  */
 public class AnnotationProcess
 {
@@ -59,6 +60,10 @@ public class AnnotationProcess
     private Map<String, DataSourceInfo> dataSourceMap = new HashMap<String, DataSourceInfo>();
     private ApplicationContext context;
     
+    /**
+     * 构造一个注解处理类
+     * @param context spring上下文实例
+     */
     public AnnotationProcess(ApplicationContext context)
     {
         this.context = context;

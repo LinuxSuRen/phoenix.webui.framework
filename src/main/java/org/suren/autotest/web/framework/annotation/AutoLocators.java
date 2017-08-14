@@ -26,8 +26,9 @@ import java.lang.annotation.Target;
 import com.surenpi.autotest.webui.core.StrategyType;
 
 /**
- * @author suren
- * @since 2017年7月10日 上午9:59:03
+ * 允许包含多个元素定位，并且指定一个定位策略.
+ * @author <a href="http://surenpi.com">suren</a>
+ * @since 2.0.0
  */
 @Documented
 @Retention(RUNTIME)
@@ -35,11 +36,24 @@ import com.surenpi.autotest.webui.core.StrategyType;
 @AutoField
 public @interface AutoLocators
 {
-	AutoLocator[] locators();
+	/**
+	 * @return 普通定位集合
+	 */
+	AutoLocator[] locators() default {};
 	
+	/**
+	 * @return 根据标签文本定位的集合
+	 */
 	AutoTextLocator[] textLocators() default {};
     
+	/**
+	 * @return 根据标签属性定位的集合
+	 */
 	AutoAttrLocator[] attrLocators() default {};
 	
+	/**
+	 * 默认的定位策略为“优先级定位”
+	 * @return 定位策略
+	 */
 	StrategyType strategy() default StrategyType.PRIORITY;
 }

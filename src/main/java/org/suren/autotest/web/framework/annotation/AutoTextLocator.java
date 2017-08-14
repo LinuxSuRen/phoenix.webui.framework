@@ -57,6 +57,9 @@ public @interface AutoTextLocator
      * @return 显式的查找超时时间（毫秒）
      */
     long timeout() default 0;
-    
+
+    /**
+     * @return 定位方法的优先级，数字越大优先级越高
+     */
     int order() default 0;
 }

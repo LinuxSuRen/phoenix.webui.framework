@@ -19,10 +19,10 @@ public @interface AutoExpect
      * 如果方法调用中没有发生指定的异常，则认为用例失败
      * @return 期待发生的异常
      */
-    Class expect();
+    Class<?> expect();
 
     /**
      * @return 可以接受的异常，则发生这些异常也认为是正常情况
      */
-    Class[] accept() default {};
+    Class<?>[] accept() default {};
 }

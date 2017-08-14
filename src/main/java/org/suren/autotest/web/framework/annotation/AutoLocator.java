@@ -62,7 +62,7 @@ public @interface AutoLocator
 	long timeout() default 0;
 	
 	/**
-	 * @return 定位方法的优先级
+	 * @return 定位方法的优先级，数字越大优先级越高
 	 */
 	int order() default 0;
 }

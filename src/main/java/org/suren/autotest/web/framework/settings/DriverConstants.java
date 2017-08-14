@@ -24,6 +24,7 @@ package org.suren.autotest.web.framework.settings;
  */
 public interface DriverConstants
 {
+	/** 驱动类型{@value} */
 	String	DRIVER_CHROME			= "chrome";
 	String	DRIVER_IE				= "ie";
 	String	DRIVER_FIREFOX			= "firefox";
@@ -32,9 +33,9 @@ public interface DriverConstants
 	String	DRIVER_PHANTOM_JS		= "phantomJs";
 	String	DRIVER_HTML_UNIT		= "htmlUnit";
 
-	/** 引擎配置文件名称 */
+	/** 引擎配置文件名称{@value} */
 	String	ENGINE_CONFIG_FILE_NAME	= "engine.properties";
 	
-	/** 浏览器初始化启动地址 */
+	/** 浏览器初始化启动地址{@value} */
 	String INITIAL_URL = "initialUrl";
 }

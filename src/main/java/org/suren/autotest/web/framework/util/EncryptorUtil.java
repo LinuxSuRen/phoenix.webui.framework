@@ -35,7 +35,7 @@ import org.apache.commons.codec.binary.Base64;
  * @author suren
  * @since 2016年12月24日 下午3:45:52
  */
-public class EncryptorUtil
+public abstract class EncryptorUtil
 {
 	public static final String ENCRYPT_FILE = "encrypt.properties";
 	public static final String ENCRYPT_KEY = "encrypt.key";

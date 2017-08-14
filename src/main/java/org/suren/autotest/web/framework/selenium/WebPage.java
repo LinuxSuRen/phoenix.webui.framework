@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.surenpi.autotest.webui.Page;
 
 /**
- * @author suren
- * @since 2017年7月4日 下午7:51:57
+ * 用户定义一个页面时需要继承该类
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class WebPage extends Page
 {

@@ -29,8 +29,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * css定位器
- * @author suren
- * @since 2016年7月25日 上午8:12:32
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

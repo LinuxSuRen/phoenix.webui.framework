@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 
 /**
  * 设置父元素的接口
- * @author suren
- * @since 2016年12月30日 下午7:48:26
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public interface ParentElement
 {

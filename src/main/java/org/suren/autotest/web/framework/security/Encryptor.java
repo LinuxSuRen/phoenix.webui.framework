@@ -29,8 +29,7 @@ import javax.crypto.SecretKey;
 
 /**
  * 加密类
- * @author suren
- * @since 2016年12月11日 下午9:02:54
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class Encryptor
 {

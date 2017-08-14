@@ -25,8 +25,8 @@ import java.lang.annotation.Target;
 import com.surenpi.autotest.webui.Page;
 
 /**
- * @author suren
- * @since 2017年6月30日 下午2:51:25
+ * 自动化处理localStorage
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

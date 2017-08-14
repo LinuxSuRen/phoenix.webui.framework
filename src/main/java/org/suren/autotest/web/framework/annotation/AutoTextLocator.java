@@ -22,7 +22,7 @@ import com.surenpi.autotest.webui.core.Locator;
  * &#064;AutoAttrLocator(tagName = "button", text = "按钮")
  * private Button But;
  * </pre>
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Documented
 @Retention(RUNTIME)

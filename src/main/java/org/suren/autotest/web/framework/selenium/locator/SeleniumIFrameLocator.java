@@ -28,8 +28,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * iframe名称定位器
- * @author suren
- * @since 2016年7月25日 下午12:44:34
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

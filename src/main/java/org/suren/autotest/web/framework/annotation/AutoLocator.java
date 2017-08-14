@@ -28,8 +28,7 @@ import com.surenpi.autotest.webui.core.LocatorType;
 
 /**
  * 元素定位符
- * @author suren
- * @since 2017年6月7日 下午6:58:44
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(value = {
         ElementType.FIELD

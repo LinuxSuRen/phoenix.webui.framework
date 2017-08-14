@@ -40,8 +40,7 @@ import org.suren.autotest.web.framework.util.BrowserUtil;
 
 /**
  * 浏览器配置
- * @author suren
- * @since 2017年5月16日 下午9:18:03
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class CapabilityConfig
 {

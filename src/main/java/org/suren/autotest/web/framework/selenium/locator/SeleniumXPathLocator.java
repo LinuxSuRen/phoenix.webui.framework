@@ -24,8 +24,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * xpath定位器
- * @author suren
- * @since 2016年7月25日 下午12:45:15
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

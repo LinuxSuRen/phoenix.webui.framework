@@ -25,8 +25,7 @@ import org.suren.autotest.web.framework.mail.MailConfig;
 
 /**
  * Spring零配置
- * @author suren
- * @since 2017年6月8日 上午8:21:10
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Configuration
 @ComponentScan({"com.surenpi.autotest.webui",

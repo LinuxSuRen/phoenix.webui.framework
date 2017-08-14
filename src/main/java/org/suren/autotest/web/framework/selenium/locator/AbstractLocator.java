@@ -30,8 +30,7 @@ import com.surenpi.autotest.webui.core.LocatorAware;
 
 /**
  * 元素定位器的抽象父类，实现了部分通用方法
- * @author suren
- * @since 2016年7月25日 下午12:43:15
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public abstract class AbstractLocator<E> implements Locator, LocatorAware
 {

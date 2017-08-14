@@ -28,8 +28,7 @@ import com.surenpi.autotest.webui.core.StrategyType;
 
 /**
  * 定位策略
- * @author suren
- * @since 2017年6月7日 下午7:03:57
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 测试报告发送
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(value = {ElementType.TYPE, ElementType.METHOD})
 @Documented

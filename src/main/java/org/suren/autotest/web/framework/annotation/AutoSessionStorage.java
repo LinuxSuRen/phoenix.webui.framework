@@ -28,7 +28,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * 用在方法上，第一次执行时，保存session信息；之后方法被调用时则会跳过
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

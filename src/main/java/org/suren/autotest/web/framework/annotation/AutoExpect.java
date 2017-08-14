@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 模块方法中对异常的配置
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(value = ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

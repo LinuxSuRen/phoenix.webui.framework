@@ -26,8 +26,7 @@ import org.openqa.selenium.interactions.Actions;
 
 /**
  * 根据属性来定位元素的抽象父类
- * @author suren
- * @since 2016年7月29日 下午2:54:39
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public abstract class AbstractSeleniumAttrLocator extends AbstractTreeLocator
 {

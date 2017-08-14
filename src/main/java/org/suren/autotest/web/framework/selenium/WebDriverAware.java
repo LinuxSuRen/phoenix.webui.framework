@@ -22,7 +22,7 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * 通过该接口可以获取webdriver的实例
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public interface WebDriverAware
 {

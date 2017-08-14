@@ -8,8 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 键值对注解
- * @author suren
- * @since 2017年6月26日 上午10:35:20
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

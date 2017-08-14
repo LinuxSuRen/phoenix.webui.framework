@@ -137,7 +137,7 @@
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
 		    <artifactId>autotest.datasource</artifactId>
-		    <version>1.0.0-20170706</version>
+		    <version>1.0.0-20170814-SNAPSHOT</version>
         </dependency>
 
 		<!-- Selenium依赖 -->
@@ -255,13 +255,11 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.yaml</groupId>
 		    <artifactId>snakeyaml</artifactId>
-		    <version>1.5</version>
 		</dependency>
 		
 		<!-- 

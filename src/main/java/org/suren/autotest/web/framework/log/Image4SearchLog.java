@@ -48,7 +48,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
-import org.suren.autotest.web.framework.util.AnimatedGifEncoder;
+
+import com.surenpi.autotest.utils.AnimatedGifEncoder;
 
 /**
  * 添加搜索时的图片记录

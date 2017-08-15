@@ -51,5 +51,5 @@ public @interface AutoModule
     /**
      * @return 可以接受的异常类型列表
      */
-    Class[] acceptException() default {};
+    Class<?>[] acceptException() default {};
 }

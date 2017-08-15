@@ -26,13 +26,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.util.CommonNumberUtil;
-import org.suren.autotest.web.framework.util.IDCardUtil;
-import org.suren.autotest.web.framework.util.RandomUtils;
-import org.suren.autotest.web.framework.util.StringUtils;
 
 import com.surenpi.autotest.datasource.DynamicData;
 import com.surenpi.autotest.datasource.DynamicDateFormat;
+import com.surenpi.autotest.utils.CommonNumberUtil;
+import com.surenpi.autotest.utils.IDCardUtil;
+import com.surenpi.autotest.utils.RandomUtils;
+import com.surenpi.autotest.utils.StringUtils;
 
 /**
  * 简单的动态数据实现

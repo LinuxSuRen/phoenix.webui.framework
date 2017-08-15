@@ -27,8 +27,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
-import org.suren.autotest.web.framework.util.StringUtils;
 
+import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.core.ElementSearchStrategy;
 import com.surenpi.autotest.webui.ui.Element;
 

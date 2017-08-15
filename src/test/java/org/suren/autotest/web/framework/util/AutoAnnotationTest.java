@@ -32,6 +32,9 @@ import org.suren.autotest.web.framework.page.AnnotationPage;
 import org.suren.autotest.web.framework.settings.DriverConstants;
 import org.suren.autotest.web.framework.settings.Phoenix;
 
+import com.surenpi.autotest.utils.EncryptorUtil;
+import com.surenpi.autotest.utils.ThreadUtil;
+
 /**
  * 测试使用注解配置的方式
  * @author suren

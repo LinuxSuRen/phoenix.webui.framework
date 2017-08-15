@@ -1,5 +1,4 @@
 /**
- * http://surenpi.com
  */
 package org.suren.autotest.web.framework.os;
 
@@ -13,7 +12,8 @@ import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.suren.autotest.web.framework.util.OSUtil;
+
+import com.surenpi.autotest.utils.OSUtil;
 
 /**
  * @author suren

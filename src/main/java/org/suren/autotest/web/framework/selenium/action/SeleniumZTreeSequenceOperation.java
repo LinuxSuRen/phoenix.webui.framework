@@ -29,9 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
-import org.suren.autotest.web.framework.util.StringUtils;
-import org.suren.autotest.web.framework.util.ThreadUtil;
 
+import com.surenpi.autotest.utils.StringUtils;
+import com.surenpi.autotest.utils.ThreadUtil;
 import com.surenpi.autotest.webui.action.SequenceAble;
 import com.surenpi.autotest.webui.ui.Element;
 

@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +37,8 @@ import org.suren.autotest.web.framework.annotation.AutoTextLocator;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumTextLocator;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
-import org.suren.autotest.web.framework.util.StringUtils;
 
+import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.Form;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.Locator;

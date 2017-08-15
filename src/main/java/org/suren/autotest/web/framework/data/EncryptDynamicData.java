@@ -19,9 +19,9 @@ package org.suren.autotest.web.framework.data;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.util.EncryptorUtil;
 
 import com.surenpi.autotest.datasource.DynamicData;
+import com.surenpi.autotest.utils.EncryptorUtil;
 
 /**
  * 密文版本的动态数据实现，需要用户在类路径下添加密钥配置文件encrypt.properties。

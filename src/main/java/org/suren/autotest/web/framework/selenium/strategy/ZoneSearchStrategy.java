@@ -30,8 +30,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
-import org.suren.autotest.web.framework.util.ThreadUtil;
 
+import com.surenpi.autotest.utils.ThreadUtil;
 import com.surenpi.autotest.webui.core.ElementSearchStrategy;
 import com.surenpi.autotest.webui.core.Locator;
 import com.surenpi.autotest.webui.ui.AbstractElement;

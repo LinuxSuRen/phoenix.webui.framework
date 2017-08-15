@@ -54,8 +54,6 @@ import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
-import org.suren.autotest.web.framework.util.NetUtil;
-import org.suren.autotest.web.framework.util.StringUtils;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
@@ -66,6 +64,8 @@ import com.surenpi.autotest.datasource.DynamicDataSource;
 import com.surenpi.autotest.datasource.FileResource;
 import com.surenpi.autotest.report.RecordReportWriter;
 import com.surenpi.autotest.report.record.ProjectRecord;
+import com.surenpi.autotest.utils.NetUtil;
+import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.core.ConfigException;

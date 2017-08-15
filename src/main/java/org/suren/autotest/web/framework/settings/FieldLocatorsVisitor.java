@@ -24,8 +24,8 @@ import org.dom4j.VisitorSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.suren.autotest.web.framework.util.StringUtils;
 
+import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.core.Locator;
 import com.surenpi.autotest.webui.core.LocatorAware;
 import com.surenpi.autotest.webui.ui.AbstractElement;

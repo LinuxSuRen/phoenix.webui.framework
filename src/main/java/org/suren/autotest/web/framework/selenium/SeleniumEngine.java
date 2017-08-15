@@ -70,13 +70,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.settings.DriverConstants;
-import org.suren.autotest.web.framework.util.StringUtils;
-import org.suren.autotest.web.framework.util.ThreadUtil;
 import org.suren.autotest.webdriver.downloader.DriverDownloader;
 import org.suren.autotest.webdriver.downloader.DriverMapping;
 import org.suren.autotest.webdriver.downloader.PathUtil;
 
 import com.surenpi.autotest.datasource.DynamicData;
+import com.surenpi.autotest.utils.StringUtils;
+import com.surenpi.autotest.utils.ThreadUtil;
 import com.surenpi.autotest.webui.core.AutoTestException;
 
 /**

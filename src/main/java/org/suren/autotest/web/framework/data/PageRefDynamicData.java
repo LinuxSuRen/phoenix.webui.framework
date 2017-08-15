@@ -30,9 +30,9 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.util.StringUtils;
 
 import com.surenpi.autotest.datasource.DynamicData;
+import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Text;

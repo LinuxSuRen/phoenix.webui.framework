@@ -45,13 +45,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.selenium.WebPage;
-import org.suren.autotest.web.framework.util.StringUtils;
 
 import com.surenpi.autotest.datasource.DataResource;
 import com.surenpi.autotest.datasource.DataSource;
 import com.surenpi.autotest.datasource.DataSourceConstants;
 import com.surenpi.autotest.datasource.DynamicData;
 import com.surenpi.autotest.datasource.DynamicDataSource;
+import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Button;
 import com.surenpi.autotest.webui.ui.CheckBoxGroup;

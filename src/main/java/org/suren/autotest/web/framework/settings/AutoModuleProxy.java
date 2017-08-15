@@ -50,11 +50,11 @@ import org.suren.autotest.web.framework.annotation.AutoLocalStorage;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
 import org.suren.autotest.web.framework.log.LoggerConstants;
-import org.suren.autotest.web.framework.util.PathUtil;
 
 import com.surenpi.autotest.report.RecordReportWriter;
 import com.surenpi.autotest.report.record.ExceptionRecord;
 import com.surenpi.autotest.report.record.NormalRecord;
+import com.surenpi.autotest.utils.PathUtil;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.ui.Text;

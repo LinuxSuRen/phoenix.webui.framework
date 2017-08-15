@@ -310,6 +310,10 @@ public class Phoenix implements Closeable, WebUIEngine
 		parse(document);
 	}
 	
+	/**
+	 * 初始化框架
+	 * @return 引擎对象实例
+	 */
 	public SeleniumEngine init()
 	{
 		SeleniumEngine engine = getEngine();
@@ -318,6 +322,11 @@ public class Phoenix implements Closeable, WebUIEngine
 		return engine;
 	}
 	
+	/**
+	 * 初始化框架并从数据源中加载数据
+	 * @see #init()
+	 * @see #initData()
+	 */
 	public void initWithData()
 	{
 		init();
@@ -326,6 +335,7 @@ public class Phoenix implements Closeable, WebUIEngine
 
 	/**
 	 * 从数据源中加载第一组数据，设置到所有page类中
+	 * @see #initData(int)
 	 */
 	public void initData()
 	{
@@ -384,30 +394,40 @@ public class Phoenix implements Closeable, WebUIEngine
 		}
 		
 		getDynamicDataSources();
-		DataSource<Page> dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());//context.getBean(dataSourceInfo.getType(), DataSource.class);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+        DataSource<Page> dataSource = (DataSource) dynamicDataSourceMap.get(dataSourceInfo.getType());
 		if(dataSource == null)
 		{
 			throw new AutoTestException("Can not found dataSource by type : " + dataSourceInfo.getType());
 		}
 		
+		String resoucePathName = dataSourceInfo.getResource();
 		DataResource clzResource = new ClasspathResource(
-				Phoenix.class, dataSourceInfo.getResource());
+				Phoenix.class, resoucePathName);
 		try
 		{
 			if(clzResource.getUrl() == null)
 			{
-				File file = new File(configFile.getParentFile(), dataSourceInfo.getResource());
-				if(!file.isFile())
-				{
-					throw new RuntimeException("Can not found datasource file : " + file.getAbsolutePath());
-				}
-				
-				clzResource = new FileResource(file);
+                if(configFile != null)
+                {
+                    File file = new File(configFile.getParentFile(), dataSourceInfo.getResource());
+                    if(!file.isFile())
+                    {
+                        throw new ConfigNotFoundException("dataSourceFile", file.getAbsolutePath());
+                    }
+                    
+                    clzResource = new FileResource(file);
+                }
+                else
+                {
+                    throw new ConfigNotFoundException(String.format("Can not found dataSource file '%s' from classpath.",
+                            resoucePathName));
+                }
 			}
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		
 		dataSource.loadData(clzResource, row, page);
@@ -415,6 +435,9 @@ public class Phoenix implements Closeable, WebUIEngine
 		return dataSource;
 	}
 	
+	/**
+	 * @return 所有的数据源
+	 */
 	public Collection<DynamicDataSource> getDynamicDataSources()
 	{
 		if(dynamicDataSourceMap == null)
@@ -478,9 +501,9 @@ public class Phoenix implements Closeable, WebUIEngine
 
 	/**
 	 * 解析整个框架主配置文件
-	 * @param doc doc
-	 * @throws DocumentException  DocumentException
-	 * @throws IOException IOException
+	 * @param doc xml文档
+	 * @throws DocumentException  xml解析错误
+	 * @throws IOException 配置文件读取错误
 	 * @throws SAXException 配置文件格式错误 
 	 */
 	private void parse(Document doc) throws IOException, DocumentException, SAXException
@@ -650,7 +673,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	}
 	
 	/**
-	 * 先使用类的缩写，再使用类全程来查找
+	 * 先使用类的缩写，再使用类全称来查找
 	 * @param pageClsStr pageClsStr
 	 * @return pageClsStr
 	 */

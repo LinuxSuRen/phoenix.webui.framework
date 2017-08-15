@@ -33,8 +33,7 @@ import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * jqGrid组件的选择
- * @author suren
- * @since 2017年1月16日 上午9:54:37
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumJqGridSequenceOperation implements SequenceAble
@@ -49,11 +48,8 @@ public class SeleniumJqGridSequenceOperation implements SequenceAble
 	public static final String OPER_BUT_BY = "operation_button_by";
 	public static final String OPER_BUT_INFO = "operation_button_info";
 	
-//	@Autowired
 	private Text searchText;
-//	@Autowired
 	private Button searchBut;
-//	@Autowired
 	private Button operationBut;
 
 	@Override

@@ -23,6 +23,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.surenpi.autotest.datasource.DynamicData;
@@ -34,12 +36,13 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
- * @author suren
- * @since 2017年3月25日 上午9:28:47
+ * freemarker模板格式的动态数据。因此原始的字符串值将会被当作模板类进行解析。
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class FreemarkerDynamicData implements DynamicData
 {
+    private static final Logger logger = LoggerFactory.getLogger(FreemarkerDynamicData.class);
 	private Map<String, Object> globalData;
 	
 	private static final String TMP_NAME = "freemarker";
@@ -67,11 +70,11 @@ public class FreemarkerDynamicData implements DynamicData
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+		    logger.error("", e);
 		}
 		catch (TemplateException e)
 		{
-			e.printStackTrace();
+            logger.error("", e);
 		}
 	
 		return null;

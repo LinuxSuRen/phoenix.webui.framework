@@ -28,8 +28,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 键盘动作实现
- * @author suren
- * @since Jul 23, 2016 6:38:44 PM
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumKeyBoard implements KeyBoardAble

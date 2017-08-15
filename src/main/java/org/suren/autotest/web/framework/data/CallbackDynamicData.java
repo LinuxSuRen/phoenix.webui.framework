@@ -27,8 +27,8 @@ import org.springframework.stereotype.Component;
 import com.surenpi.autotest.datasource.DynamicData;
 
 /**
- * @author suren
- * @since 2017年1月11日 下午1:32:02
+ * 由回调机制来生成动态数据
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class CallbackDynamicData implements DynamicData, ApplicationContextAware

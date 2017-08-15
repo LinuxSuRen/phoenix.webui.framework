@@ -42,8 +42,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 利用Selenium实现文件上传
- * @author suren
- * @since 2016年7月19日 上午9:24:34
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble

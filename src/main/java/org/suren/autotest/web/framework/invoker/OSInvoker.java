@@ -20,8 +20,7 @@ import java.io.IOException;
 
 /**
  * 执行本地命令的外部执行类
- * @author suren
- * @since 2016年12月12日 下午12:17:25
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class OSInvoker
 {

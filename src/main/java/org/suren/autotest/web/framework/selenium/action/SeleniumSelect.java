@@ -32,9 +32,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 下拉列表实现
- * @author suren
- * @since jdk1.6
- * @since 3.1.1-SNAPSHOT 2016年7月1日
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumSelect implements SelectAble, RandomSelectAble

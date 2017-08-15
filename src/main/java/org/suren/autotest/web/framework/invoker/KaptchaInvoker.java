@@ -29,8 +29,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * 验证码外部执行器
- * @author suren
- * @since 2017年1月7日 下午9:21:14
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class KaptchaInvoker {
 	/**

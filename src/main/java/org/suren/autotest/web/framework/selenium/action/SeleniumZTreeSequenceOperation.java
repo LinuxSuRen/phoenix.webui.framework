@@ -37,8 +37,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 利用Selenium来实现序列操作
- * @author suren
- * @since 2017年1月11日 下午4:56:58
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumZTreeSequenceOperation implements SequenceAble

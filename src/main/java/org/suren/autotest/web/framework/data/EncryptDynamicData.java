@@ -24,9 +24,8 @@ import org.suren.autotest.web.framework.util.EncryptorUtil;
 import com.surenpi.autotest.datasource.DynamicData;
 
 /**
- * 密文版本的动态数据实现
- * @author suren
- * @since 2017年1月11日 下午12:50:46
+ * 密文版本的动态数据实现，需要用户在类路径下添加密钥配置文件encrypt.properties。
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class EncryptDynamicData implements DynamicData

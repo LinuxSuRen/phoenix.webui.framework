@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.codehaus.groovy.control.CompilationFailedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.surenpi.autotest.datasource.DynamicData;
@@ -30,12 +32,12 @@ import groovy.lang.GroovyShell;
 
 /**
  * Groovy脚本版本的动态数据实现
- * @author suren
- * @since 2017年1月11日 下午12:47:43
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class GroovyDynamicData implements DynamicData
 {
+    private static final Logger logger = LoggerFactory.getLogger(GroovyDynamicData.class);
 	private String groovyCls;
 	private Map<String, Object> globalMap;
 	
@@ -53,10 +55,10 @@ public class GroovyDynamicData implements DynamicData
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+		    logger.error("", e);
 		}
-		groovyCls = buf.toString();
 	
+		groovyCls = buf.toString();
 	}
 	
 	@Override
@@ -84,7 +86,7 @@ public class GroovyDynamicData implements DynamicData
 		catch(CompilationFailedException e)
 		{
 			value = e.getMessage();
-			e.printStackTrace();
+            logger.error("Groovy动态数据语法错误！", e);
 		}
 		
 		return value;

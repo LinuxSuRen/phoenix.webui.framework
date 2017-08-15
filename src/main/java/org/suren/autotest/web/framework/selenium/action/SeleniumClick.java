@@ -46,9 +46,7 @@ import com.surenpi.autotest.webui.ui.FileUpload;
 
 /**
  * 通过Selenium实现点击（单击、双击）
- * 
- * @author suren
- * @since jdk1.6 2016年6月29日
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumClick implements ClickAble

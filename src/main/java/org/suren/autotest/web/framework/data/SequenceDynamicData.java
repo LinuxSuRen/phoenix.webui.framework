@@ -21,8 +21,7 @@ import org.springframework.stereotype.Component;
 import com.surenpi.autotest.datasource.DynamicData;
 
 /**
- * @author suren
- * @since 2017年1月11日 下午8:40:18
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SequenceDynamicData extends CallbackDynamicData implements DynamicData

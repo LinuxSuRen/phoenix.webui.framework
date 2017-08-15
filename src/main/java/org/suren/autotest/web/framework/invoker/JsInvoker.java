@@ -22,8 +22,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 用于执行js方法的外部调用
- * @author suren
- * @since 2016年12月23日 上午8:29:53
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class JsInvoker
 {

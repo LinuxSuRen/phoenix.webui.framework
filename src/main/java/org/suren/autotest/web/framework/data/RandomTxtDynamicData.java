@@ -25,18 +25,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.surenpi.autotest.datasource.DynamicData;
 
 /**
  * 从文本文件中随机获取一个字符串
- * @author suren
- * @since 2017年4月4日 下午12:17:36
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class RandomTxtDynamicData implements DynamicData
 {
+    private static final Logger logger = LoggerFactory.getLogger(RandomTxtDynamicData.class);
+    
 	@Override
 	public String getValue(String orginData)
 	{
@@ -63,7 +66,7 @@ public class RandomTxtDynamicData implements DynamicData
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+		    logger.error("", e);
 		}
 		
 		if(list.size() == 0)

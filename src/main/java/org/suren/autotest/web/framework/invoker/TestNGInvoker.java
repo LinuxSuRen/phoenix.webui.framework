@@ -21,8 +21,7 @@ import java.lang.reflect.Method;
 
 /**
  * 调用外部的TestNG脚本
- * @author suren
- * @since 2016年12月12日 下午12:30:01
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class TestNGInvoker
 {

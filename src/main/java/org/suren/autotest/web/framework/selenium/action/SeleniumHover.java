@@ -34,8 +34,7 @@ import com.surenpi.autotest.webui.ui.Element;
 import com.surenpi.autotest.webui.ui.FileUpload;
 
 /**
- * @author suren
- * @since 2016年10月14日 下午3:39:35
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumHover implements HoverAble

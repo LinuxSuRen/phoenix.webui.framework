@@ -39,8 +39,7 @@ import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * Page对象之间的属性数据引用
- * @author suren
- * @since 2017年1月11日 上午11:36:21
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class PageRefDynamicData implements DynamicData, ApplicationContextAware

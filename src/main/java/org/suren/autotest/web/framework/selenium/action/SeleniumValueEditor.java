@@ -34,8 +34,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 给文本框中填入值
- * @author suren
- * @since jdk1.6 2016年6月29日
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor

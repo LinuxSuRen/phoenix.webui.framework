@@ -39,8 +39,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 复选框选择
- * @author suren
- * @since Jul 27, 2016 1:00:30 PM
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SeleniumCheck implements CheckAble, ApplicationContextAware

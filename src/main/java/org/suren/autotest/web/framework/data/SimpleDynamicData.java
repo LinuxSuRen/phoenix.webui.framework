@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.suren.autotest.web.framework.util.CommonNumberUtil;
 import org.suren.autotest.web.framework.util.IDCardUtil;
@@ -34,12 +36,13 @@ import com.surenpi.autotest.datasource.DynamicDateFormat;
 
 /**
  * 简单的动态数据实现
- * @author suren
- * @since 2017年1月4日 下午12:33:01
+ * @author <a href="http://surenpi.com">suren</a>
  */
 @Component
 public class SimpleDynamicData implements DynamicData, DynamicDateFormat
 {
+    private static final Logger logger = LoggerFactory.getLogger(SimpleDynamicData.class);
+    
 	private Map<String, Object> globalData;
 	
 	private Set<String> formatSet = new HashSet<String>();
@@ -157,6 +160,7 @@ public class SimpleDynamicData implements DynamicData, DynamicDateFormat
 		}
 		catch(IllegalArgumentException | NullPointerException e)
 		{
+		    logger.error("", e);
 		}
 		
 		return false;

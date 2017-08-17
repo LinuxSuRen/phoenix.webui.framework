@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.surenpi.autotest</groupId>
 		<artifactId>autotest.parent</artifactId>
-		<version>1.0.1-20170618</version>
+		<version>1.0.1-20170815-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
@@ -112,32 +112,26 @@
 		<dependency>
 			<groupId>com.surenpi.autotest</groupId>
 			<artifactId>autotest.interface.framework</artifactId>
-			<version>1.0.1-20170422</version>
 		</dependency>
 		<dependency>
 			<groupId>com.surenpi.autotest</groupId>
 			<artifactId>autotest.webdriver.downloader</artifactId>
-			<version>1.0.2-20170810-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.surenpi.autotest</groupId>
             <artifactId>autotest.report</artifactId>
-            <version>1.0.0-20170722</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
 		    <artifactId>autotest.webui</artifactId>
-		    <version>1.0.0-20170722-SNAPSHOT</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
 		    <artifactId>autotest.datasource</artifactId>
-		    <version>1.0.0-20170814-SNAPSHOT</version>
         </dependency>
         <dependency>
 			<groupId>com.surenpi.autotest</groupId>
         	<artifactId>autotest.utils</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
         </dependency>
 
 		<!-- Selenium依赖 -->

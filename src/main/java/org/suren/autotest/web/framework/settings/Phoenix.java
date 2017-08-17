@@ -57,6 +57,7 @@ import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
+import com.beust.jcommander.JCommander;
 import com.surenpi.autotest.datasource.ClasspathResource;
 import com.surenpi.autotest.datasource.DataResource;
 import com.surenpi.autotest.datasource.DataSource;
@@ -90,6 +91,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	private Map<String, DynamicDataSource> dynamicDataSourceMap;
 	private ApplicationContext			context;
 	private ShutdownHook shutdownHook;
+	private Class<?>[] annotatedClasses;
 	
 	/** 系统配置路径 */
 	private File configFile;
@@ -104,100 +106,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	 */
 	public Phoenix(Class<?> ... annotatedClasses)
 	{
-		context = SpringUtils.getApplicationContext();
-		if(context == null || !((AbstractApplicationContext) context).isActive())
-		{
-		    if(annotatedClasses == null)
-			{
-				annotatedClasses = new Class[]{AutoApplicationConfig.class};
-			}
-			else
-			{
-			    int len = annotatedClasses.length;
-				annotatedClasses = Arrays.copyOf(annotatedClasses, len + 1);
-				annotatedClasses[len] = AutoApplicationConfig.class;
-			}
-			context = new AnnotationConfigApplicationContext(annotatedClasses);
-//			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
-			Map<String, RecordReportWriter> reportWriters = context.getBeansOfType(RecordReportWriter.class);
-
-			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
-					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
-							this));
-		}
-
-        //auto注解扫描
-	    annotationScan();
-
-		try
-		{
-			//设置页面上下文对象
-			Map<String, PageContextAware> pageContextAwareList =
-					context.getBeansOfType(PageContextAware.class);
-			if(pageContextAwareList != null)
-			{
-				for(PageContextAware ware : pageContextAwareList.values())
-				{
-					ware.setPageContext(new PageContext(pageMap));
-				}
-			}
-
-			//提供运行时管理功能
-//			IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
-//			
-//			LocateRegistry.createRegistry(5006);
-//			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-//			server.registerMBean(pageMXBean,
-//					new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
-		}
-		catch(Exception e)
-		{
-			logger.error("jmx register process error.", e);
-		}
-
-		shutdownHook = new ShutdownHook(this);
-		Runtime.getRuntime().addShutdownHook(shutdownHook);
-
-		Map<String, Object> autoApp = context.getBeansWithAnnotation(AutoApplication.class);
-		final String projectName;
-		final String projectDesc;
-		if(autoApp != null && autoApp.size() > 0)
-		{
-			Object appObj = autoApp.values().iterator().next();
-			AutoApplication autoApplication = appObj.getClass().getAnnotation(AutoApplication.class);
-			if(autoApplication == null)
-			{
-				autoApplication = appObj.getClass().getSuperclass().getAnnotation(AutoApplication.class);
-			}
-			projectName = autoApplication.name();
-			projectDesc = autoApplication.description();
-		}
-		else
-		{
-			projectName = "none";
-			projectDesc = "none";
-		}
-
-		Map<String, RecordReportWriter> writers = context.getBeansOfType(RecordReportWriter.class);
-		if(writers != null)
-		{
-		    writers.forEach((name, writer) -> {
-				ProjectRecord projectRecord = new ProjectRecord();
-				projectRecord.setName(projectName);
-				projectRecord.setDescription(projectDesc);
-				projectRecord.setBrowserInfo("browserInfo");
-				projectRecord.setOsName(System.getProperty("os.name"));
-				projectRecord.setOsArch(System.getProperty("os.arch"));
-				projectRecord.setOsVersion(System.getProperty("os.version"));
-				projectRecord.setCountry(System.getProperty("user.country"));
-				projectRecord.setLanguage(System.getProperty("user.language"));
-				projectRecord.setTimezone(System.getProperty("user.timezone"));
-				projectRecord.setAddressInfo(JSONUtils.valueToString(NetUtil.allIP()));
-		    	writer.write(projectRecord);
-			});
-		}
-
-		logger.info("init process done.");
+	    this.annotatedClasses = annotatedClasses;
 	}
 
 	/**
@@ -311,15 +220,125 @@ public class Phoenix implements Closeable, WebUIEngine
 	}
 	
 	/**
+	 * @param params
+	 * @return
+	 */
+	public SeleniumEngine init(String[] params)
+	{
+	    PhoenixParam phoenixParam = new PhoenixParam();
+	    JCommander commander = new JCommander(phoenixParam, params);
+	    
+        context = SpringUtils.getApplicationContext();
+        if(context == null || !((AbstractApplicationContext) context).isActive())
+        {
+            if(annotatedClasses == null)
+            {
+                annotatedClasses = new Class[]{AutoApplicationConfig.class};
+            }
+            else
+            {
+                int len = annotatedClasses.length;
+                annotatedClasses = Arrays.copyOf(annotatedClasses, len + 1);
+                annotatedClasses[len] = AutoApplicationConfig.class;
+            }
+            context = new AnnotationConfigApplicationContext(annotatedClasses);
+//          ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
+            Map<String, RecordReportWriter> reportWriters = context.getBeansOfType(RecordReportWriter.class);
+
+            ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
+                    new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
+                            this));
+        }
+
+        //auto注解扫描
+        annotationScan();
+
+        try
+        {
+            //设置页面上下文对象
+            Map<String, PageContextAware> pageContextAwareList =
+                    context.getBeansOfType(PageContextAware.class);
+            if(pageContextAwareList != null)
+            {
+                for(PageContextAware ware : pageContextAwareList.values())
+                {
+                    ware.setPageContext(new PageContext(pageMap));
+                }
+            }
+
+            //提供运行时管理功能
+//          IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
+//          
+//          LocateRegistry.createRegistry(5006);
+//          MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+//          server.registerMBean(pageMXBean,
+//                  new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+        }
+        catch(Exception e)
+        {
+            logger.error("jmx register process error.", e);
+        }
+
+        shutdownHook = new ShutdownHook(this);
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
+
+        Map<String, Object> autoApp = context.getBeansWithAnnotation(AutoApplication.class);
+        final String projectName;
+        final String projectDesc;
+        if(autoApp != null && autoApp.size() > 0)
+        {
+            Object appObj = autoApp.values().iterator().next();
+            AutoApplication autoApplication = appObj.getClass().getAnnotation(AutoApplication.class);
+            if(autoApplication == null)
+            {
+                autoApplication = appObj.getClass().getSuperclass().getAnnotation(AutoApplication.class);
+            }
+            projectName = autoApplication.name();
+            projectDesc = autoApplication.description();
+        }
+        else
+        {
+            projectName = "none";
+            projectDesc = "none";
+        }
+
+        Map<String, RecordReportWriter> writers = context.getBeansOfType(RecordReportWriter.class);
+        if(writers != null)
+        {
+            writers.forEach((name, writer) -> {
+                ProjectRecord projectRecord = new ProjectRecord();
+                projectRecord.setName(projectName);
+                projectRecord.setDescription(projectDesc);
+                projectRecord.setBrowserInfo("browserInfo");
+                projectRecord.setOsName(System.getProperty("os.name"));
+                projectRecord.setOsArch(System.getProperty("os.arch"));
+                projectRecord.setOsVersion(System.getProperty("os.version"));
+                projectRecord.setCountry(System.getProperty("user.country"));
+                projectRecord.setLanguage(System.getProperty("user.language"));
+                projectRecord.setTimezone(System.getProperty("user.timezone"));
+                projectRecord.setAddressInfo(JSONUtils.valueToString(NetUtil.allIP()));
+                writer.write(projectRecord);
+            });
+        }
+
+        logger.info("init process done.");
+    
+        SeleniumEngine engine = getEngine();
+        engine.setDriverStr(phoenixParam.browser);
+        engine.setRemoteStr(phoenixParam.remote);
+        
+        engine.init();
+        
+        return engine;
+    }
+	
+	/**
 	 * 初始化框架
 	 * @return 引擎对象实例
 	 */
 	public SeleniumEngine init()
 	{
-		SeleniumEngine engine = getEngine();
-		engine.init();
-		
-		return engine;
+	    return init(null);
 	}
 	
 	/**

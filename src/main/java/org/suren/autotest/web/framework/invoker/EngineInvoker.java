@@ -40,22 +40,22 @@ public class EngineInvoker
 {
 	/**
 	 * 关闭当前窗口
-	 * @param util 引擎
+	 * @param phoenix 引擎
 	 */
-	public static void closeWin(Phoenix util)
+	public static void closeWin(Phoenix phoenix)
 	{
-		util.getEngine().getDriver().close();
+		phoenix.getEngine().getDriver().close();
 	}
 	
 	/**
 	 * 关闭url以指定字符串开头的window
-	 * @param util 引擎
+	 * @param phoenix 引擎
 	 * @param params 参数
 	 */
-	public static void closeWinByUrlStartWith(Phoenix util, String[] params)
+	public static void closeWinByUrlStartWith(Phoenix phoenix, String[] params)
 	{
 		String startWith = params[0];
-		WebDriver driver = util.getEngine().getDriver();
+		WebDriver driver = phoenix.getEngine().getDriver();
 		Set<String> handles = driver.getWindowHandles();
 		Iterator<String> handleIt = handles.iterator();
 		
@@ -78,34 +78,34 @@ public class EngineInvoker
 	
 	/**
 	 * 根据index来切换iframe
-	 * @param util 引擎
+	 * @param phoenix 引擎
 	 * @param params 参数
 	 */
-	public static void frameSwitchByIndex(Phoenix util, String[] params)
+	public static void frameSwitchByIndex(Phoenix phoenix, String[] params)
 	{
 		String indexStr = params[0];
 		int index = Integer.parseInt(indexStr);
-		util.getEngine().getDriver().switchTo().frame(index);
+		phoenix.getEngine().getDriver().switchTo().frame(index);
 	}
 	
 	/**
 	 * 根据name或者id来切换iframe
-	 * @param util 引擎
+	 * @param phoenix 引擎
 	 * @param params 参数
 	 */
-	public static void frameSwitchByNameOrId(Phoenix util, String[] params)
+	public static void frameSwitchByNameOrId(Phoenix phoenix, String[] params)
 	{
 		String nameOrId = params[0];
-		util.getEngine().getDriver().switchTo().frame(nameOrId);
+		phoenix.getEngine().getDriver().switchTo().frame(nameOrId);
 	}
 	
 	/**
 	 * window窗口切换
-	 * @param util 引擎
+	 * @param phoenix 引擎
 	 */
-	public static void windowSwitch(Phoenix util)
+	public static void windowSwitch(Phoenix phoenix)
 	{
-		SeleniumEngine engine = util.getEngine();
+		SeleniumEngine engine = phoenix.getEngine();
 		WebDriver driver = engine.getDriver();
 		Set<String> handlers = driver.getWindowHandles();
 		Iterator<String> it = handlers.iterator();
@@ -118,13 +118,13 @@ public class EngineInvoker
 	}
 	
 	/**
-	 * 截屏
-	 * @param util 引擎
-	 * @param params 参数
+	 * 截屏并保存到指定文件中
+	 * @param phoenix 引擎
+	 * @param params 保存截图的文件路径
 	 */
-	public static void takeShot(Phoenix util, String[] params)
+	public static void takeShot(Phoenix phoenix, String[] params)
 	{
-		SeleniumEngine engine = util.getEngine();
+		SeleniumEngine engine = phoenix.getEngine();
 		WebDriver driver = engine.getDriver();
 		TakesScreenshot shot = (TakesScreenshot) driver;
 		

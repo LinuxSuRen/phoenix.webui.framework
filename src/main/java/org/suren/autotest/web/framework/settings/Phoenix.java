@@ -226,7 +226,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	public SeleniumEngine init(String[] params)
 	{
 	    PhoenixParam phoenixParam = new PhoenixParam();
-	    JCommander commander = new JCommander(phoenixParam, params);
+	    JCommander.newBuilder().addObject(phoenixParam).build().parse(params);
 	    
         context = SpringUtils.getApplicationContext();
         if(context == null || !((AbstractApplicationContext) context).isActive())
@@ -324,7 +324,10 @@ public class Phoenix implements Closeable, WebUIEngine
         logger.info("init process done.");
     
         SeleniumEngine engine = getEngine();
-        engine.setDriverStr(phoenixParam.browser);
+        if(StringUtils.isNotBlank(phoenixParam.browser))
+        {
+            engine.setDriverStr(phoenixParam.browser);
+        }
         engine.setRemoteStr(phoenixParam.remote);
         
         engine.init();

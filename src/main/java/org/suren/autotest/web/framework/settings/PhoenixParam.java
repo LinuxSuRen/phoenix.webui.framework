@@ -31,7 +31,8 @@ public class PhoenixParam
             + DriverConstants.DRIVER_IE + ","
             + DriverConstants.DRIVER_HTML_UNIT + ","
             + DriverConstants.DRIVER_OPERA + ","
-            + DriverConstants.DRIVER_PHANTOM_JS)
+            + DriverConstants.DRIVER_PHANTOM_JS,
+            validateWith = {BrowserParamValidator.class})
     public String browser;
     
     @Parameter(names = "-browser-max", description = "最大化浏览器")

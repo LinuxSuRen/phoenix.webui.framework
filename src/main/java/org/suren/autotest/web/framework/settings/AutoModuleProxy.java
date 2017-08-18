@@ -40,6 +40,8 @@ import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.html5.LocalStorage;
 import org.openqa.selenium.html5.SessionStorage;
 import org.openqa.selenium.html5.WebStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -60,11 +62,13 @@ import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.ui.Text;
 
 /**
- * 模块代理类
- * @author suren
+ * 模块代理类。通过代理的方式来实现测试报告的输出。
+ * @author <a href="http://surenpi.com">suren</a>
  */
 public class AutoModuleProxy implements MethodInterceptor
 {
+    private static final Logger logger = LoggerFactory.getLogger(AutoModuleProxy.class);
+    
     private Enhancer enhancer = new Enhancer();
     private Object target;
     private List<RecordReportWriter> recordReportWriters;
@@ -236,11 +240,11 @@ public class AutoModuleProxy implements MethodInterceptor
     			}
     			catch (IOException e)
     			{
-    				e.printStackTrace();
+    			    logger.error("", e);
     			}
     			catch (ClassNotFoundException e)
     			{
-    				e.printStackTrace();
+                    logger.error("", e);
     			}
             }
 
@@ -277,7 +281,7 @@ public class AutoModuleProxy implements MethodInterceptor
 				}
 				catch (IOException e)
 				{
-					e.printStackTrace();
+                    logger.error("", e);
 				}
             }
 
@@ -297,7 +301,7 @@ public class AutoModuleProxy implements MethodInterceptor
 
             if(acceptException)
             {
-                e.printStackTrace();
+                logger.error("", e);
             }
             else
             {

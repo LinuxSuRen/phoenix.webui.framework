@@ -43,4 +43,11 @@ public class PhoenixParam
     
     @Parameter(names = "-remote", description = "远程服务器地址，例如：http://192.168.1.1:1234/wb/hub")
     public String remote;
+
+    @Parameter(names = "-report-store", description = "测试报告输出目录，只适用于有文件输出的报告类型",
+            validateWith = {FolderValidator.class})
+    public String reportStore;
+
+    @Parameter(names = "-printUsage", description = "打印帮助信息并退出程序")
+    public boolean printUsage;
 }

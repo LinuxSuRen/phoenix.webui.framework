@@ -58,12 +58,14 @@ import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.JCommander.Builder;
 import com.surenpi.autotest.datasource.ClasspathResource;
 import com.surenpi.autotest.datasource.DataResource;
 import com.surenpi.autotest.datasource.DataSource;
 import com.surenpi.autotest.datasource.DynamicDataSource;
 import com.surenpi.autotest.datasource.FileResource;
 import com.surenpi.autotest.report.RecordReportWriter;
+import com.surenpi.autotest.report.ReportStore;
 import com.surenpi.autotest.report.record.ProjectRecord;
 import com.surenpi.autotest.utils.NetUtil;
 import com.surenpi.autotest.utils.StringUtils;
@@ -226,7 +228,15 @@ public class Phoenix implements Closeable, WebUIEngine
 	public SeleniumEngine init(String[] params)
 	{
 	    PhoenixParam phoenixParam = new PhoenixParam();
-	    JCommander.newBuilder().addObject(phoenixParam).build().parse(params);
+	    Builder builder = JCommander.newBuilder();
+	    JCommander commander = builder.addObject(phoenixParam).build();
+	    commander.parse(params);
+	    
+	    if(phoenixParam.printUsage)
+	    {
+	        commander.usage();
+	        System.exit(0);
+	    }
 	    
         context = SpringUtils.getApplicationContext();
         if(context == null || !((AbstractApplicationContext) context).isActive())
@@ -248,6 +258,15 @@ public class Phoenix implements Closeable, WebUIEngine
             ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
                     new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
                             this));
+            
+            // 测试报告输入目录设置
+            if(StringUtils.isNotBlank(phoenixParam.reportStore))
+            {
+                Map<String, ReportStore> reportStores = context.getBeansOfType(ReportStore.class);
+                reportStores.forEach((name, store) -> {
+                    store.setStoreRoot(phoenixParam.reportStore);
+                });
+            }
         }
 
         //auto注解扫描

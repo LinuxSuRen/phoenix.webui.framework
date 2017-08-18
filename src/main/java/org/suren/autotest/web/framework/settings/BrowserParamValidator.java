@@ -4,6 +4,7 @@ import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.ParameterException;
 
 /**
+ * 浏览器类型校验
  * @author <a href="http://surenpi.com">suren</a>
  * @since 2.1.0
  */

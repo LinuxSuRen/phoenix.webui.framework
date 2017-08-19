@@ -230,7 +230,11 @@ public class Phoenix implements Closeable, WebUIEngine
 	    PhoenixParam phoenixParam = new PhoenixParam();
 	    Builder builder = JCommander.newBuilder();
 	    JCommander commander = builder.addObject(phoenixParam).build();
-	    commander.parse(params);
+	    
+	    if(params != null)
+	    {
+	        commander.parse(params);
+	    }
 	    
 	    if(phoenixParam.printUsage)
 	    {

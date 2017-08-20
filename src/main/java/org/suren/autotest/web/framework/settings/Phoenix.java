@@ -81,7 +81,7 @@ import net.sf.json.util.JSONUtils;
 
 /**
  * 页面（page）以及数据配置加载
- * @author suren
+ * @author <a href="http://surenpi.com">suren</a>
  * @since Jul 17, 2016 9:01:51 AM
  */
 public class Phoenix implements Closeable, WebUIEngine
@@ -351,7 +351,18 @@ public class Phoenix implements Closeable, WebUIEngine
         {
             engine.setDriverStr(phoenixParam.browser);
         }
-        engine.setRemoteStr(phoenixParam.remote);
+        if(StringUtils.isNotBlank(phoenixParam.remote))
+        {
+            engine.setRemoteStr(phoenixParam.remote);
+            
+            if("ssh".equals(phoenixParam.remoteProtocol))
+            {
+                SSHTunnel tunnel = new SSHTunnel();
+                tunnel.open(phoenixParam.sshHost, phoenixParam.sshUser, phoenixParam.sshPasswd, phoenixParam.sshPort);
+                tunnel.build();
+                tunnel.close();
+            }
+        }
         
         engine.init();
         

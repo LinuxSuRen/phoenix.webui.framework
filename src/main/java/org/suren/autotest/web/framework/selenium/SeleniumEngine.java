@@ -337,31 +337,18 @@ public class SeleniumEngine
 	private void loadDriverFromMapping(ClassLoader classLoader, Properties enginePro)
 			throws MalformedURLException
 	{
-		//实现对多个操作系统的兼容性设置
-		final String os = System.getProperty("os.name");
-		final String arch = System.getProperty("os.arch");
 		final String curDriverStr = getDriverStr();
-		
-		String commonOs = enginePro.getProperty("os.map.name." + os);
-		String commonArch = enginePro.getProperty("os.map.arch." + arch);
-		
-		if(StringUtils.isAnyBlank(commonOs, commonArch))
-		{
-			throw new RuntimeException(String.format("unknow os [%s] and arch [%s].", os, arch));
-		}
-		
 		final String ver = enginePro.getProperty(curDriverStr + ".version");
 		
 		DriverMapping driverMapping = new DriverMapping();
 		driverMapping.init();
 		
 		URL driverURL = null;
-		String remoteDriverUrl = driverMapping.getUrl(curDriverStr, ver, commonOs, commonArch);
+		String remoteDriverUrl = driverMapping.getUrl(curDriverStr, ver);
 		if(remoteDriverUrl == null)
 		{
 			logger.error(String.format("Can not found remote driver url, browser is"
-					+ " [%s], version is [%s], os is [%s], arch is [%s].",
-					curDriverStr, ver, commonOs, commonArch));
+					+ " [%s], version is [%s].", curDriverStr, ver));
 		}
 		else
 		{
@@ -374,11 +361,11 @@ public class SeleniumEngine
 			}
 			catch (FileNotFoundException e)
 			{
-				e.printStackTrace();
+                logger.error("", e);
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+                logger.error("", e);
 			}
 			
 			if(StringUtils.isBlank(driverPath))

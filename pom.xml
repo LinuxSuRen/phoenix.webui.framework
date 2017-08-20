@@ -208,9 +208,6 @@
 			<artifactId>aspectjweaver</artifactId>
 		</dependency>
 
-		<!-- logging -->
-		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
-			<version>1.7.21</version> </dependency> -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -252,6 +249,12 @@
 		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		    <version>0.1.54</version>
 		</dependency>
 	</dependencies>
 

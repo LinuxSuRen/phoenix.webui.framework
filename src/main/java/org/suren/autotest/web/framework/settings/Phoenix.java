@@ -354,14 +354,6 @@ public class Phoenix implements Closeable, WebUIEngine
         if(StringUtils.isNotBlank(phoenixParam.remote))
         {
             engine.setRemoteStr(phoenixParam.remote);
-            
-            if("ssh".equals(phoenixParam.remoteProtocol))
-            {
-                SSHTunnel tunnel = new SSHTunnel();
-                tunnel.open(phoenixParam.sshHost, phoenixParam.sshUser, phoenixParam.sshPasswd, phoenixParam.sshPort);
-                tunnel.build();
-                tunnel.close();
-            }
         }
         
         engine.init();

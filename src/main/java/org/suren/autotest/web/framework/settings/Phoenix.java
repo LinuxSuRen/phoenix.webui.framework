@@ -355,8 +355,11 @@ public class Phoenix implements Closeable, WebUIEngine
         {
             engine.setRemoteStr(phoenixParam.remote);
         }
-        
-        engine.init();
+
+        if(engine.getDriver() != null)
+        {
+            engine.init();
+        }
         
         return engine;
     }

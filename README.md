@@ -24,6 +24,22 @@
 
 为了方便喜欢PhoenixAutotest框架的朋友们能尽快上手，这里提供了[一系列教程](http://surenpi.com/2016/07/18/phoenix_autotest_tutorial)。
 
+# 骨架
+```xml
+<groupId>com.surenpi.autotest</groupId>
+<artifactId>autotest.web.framework.archetype</artifactId>
+<version>2.0.0-20170706</version>
+```
+
+# Maven
+```xml
+<dependency>
+    <groupId>com.surenpi.autotest</groupId>
+    <artifactId>autotest.web.framework</artifactId>
+    <version>2.0.0-20170722</version>
+</dependency>
+```
+
 # 备注
 由于本项目没有提交任何工程、IDE相关的文件（这样，您就可以任选Eclipse、IntelliJ IDEA或者是NetBeans作为您的开发工具了），所以check出来以后还需要一些步骤。  
 这里给出在Eclipse中使用Maven的教程。  

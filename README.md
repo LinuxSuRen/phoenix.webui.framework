@@ -28,7 +28,7 @@
 ```xml
 <groupId>com.surenpi.autotest</groupId>
 <artifactId>autotest.web.framework.archetype</artifactId>
-<version>2.0.0-20170706</version>
+<version>2.0.1-20180106</version>
 ```
 
 # Maven

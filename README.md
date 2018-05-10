@@ -24,21 +24,13 @@
 
 为了方便喜欢PhoenixAutotest框架的朋友们能尽快上手，这里提供了[一系列教程](http://surenpi.com/2016/07/18/phoenix_autotest_tutorial)。
 
-# 骨架
-```xml
-<groupId>com.surenpi.autotest</groupId>
-<artifactId>autotest.web.framework.archetype</artifactId>
-<version>2.0.1-20180106</version>
-```
+# 文档
 
-# Maven
-```xml
-<dependency>
-    <groupId>com.surenpi.autotest</groupId>
-    <artifactId>autotest.web.framework</artifactId>
-    <version>2.0.0-20170722</version>
-</dependency>
-```
+你可以查看我们的自动化测试框架[文档](https://phoenix-autotest.github.io/phoenix.docs.site/)
+
+# 文档贡献
+
+如果你愿意帮助我们完善自动化测试框架[文档](https://phoenix-autotest.github.io/phoenix.docs.site/)，可以在[文档源码工程](https://github.com/phoenix-autotest/phoenix.docs)中提交文档。
 
 # 备注
 由于本项目没有提交任何工程、IDE相关的文件（这样，您就可以任选Eclipse、IntelliJ IDEA或者是NetBeans作为您的开发工具了），所以check出来以后还需要一些步骤。  

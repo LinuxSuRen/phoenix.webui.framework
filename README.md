@@ -22,7 +22,7 @@
 ![Excel格式的测试报告](http://surenpi.com/wp-content/uploads/2017/06/autotest_report_excel_2.png)
 ![数据库格式的测试报告](http://surenpi.com/wp-content/uploads/2017/06/report_database.png)
 
-为了方便喜欢PhoenixAutotest框架的朋友们能尽快上手，这里提供了[一系列教程](http://surenpi.com/2016/07/18/phoenix_autotest_tutorial)。
+为了方便喜欢PhoenixAutotest框架的朋友们能尽快上手，这里提供了[一系列教程](http://blog.surenpi.com/2016/07/18/phoenix_autotest_tutorial/)。
 
 # 文档
 

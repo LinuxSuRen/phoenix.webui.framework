@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.surenpi.autotest</groupId>
 		<artifactId>autotest.parent</artifactId>
-		<version>1.0.1-20170815-SNAPSHOT</version>
+		<version>1.0.1-20170815</version>
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
@@ -128,10 +128,12 @@
 		<dependency>
 			<groupId>com.surenpi.autotest</groupId>
 			<artifactId>autotest.webdriver.downloader</artifactId>
+			<version>1.0.2-20180129-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.surenpi.autotest</groupId>
             <artifactId>autotest.report</artifactId>
+			<version>1.0.0-20170818-SNAPSHOT</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>

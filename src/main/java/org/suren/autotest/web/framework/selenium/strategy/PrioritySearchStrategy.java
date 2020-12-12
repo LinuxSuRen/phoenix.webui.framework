@@ -21,8 +21,10 @@ package org.suren.autotest.web.framework.selenium.strategy;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -85,8 +87,19 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 		}
 		else
 		{
-			return findElement(by);
+			try {
+				return findElement(by);
+			} catch (TimeoutException e) {
+				if (element instanceof AbstractElement) {
+					String eleName = ((AbstractElement) element).getDataStr("data");
+					if (eleName != null) {
+						System.out.println("timeout when finding element: " + eleName);
+					}
+				}
+				e.printStackTrace();
+			}
 		}
+		return null;
 	}
 
 	@Override
@@ -222,21 +235,38 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
 	{
 		WebDriver driver = engine.getDriver();
 		driver = engine.turnToRootDriver(driver);
-		
+
+		WebElement ele;
 		if(element.getTimeOut() > 0)
 		{
-			WebDriverWait wait = new WebDriverWait(driver, element.getTimeOut());
-			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			try {
+				WebDriverWait wait = new WebDriverWait(driver, element.getTimeOut());
+				wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			} catch (TimeoutException e) {
+				// timeout might caused by it's in a invisible zone, so try to make it be visible
+				ele = findElementFromDriver(driver, by);
+				if (ele != null) {
+					Actions actions = new Actions(driver);
+					actions.moveToElement(ele).build().perform();
+				}
+				return ele;
+			}
 		}
-		
+		ele = findElementFromDriver(driver, by);
+		return ele;
+	}
+
+	private WebElement findElementFromDriver(WebDriver driver, By by) {
+		WebElement ele;
 		if(parentElement != null)
 		{
-			return parentElement.findElement(by);
+			ele = parentElement.findElement(by);
 		}
 		else
 		{
-			return driver.findElement(by);
+			ele = driver.findElement(by);
 		}
+		return ele;
 	}
 
 	/**

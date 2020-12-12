@@ -16,6 +16,7 @@
 
 package org.suren.autotest.web.framework.selenium.action;
 
+import com.surenpi.autotest.webui.ui.AbstractElement;
 import org.eclipse.jetty.util.StringUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.annotation.AutoData;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
@@ -118,6 +120,16 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 				{
 					e.printStackTrace();
 				}
+			}
+
+			Object extraData = null;
+			if (ele instanceof AbstractElement) {
+				extraData = ((AbstractElement) ele).getData("data");
+			}
+			if (extraData != null) {
+				logger.info(String.format("[%s] value filled", extraData));
+			} else {
+				logger.info(String.format("[%s] value filled", ele));
 			}
 		}
 		else

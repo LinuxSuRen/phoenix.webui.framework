@@ -190,7 +190,12 @@ public class Image4SearchLog
 		{
 			return;
 		}
-		
+
+		if ("true".equals(System.getProperty("java.awt.headless"))) {
+			LOGGER.debug("not going to capture due to on the headless mode");
+			return;
+		}
+
 		WebDriver driver = engine.getDriver();
 		if(ele instanceof WebElement && driver instanceof TakesScreenshot)
 		{

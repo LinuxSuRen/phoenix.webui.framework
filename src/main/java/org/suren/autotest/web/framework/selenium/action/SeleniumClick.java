@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.annotation.AutoData;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
@@ -161,6 +162,16 @@ public class SeleniumClick implements ClickAble
 		catch (AWTException e)
 		{
 			e.printStackTrace();
+		}
+
+		Object extraData = null;
+		if (ele instanceof AbstractElement) {
+			extraData = ((AbstractElement) ele).getData("data");
+		}
+		if (extraData != null) {
+			logger.info(extraData + " click done");
+		} else {
+			logger.info(ele + " click done");
 		}
 	}
 

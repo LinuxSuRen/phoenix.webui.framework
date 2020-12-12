@@ -27,13 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.ApplicationContext;
-import org.suren.autotest.web.framework.annotation.AutoAttrLocator;
-import org.suren.autotest.web.framework.annotation.AutoDataSource;
-import org.suren.autotest.web.framework.annotation.AutoForm;
-import org.suren.autotest.web.framework.annotation.AutoLocator;
-import org.suren.autotest.web.framework.annotation.AutoLocators;
-import org.suren.autotest.web.framework.annotation.AutoPage;
-import org.suren.autotest.web.framework.annotation.AutoTextLocator;
+import org.suren.autotest.web.framework.annotation.*;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumTextLocator;
 import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
@@ -228,6 +222,11 @@ public class AnnotationProcess
                     
                     element.getLocatorList().add(seleniumTextLocator);
                 }
+            }
+
+            AutoData data = field.getAnnotation(AutoData.class);
+            if (data != null) {
+                element.putData("data", data.value());
             }
         }
     }

@@ -43,6 +43,7 @@ import com.surenpi.autotest.webui.core.Locator;
 import com.surenpi.autotest.webui.core.LocatorNotFoundException;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Element;
+import org.suren.autotest.web.framework.selenium.locator.SeleniumXPathLocator;
 
 /**
  * 查找元素策略，找不到对应的元素会抛出异常
@@ -195,7 +196,8 @@ public class PrioritySearchStrategy implements ElementSearchStrategy<WebElement>
         {
             Class<?> locatorClz = locator.getClass();
             if(locatorClz.equals(SeleniumXAttrLocator.class)
-                    || locatorClz.equals(SeleniumTextLocator.class))
+                    || locatorClz.equals(SeleniumTextLocator.class)
+					|| locatorClz.equals(SeleniumXPathLocator.class))
             {
                 by = ((AbstractLocator<?>) locator).getBy();
                 

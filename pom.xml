@@ -284,9 +284,9 @@
 	</repositories>
 	
 	<scm>
-		<connection>scm:git:https://github.com/LinuxSuRen/phoenix.webui.framework.git</connection>
-		<url>scm:git:https://github.com/LinuxSuRen/phoenix.webui.framework</url>
-		<developerConnection>scm:git:https://github.com/LinuxSuRen/phoenix.webui.framework.git</developerConnection>
+		<connection>scm:git:git@github.com:LinuxSuRen/phoenix.webui.framework.git</connection>
+		<url>scm:git:git@github.com:LinuxSuRen/phoenix.webui.framework</url>
+		<developerConnection>scm:git:git@github.com:LinuxSuRen/phoenix.webui.framework.git</developerConnection>
 		<tag>${project.version}</tag>
 	</scm>
 

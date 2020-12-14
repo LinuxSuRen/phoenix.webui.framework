@@ -19,9 +19,15 @@ package org.suren.autotest.web.framework.selenium.strategy;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import com.surenpi.autotest.webui.core.Locator;
+import com.surenpi.autotest.webui.core.LocatorNotFoundException;
+import com.surenpi.autotest.webui.ui.AbstractElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -31,6 +37,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.core.ElementSearchStrategy;
 import com.surenpi.autotest.webui.ui.Element;
+import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
 
 /**
  * 根据查找元素的优先级（{@link PrioritySearchStrategy}）进行便历查找， 找不到返回null
@@ -43,14 +50,30 @@ import com.surenpi.autotest.webui.ui.Element;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 {
+	private static final Logger logger = LoggerFactory.getLogger(CyleSearchStrategy.class);
 
 	@Autowired
 	private SeleniumEngine engine;
+	private Element element;
+	private WebElement targetWebElement;
+	private WebElement parentElement;
 
 	@Override
 	public WebElement search(Element element)
 	{
+		this.element = element;
 		List<By> byList = new ArrayList<By>();
+
+		// TODO should order it
+		for (Locator locator : element.getLocatorList()) {
+			if (locator instanceof AbstractLocator) {
+				byList.add(((AbstractLocator) locator).getBy());
+
+				if (this.element instanceof AbstractElement) {
+					((AbstractElement) this.element).setTimeOut(locator.getTimeout());
+				}
+			}
+		}
 
 		if (StringUtils.isNotBlank(element.getId()))
 		{
@@ -77,10 +100,13 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 			byList.add(By.tagName(element.getTagName()));
 		}
 
-		return cyleFindElement(byList);
+		if (byList.size() == 0) {
+			throw new LocatorNotFoundException("no any providers provided");
+		}
+		return cycleFindElement(byList);
 	}
 
-	private WebElement cyleFindElement(List<By> byList)
+	private WebElement cycleFindElement(List<By> byList)
 	{
 		WebElement webEle = null;
 
@@ -90,8 +116,9 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 			{
 				webEle = findElement(by);
 			}
-			catch (NoSuchElementException e)
+			catch (WebDriverException e)
 			{
+				logger.info("cannot found element " + by);
 			}
 
 			if (webEle != null)
@@ -103,9 +130,67 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 		return null;
 	}
 
+	/**
+	 * 通用的元素查找方法
+	 * @param by 具体的查找方法
+	 * @return
+	 */
 	private WebElement findElement(By by)
 	{
-		return engine.getDriver().findElement(by);
+		WebDriver driver = engine.getDriver();
+		driver = engine.turnToRootDriver(driver);
+
+		WebElement ele;
+		if(element.getTimeOut() > 0)
+		{
+			try {
+				WebDriverWait wait = new WebDriverWait(driver, element.getTimeOut());
+				wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			} catch (TimeoutException e) {
+				// timeout might caused by it's in a invisible zone, so try to make it be visible
+				ele = findElementFromDriver(driver, by);
+				if (ele != null) {
+					Actions actions = new Actions(driver);
+					actions.moveToElement(ele).build().perform();
+				}
+				return ele;
+			}
+		}
+		ele = findElementFromDriver(driver, by);
+		return ele;
+	}
+
+	private WebElement findElementFromDriver(WebDriver driver, By by) {
+		WebElement ele;
+		if(parentElement != null)
+		{
+			ele = parentElement.findElement(by);
+		}
+		else
+		{
+			ele = driver.findElement(by);
+		}
+		return ele;
+	}
+
+	/**
+	 * 查找多个元素
+	 * @param by
+	 * @return
+	 */
+	private List<WebElement> findElements(By by)
+	{
+		WebDriver driver = engine.getDriver();
+		driver = engine.turnToRootDriver(driver);
+
+		if(parentElement != null)
+		{
+			return parentElement.findElements(by);
+		}
+		else
+		{
+			return driver.findElements(by);
+		}
 	}
 
 	@Override

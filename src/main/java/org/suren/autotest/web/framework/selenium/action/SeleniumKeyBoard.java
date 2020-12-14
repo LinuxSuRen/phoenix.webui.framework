@@ -40,8 +40,8 @@ public class SeleniumKeyBoard implements KeyBoardAble
 	public void enter(Element element)
 	{
 		WebDriver driver = engine.getDriver();
-		
-		new Actions(driver).keyDown(Keys.ENTER).perform();
+
+		new Actions(driver).keyDown(Keys.ENTER).release().perform();
 	}
 
 }

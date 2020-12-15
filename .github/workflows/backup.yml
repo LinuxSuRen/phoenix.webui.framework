@@ -1,4 +1,4 @@
-name: Backup Git repository
+name: Deploy and Backup
 
 on:
   workflow_dispatch:
@@ -17,8 +17,8 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: |
-          echo ${{secrets.SETTINGS}} > ~/.m2/settings.xml
-          mvn -B package -U
+          echo "${{secrets.SETTINGS}}" > ~/.m2/settings.xml
+          mvn -B deploy -U
   BackupGit:
     runs-on: ubuntu-latest
     steps:

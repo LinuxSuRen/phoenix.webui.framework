@@ -1,4 +1,4 @@
-name: Backup Git repository
+name: Build
 
 on:
   workflow_dispatch:

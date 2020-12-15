@@ -225,7 +225,7 @@ public class AnnotationProcess
             }
 
             AutoData data = field.getAnnotation(AutoData.class);
-            if (data != null) {
+            if (element != null && data != null) {
                 element.putData("data", data.value());
             }
         }

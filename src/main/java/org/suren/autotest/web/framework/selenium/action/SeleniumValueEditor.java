@@ -21,11 +21,14 @@ import org.eclipse.jetty.util.StringUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.annotation.AutoData;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
@@ -158,7 +161,15 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 	public void submit(Element ele)
 	{
 		WebElement webEle = searchStrategyUtils.findStrategy(WebElement.class, ele).search(ele);
-		webEle.submit();
+
+		try {
+			webEle.submit();
+		} catch (NoSuchElementException e) {
+			logger.info("perhaps this element is not in a form", e);
+
+			WebDriver driver = engine.getDriver();
+			new Actions(driver).sendKeys(webEle, Keys.ENTER).perform();
+		}
 	}
 
 	@Override

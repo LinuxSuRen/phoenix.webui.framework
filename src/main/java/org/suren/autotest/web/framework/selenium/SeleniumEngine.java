@@ -47,6 +47,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -108,6 +110,28 @@ public class SeleniumEngine
 	private List<DynamicData> dynamicDataList;
 	
 	public SeleniumEngine(){}
+
+	// this entry-point can init the selenium WebDriver
+	// it's useful especially on the docker container environment
+	public static void main(String[] args) {
+		class EntryParam {
+			@Parameter(names = "-browser", description = "browser name, supported scope [chrome]", required = true)
+			public String browser;
+			@Parameter(names = "-version", description = "browser version", required = true)
+			public String version;
+		}
+
+		EntryParam entryParam = new EntryParam();
+		JCommander.Builder builder = JCommander.newBuilder();
+		JCommander commander = builder.addObject(entryParam).build();
+		commander.parse(args);
+
+		SeleniumEngine engine = new SeleniumEngine();
+		engine.setDriverStr(entryParam.browser);
+		engine.setChromeVer(entryParam.version);
+		engine.init();
+		engine.close();
+	}
 	
 	/**
 	 * 初始化配置文件

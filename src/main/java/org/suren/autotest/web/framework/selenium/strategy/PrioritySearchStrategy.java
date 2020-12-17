@@ -60,7 +60,7 @@ import org.suren.autotest.web.framework.selenium.locator.SeleniumXPathLocator;
  * 
  * @see CyleSearchStrategy
  * @see ZoneSearchStrategy
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component("prioritySearchStrategy")
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

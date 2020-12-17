@@ -33,7 +33,7 @@ import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * jqGrid组件的选择
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SeleniumJqGridSequenceOperation implements SequenceAble

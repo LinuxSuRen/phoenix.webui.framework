@@ -31,7 +31,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 
 /**
  * 属性文件动态数据
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class PropertiesDynamicData implements DynamicData

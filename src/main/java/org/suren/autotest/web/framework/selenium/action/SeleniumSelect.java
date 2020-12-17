@@ -32,7 +32,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 下拉列表实现
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SeleniumSelect implements SelectAble, RandomSelectAble

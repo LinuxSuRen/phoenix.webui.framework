@@ -61,7 +61,7 @@ import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * xml格式的数据源实现
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component(DataSourceConstants.DS_TYPE_XML)
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

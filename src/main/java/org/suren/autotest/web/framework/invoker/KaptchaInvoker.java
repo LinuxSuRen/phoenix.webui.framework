@@ -29,7 +29,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * 验证码外部执行器
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class KaptchaInvoker {
 	/**

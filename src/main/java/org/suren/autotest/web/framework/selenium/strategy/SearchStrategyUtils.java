@@ -33,7 +33,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 元素查找策略规则
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SearchStrategyUtils implements ApplicationContextAware

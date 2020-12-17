@@ -33,7 +33,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 
 /**
  * 从文本文件中随机获取一个字符串
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class RandomTxtDynamicData implements DynamicData

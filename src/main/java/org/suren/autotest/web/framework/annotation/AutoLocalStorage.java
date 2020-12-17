@@ -26,7 +26,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * 自动化处理localStorage
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

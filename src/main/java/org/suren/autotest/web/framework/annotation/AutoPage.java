@@ -30,7 +30,7 @@ import org.suren.autotest.web.framework.settings.DriverConstants;
 
 /**
  * 用于标记类为Page.
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

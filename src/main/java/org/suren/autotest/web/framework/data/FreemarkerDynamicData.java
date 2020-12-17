@@ -37,7 +37,7 @@ import freemarker.template.TemplateException;
 
 /**
  * freemarker模板格式的动态数据。因此原始的字符串值将会被当作模板类进行解析。
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class FreemarkerDynamicData implements DynamicData

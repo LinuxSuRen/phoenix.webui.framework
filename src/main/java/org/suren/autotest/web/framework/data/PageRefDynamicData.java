@@ -39,7 +39,7 @@ import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * Page对象之间的属性数据引用
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class PageRefDynamicData implements DynamicData, ApplicationContextAware

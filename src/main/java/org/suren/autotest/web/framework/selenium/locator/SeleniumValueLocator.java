@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 元素值定位器
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

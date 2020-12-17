@@ -34,7 +34,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 引擎相关的操作
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class EngineInvoker
 {

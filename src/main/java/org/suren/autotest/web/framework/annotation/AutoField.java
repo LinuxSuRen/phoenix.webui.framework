@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 用于在Page子类的属性上添加
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 @Target({ElementType.FIELD, ElementType.TYPE})

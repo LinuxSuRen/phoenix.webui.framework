@@ -25,7 +25,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * 用户定义一个页面时需要继承该类
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class WebPage extends Page
 {

@@ -28,7 +28,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 
 /**
  * JavaScript版本的动态数据实现
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class JavaScriptDynamicData implements DynamicData

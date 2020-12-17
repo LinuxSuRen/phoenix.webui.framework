@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 系统参数配置
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SystemParamDynamicData extends PropertiesDynamicData

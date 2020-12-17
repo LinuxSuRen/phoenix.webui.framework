@@ -25,7 +25,7 @@ import com.surenpi.autotest.utils.EncryptorUtil;
 
 /**
  * 密文版本的动态数据实现，需要用户在类路径下添加密钥配置文件encrypt.properties。
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class EncryptDynamicData implements DynamicData

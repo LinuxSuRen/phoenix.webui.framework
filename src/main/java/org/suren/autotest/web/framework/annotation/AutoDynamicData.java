@@ -26,7 +26,7 @@ import com.surenpi.autotest.datasource.DynamicDataConstants;
 
 /**
  * 动态数据
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 @Target({ElementType.METHOD, ElementType.TYPE_PARAMETER})

@@ -24,7 +24,7 @@ import com.beust.jcommander.ParameterException;
 
 /**
  * 文件夹可用性校验，如果无法创建指定的目录，则抛出异常
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 public class FolderValidator implements IParameterValidator

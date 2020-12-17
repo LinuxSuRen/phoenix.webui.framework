@@ -36,7 +36,7 @@ import com.surenpi.autotest.utils.StringUtils;
 
 /**
  * 简单的动态数据实现
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SimpleDynamicData implements DynamicData, DynamicDateFormat

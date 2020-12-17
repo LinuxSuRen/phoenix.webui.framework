@@ -30,7 +30,7 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 
 /**
  * iframe下标定位器
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

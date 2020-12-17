@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
 /**
  * 调用外部的TestNG脚本
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class TestNGInvoker
 {

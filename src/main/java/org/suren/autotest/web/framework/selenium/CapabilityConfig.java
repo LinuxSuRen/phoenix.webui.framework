@@ -41,7 +41,7 @@ import com.surenpi.autotest.utils.BrowserUtil;
 
 /**
  * 浏览器配置
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class CapabilityConfig
 {

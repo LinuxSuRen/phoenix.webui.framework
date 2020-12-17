@@ -27,7 +27,7 @@ import com.surenpi.autotest.webui.core.StrategyType;
 
 /**
  * 允许包含多个元素定位，并且指定一个定位策略.
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.0.0
  */
 @Documented

@@ -5,7 +5,7 @@ import com.beust.jcommander.ParameterException;
 
 /**
  * 浏览器类型校验
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 public class BrowserParamValidator implements IParameterValidator

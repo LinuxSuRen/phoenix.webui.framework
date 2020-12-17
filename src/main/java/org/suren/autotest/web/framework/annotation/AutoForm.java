@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 /**
  * 用在Form表单上的定位描述，只能用在类上.
  * @see com.surenpi.autotest.webui.Form
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 @Documented

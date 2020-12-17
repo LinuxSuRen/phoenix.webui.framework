@@ -20,7 +20,7 @@ import com.beust.jcommander.Parameter;
 
 /**
  * 启动参数
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 public class PhoenixParam

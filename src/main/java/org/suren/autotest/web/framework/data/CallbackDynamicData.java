@@ -28,7 +28,7 @@ import com.surenpi.autotest.datasource.DynamicData;
 
 /**
  * 由回调机制来生成动态数据
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class CallbackDynamicData implements DynamicData, ApplicationContextAware

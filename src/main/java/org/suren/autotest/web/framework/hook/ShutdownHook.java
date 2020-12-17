@@ -24,7 +24,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 为了防止在程序意外关闭或者是用户没有显示地调用关闭浏览器的api导致的资源没有释放
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class ShutdownHook extends Thread
 {

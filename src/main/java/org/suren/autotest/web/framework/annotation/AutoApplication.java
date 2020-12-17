@@ -12,7 +12,7 @@ import org.springframework.core.annotation.AliasFor;
 
 /**
  * 一个独立的测试用例
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.0.0
  */
 @Target(ElementType.TYPE)

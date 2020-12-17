@@ -20,7 +20,7 @@ import java.io.IOException;
 
 /**
  * 执行本地命令的外部执行类
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class OSInvoker
 {

@@ -43,7 +43,7 @@ import com.surenpi.autotest.webui.ui.AbstractElement;
 
 /**
  * 注解处理类
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.1.0
  */
 public class AnnotationProcess

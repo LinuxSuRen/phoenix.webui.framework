@@ -34,7 +34,7 @@ import com.surenpi.autotest.webui.ui.Element;
 import com.surenpi.autotest.webui.ui.FileUpload;
 
 /**
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SeleniumHover implements HoverAble

@@ -42,7 +42,7 @@ import com.surenpi.autotest.webui.ui.Element;
  * 
  * @see PrioritySearchStrategy
  * @see CyleSearchStrategy
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component("zoneSearchStrategy")
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

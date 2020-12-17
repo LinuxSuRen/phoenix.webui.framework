@@ -20,7 +20,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 批量操作执行器
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class BatchOperationInvoker
 {

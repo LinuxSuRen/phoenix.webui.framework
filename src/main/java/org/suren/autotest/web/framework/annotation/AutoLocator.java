@@ -28,7 +28,7 @@ import com.surenpi.autotest.webui.core.LocatorType;
 
 /**
  * 元素定位符
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(value = {
         ElementType.FIELD
@@ -56,9 +56,9 @@ public @interface AutoLocator
 	
 	/**
 	 * 当通过当期定位方法可以定位到，并且元素是可见的超时时间
-	 * @return 显式的查找超时时间（单位：毫秒）
+	 * @return 显式的查找超时时间（单位：秒）
 	 */
-	long timeout() default 0;
+	long timeout() default 3;
 	
 	/**
 	 * @return 定位方法的优先级，数字越大优先级越高

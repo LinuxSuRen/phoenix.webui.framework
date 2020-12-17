@@ -28,7 +28,7 @@ import com.surenpi.autotest.webui.core.StrategyType;
 
 /**
  * 定位策略
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

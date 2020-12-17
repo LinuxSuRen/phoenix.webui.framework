@@ -9,6 +9,7 @@
 
 - 支持多种元素选择策略（优先级、循环、区域）
 - 支持多种[数据源](https://github.com/LinuxSuRen/autotest.datasource)（[yaml](https://github.com/LinuxSuRen/autotest.datasource.yaml)、[excel](https://github.com/LinuxSuRen/autotest.datasource.excel)）
+- 支持包括：[excel](https://github.com/LinuxSuRen/autotest.report.excel)、[jira](https://github.com/LinuxSuRen/autotest.report.jira) 等格式的[测试报告](https://github.com/LinuxSuRen/autotest.report)输出
 - 支持数据源、URL、元素定位信息的参数化
 - 支持密文数据，javascript、groovy、freemarker等动态脚本数据
 - 支持动态生成日期、身份证号码、手机号、邮编等数据
@@ -22,3 +23,19 @@
 # Get started
 
 你可以先下载这个[示例项目](https://github.com/LinuxSuRen/phoenix.webui.framework.demo)，来快速地体验。
+
+# 引擎配置
+
+你可以通过引擎配置文件 `engine.properties` 调整框架的默认行为，支持的配置项包括：
+
+| Key | 默认值 | 描述 |
+|---|---|---|
+| `engine.autoLoad` | `true` | 是否自动下载 WebDriver |
+| `cookie.save` | `false` | |
+| `cookie.save.path` | `phoenix.autotest.cookie` | |
+| `chrome.version` | | Chrome 浏览器版本 |
+| `chrome.args.headless` | `false` | |
+| `chrome.args.intl.accept_languages` | | |
+| `chrome.args.lang` | | 浏览器语言设置，例如：`zh_CN` |
+
+在 Maven 项目中，该文件的位置是：`src/main/resources/engine.properties`

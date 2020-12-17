@@ -29,7 +29,7 @@ import javax.crypto.SecretKey;
 
 /**
  * 加密类
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class Encryptor
 {

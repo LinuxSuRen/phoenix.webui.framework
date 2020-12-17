@@ -39,7 +39,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 给文本框中填入值
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor

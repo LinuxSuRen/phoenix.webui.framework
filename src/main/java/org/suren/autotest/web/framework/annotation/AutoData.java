@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * 单个元素上的数据
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.0.0
  */
 @Target(ElementType.FIELD)

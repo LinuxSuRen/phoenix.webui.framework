@@ -40,7 +40,7 @@ import com.surenpi.autotest.webui.core.Locator;
  * &#064;AutoAttrLocator(tagName = "button", name = "data", value = "simple")
  * private Button But;
  * </pre>
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since Aug 10, 2017 10:11:10 PM
  */
 @Documented
@@ -84,7 +84,7 @@ public @interface AutoAttrLocator
     /**
      * @return 显式的查找超时时间（单位：毫秒）
      */
-    long timeout() default 0;
+    long timeout() default 3;
 
     /**
      * @return 定位方法的优先级，数字越大优先级越高

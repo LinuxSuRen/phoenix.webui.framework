@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 标记为一个模块
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

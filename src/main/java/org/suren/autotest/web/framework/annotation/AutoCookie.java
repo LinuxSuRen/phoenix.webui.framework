@@ -10,7 +10,7 @@ import com.surenpi.autotest.webui.Page;
 
 /**
  * 用户自动处理cookie
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since 2.0.0
  */
 @Target(ElementType.METHOD)

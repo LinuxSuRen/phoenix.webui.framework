@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 标签名称定位器
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

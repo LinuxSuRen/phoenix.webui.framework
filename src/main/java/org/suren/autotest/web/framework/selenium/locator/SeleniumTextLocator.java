@@ -26,7 +26,7 @@ import com.surenpi.autotest.webui.core.Locator;
 
 /**
  * 元素文本定位器
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

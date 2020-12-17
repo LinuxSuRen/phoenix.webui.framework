@@ -44,7 +44,7 @@ import org.suren.autotest.web.framework.selenium.locator.AbstractLocator;
  * 
  * @see PrioritySearchStrategy
  * @see ZoneSearchStrategy
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component("cyleSearchStrategy")
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

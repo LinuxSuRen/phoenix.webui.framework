@@ -83,7 +83,7 @@ import com.surenpi.autotest.webui.core.AutoTestException;
 
 /**
  * 浏览器引擎封装类
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 @Scope(value = "autotest", proxyMode = ScopedProxyMode.TARGET_CLASS)

@@ -29,7 +29,7 @@ import com.surenpi.autotest.datasource.DataSourceConstants;
 
 /**
  * 数据源注解类
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

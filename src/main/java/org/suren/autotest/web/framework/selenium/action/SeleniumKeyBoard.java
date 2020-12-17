@@ -28,7 +28,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 键盘动作实现
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SeleniumKeyBoard implements KeyBoardAble

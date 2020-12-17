@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 键值对注解
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

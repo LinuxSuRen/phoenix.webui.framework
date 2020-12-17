@@ -42,7 +42,7 @@ import com.surenpi.autotest.webui.ui.Element;
 
 /**
  * 利用Selenium实现文件上传
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class SeleniumFileUpload implements FileUploadAble, RandomFileUploadAble

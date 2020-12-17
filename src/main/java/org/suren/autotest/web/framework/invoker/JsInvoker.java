@@ -22,7 +22,7 @@ import org.suren.autotest.web.framework.settings.Phoenix;
 
 /**
  * 用于执行js方法的外部调用
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class JsInvoker
 {

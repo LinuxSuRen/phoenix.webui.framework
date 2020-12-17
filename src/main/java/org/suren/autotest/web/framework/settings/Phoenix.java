@@ -81,7 +81,7 @@ import net.sf.json.util.JSONUtils;
 
 /**
  * 页面（page）以及数据配置加载
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  * @since Jul 17, 2016 9:01:51 AM
  */
 public class Phoenix implements Closeable, WebUIEngine

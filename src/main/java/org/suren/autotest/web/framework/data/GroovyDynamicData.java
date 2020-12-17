@@ -32,7 +32,7 @@ import groovy.lang.GroovyShell;
 
 /**
  * Groovy脚本版本的动态数据实现
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Component
 public class GroovyDynamicData implements DynamicData

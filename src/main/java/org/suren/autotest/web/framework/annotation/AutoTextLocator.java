@@ -22,7 +22,7 @@ import com.surenpi.autotest.webui.core.Locator;
  * &#064;AutoAttrLocator(tagName = "button", text = "按钮")
  * private Button But;
  * </pre>
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 @Documented
 @Retention(RUNTIME)
@@ -56,7 +56,7 @@ public @interface AutoTextLocator
     /**
      * @return 显式的查找超时时间（毫秒）
      */
-    long timeout() default 0;
+    long timeout() default 3;
 
     /**
      * @return 定位方法的优先级，数字越大优先级越高

@@ -63,7 +63,7 @@ import com.surenpi.autotest.webui.ui.Text;
 
 /**
  * 模块代理类。通过代理的方式来实现测试报告的输出。
- * @author <a href="http://surenpi.com">suren</a>
+ * @author linuxsuren
  */
 public class AutoModuleProxy implements MethodInterceptor
 {

@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.surenpi.autotest.webui.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.Enhancer;
@@ -35,10 +36,6 @@ import org.suren.autotest.web.framework.selenium.locator.SeleniumXAttrLocator;
 import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.Form;
 import com.surenpi.autotest.webui.Page;
-import com.surenpi.autotest.webui.core.Locator;
-import com.surenpi.autotest.webui.core.LocatorAware;
-import com.surenpi.autotest.webui.core.LocatorType;
-import com.surenpi.autotest.webui.core.StrategyType;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 
 /**
@@ -181,6 +178,11 @@ public class AnnotationProcess
                         if(!locator.locator().getName().equals(locatorItem.getType()))
                         {
                             continue;
+                        }
+
+                        // set the locale info from annotation
+                        if (locatorItem instanceof LocalizationLocatorAware) {
+                            ((LocalizationLocatorAware) locatorItem).setLang(locator.lang());
                         }
                         
                         if(locatorItem instanceof LocatorAware)

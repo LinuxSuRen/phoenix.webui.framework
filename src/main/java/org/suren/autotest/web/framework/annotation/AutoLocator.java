@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 import com.surenpi.autotest.webui.core.LocatorType;
 
 /**
- * 元素定位符
+ * Web elements locator
  * @author linuxsuren
  */
 @Target(value = {
@@ -64,4 +64,14 @@ public @interface AutoLocator
 	 * @return 定位方法的优先级，数字越大优先级越高
 	 */
 	int order() default 0;
+
+	/**
+	 * Reference the language of the browser. If this locator is localization relevant,
+	 * you can provide the correct lang.
+	 * For example, if you're using LocatorType.BY_LINK_TEXT, and your web page is localization
+	 * relevant, then you can provide multiple @AutoLocator by @AutoLocators. The engine
+	 * will use different locator according to current language setting of the browser.
+	 * @return The expected language setting of browser
+	 */
+	String lang() default "";
 }

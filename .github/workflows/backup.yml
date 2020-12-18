@@ -17,8 +17,10 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: |
-          echo "${{secrets.SETTINGS}}" > ~/.m2/settings.xml
-          mvn -B deploy -U
+          if [[ "$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)" =~ .*SNAPSHOT ]]; then
+            echo "${{secrets.SETTINGS}}" > ~/.m2/settings.xml
+            mvn -B deploy -U
+          fi
   BackupGit:
     runs-on: ubuntu-latest
     steps:

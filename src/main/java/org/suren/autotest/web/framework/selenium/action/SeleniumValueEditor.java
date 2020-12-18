@@ -17,7 +17,6 @@
 package org.suren.autotest.web.framework.selenium.action;
 
 import com.surenpi.autotest.webui.ui.AbstractElement;
-import org.eclipse.jetty.util.StringUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -100,7 +99,7 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 		if(webEle != null)
 		{
 			String readonlyAttr = webEle.getAttribute("readonly");
-			if(StringUtil.isNotBlank(readonlyAttr))
+			if(StringUtils.isNotBlank(readonlyAttr))
 			{
 				logger.warn("{} is readonly, will do not call method setValue.", webEle.toString());
 				return;

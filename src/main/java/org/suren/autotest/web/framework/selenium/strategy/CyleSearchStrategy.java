@@ -19,6 +19,7 @@ package org.suren.autotest.web.framework.selenium.strategy;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.surenpi.autotest.webui.core.LocalizationLocator;
 import com.surenpi.autotest.webui.core.Locator;
 import com.surenpi.autotest.webui.core.LocatorNotFoundException;
 import com.surenpi.autotest.webui.ui.AbstractElement;
@@ -64,7 +65,22 @@ public class CyleSearchStrategy implements ElementSearchStrategy<WebElement>
 		this.element = element;
 		List<By> byList = new ArrayList<By>();
 
-		// TODO should order it
+		// TODO should order it by fields order and lang
+		// TODO should not get the language every time when searching an element, make it be part of the context
+		Object lang = ((JavascriptExecutor) engine.getDriver()).executeScript("return window.navigator.userLanguage || window.navigator.language");
+		if (lang != null) {
+			// make sure the expected lang comes first
+			element.getLocatorList().sort((o1, o2) -> {
+				if (o1 instanceof LocalizationLocator && lang.toString().equals(((LocalizationLocator) o1).getLang())) {
+					return -1;
+				}
+				if (o2 instanceof LocalizationLocator && lang.toString().equals(((LocalizationLocator) o2).getLang())) {
+					return 1;
+				}
+				return 0;
+			});
+		}
+
 		for (Locator locator : element.getLocatorList()) {
 			if (locator instanceof AbstractLocator) {
 				byList.add(((AbstractLocator) locator).getBy());

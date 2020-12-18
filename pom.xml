@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.surenpi.autotest</groupId>
 		<artifactId>autotest.parent</artifactId>
-		<version>1.0.1-20170815</version>
+		<version>1.0.1-20170818</version>
 	</parent>
 
 	<artifactId>autotest.web.framework</artifactId>
@@ -16,6 +16,7 @@
 
 	<properties>
 		<selenium.version>3.3.1</selenium.version>
+<!--		<selenium.version>3.141.59</selenium.version>-->
 		<spring.version>4.3.7.RELEASE</spring.version>
 		<aspectj.version>1.8.7</aspectj.version>
 		<groovy.version>2.4.4</groovy.version>
@@ -138,6 +139,7 @@
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
 		    <artifactId>autotest.webui</artifactId>
+			<version>1.0.1</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
@@ -146,6 +148,7 @@
         <dependency>
 			<groupId>com.surenpi.autotest</groupId>
         	<artifactId>autotest.utils</artifactId>
+			<version>1.0.1</version>
         </dependency>
 
 		<!-- Selenium依赖 -->
@@ -264,6 +267,12 @@
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>
 		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.google.guava</groupId>-->
+<!--			<artifactId>guava</artifactId>-->
+<!--			<version>23.0</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<repositories>
@@ -303,15 +312,10 @@
 	
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/LinuxSuRen/autotest.parent/issues</url>
+		<url>https://github.com/LinuxSuRen/phoenix.webui.framework/issues</url>
 	</issueManagement>
 	
 	<description>基于Selenium的自动化测试框架Phoenix，采用Java语言编写的。到目前为止，已经覆盖了WebUI自动化测试过程中需要的大部分功能封装。</description>
-	
-	<ciManagement>
-		<url>https://travis-ci.org/LinuxSuRen/phoenix.webui.framework</url>
-		<system>travis-ci</system>
-	</ciManagement>
-	
+
 	<inceptionYear>2016</inceptionYear>
 </project>

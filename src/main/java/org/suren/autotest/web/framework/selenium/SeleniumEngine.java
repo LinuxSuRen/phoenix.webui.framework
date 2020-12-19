@@ -58,10 +58,8 @@ import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -214,14 +212,6 @@ public class SeleniumEngine
 		else if(DRIVER_OPERA.equals(curDriverStr))
 		{
 			driver = new OperaDriver(capability);
-		}
-		else if(DRIVER_PHANTOM_JS.equals(curDriverStr))
-		{
-			driver = new PhantomJSDriver(capability);
-		}
-		else if(DRIVER_HTML_UNIT.equals(curDriverStr))
-		{
-			driver = new HtmlUnitDriver(true);
 		}
 		else
 		{

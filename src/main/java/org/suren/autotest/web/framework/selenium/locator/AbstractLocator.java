@@ -18,6 +18,8 @@ package org.suren.autotest.web.framework.selenium.locator;
 
 import java.util.List;
 
+import com.surenpi.autotest.webui.core.LocalizationLocator;
+import com.surenpi.autotest.webui.core.LocalizationLocatorAware;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
@@ -32,11 +34,12 @@ import com.surenpi.autotest.webui.core.LocatorAware;
  * 元素定位器的抽象父类，实现了部分通用方法
  * @author linuxsuren
  */
-public abstract class AbstractLocator<E> implements Locator, LocatorAware
+public abstract class AbstractLocator<E> implements Locator, LocatorAware, LocalizationLocator, LocalizationLocatorAware
 {
 	private String value;
 	private long timeout;
     private int order;
+    private String lang;
 
 	@Override
 	public String getValue()
@@ -76,7 +79,17 @@ public abstract class AbstractLocator<E> implements Locator, LocatorAware
 
     @Override
 	public void setExtend(String extend){}
-	
+
+	@Override
+	public String getLang() {
+		return lang;
+	}
+
+	@Override
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
 	@SuppressWarnings("unchecked")
 	public E findElement(SearchContext driver)
 	{

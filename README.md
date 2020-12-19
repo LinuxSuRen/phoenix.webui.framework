@@ -14,13 +14,11 @@
 - 支持密文数据，javascript、groovy、freemarker等动态脚本数据
 - 支持动态生成日期、身份证号码、手机号、邮编等数据
 - 支持操作日志生成GIF动态图片
-- 支持主流的浏览器（ie、firefox、chrome、opera、safari）
-- 支持移动自动化（Android）
-- 支持Eclipse插件生成代码
-- 支持纯XML编写完成自动化测试功能
+- 支持主流的浏览器（ie、firefox、chrome、opera、safari）以及 headless 模式
+- 支持纯 XML 编写完成自动化测试功能
 - [自动下载](https://github.com/linuxsuren/autotest.webdriver.downloader) WebDriver 驱动
 
-# Get started
+# 快速开始
 
 你可以先下载这个[示例项目](https://github.com/LinuxSuRen/phoenix.webui.framework.demo)，来快速地体验。
 
@@ -39,3 +37,17 @@
 | `chrome.args.lang` | | 浏览器语言设置，例如：`zh_CN` |
 
 在 Maven 项目中，该文件的位置是：`src/main/resources/engine.properties`
+
+# 元素定位
+
+## 国际化页面
+
+对于具有国际化的前端页面，浏览器的语言不同的情况下页面元素会有不同的展示。例如：一个按钮中文时显示为：`确认`，英文时显示为：`OK`。
+此时，如果我们希望通过这里的文本字符串来定位的话，可以参考下面的示例，同时提供多个定位方法，并指定语言：
+
+```
+@AutoLocators(strategy = StrategyType.CYLE, locators = {
+    @AutoLocator(locator = LocatorType.BY_XPATH, value = "//p[contains(text(),'企业空间')]", lang = "zh-CN"),
+    @AutoLocator(locator = LocatorType.BY_XPATH, value = "//p[contains(text(),'Workspaces')]")
+})
+```

@@ -6,16 +6,21 @@ import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.settings.Phoenix;
 import org.suren.autotest.web.framework.settings.PhoenixParam;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class RunnerStartup {
+public class RunnerStartup implements Closeable {
     private static final Logger logger = LoggerFactory.getLogger(RunnerStartup.class);
 
+    private Phoenix phoenix;
+
     public void start(Class<?> ... annotatedClasses) {
-        Phoenix phoenix = new Phoenix(annotatedClasses);
+        phoenix = new Phoenix(annotatedClasses);
         phoenix.initWithoutDriver(new PhoenixParam());
+        phoenix.initData();
 
         SeleniumEngine engine = phoenix.getEngine();
         engine.setDriverStr("chrome");
@@ -45,7 +50,9 @@ public class RunnerStartup {
         });
     }
 
-    private Phoenix getPhoenix() {
-        return null;
+    @Override
+    public void close() throws IOException {
+        phoenix.close();
+        phoenix.shutdown();
     }
 }

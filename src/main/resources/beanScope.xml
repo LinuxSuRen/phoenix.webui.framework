@@ -8,8 +8,9 @@
 	<p:bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 		<p:property name="scopes">
 			<p:map>
-				<p:entry key="autotest"
-					value="org.suren.autotest.web.framework.spring.AutotestScope" />
+				<p:entry key="autotest" value="org.suren.autotest.web.framework.spring.AutotestScope" />
+				<p:entry key="module" value="org.suren.autotest.web.framework.spring.AutoModuleScope" />
+				<p:entry key="runner" value="org.suren.autotest.web.framework.spring.AutoRunnerScope" />
 			</p:map>
 		</p:property>
 	</p:bean>

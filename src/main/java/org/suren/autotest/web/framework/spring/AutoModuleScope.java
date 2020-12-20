@@ -21,6 +21,7 @@ package org.suren.autotest.web.framework.spring;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
@@ -38,32 +39,36 @@ import com.surenpi.autotest.webui.core.EngineAware;
  */
 public class AutoModuleScope implements Scope
 {
-    private final List<RecordReportWriter> recordReportWriters;
+    private List<RecordReportWriter> recordReportWriters;
     private final Map<String, Object> objMap = new HashMap<String, Object>();
     private Phoenix util;
 
-    public AutoModuleScope(List<RecordReportWriter> recordReportWriters, Phoenix util)
-    {
-        this.recordReportWriters = recordReportWriters;
-        this.util = util;
-    }
+    // comment here due to the inject order issues
+//    public AutoModuleScope(List<RecordReportWriter> recordReportWriters, Phoenix util)
+//    {
+//        this.recordReportWriters = recordReportWriters;
+//        this.util = util;
+//    }
 
     @Override
     public Object get(String name, ObjectFactory<?> objectFactory)
     {
+//        Map<String, RecordReportWriter> reportWriters = util.getRunner(RecordReportWriter.class);
+//        recordReportWriters = reportWriters.values().parallelStream().collect(Collectors.toList());
+
         Object object = objMap.get(name);
         if(object == null)
         {
             object = objectFactory.getObject();
-            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters, util);
-            Object proxyObject = proxy.getProxy();
-            
-            BeanCopier beanCopier = BeanCopier.create(object.getClass(), proxyObject.getClass(), false);
-            beanCopier.copy(object, proxyObject, null);
-            
-            putAware(proxyObject);
-
-            object = proxyObject;
+//            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters, util);
+//            Object proxyObject = proxy.getProxy();
+//
+//            BeanCopier beanCopier = BeanCopier.create(object.getClass(), proxyObject.getClass(), false);
+//            beanCopier.copy(object, proxyObject, null);
+//
+//            putAware(proxyObject);
+//
+//            object = proxyObject;
             objMap.put(name, object);
         }
 

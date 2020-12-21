@@ -148,7 +148,7 @@
         <dependency>
 			<groupId>com.surenpi.autotest</groupId>
         	<artifactId>autotest.utils</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
         </dependency>
 
 		<!-- Selenium依赖 -->

@@ -841,7 +841,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	@Override
 	public void open(String url)
 	{
-		getEngine().getDriver().get(url);
+		getEngine().openUrl(url);
 	}
 
 	/**

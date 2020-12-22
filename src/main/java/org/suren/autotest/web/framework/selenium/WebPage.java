@@ -19,6 +19,9 @@ package org.suren.autotest.web.framework.selenium;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.surenpi.autotest.webui.Page;
@@ -83,6 +86,61 @@ public class WebPage extends Page
 	public String getCurrentUrl()
 	{
 		return engine.getDriver().getCurrentUrl();
+	}
+
+	@Override
+	public void urlToBe(String url) {
+		try {
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 3);
+			wait.until(ExpectedConditions.urlToBe(url));
+		} catch (TimeoutException e) {
+		}
+	}
+
+	@Override
+	public void urlNotToBe(String url) {
+		try {
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 3);
+			wait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(url)));
+		} catch (TimeoutException e) {
+		}
+	}
+
+	@Override
+	public void urlContains(String url) {
+		try {
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 3);
+			wait.until(ExpectedConditions.urlContains(url));
+		} catch (TimeoutException e) {
+		}
+	}
+
+	@Override
+	public void urlNotContains(String url) {
+		try {
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 3);
+			wait.until(ExpectedConditions.not(ExpectedConditions.urlContains(url)));
+		} catch (TimeoutException e) {
+		}
+	}
+
+	@Override
+	public void urlMatches(String url) {
+		try {
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 3);
+			wait.until(ExpectedConditions.urlMatches(url));
+		} catch (TimeoutException e) {
+		}
+
+	}
+
+	@Override
+	public void urlNotMatches(String url) {
+		try {
+			WebDriverWait wait = new WebDriverWait(engine.getDriver(), 3);
+			wait.until(ExpectedConditions.not(ExpectedConditions.urlMatches(url)));
+		} catch (TimeoutException e) {
+		}
 	}
 
 	@Override

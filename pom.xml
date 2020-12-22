@@ -139,7 +139,7 @@
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
 		    <artifactId>autotest.webui</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>
@@ -293,9 +293,9 @@
 	</repositories>
 	
 	<scm>
-		<connection>scm:git:git@github.com:LinuxSuRen/phoenix.webui.framework.git</connection>
-		<url>scm:git:git@github.com:LinuxSuRen/phoenix.webui.framework</url>
-		<developerConnection>scm:git:git@github.com:LinuxSuRen/phoenix.webui.framework.git</developerConnection>
+		<connection>scm:git:git@github.com:LinuxSuRen/${project.artifactId}.git</connection>
+		<url>scm:git:git@github.com:LinuxSuRen/${project.artifactId}</url>
+		<developerConnection>scm:git:git@github.com:LinuxSuRen/${project.artifactId}.git</developerConnection>
 		<tag>${project.version}</tag>
 	</scm>
 

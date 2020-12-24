@@ -35,8 +35,10 @@
 | `chrome.args.headless` | `false` | |
 | `chrome.args.intl.accept_languages` | | |
 | `chrome.args.lang` | | 浏览器语言设置，例如：`zh_CN` |
+| `chrome.args.window-size=` | | 设置浏览器窗口大小，例如：`1024,768` |
 
-在 Maven 项目中，该文件的位置是：`src/main/resources/engine.properties`
+在 Maven 项目中，该文件的位置是：`src/main/resources/engine.properties`。你可以从[ Chrome 官方文档](https://sites.google.com/a/chromium.org/chromedriver/capabilities)
+查找完整的参数。
 
 # 元素定位
 

@@ -134,7 +134,7 @@
         <dependency>
             <groupId>com.surenpi.autotest</groupId>
             <artifactId>autotest.report</artifactId>
-			<version>1.0.0-20170818-SNAPSHOT</version>
+			<version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
 		    <groupId>com.surenpi.autotest</groupId>

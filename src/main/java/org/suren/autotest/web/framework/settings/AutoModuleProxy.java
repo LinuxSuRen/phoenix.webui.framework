@@ -31,32 +31,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Options;
-import org.openqa.selenium.html5.LocalStorage;
-import org.openqa.selenium.html5.SessionStorage;
-import org.openqa.selenium.html5.WebStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.context.ApplicationContext;
 import org.suren.autotest.web.framework.annotation.AutoCookie;
 import org.suren.autotest.web.framework.annotation.AutoExpect;
 import org.suren.autotest.web.framework.annotation.AutoItem;
 import org.suren.autotest.web.framework.annotation.AutoLocalStorage;
 import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.annotation.AutoSessionStorage;
-import org.suren.autotest.web.framework.log.LoggerConstants;
 
 import com.surenpi.autotest.report.RecordReportWriter;
 import com.surenpi.autotest.report.record.ExceptionRecord;
 import com.surenpi.autotest.report.record.NormalRecord;
-import com.surenpi.autotest.utils.PathUtil;
 import com.surenpi.autotest.webui.Page;
 import com.surenpi.autotest.webui.core.AutoTestException;
 import com.surenpi.autotest.webui.ui.Text;
@@ -72,13 +63,13 @@ public class AutoModuleProxy implements MethodInterceptor
     private Enhancer enhancer = new Enhancer();
     private Object target;
     private List<RecordReportWriter> recordReportWriters;
-    private Phoenix util;
 
-    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters, Phoenix util)
+    ApplicationContext context;
+    public AutoModuleProxy(Object target, List<RecordReportWriter> recordReportWriters, Phoenix util, ApplicationContext context)
     {
         this.target = target;
         this.recordReportWriters = recordReportWriters;
-        this.util = util;
+        this.context = context;
     }
 
 	public Object getProxy()
@@ -110,6 +101,7 @@ public class AutoModuleProxy implements MethodInterceptor
         normalRecord.setMethodName(method.getName());
         normalRecord.setModuleName(autoModule.name());
         normalRecord.setModuleDescription(autoModule.description());
+        Cache.getInstance().put(autoModule.name(), normalRecord);
 
         try
         {
@@ -120,7 +112,7 @@ public class AutoModuleProxy implements MethodInterceptor
                 Class<? extends Page> accountClz = autoSessionStorage.pageClazz();
                 String accountNameField = autoSessionStorage.sessionKey();
 
-                Page page = util.getPage(accountClz);
+                Page page = this.context.getBean(accountClz);
                 Field accountField = accountClz.getDeclaredField(accountNameField);
 
                 accountField.setAccessible(true);
@@ -165,7 +157,7 @@ public class AutoModuleProxy implements MethodInterceptor
                 Class<? extends Page> accountClz = autoLocalStorage.pageClazz();
                 String accountNameField = autoLocalStorage.sessionKey();
 
-                Page page = util.getPage(accountClz);
+                Page page = this.context.getBean(accountClz);
                 Field accountField = accountClz.getDeclaredField(accountNameField);
 
                 accountField.setAccessible(true);
@@ -205,48 +197,48 @@ public class AutoModuleProxy implements MethodInterceptor
             
             //加载cookie信息
             boolean skipForCookie = false;
-            if(autoCookie != null && PathUtil.isFile(autoCookie.fileName()))
-            {
-        		// 处理cookie
-        		Options manage = util.getEngine().getDriver().manage();
-        		File cookieFile = PathUtil.getFile(autoCookie.fileName());
-        		
-                Class<? extends Page> accountClz = autoCookie.pageClazz();
-                String accountNameField = autoCookie.sessionKey();
-
-                Page page = util.getPage(accountClz);
-                Field accountField = accountClz.getDeclaredField(accountNameField);
-
-                accountField.setAccessible(true);
-                Object value = accountField.get(page);
-                if(value instanceof Text)
-                {
-                    page.open();
-                }
-        		
-    			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
-    			{
-    				Object cookiesObj = input.readObject();
-    				if(cookiesObj != null && cookiesObj instanceof Set<?>)
-    				{
-    					@SuppressWarnings("unchecked")
-						Set<Cookie> cookies =  (Set<Cookie>) cookiesObj;
-    					cookies.parallelStream().forEach((cookie) -> {
-    						manage.addCookie(cookie);
-    					});
-    				}
-    				
-                	skipForCookie = autoCookie.skipMethod();
-    			}
-    			catch (IOException e)
-    			{
-    			    logger.error("", e);
-    			}
-    			catch (ClassNotFoundException e)
-    			{
-                    logger.error("", e);
-    			}
-            }
+//            if(autoCookie != null && PathUtil.isFile(autoCookie.fileName()))
+//            {
+//        		// 处理cookie
+//        		Options manage = util.getEngine().getDriver().manage();
+//        		File cookieFile = PathUtil.getFile(autoCookie.fileName());
+//
+//                Class<? extends Page> accountClz = autoCookie.pageClazz();
+//                String accountNameField = autoCookie.sessionKey();
+//
+//                Page page = this.context.getBean(accountClz);//util.getPage(accountClz);
+//                Field accountField = accountClz.getDeclaredField(accountNameField);
+//
+//                accountField.setAccessible(true);
+//                Object value = accountField.get(page);
+//                if(value instanceof Text)
+//                {
+//                    page.open();
+//                }
+//
+//    			try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(cookieFile)))
+//    			{
+//    				Object cookiesObj = input.readObject();
+//    				if(cookiesObj != null && cookiesObj instanceof Set<?>)
+//    				{
+//    					@SuppressWarnings("unchecked")
+//						Set<Cookie> cookies =  (Set<Cookie>) cookiesObj;
+//    					cookies.parallelStream().forEach((cookie) -> {
+//    						manage.addCookie(cookie);
+//    					});
+//    				}
+//
+//                	skipForCookie = autoCookie.skipMethod();
+//    			}
+//    			catch (IOException e)
+//    			{
+//    			    logger.error("", e);
+//    			}
+//    			catch (ClassNotFoundException e)
+//    			{
+//                    logger.error("", e);
+//    			}
+//            }
 
             if(sessionStorageConfig.isSkipLogin() || localStorageConfig.isSkipLogin() || skipForCookie)
             {
@@ -269,21 +261,21 @@ public class AutoModuleProxy implements MethodInterceptor
             }
             
             //保存cookie信息
-            if(autoCookie != null)
-            {
-    			Options manage = util.getEngine().getDriver().manage();
-    			File cookieFile = PathUtil.getFile(autoCookie.fileName());
-    			
-				Set<Cookie> cookies = manage.getCookies();
-				try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(cookieFile)))
-				{
-					output.writeObject(cookies);
-				}
-				catch (IOException e)
-				{
-                    logger.error("", e);
-				}
-            }
+//            if(autoCookie != null)
+//            {
+//    			Options manage = util.getEngine().getDriver().manage();
+//    			File cookieFile = PathUtil.getFile(autoCookie.fileName());
+//
+//				Set<Cookie> cookies = manage.getCookies();
+//				try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(cookieFile)))
+//				{
+//					output.writeObject(cookies);
+//				}
+//				catch (IOException e)
+//				{
+//                    logger.error("", e);
+//				}
+//            }
 
             normalRecord.setEndTime(System.currentTimeMillis());
 
@@ -318,38 +310,38 @@ public class AutoModuleProxy implements MethodInterceptor
      */
     private void saveSessionStorage(String account)
     {
-        WebDriver driver = util.getEngine().getDriver();
-        if(driver instanceof WebStorage)
-        {
-            WebStorage webStorage = (WebStorage) driver;
-            SessionStorage sessionStorage = webStorage.getSessionStorage();
-
-            Properties pro = new Properties();
-            for(String key : sessionStorage.keySet())
-            {
-                pro.setProperty(key, sessionStorage.getItem(key));
-            }
-
-            PathUtil.proStore(pro, "sessionStorage." + account);
-        }
+//        WebDriver driver = util.getEngine().getDriver();
+//        if(driver instanceof WebStorage)
+//        {
+//            WebStorage webStorage = (WebStorage) driver;
+//            SessionStorage sessionStorage = webStorage.getSessionStorage();
+//
+//            Properties pro = new Properties();
+//            for(String key : sessionStorage.keySet())
+//            {
+//                pro.setProperty(key, sessionStorage.getItem(key));
+//            }
+//
+//            PathUtil.proStore(pro, "sessionStorage." + account);
+//        }
     }
     
     private void saveLocalStorage(String account)
     {
-        WebDriver driver = util.getEngine().getDriver();
-        if(driver instanceof WebStorage)
-        {
-            WebStorage webStorage = (WebStorage) driver;
-            LocalStorage localStorage = webStorage.getLocalStorage();
-
-            Properties pro = new Properties();
-            for(String key : localStorage.keySet())
-            {
-                pro.setProperty(key, localStorage.getItem(key));
-            }
-
-            PathUtil.proStore(pro, "localStorage." + account);
-        }
+//        WebDriver driver = util.getEngine().getDriver();
+//        if(driver instanceof WebStorage)
+//        {
+//            WebStorage webStorage = (WebStorage) driver;
+//            LocalStorage localStorage = webStorage.getLocalStorage();
+//
+//            Properties pro = new Properties();
+//            for(String key : localStorage.keySet())
+//            {
+//                pro.setProperty(key, localStorage.getItem(key));
+//            }
+//
+//            PathUtil.proStore(pro, "localStorage." + account);
+//        }
     }
 
     /**
@@ -359,58 +351,58 @@ public class AutoModuleProxy implements MethodInterceptor
      */
     private boolean loadSessionStorage(String accountNameValue, Map<String, String> customMap)
     {
-        WebDriver webDriver = util.getEngine().getDriver();
-        if(webDriver instanceof WebStorage)
-        {
-            WebStorage webStorage = (WebStorage) webDriver;
-            SessionStorage sessionStorage = webStorage.getSessionStorage();
-
-            Properties pro = new Properties();
-            if(PathUtil.proLoad(pro, "sessionStorage." + accountNameValue))
-            {
-                if(pro.isEmpty())
-                {
-                    return false;
-                }
-                
-                pro.putAll(customMap);
-
-                pro.stringPropertyNames().parallelStream().forEach((key) -> {
-                    sessionStorage.setItem(key, pro.getProperty(key));
-                });
-
-                return true;
-            }
-        }
+//        WebDriver webDriver = util.getEngine().getDriver();
+//        if(webDriver instanceof WebStorage)
+//        {
+//            WebStorage webStorage = (WebStorage) webDriver;
+//            SessionStorage sessionStorage = webStorage.getSessionStorage();
+//
+//            Properties pro = new Properties();
+//            if(PathUtil.proLoad(pro, "sessionStorage." + accountNameValue))
+//            {
+//                if(pro.isEmpty())
+//                {
+//                    return false;
+//                }
+//
+//                pro.putAll(customMap);
+//
+//                pro.stringPropertyNames().parallelStream().forEach((key) -> {
+//                    sessionStorage.setItem(key, pro.getProperty(key));
+//                });
+//
+//                return true;
+//            }
+//        }
 
         return false;
     }
     
     private boolean loadLocalStorage(String accountNameValue, Map<String, String> customMap)
     {
-        WebDriver webDriver = util.getEngine().getDriver();
-        if(webDriver instanceof WebStorage)
-        {
-            WebStorage webStorage = (WebStorage) webDriver;
-            LocalStorage localStorage = webStorage.getLocalStorage();
-
-            Properties pro = new Properties();
-            if(PathUtil.proLoad(pro, "localStorage." + accountNameValue))
-            {
-                if(pro.isEmpty())
-                {
-                    return false;
-                }
-                
-                pro.putAll(customMap);
-
-                pro.stringPropertyNames().parallelStream().forEach((key) -> {
-                	localStorage.setItem(key, pro.getProperty(key));
-                });
-
-                return true;
-            }
-        }
+//        WebDriver webDriver = util.getEngine().getDriver();
+//        if(webDriver instanceof WebStorage)
+//        {
+//            WebStorage webStorage = (WebStorage) webDriver;
+//            LocalStorage localStorage = webStorage.getLocalStorage();
+//
+//            Properties pro = new Properties();
+//            if(PathUtil.proLoad(pro, "localStorage." + accountNameValue))
+//            {
+//                if(pro.isEmpty())
+//                {
+//                    return false;
+//                }
+//
+//                pro.putAll(customMap);
+//
+//                pro.stringPropertyNames().parallelStream().forEach((key) -> {
+//                	localStorage.setItem(key, pro.getProperty(key));
+//                });
+//
+//                return true;
+//            }
+//        }
 
         return false;
     }
@@ -458,7 +450,9 @@ public class AutoModuleProxy implements MethodInterceptor
             return false;
         }
 
-        return true;
+        // only record method with annotation
+        AutoReporter autoReporter = method.getAnnotation(AutoReporter.class);
+        return autoReporter != null;
     }
 
     /**
@@ -479,23 +473,23 @@ public class AutoModuleProxy implements MethodInterceptor
      */
     private void write(ExceptionRecord record)
     {
-    	Map<Object, Object> config = util.getEngine().getEngineConfig();
-    	
-    	String root = (String) config.get(LoggerConstants.IMG_LOG_DIR);
-    	String appDir = (String) config.get(LoggerConstants.APP_IDENTIFY);
-    	String progressDir = (String) config.get(LoggerConstants.PROGRESS_IDENTIFY);
-    	
-    	File pngDir = new File(new File(root, appDir), progressDir);
-    	if(pngDir.isDirectory())
-    	{
-    		File[] files = pngDir.listFiles();
-    		if(files != null && files.length > 0)
-    		{
-        		List<File> attachFileList = new ArrayList<File>();
-        		attachFileList.add(files[files.length - 1]);
-        		record.setAttachFileList(attachFileList);
-    		}
-    	}
+//    	Map<Object, Object> config = util.getEngine().getEngineConfig();
+//
+//    	String root = (String) config.get(LoggerConstants.IMG_LOG_DIR);
+//    	String appDir = (String) config.get(LoggerConstants.APP_IDENTIFY);
+//    	String progressDir = (String) config.get(LoggerConstants.PROGRESS_IDENTIFY);
+//
+//    	File pngDir = new File(new File(root, appDir), progressDir);
+//    	if(pngDir.isDirectory())
+//    	{
+//    		File[] files = pngDir.listFiles();
+//    		if(files != null && files.length > 0)
+//    		{
+//        		List<File> attachFileList = new ArrayList<File>();
+//        		attachFileList.add(files[files.length - 1]);
+//        		record.setAttachFileList(attachFileList);
+//    		}
+//    	}
     	
         for(RecordReportWriter writer : recordReportWriters)
         {

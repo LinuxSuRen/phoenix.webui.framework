@@ -3,13 +3,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<!-- 
-     -->
+
+	<p:bean class="org.suren.autotest.web.framework.spring.AutoModuleScope" id="AutoModuleScope">
+		<p:property name="recordReportWriters">
+			<p:list value-type="com.surenpi.autotest.report.RecordReportWriter">
+			</p:list>
+		</p:property>
+	</p:bean>
+
 	<p:bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 		<p:property name="scopes">
 			<p:map>
 				<p:entry key="autotest" value="org.suren.autotest.web.framework.spring.AutotestScope" />
-				<p:entry key="module" value="org.suren.autotest.web.framework.spring.AutoModuleScope" />
+				<p:entry key="module" value-ref="AutoModuleScope" />
 				<p:entry key="runner" value="org.suren.autotest.web.framework.spring.AutoRunnerScope" />
 			</p:map>
 		</p:property>

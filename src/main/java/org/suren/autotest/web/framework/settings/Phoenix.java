@@ -247,8 +247,7 @@ public class Phoenix implements Closeable, WebUIEngine
 
 			// comment here due to the inject order issues
 //			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
-//					new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
-//							this));
+//					new AutoModuleScope(context, this));
 
 			// 测试报告输入目录设置
 			if(StringUtils.isNotBlank(phoenixParam.reportStore))

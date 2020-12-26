@@ -8,7 +8,6 @@ import org.suren.autotest.web.framework.settings.PhoenixParam;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -30,7 +29,8 @@ public class RunnerStartup implements Closeable {
         Map<String, Runner> runners = phoenix.getRunner(Runner.class);
         logger.info("found " + runners.size() + " runners");
         runners.forEach((k, v) -> {
-            System.out.println(k + v);
+            String runnerName = v.getClass().getSimpleName();
+            logger.info(String.format("start to run '%s'", runnerName));
 
             Method[] methods = v.getClass().getMethods();
             for (Method m : methods) {
@@ -41,10 +41,8 @@ public class RunnerStartup implements Closeable {
 
                 try {
                     m.invoke(v);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    logger.error(String.format("failed with running '%s.%s'", runnerName, m.getName()), e);
                 }
             }
         });

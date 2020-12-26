@@ -45,14 +45,18 @@ import org.jaxen.SimpleNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.suren.autotest.web.framework.AutoApplicationConfig;
 import org.suren.autotest.web.framework.annotation.AutoApplication;
+import org.suren.autotest.web.framework.annotation.AutoRunner;
 import org.suren.autotest.web.framework.hook.ShutdownHook;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.spring.AutoModuleScope;
+import org.suren.autotest.web.framework.spring.AutoRunnerScope;
+import org.suren.autotest.web.framework.spring.AutotestScope;
 import org.suren.autotest.web.framework.util.BeanUtil;
 import org.suren.autotest.web.framework.validation.Validation;
 import org.xml.sax.SAXException;
@@ -220,6 +224,112 @@ public class Phoenix implements Closeable, WebUIEngine
 
 		parse(document);
 	}
+
+	public void initWithoutDriver(PhoenixParam phoenixParam) {
+		context = SpringUtils.getApplicationContext();
+		if(context == null || !((AbstractApplicationContext) context).isActive())
+		{
+			if(annotatedClasses == null)
+			{
+				annotatedClasses = new Class[]{AutoApplicationConfig.class};
+			}
+			else
+			{
+				int len = annotatedClasses.length;
+				annotatedClasses = Arrays.copyOf(annotatedClasses, len + 1);
+				annotatedClasses[len] = AutoApplicationConfig.class;
+			}
+			context = new AnnotationConfigApplicationContext(annotatedClasses);
+
+//          ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autorunner", new AutoRunnerScope());
+//          ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
+//			Map<String, RecordReportWriter> reportWriters = context.getBeansOfType(RecordReportWriter.class);
+
+			// comment here due to the inject order issues
+//			((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
+//					new AutoModuleScope(context, this));
+
+			// 测试报告输入目录设置
+			if(StringUtils.isNotBlank(phoenixParam.reportStore))
+			{
+				Map<String, ReportStore> reportStores = context.getBeansOfType(ReportStore.class);
+				reportStores.forEach((name, store) -> {
+					store.setStoreRoot(phoenixParam.reportStore);
+				});
+			}
+		}
+
+		//auto注解扫描
+		annotationScan();
+
+		try
+		{
+			//设置页面上下文对象
+			Map<String, PageContextAware> pageContextAwareList =
+					context.getBeansOfType(PageContextAware.class);
+			if(pageContextAwareList != null)
+			{
+				for(PageContextAware ware : pageContextAwareList.values())
+				{
+					ware.setPageContext(new PageContext(pageMap));
+				}
+			}
+
+			//提供运行时管理功能
+//          IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
+//
+//          LocateRegistry.createRegistry(5006);
+//          MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+//          server.registerMBean(pageMXBean,
+//                  new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
+		}
+		catch(Exception e)
+		{
+			logger.error("jmx register process error.", e);
+		}
+
+		shutdownHook = new ShutdownHook(this);
+		Runtime.getRuntime().addShutdownHook(shutdownHook);
+
+		Map<String, Object> autoApp = context.getBeansWithAnnotation(AutoApplication.class);
+		final String projectName;
+		final String projectDesc;
+		if(autoApp != null && autoApp.size() > 0)
+		{
+			Object appObj = autoApp.values().iterator().next();
+			AutoApplication autoApplication = appObj.getClass().getAnnotation(AutoApplication.class);
+			if(autoApplication == null)
+			{
+				autoApplication = appObj.getClass().getSuperclass().getAnnotation(AutoApplication.class);
+			}
+			projectName = autoApplication.name();
+			projectDesc = autoApplication.description();
+		}
+		else
+		{
+			projectName = "none";
+			projectDesc = "none";
+		}
+
+		Map<String, RecordReportWriter> writers = context.getBeansOfType(RecordReportWriter.class);
+		if(writers != null)
+		{
+			writers.forEach((name, writer) -> {
+				ProjectRecord projectRecord = new ProjectRecord();
+				projectRecord.setName(projectName);
+				projectRecord.setDescription(projectDesc);
+				projectRecord.setBrowserInfo("browserInfo");
+				projectRecord.setOsName(System.getProperty("os.name"));
+				projectRecord.setOsArch(System.getProperty("os.arch"));
+				projectRecord.setOsVersion(System.getProperty("os.version"));
+				projectRecord.setCountry(System.getProperty("user.country"));
+				projectRecord.setLanguage(System.getProperty("user.language"));
+				projectRecord.setTimezone(System.getProperty("user.timezone"));
+				projectRecord.setAddressInfo(JSONUtils.valueToString(NetUtil.allIP()));
+				writer.write(projectRecord);
+			});
+		}
+	}
 	
 	/**
 	 * @param params
@@ -241,108 +351,8 @@ public class Phoenix implements Closeable, WebUIEngine
 	        commander.usage();
 	        System.exit(0);
 	    }
-	    
-        context = SpringUtils.getApplicationContext();
-        if(context == null || !((AbstractApplicationContext) context).isActive())
-        {
-            if(annotatedClasses == null)
-            {
-                annotatedClasses = new Class[]{AutoApplicationConfig.class};
-            }
-            else
-            {
-                int len = annotatedClasses.length;
-                annotatedClasses = Arrays.copyOf(annotatedClasses, len + 1);
-                annotatedClasses[len] = AutoApplicationConfig.class;
-            }
-            context = new AnnotationConfigApplicationContext(annotatedClasses);
-//          ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("autotest", new AutotestScope());
-            Map<String, RecordReportWriter> reportWriters = context.getBeansOfType(RecordReportWriter.class);
 
-            ((AnnotationConfigApplicationContext) context).getBeanFactory().registerScope("module",
-                    new AutoModuleScope(reportWriters.values().parallelStream().collect(Collectors.toList()),
-                            this));
-            
-            // 测试报告输入目录设置
-            if(StringUtils.isNotBlank(phoenixParam.reportStore))
-            {
-                Map<String, ReportStore> reportStores = context.getBeansOfType(ReportStore.class);
-                reportStores.forEach((name, store) -> {
-                    store.setStoreRoot(phoenixParam.reportStore);
-                });
-            }
-        }
-
-        //auto注解扫描
-        annotationScan();
-
-        try
-        {
-            //设置页面上下文对象
-            Map<String, PageContextAware> pageContextAwareList =
-                    context.getBeansOfType(PageContextAware.class);
-            if(pageContextAwareList != null)
-            {
-                for(PageContextAware ware : pageContextAwareList.values())
-                {
-                    ware.setPageContext(new PageContext(pageMap));
-                }
-            }
-
-            //提供运行时管理功能
-//          IPageMXBean pageMXBean = context.getBean(IPageMXBean.class);
-//          
-//          LocateRegistry.createRegistry(5006);
-//          MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-//          server.registerMBean(pageMXBean,
-//                  new ObjectName("org.suren.autotest.web.framework:type=IPageMXBean"));
-        }
-        catch(Exception e)
-        {
-            logger.error("jmx register process error.", e);
-        }
-
-        shutdownHook = new ShutdownHook(this);
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
-
-        Map<String, Object> autoApp = context.getBeansWithAnnotation(AutoApplication.class);
-        final String projectName;
-        final String projectDesc;
-        if(autoApp != null && autoApp.size() > 0)
-        {
-            Object appObj = autoApp.values().iterator().next();
-            AutoApplication autoApplication = appObj.getClass().getAnnotation(AutoApplication.class);
-            if(autoApplication == null)
-            {
-                autoApplication = appObj.getClass().getSuperclass().getAnnotation(AutoApplication.class);
-            }
-            projectName = autoApplication.name();
-            projectDesc = autoApplication.description();
-        }
-        else
-        {
-            projectName = "none";
-            projectDesc = "none";
-        }
-
-        Map<String, RecordReportWriter> writers = context.getBeansOfType(RecordReportWriter.class);
-        if(writers != null)
-        {
-            writers.forEach((name, writer) -> {
-                ProjectRecord projectRecord = new ProjectRecord();
-                projectRecord.setName(projectName);
-                projectRecord.setDescription(projectDesc);
-                projectRecord.setBrowserInfo("browserInfo");
-                projectRecord.setOsName(System.getProperty("os.name"));
-                projectRecord.setOsArch(System.getProperty("os.arch"));
-                projectRecord.setOsVersion(System.getProperty("os.version"));
-                projectRecord.setCountry(System.getProperty("user.country"));
-                projectRecord.setLanguage(System.getProperty("user.language"));
-                projectRecord.setTimezone(System.getProperty("user.timezone"));
-                projectRecord.setAddressInfo(JSONUtils.valueToString(NetUtil.allIP()));
-                writer.write(projectRecord);
-            });
-        }
+	    initWithoutDriver(phoenixParam);
 
         logger.info("init process done.");
     
@@ -816,6 +826,10 @@ public class Phoenix implements Closeable, WebUIEngine
 	{
 		return context.getBean(type);
 	}
+
+	public <T> Map<String, T> getRunner(Class<T> type) {
+		return context.getBeansOfType(type);
+	}
 	
 	@Override
     public <T> T getForm(Class<T> form)
@@ -826,7 +840,7 @@ public class Phoenix implements Closeable, WebUIEngine
 	@Override
 	public void open(String url)
 	{
-		getEngine().getDriver().get(url);
+		getEngine().openUrl(url);
 	}
 
 	/**

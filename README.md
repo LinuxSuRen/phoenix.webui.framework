@@ -1,6 +1,5 @@
 [![License](https://img.shields.io/github/license/LinuxSuRen/phoenix.webui.framework.svg)](https://github.com/LinuxSuRen/phoenix.webui.framework/master/LICENSE)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework)
-[![Join the chat at https://gitter.im/phoenix-webui-framework/Lobby](https://badges.gitter.im/phoenix-webui-framework/Lobby.svg)](https://gitter.im/phoenix-webui-framework/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # PhoenixAutoTest
 
@@ -9,7 +8,7 @@
 
 - 支持多种元素选择策略（优先级、循环、区域）
 - 支持多种[数据源](https://github.com/LinuxSuRen/autotest.datasource)（[yaml](https://github.com/LinuxSuRen/autotest.datasource.yaml)、[excel](https://github.com/LinuxSuRen/autotest.datasource.excel)）
-- 支持包括：[excel](https://github.com/LinuxSuRen/autotest.report.excel)、[jira](https://github.com/LinuxSuRen/autotest.report.jira) 等格式的[测试报告](https://github.com/LinuxSuRen/autotest.report)输出
+- 支持包括：[HTML](https://github.com/LinuxSuRen/autotest.report.html)、[Excel](https://github.com/LinuxSuRen/autotest.report.excel)、[Jira](https://github.com/LinuxSuRen/autotest.report.jira) 、[数据库](https://github.com/LinuxSuRen/autotest.report.database)等格式的[测试报告](https://github.com/LinuxSuRen/autotest.report)输出
 - 支持数据源、URL、元素定位信息的参数化
 - 支持密文数据，javascript、groovy、freemarker等动态脚本数据
 - 支持动态生成日期、身份证号码、手机号、邮编等数据
@@ -35,8 +34,10 @@
 | `chrome.args.headless` | `false` | |
 | `chrome.args.intl.accept_languages` | | |
 | `chrome.args.lang` | | 浏览器语言设置，例如：`zh_CN` |
+| `chrome.args.window-size=` | | 设置浏览器窗口大小，例如：`1024,768` |
 
-在 Maven 项目中，该文件的位置是：`src/main/resources/engine.properties`
+在 Maven 项目中，该文件的位置是：`src/main/resources/engine.properties`。你可以从[ Chrome 官方文档](https://sites.google.com/a/chromium.org/chromedriver/capabilities)
+查找完整的参数。
 
 # 元素定位
 

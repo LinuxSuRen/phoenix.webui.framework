@@ -20,10 +20,8 @@ package org.suren.autotest.web.framework.selenium;
 
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_CHROME;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_FIREFOX;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_HTML_UNIT;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_IE;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_OPERA;
-import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_PHANTOM_JS;
 import static org.suren.autotest.web.framework.settings.DriverConstants.DRIVER_SAFARI;
 import static org.suren.autotest.web.framework.settings.DriverConstants.ENGINE_CONFIG_FILE_NAME;
 
@@ -162,7 +160,14 @@ public class SeleniumEngine
 	public void init()
 	{
 		initConfig();
-		
+
+		final String headlessKey = "chrome.args.headless";
+		String headless = System.getenv(headlessKey);
+		if (StringUtils.isNotBlank(headless)) {
+			enginePro.setProperty(headlessKey, headless);
+		} else if (StringUtils.isNotBlank((headless = System.getProperty(headlessKey)))) {
+			enginePro.setProperty(headlessKey, headless);
+		}
 		beforeStart(enginePro);
 		
 		new CapabilityConfig(engineCapMap, enginePro).config();
@@ -454,11 +459,21 @@ public class SeleniumEngine
 	 * 打开指定地址
 	 * @param url url
 	 */
-	public void openUrl(String url)
+	public String openUrl(String url)
 	{
+		url = getHomePage(url);
 		driver.get(url);
 		
 		dataMap.put("sys.startUrl", url);
+		return url;
+	}
+
+	public String getHomePage(String url) {
+		final String homePageKey = "homepage";
+		if (getEngineConfig().containsKey(homePageKey)) {
+			url = (String) getEngineConfig().get(homePageKey);
+		}
+		return url;
 	}
 	
 	/**

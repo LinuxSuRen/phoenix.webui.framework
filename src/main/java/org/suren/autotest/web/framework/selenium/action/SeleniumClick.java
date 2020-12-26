@@ -21,6 +21,9 @@ import java.awt.Robot;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.surenpi.autotest.report.record.Action;
+import com.surenpi.autotest.report.record.ActionType;
+import com.surenpi.autotest.report.record.NormalRecord;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
@@ -35,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.suren.autotest.web.framework.annotation.AutoData;
+import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
@@ -44,6 +47,7 @@ import com.surenpi.autotest.webui.core.ElementSearchStrategy;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import com.surenpi.autotest.webui.ui.Element;
 import com.surenpi.autotest.webui.ui.FileUpload;
+import org.suren.autotest.web.framework.settings.Cache;
 
 /**
  * 通过Selenium实现点击（单击、双击）
@@ -170,6 +174,27 @@ public class SeleniumClick implements ClickAble
 		}
 		if (extraData != null) {
 			logger.info(extraData + " click done");
+			String moduel = "";
+			for (StackTraceElement item : Thread.currentThread().getStackTrace()) {
+				AutoModule automodule = null;
+				try {
+					automodule = Class.forName(item.getClassName()).getAnnotation(AutoModule.class);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				if (automodule != null) {
+					moduel = automodule.name();
+					break;
+				}
+			}
+
+			if (Cache.getInstance().get(moduel) != null) {
+				NormalRecord normalRecord = (NormalRecord) Cache.getInstance().get(moduel);
+				Action action = new Action();
+				action.setType(ActionType.CLICK);
+				action.setDescription(extraData + " click done");
+				normalRecord.getActions().add(action);
+			}
 		} else {
 			logger.info(ele + " click done");
 		}

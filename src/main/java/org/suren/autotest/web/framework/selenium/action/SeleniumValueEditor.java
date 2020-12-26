@@ -16,6 +16,9 @@
 
 package org.suren.autotest.web.framework.selenium.action;
 
+import com.surenpi.autotest.report.record.Action;
+import com.surenpi.autotest.report.record.ActionType;
+import com.surenpi.autotest.report.record.NormalRecord;
 import com.surenpi.autotest.webui.ui.AbstractElement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
@@ -28,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.suren.autotest.web.framework.annotation.AutoModule;
 import org.suren.autotest.web.framework.selenium.SeleniumEngine;
 import org.suren.autotest.web.framework.selenium.strategy.SearchStrategyUtils;
 
@@ -35,6 +39,7 @@ import com.surenpi.autotest.utils.StringUtils;
 import com.surenpi.autotest.webui.action.AdvanceValueEditor;
 import com.surenpi.autotest.webui.action.ValueEditor;
 import com.surenpi.autotest.webui.ui.Element;
+import org.suren.autotest.web.framework.settings.Cache;
 
 /**
  * 给文本框中填入值
@@ -129,7 +134,29 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 				extraData = ((AbstractElement) ele).getData("data");
 			}
 			if (extraData != null) {
-				logger.info(String.format("[%s] value filled", extraData));
+				String moduel = "";
+				for (StackTraceElement item : Thread.currentThread().getStackTrace()) {
+					AutoModule automodule = null;
+					try {
+						automodule = Class.forName(item.getClassName()).getAnnotation(AutoModule.class);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					if (automodule != null) {
+						moduel = automodule.name();
+						break;
+					}
+				}
+
+				if (Cache.getInstance().get(moduel) != null) {
+					NormalRecord normalRecord = (NormalRecord) Cache.getInstance().get(moduel);
+					Action action = new Action();
+					action.setType(ActionType.INPUT);
+					action.setDescription(String.format("[%s] value filled", extraData));
+					action.setValue(valueStr);
+					normalRecord.getActions().add(action);
+				}
+				logger.info(String.format("[%s] value filled, value: '%s'", extraData, value) + moduel);
 			} else {
 				logger.info(String.format("[%s] value filled", ele));
 			}
@@ -139,7 +166,7 @@ public class SeleniumValueEditor implements ValueEditor, AdvanceValueEditor
 			logger.error(String.format("can not found element [%s].", ele));
 		}
 	}
-	
+
 	/**
 	 * 填入值
 	 * @param webEle

@@ -18,13 +18,17 @@
 
 package org.suren.autotest.web.framework.spring;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.suren.autotest.web.framework.selenium.WebDriverAware;
 import org.suren.autotest.web.framework.settings.AutoModuleProxy;
 import org.suren.autotest.web.framework.settings.Phoenix;
@@ -36,31 +40,51 @@ import com.surenpi.autotest.webui.core.EngineAware;
  * 用于辅助生成自动化测试报告的scope
  * @author suren
  */
-public class AutoModuleScope implements Scope
+public class AutoModuleScope implements Scope, ApplicationContextAware
 {
-    private final List<RecordReportWriter> recordReportWriters;
+//    @Autowired
+    private List<RecordReportWriter> recordReportWriters;
     private final Map<String, Object> objMap = new HashMap<String, Object>();
     private Phoenix util;
 
-    public AutoModuleScope(List<RecordReportWriter> recordReportWriters, Phoenix util)
-    {
-        this.recordReportWriters = recordReportWriters;
-        this.util = util;
+    // comment here due to the inject order issues
+//    public AutoModuleScope(List<RecordReportWriter> recordReportWriters, Phoenix util)
+//    {
+//        this.recordReportWriters = recordReportWriters;
+//        this.util = util;
+//    }
+
+    public AutoModuleScope() {
+//        RecordReportWriter.class
+    }
+
+    private ApplicationContext context;
+    public AutoModuleScope(ApplicationContext context, Phoenix phoenix) {
+        this.util = phoenix;
+        this.context = context;
     }
 
     @Override
     public Object get(String name, ObjectFactory<?> objectFactory)
     {
+//        Map<String, RecordReportWriter> reportWriters = util.getRunner(RecordReportWriter.class);
+//        recordReportWriters = reportWriters.values().parallelStream().collect(Collectors.toList());
+
         Object object = objMap.get(name);
         if(object == null)
         {
             object = objectFactory.getObject();
-            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters, util);
+            Map<String, RecordReportWriter> map = context.getBeansOfType(RecordReportWriter.class);
+            recordReportWriters = new ArrayList<>();
+            map.forEach((k,v) -> {
+                recordReportWriters.add(v);
+            });
+            AutoModuleProxy proxy = new AutoModuleProxy(object, recordReportWriters, util, context);
             Object proxyObject = proxy.getProxy();
-            
+
             BeanCopier beanCopier = BeanCopier.create(object.getClass(), proxyObject.getClass(), false);
             beanCopier.copy(object, proxyObject, null);
-            
+
             putAware(proxyObject);
 
             object = proxyObject;
@@ -108,5 +132,18 @@ public class AutoModuleScope implements Scope
     public String getConversationId()
     {
         return null;
+    }
+
+    public List<RecordReportWriter> getRecordReportWriters() {
+        return recordReportWriters;
+    }
+
+    public void setRecordReportWriters(List<RecordReportWriter> recordReportWriters) {
+        this.recordReportWriters = recordReportWriters;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
     }
 }

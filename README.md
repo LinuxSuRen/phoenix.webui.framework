@@ -1,6 +1,8 @@
 [![License](https://img.shields.io/github/license/LinuxSuRen/phoenix.webui.framework.svg)](https://github.com/LinuxSuRen/phoenix.webui.framework/master/LICENSE)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.surenpi.autotest/autotest.web.framework)
 
+> 该项目不再维护，如果您对接口开发、调试、测试工具感兴趣的话，请关注我的另外一个开源项目 [api-testing](https://github.com/LinuxSuRen/api-testing)
+
 # PhoenixAutoTest
 
 本项目是一个基于 [Selenium](https://github.com/seleniumhq/selenium/) 的Web自动测试框架，通过该框架可以简化测试人员的学习难度，只要
